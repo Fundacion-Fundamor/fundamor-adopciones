@@ -2,36 +2,44 @@ import CardSlider from '../../Slider/Slider'
 import './gallery.scss'
 import FundamorClient from '../../../services/fundamorClient'
 import axios from 'axios'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 const baseURL = 'localhost:4000/api/auth/token'
 
 function Gallery(props) {
-  // const [post, setPost] = React.useState(null)
+  const [allAnimals, setAllAnimals] = useState([])
+  const [loadMore, setLoadMore] = useState(
+    'https://pokeapi.co/api/v2/pokemon?limit=20',
+  )
 
-  // React.useEffect(() => {
-  //   const options = {
-  //     method: 'POST',
-  //     data: {
-  //       correo: 'tester@gmail.com',
-  //       contrasenia: 'hola',
-  //     },
-  //   }
+  const getAllAnimals = async () => {
+    const res = await fetch(loadMore)
+    const data = await res.json()
 
-  //   const res = axios(options).then((response) => {
-  //     setPost(response.data)
-  //     console.log(res)
-  //   })
-  // }, [])
+    setLoadMore(data.next)
 
-  // if (!post) return null
+    function createAnimalObject(results) {
+      results.forEach(async (animal) => {
+        const res = await fetch(
+          `https://pokeapi.co/api/v2/pokemon/${animal.name}`,
+        )
+        const data = await res.json()
+        setAllAnimals((currentList) => [...currentList, data])
+        await allAnimals.sort((a, b) => a.id - b.id)
+      })
+    }
+    createAnimalObject(data.results)
+    // console.log(allAnimals)
+  }
+
+  useEffect(() => {
+    getAllAnimals()
+  }, [])
 
   const token = FundamorClient.getToken
-  console.log(token)
   return (
     <div className="gallery-container">
-      <CardSlider className="main-slider"></CardSlider>
-      {/* <div>{post.token}</div> */}
+      <CardSlider className="main-slider" items={allAnimals} />
     </div>
   )
 }

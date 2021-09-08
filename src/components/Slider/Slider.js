@@ -3,37 +3,54 @@ import Slider from 'react-slick'
 import './slider.scss'
 import Card from '../Card/Card'
 
-function MultipleItems() {
+function MultipleItems(props) {
+  console.log(props.items)
   var settings = {
+    centerMode: true,
     dots: true,
     className: 'center',
     infinite: true,
-    slidesToShow: 4,
+    slidesToShow: 5,
+    // autoplay: true,
+    autoplaySpeed: 2000,
+    arrows: false,
     // slidesToScroll: 2,
     speed: 500,
     swipeToSlide: true,
+    initialSlide: 2,
     responsive: [
       {
-        breakpoint: 1024,
+        breakpoint: 1600,
         settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3,
+          dots: false,
+          slidesToShow: 4,
+          initialSlide: 4,
           infinite: true,
         },
       },
       {
-        breakpoint: 600,
+        breakpoint: 1400,
         settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2,
+          dots: false,
+          infinite: true,
+          slidesToShow: 3,
           initialSlide: 2,
         },
       },
       {
-        breakpoint: 480,
+        breakpoint: 1080,
         settings: {
+          dots: false,
+          slidesToShow: 2,
+          initialSlide: 2,
+        },
+      },
+      {
+        breakpoint: 700,
+        settings: {
+          dots: false,
           slidesToShow: 1,
-          slidesToScroll: 1,
+          initialSlide: 2,
         },
       },
     ],
@@ -42,16 +59,15 @@ function MultipleItems() {
   const objects = [...Array(20).keys()]
 
   return (
-    <div className="slider-container">
-      <h2> Card Slider </h2>
+    <div className="">
       <Slider {...settings}>
-        {objects.map((object, i) => (
+        {props.items.map((pokemonStats, index) => (
           <Card
-            obj={object}
-            key={i}
-            img="https://picsum.photos/id/54/400/300"
-            title="What I learned from my visit to The Upside Down"
-            author="Nancy Wheeler"
+            key={index}
+            id={pokemonStats.id}
+            img={pokemonStats.sprites.other.dream_world.front_default}
+            title={pokemonStats.name}
+            author={pokemonStats.types[0].type.name}
           />
         ))}
       </Slider>
