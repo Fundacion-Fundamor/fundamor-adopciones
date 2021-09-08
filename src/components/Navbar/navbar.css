@@ -1,25 +1,33 @@
-:root {
-  --main-light-color: #eaeaea;
-  --white-color: #ffffff;
-  --main-dark-color: #2e2e2e;
-  --secondary-dark-color: rgba(125, 125, 125);
-}
+/* feedback */
 .navbar {
-  background: var(--white-color);
+  background: #ffffff;
   height: 56px;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   font-size: 1.2rem;
+  position: -webkit-sticky;
   position: sticky;
   top: 0;
   z-index: 999;
 }
 
 .navbar__container {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   height: 56px;
   max-width: 1500px;
   width: 1500px;
@@ -31,18 +39,26 @@
   cursor: pointer;
   text-decoration: none;
   font-size: 2rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  align-items: baseline;
+  -webkit-box-align: baseline;
+      -ms-flex-align: baseline;
+          align-items: baseline;
 }
 
 .navbar__menu {
+  display: -ms-grid;
   display: grid;
-  grid-template-columns: repeat(4, auto);
+  -ms-grid-columns: (auto)[4];
+      grid-template-columns: repeat(4, auto);
   grid-gap: 10px;
   list-style: none;
   text-align: center;
   width: 50vw;
-  justify-content: end;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: end;
   margin-right: 2rem;
 }
 
@@ -51,14 +67,19 @@
   font-weight: lighter;
   padding-left: 10px;
 }
+
 .navbar__item {
   height: 50px;
 }
 
 .navbar__link {
   color: var(--main-dark-color);
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  align-items: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   text-decoration: none;
   padding: 0.5rem 1rem;
   height: 100%;
@@ -66,28 +87,32 @@
 
 .navbar__link:hover {
   border-bottom: 4px solid var(--main-dark-color);
+  -webkit-transition: all 0.2s ease-out;
   transition: all 0.2s ease-out;
 }
 
-.navbar__link--mobile {
+.navbar__link--mobile, .navbar__menu-icon {
   display: none;
 }
 
-.navbar__menu-icon {
-  display: none;
-}
-
-.fa-bars,
-fa-times {
+.fa-bars, fa-times {
+  -webkit-transition: all 2s ease-in-out;
   transition: all 2s ease-in-out;
 }
 
 @media screen and (max-width: 960px) {
   .navbar__menu {
     background-color: rgba(0, 0, 0, 0.1);
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    flex-direction: column;
-    justify-content: left;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-pack: left;
+        -ms-flex-pack: left;
+            justify-content: left;
     width: 80%;
     max-width: 380px;
     height: calc(100vh - 56px);
@@ -96,15 +121,16 @@ fa-times {
     padding-top: 50px;
     left: -100%;
     opacity: 1;
+    -webkit-transition: all 0.5s ease;
     transition: all 0.5s ease;
   }
-
   .navbar__menu--active {
-    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+            backdrop-filter: blur(16px);
     border-radius: 4px;
-
     left: 0;
     opacity: 1;
+    -webkit-transition: all 0.5s ease;
     transition: all 0.5s ease;
     z-index: 1;
   }
@@ -115,15 +141,12 @@ fa-times {
     text-align: center;
     padding: 1.2rem;
     width: 100%;
-
     display: table;
   }
-
   .navbar__link:hover {
     background-color: var(--main-dark-color);
-    color: var(--main-light-color);
+    color: #ffffff;
   }
-
   .navbar__link--mobile {
     display: block;
     text-align: center;
@@ -135,23 +158,24 @@ fa-times {
     background-color: transparent;
     color: var(--main-dark-color);
     padding: 14px 20px;
+    height: -webkit-min-content;
+    height: -moz-min-content;
     height: min-content;
     border: 1px solid var(--main-dark-color);
+    -webkit-transition: all 0.2s ease-out;
     transition: all 0.2s ease-out;
   }
-
   .navbar__link--mobile:hover {
     background: var(--main-dark-color);
-    color: var(--main-light-color);
+    color: #ffffff;
+    -webkit-transition: 250ms;
     transition: 250ms;
   }
-
   .navbar__logo {
     position: absolute;
     left: 0;
     margin: 0px 20px;
   }
-
   .navbar__menu-icon {
     display: block;
     position: absolute;
@@ -160,3 +184,4 @@ fa-times {
     cursor: pointer;
   }
 }
+/*# sourceMappingURL=navbar.css.map */

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { Button } from './Button'
+import { Button } from '../Button/Button'
 import { Link } from 'react-router-dom'
-import './NavBar.css'
+import './navbar.scss'
+
 
 function Navbar() {
   const [click, setClick] = useState(false)
@@ -44,25 +45,34 @@ function Navbar() {
           >
             <li className="navbar__item">
               <Link to="/" className="navbar__link" onClick={closeMobileMenu}>
-                Home
+                Colaboradores
               </Link>
             </li>
             <li className="navbar__item">
               <Link
-                to="/services"
+                to="/about"
                 className="navbar__link"
                 onClick={closeMobileMenu}
               >
-                Services
+                Acerca de
               </Link>
             </li>
             <li className="navbar__item">
               <Link
-                to="/products"
+                to="/gallery"
                 className="navbar__link"
                 onClick={closeMobileMenu}
               >
-                Products
+                Galería
+              </Link>
+            </li>
+            <li className="navbar__item">
+              <Link
+                to="/Contacto"
+                className="navbar__link"
+                onClick={closeMobileMenu}
+              >
+                Contacto
               </Link>
             </li>
 
