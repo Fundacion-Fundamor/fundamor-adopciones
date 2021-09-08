@@ -4,7 +4,6 @@ import './slider.scss'
 import Card from '../Card/Card'
 
 function MultipleItems(props) {
-  console.log(props.items)
   var settings = {
     centerMode: true,
     dots: true,

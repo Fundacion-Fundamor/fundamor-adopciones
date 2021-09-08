@@ -4,26 +4,19 @@ import FundamorClient from '../../../services/fundamorClient'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 
-const baseURL = 'localhost:4000/api/auth/token'
-
 function Gallery(props) {
   const [allAnimals, setAllAnimals] = useState([])
-  const [loadMore, setLoadMore] = useState(
-    'https://pokeapi.co/api/v2/pokemon?limit=20',
-  )
 
   const getAllAnimals = async () => {
-    const res = await fetch(loadMore)
-    const data = await res.json()
-
-    setLoadMore(data.next)
+    const res = await axios.get('https://pokeapi.co/api/v2/pokemon?limit=20')
+    const data = await res.data
 
     function createAnimalObject(results) {
       results.forEach(async (animal) => {
-        const res = await fetch(
+        const res = await axios.get(
           `https://pokeapi.co/api/v2/pokemon/${animal.name}`,
         )
-        const data = await res.json()
+        const data = await res.data
         setAllAnimals((currentList) => [...currentList, data])
         await allAnimals.sort((a, b) => a.id - b.id)
       })
@@ -36,7 +29,6 @@ function Gallery(props) {
     getAllAnimals()
   }, [])
 
-  const token = FundamorClient.getToken
   return (
     <div className="gallery-container">
       <CardSlider className="main-slider" items={allAnimals} />
