@@ -5,7 +5,7 @@ import Card from '../Card/Card'
 
 function MultipleItems() {
   var settings = {
-    // dots: true,
+    dots: true,
     className: 'center',
     infinite: true,
     slidesToShow: 4,
@@ -19,7 +19,6 @@ function MultipleItems() {
           slidesToShow: 3,
           slidesToScroll: 3,
           infinite: true,
-          dots: true,
         },
       },
       {
