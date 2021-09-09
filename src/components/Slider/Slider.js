@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Slider from 'react-slick'
 import './slider.scss'
-import Card from '../Card/Card'
+import Card from '../Card'
 
 function MultipleItems(props) {
   var settings = {

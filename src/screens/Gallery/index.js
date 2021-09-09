@@ -1,8 +1,7 @@
-import CardSlider from '../../Slider/Slider'
 import './gallery.scss'
-import FundamorClient from '../../../services/fundamorClient'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
+import Card from '../../components/Card'
 
 function Gallery(props) {
   const [allAnimals, setAllAnimals] = useState([])
@@ -31,7 +30,17 @@ function Gallery(props) {
 
   return (
     <div className="gallery-container">
-      <CardSlider className="main-slider" items={allAnimals} />
+      <div className="card-gallery-container">
+        {allAnimals.map((animalStats, index) => (
+          <Card
+            key={index}
+            id={animalStats.id}
+            img={animalStats.sprites.other.dream_world.front_default}
+            title={animalStats.name}
+            author={animalStats.types[0].type.name}
+          />
+        ))}
+      </div>
     </div>
   )
 }
