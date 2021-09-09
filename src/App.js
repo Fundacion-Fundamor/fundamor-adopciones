@@ -14,10 +14,12 @@ function App() {
       <Router>
         <NavBar />{' '}
         <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/about" component={About} />
-          <Route path="/gallery" component={Gallery} />
-          <Route path="/login" component={Login} />
+          <div className="main-content">
+            <Route path="/" exact component={Home} />
+            <Route path="/about" component={About} />
+            <Route path="/gallery" component={Gallery} />
+            <Route path="/login" component={Login} />
+          </div>
         </Switch>
       </Router>
     </div>

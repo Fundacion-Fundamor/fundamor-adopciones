@@ -79,15 +79,14 @@ function Navbar() {
 
             <li>
               <Link
-                to="/sign-up"
+                to="/"
                 className="navbar__link navbar__link--mobile"
                 onClick={closeMobileMenu}
               >
-                Sign In
+                Botón oculto
               </Link>
             </li>
           </ul>
-          {button && <Button buttonStyle="btn--positive">Sign In</Button>}
         </div>
       </nav>
     </>

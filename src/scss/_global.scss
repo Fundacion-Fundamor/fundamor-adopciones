@@ -15,12 +15,10 @@ body {
   box-sizing: border-box;
   background-color: $secondaryLight1Color;
   box-sizing: border-box;
-  height: 100vh;
-  min-height: 100%;
 }
 
-.App{
-  height: calc(100vh - 56px );
+.main-content{
+  min-height: calc(100vh - 56px);
 }
 
 #root {
