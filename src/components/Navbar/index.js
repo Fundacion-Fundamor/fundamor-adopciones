@@ -66,13 +66,14 @@ function Navbar() {
                 Galería
               </Link>
             </li>
+
             <li className="navbar__item">
               <Link
-                to="/Contacto"
+                to="/Login"
                 className="navbar__link"
                 onClick={closeMobileMenu}
               >
-                Contacto
+                Login 
               </Link>
             </li>
 

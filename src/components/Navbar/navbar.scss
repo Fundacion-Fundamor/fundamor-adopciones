@@ -2,7 +2,7 @@
 
 .navbar {
   background: $realWhite;
-  height: 56px;
+  height: $nav-bar-size;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -16,7 +16,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 56px;
+  height: $nav-bar-size;
   max-width: 1500px;
   width: 1500px;
   margin: 0px 20px;
@@ -82,9 +82,9 @@
     justify-content: left;
     width: 80%;
     max-width: 380px;
-    height: calc(100vh - 56px);
+    height: calc(100vh - $nav-bar-size);
     position: absolute;
-    top: 56px;
+    top: $nav-bar-size;
     padding-top: 50px;
     left: -100%;
     opacity: 1;
