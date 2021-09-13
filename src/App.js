@@ -8,6 +8,13 @@ import Gallery from './screens/Gallery'
 import Login from './screens/Login'
 import './scss/_global.scss'
 import AppContext from './context/AppContext'
+import authToken from './config/authToken'
+
+
+const token = localStorage.getItem("token");
+if (token) {
+  authToken(token);
+}
 
 function App() {
   return (

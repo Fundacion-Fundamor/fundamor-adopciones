@@ -1,15 +1,36 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import './login.scss'
 import { MyContext } from '../../context/AppContext'
 
 function Login() {
-  const [globalState, handleGlobalState] = useContext(MyContext)
+  const [globalState, handleGlobalState, logIn, authenticatedUser] = useContext(MyContext)
 
-  console.log(globalState)
+
+  const [credentials, setCredentials] = useState({
+
+    email: "aurelio@gmail.com",
+    password: "hola1234"
+  });
+
+
+  const onSubmit = async () => {
+
+
+    //valida las credenciales
+    logIn(credentials.email, credentials.password);
+
+  }
+
+
+  // useEffect(() => {
+
+  //   authenticatedUser();
+
+  // }, [])
 
   return (
     <div className="login-container">
-      <form class="login__form" method="POST" name="frm_login" action="#">
+      <form class="login__form" name="frm_login">
         <header class="login__header">
           <h1 class="login__title">Login</h1>
         </header>
@@ -19,6 +40,10 @@ function Login() {
               class="login__input"
               type="text"
               name="input_email"
+              value={credentials.email}
+              onChange={(event) => {
+                setCredentials({ ...credentials, ["email"]: event.target.value });
+              }}
               required
             />
             <label class="login__label">Correo</label>
@@ -29,6 +54,10 @@ function Login() {
               class="login__input"
               type="password"
               name="input_password"
+              value={credentials.password}
+              onChange={(event) => {
+                setCredentials(...credentials, ...{ password: event.target.value });
+              }}
               required
             />
             <label class="login__label">Contraseña</label>
@@ -42,9 +71,8 @@ function Login() {
         </main>
         <footer class="login__footer">
           <input
-            onClick={() => {
-              handleGlobalState({ token: '123' })
-            }}
+
+            onClick={onSubmit}
             class="login__button"
             type="button"
             name="btn_signin"
