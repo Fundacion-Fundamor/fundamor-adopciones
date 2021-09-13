@@ -1,7 +1,12 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import './login.scss'
+import AppContext from '../../context/AppContext'
 
 function Login() {
+  const [globalState, handleGlobalState] = useContext(AppContext)
+
+  console.log(globalState)
+
   return (
     <div className="login-container">
       <form class="login__form" method="POST" name="frm_login" action="#">
@@ -37,6 +42,9 @@ function Login() {
         </main>
         <footer class="login__footer">
           <input
+            onClick={() => {
+              // console.log(context)
+            }}
             class="login__button"
             type="button"
             name="btn_signin"
