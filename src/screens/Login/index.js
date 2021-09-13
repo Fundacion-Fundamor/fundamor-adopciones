@@ -30,7 +30,8 @@ function Login() {
             <div class="login__bar"></div>
           </div>
           <p class="login__terms">
-          Al registrarme o hacer clic en continuar, confirmo que he leído y acepto los <a href="#">Términos</a> y {' '}
+            Al registrarme o hacer clic en continuar, confirmo que he leído y
+            acepto los <a href="#">Términos</a> y{' '}
             <a href="#">la Política de privacidad</a>.
           </p>
         </main>
@@ -43,6 +44,7 @@ function Login() {
           />
         </footer>
       </form>
+      {/* Photo by <a href="https://unsplash.com/@charlesdeluvio?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Charles Deluvio</a> on <a href="https://unsplash.com/?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a> */}
     </div>
   )
 }
