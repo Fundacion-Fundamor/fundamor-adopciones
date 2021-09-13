@@ -1,9 +1,9 @@
 import React, { useContext } from 'react'
 import './login.scss'
-import AppContext from '../../context/AppContext'
+import { MyContext } from '../../context/AppContext'
 
 function Login() {
-  const [globalState, handleGlobalState] = useContext(AppContext)
+  const [globalState, handleGlobalState] = useContext(MyContext)
 
   console.log(globalState)
 
@@ -43,7 +43,7 @@ function Login() {
         <footer class="login__footer">
           <input
             onClick={() => {
-              // console.log(context)
+              handleGlobalState({ token: '123' })
             }}
             class="login__button"
             type="button"

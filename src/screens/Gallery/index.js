@@ -1,9 +1,17 @@
 import './gallery.scss'
 import axios from 'axios'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState,useContext  } from 'react'
 import Card from '../../components/Card'
+import { MyContext } from '../../context/AppContext'
+
 
 function Gallery(props) {
+
+  const [globalState, handleGlobalState] = useContext(MyContext)
+
+  console.log(globalState)
+
+
   const [allAnimals, setAllAnimals] = useState([])
 
   const getAllAnimals = async () => {

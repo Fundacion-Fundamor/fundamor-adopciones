@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 
-const MyContext = React.createContext()
+export const MyContext = React.createContext()
 
 function AppContext(props) {
   const [globalState, setGlobalState] = useState({ token: '' })
 
   const handleGlobalState = (data) => {
-    setGlobalState({ ...globalState, data })
+    setGlobalState({ ...globalState, ...data })
   }
 
   return (
