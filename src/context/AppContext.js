@@ -8,7 +8,8 @@ function AppContext(props) {
   const [globalState, setGlobalState] = useState({
     token: localStorage.getItem('token'),
     authenticated: null,
-    user: null
+    user: null,
+    message: null
   })
 
   const handleGlobalState = (data) => {
@@ -24,14 +25,24 @@ function AppContext(props) {
 
     try {
       const res = await axiosClient.post("/api/auth/token", formattedData);
+
       localStorage.setItem("token", res.data.token);
       setGlobalState({
         token: res.data.token,
+        authenticated: true,
+        message: null,
+        user: null
       });
+
+      authenticatedUser();
 
     } catch (error) {
       localStorage.removeItem("token");
-      console.error(error.response.data);
+      if (error.response) {
+        setGlobalState({
+          ...globalState, ...{ message: error.response?.data.message }
+        });
+      }
     }
 
   }
@@ -42,17 +53,17 @@ function AppContext(props) {
     try {
       let token = localStorage.getItem("token");
       authToken(token);
-      const user = await axiosClient.get("/api/auth");
+      const res = await axiosClient.get("/api/auth");
 
-      console.log(user.data.data);
-      
-      setGlobalState(...globalState, ...{
-        authenticated: true,
-        user: user.data.data
+      setGlobalState({
+        ...globalState, ...{
+          user: res.data.data,
+          authenticated:true,
+        }
       });
 
     } catch (error) {
-      localStorage.removeItem("token");
+      // localStorage.removeItem("token");
       // setGlobalState({
       //   ...globalState, ...{
       //     token: localStorage.getItem('token'),
@@ -61,14 +72,14 @@ function AppContext(props) {
       //   }
       // });
 
-      console.error(error.response.data);
+      // console.error(error.response.data);
     }
 
 
   }
 
   return (
-    <MyContext.Provider value={[globalState, handleGlobalState, logIn, authenticatedUser]}>
+    <MyContext.Provider value={{globalState, handleGlobalState, logIn, authenticatedUser}}>
       {props.children}
     </MyContext.Provider>
   )
