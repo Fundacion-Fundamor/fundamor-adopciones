@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react'
 import './login.scss'
+import Button from '../../components/Button'
 import { MyContext } from '../../context/AppContext'
 
 function Login(props) {
@@ -36,28 +37,28 @@ function Login(props) {
 
   return (
     <div className="login-container">
-      <form class="login__form" name="frm_login">
-        <header class="login__header">
-          <h1 class="login__title">Login</h1>
+      <form className="login__form" name="frm_login">
+        <header className="login__header">
+          <h1 className="login__title">Login</h1>
         </header>
-        <main class="login__main">
-          <div class="login__group">
+        <main className="login__main">
+          <div className="login__group">
             <input
-              class="login__input"
+              className="login__input"
               type="text"
               name="input_email"
               value={credentials.email}
               onChange={(event) => {
-                setCredentials({ ...credentials, ["email"]: event.target.value });
+                setCredentials({ ...credentials, "email": event.target.value });
               }}
               required
             />
-            <label class="login__label">Correo</label>
-            <div class="login__bar"></div>
+            <label className="login__label">Correo</label>
+            <div className="login__bar"></div>
           </div>
-          <div class="login__group">
+          <div className="login__group">
             <input
-              class="login__input"
+              className="login__input"
               type="password"
               name="input_password"
               value={credentials.password}
@@ -66,24 +67,25 @@ function Login(props) {
               }}
               required
             />
-            <label class="login__label">Contraseña</label>
-            <div class="login__bar"></div>
+            <label className="login__label">Contraseña</label>
+            <div className="login__bar"></div>
           </div>
-          <p class="login__terms">
+          <p className="login__terms">
             Al registrarme o hacer clic en continuar, confirmo que he leído y
             acepto los <a href="#">Términos</a> y{' '}
             <a href="#">la Política de privacidad</a>.
           </p>
         </main>
-        <footer class="login__footer">
+        <footer className="login__footer">
           <input
 
             onClick={onSubmit}
-            class="login__button"
+            className="login__button"
             type="button"
             name="btn_signin"
             value="Login"
           />
+          
         </footer>
       </form>
       {/* Photo by <a href="https://unsplash.com/@charlesdeluvio?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Charles Deluvio</a> on <a href="https://unsplash.com/?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a> */}

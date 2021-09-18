@@ -1,0 +1,10 @@
+@import '../../scss/animations';
+@import '../../scss/variables';
+
+  
+.mainContainer{
+    display: flex;
+    flex-direction: column;
+    background-color: lightgray;
+    padding: 5rem;
+}

@@ -1,16 +1,21 @@
 @import '../../scss/variables';
-
 .btn {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  padding: 10px;
-
-  position: relative;
-  width: 274px;
-  height: 39px;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-decoration: none;
+  text-align: center;
+  border: none;
+  border-radius: 5px;
+  height: 45px;
+  font-size: 14px;
 }
+
+.btn:hover {
+cursor: pointer;
+}
+
+//--------Button Styles
 
 .btn--primary {
   color: $primaryDark2Color;
@@ -18,9 +23,19 @@
 
 .btn--outline {
   background-color: transparent;
-  color: #fff;
-  padding: 8px 20px;
-  transition: all 0.3s ease-out;
+  color: $realWhite;
+  border: solid 1px;
+}
+.btn--submit{
+  background: $hyperBlue;
+  color: $realWhite;
+}
+
+//-------Button sizes
+
+.btn--large {
+  padding: 12px 26px;
+  font-size: 20px;
 }
 
 .btn--medium {
@@ -28,42 +43,20 @@
   font-size: 18px;
 }
 
-.btn--large {
-  padding: 12px 26px;
-  font-size: 20px;
-}
-
-.btn--mobile {
-  text-align: center;
+.btn--small {
   border-radius: 4px;
   width: 80%;
-  text-decoration: none;
-  font-size: 1.5rem;
-  background-color: transparent;
-  color: #fff;
+  font-size: .8rem;
   padding: 14px 20px;
-  border: 1px solid #fff;
-  transition: all 0.3s ease-out;
 }
 
 .btn--wide {
   padding: 12px 64px;
   font-size: 20px;
+  width: 100%;
 }
 
-.btn--large:hover,
-.btn--medium:hover,
-.btn--mobile:hover {
-  transition: all 0.3s ease-out;
-  background: #fff;
-  color: #242424;
-}
-
-.btn--wide:hover {
-  color: #fff;
-  background-color: #f00946;
-  transition: all 0.2s ease-out;
-}
+//--------Button colors
 
 .btn-link {
   display: flex;
@@ -93,9 +86,9 @@
   border: none;
 
   &:hover {
-    background-color: #fff;
-    color: #242424;
-    border: none;
+    // background-color: $realWhite;
+    // color: #242424;
+    // border: none;
   }
 }
 

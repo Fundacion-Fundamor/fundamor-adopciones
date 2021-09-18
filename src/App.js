@@ -1,15 +1,21 @@
-import React from 'react'
-import NavBar from './components/Navbar'
-import { Button } from './components/Button/Button'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import React from 'react'
+import AppContext from './context/AppContext'
+import authToken from './config/authToken'
+import PrivateRoute from './components/PrivateRoute'
+
+//Components imports
+import NavBar from './components/Navbar'
+
+//Styles imports
+import './scss/_global.scss'
+
+// Screens Imports
 import About from './screens/About'
 import Home from './screens/Home'
 import Gallery from './screens/Gallery'
 import Login from './screens/Login'
-import './scss/_global.scss'
-import AppContext from './context/AppContext'
-import authToken from './config/authToken'
-import PrivateRoute from './components/PrivateRoute'
+import Test from './screens/CssTests'
 
 
 const token = localStorage.getItem("token");
@@ -29,6 +35,7 @@ function App() {
               <Route path="/about" component={About} />
               <PrivateRoute path="/gallery" component={Gallery} />
               <Route path="/login" component={Login} />
+              <Route path="/test" component={Test} />
             </div>
           </Switch>
         </Router>

@@ -1,20 +1,20 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './button.scss';
-const STYLES = ['btn--primary', 'btn--outline'];
+const STYLES = ['btn--primary', 'btn--outline','btn--submit'];
 
-const SIZES = ['btn--medium', 'btn--large', 'btn--mobile', 'btn--wide'];
+const SIZES = ['btn--large','btn--medium', 'btn--small', 'btn--wide'];
 
 const COLOR = ['primary', 'blue', 'red', 'green'];
 
-export const Button = ({
+function Button  ({
   children,
   type,
   onClick,
   buttonStyle,
   buttonSize,
   buttonColor
-}) => {
+})  {
   const checkButtonStyle = STYLES.includes(buttonStyle)
     ? buttonStyle
     : STYLES[0];
@@ -33,3 +33,5 @@ export const Button = ({
     </button>
   );
 };
+
+export default Button

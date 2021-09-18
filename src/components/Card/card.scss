@@ -1,6 +1,7 @@
+@import '../../scss/variables';
 
   .card-container {
-    background: #fff;
+    background: $realWhite;
     border-radius: 0.6em;
     margin: 1em;
     overflow: hidden;
@@ -20,8 +21,7 @@
 
     .image-container{
 
-    background-color: black;
-
+    background-color: $realBlack;
     display: grid;
     justify-content: center;
 
@@ -36,7 +36,7 @@
     
   
     h2 {
-      color: #222;
+      color: $black;
       margin-top: -0.2em;
       line-height: 1.4;
       font-size: 1.3em;
@@ -46,11 +46,11 @@
     }
   
     p {
-      color: #777;
+      color: $gray-6;
     }
   
     h5 {
-      color: #bbb;
+      color: $gray-3;
       font-weight: 700;
       font-size: 0.7em;
       letter-spacing: 0.04em;
