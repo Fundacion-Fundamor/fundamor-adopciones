@@ -10,6 +10,7 @@ import './scss/_global.scss'
 import AppContext from './context/AppContext'
 import authToken from './config/authToken'
 import PrivateRoute from './components/PrivateRoute'
+import Employeee from './screens/Employee'
 
 
 const token = localStorage.getItem("token");
@@ -29,6 +30,7 @@ function App() {
               <Route path="/about" component={About} />
               <PrivateRoute path="/gallery" component={Gallery} />
               <Route path="/login" component={Login} />
+              <Route path="/employee" component={Employeee} />
             </div>
           </Switch>
         </Router>
