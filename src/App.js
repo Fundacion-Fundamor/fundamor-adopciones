@@ -16,11 +16,9 @@ import Home from './screens/Home'
 import Gallery from './screens/Gallery'
 import Login from './screens/Login'
 import './scss/_global.scss'
-import AppContext from './context/AppContext'
-import authToken from './config/authToken'
-import PrivateRoute from './components/PrivateRoute'
 import Employeee from './screens/Employee'
 import Test from './screens/CssTests'
+import PasswordReset from './screens/PasswordReset'
 
 
 const token = localStorage.getItem("token");
@@ -40,6 +38,8 @@ function App() {
               <Route path="/about" component={About} />
               <PrivateRoute path="/gallery" component={Gallery} />
               <Route path="/login" component={Login} />
+              <Route path="/csstests" component={Test} />
+              <Route path="/passwordReset" component={PasswordReset} />
             </div>
           </Switch>
         </Router>

@@ -1,18 +1,41 @@
 @import '../../scss/variables';
 .btn {
-  font-family: "Open Sans", sans-serif;
-  font-weight: 700;
-  text-transform: uppercase;
+  font-size: 1rem;
+  margin-bottom: 0;
+  display: inline-block;
   text-decoration: none;
   text-align: center;
-  border: none;
+  white-space: nowrap;
+  vertical-align: middle;
+  -ms-touch-action: manipulation;
+  touch-action: manipulation;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-image: none;
   border-radius: 5px;
-  height: 45px;
-  font-size: 14px;
+  
+  width: fit-content;
 }
 
-.btn:hover {
-cursor: pointer;
+.btn:focus,
+.btn:active:focus {
+    outline: thin dotted;
+    outline: 5px auto -webkit-focus-ring-color;
+    outline-offset: -2px;
+}
+.btn:hover,
+.btn:focus {
+    color: #333;
+    text-decoration: none;
+}
+.btn:active {
+    background-image: none;
+    outline: 0;
+    -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
 }
 
 //--------Button Styles
@@ -29,75 +52,26 @@ cursor: pointer;
 .btn--submit{
   background: $hyperBlue;
   color: $realWhite;
+  font-weight: 700;
+  text-transform: uppercase;
 }
 
 //-------Button sizes
 
 .btn--large {
-  padding: 12px 26px;
-  font-size: 20px;
+  padding: .8rem 1rem;
+  font-size: 1.2rem;
 }
 
 .btn--medium {
-  padding: 8px 20px;
-  font-size: 18px;
+  padding: .5rem 1rem;
 }
 
 .btn--small {
-  border-radius: 4px;
-  width: 80%;
   font-size: .8rem;
-  padding: 14px 20px;
+  padding: .5rem;
 }
 
 .btn--wide {
-  padding: 12px 64px;
-  font-size: 20px;
   width: 100%;
-}
-
-//--------Button colors
-
-.btn-link {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-decoration: none;
-  padding: 8px 16px;
-  height: 100%;
-  width: 100%;
-}
-
-.blue {
-  background-color: #276afb;
-  color: #fff;
-  border: none;
-}
-
-.red {
-  background-color: #f00946;
-  color: #fff;
-  border: none;
-}
-
-.primary {
-  background-color: #242424;
-  color: #fff;
-  border: none;
-
-  &:hover {
-    // background-color: $realWhite;
-    // color: #242424;
-    // border: none;
-  }
-}
-
-.green {
-  background: #25ce4a;
-  color: #fff;
-  border: none;
-
-  &:hover {
-    background-color: #242424;
-  }
 }

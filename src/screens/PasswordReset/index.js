@@ -39,7 +39,7 @@ function Login(props) {
     <div className="login-container">
       <form className="login__form" name="frm_login">
         <header className="login__header">
-          <h1 className="login__title">Ingresar</h1>
+          <h1 className="login__title">Recuperar contraseña</h1>
         </header>
         <main className="login__main">
           <div className="login__group">
@@ -56,24 +56,9 @@ function Login(props) {
             <label className="login__label">Correo</label>
             <div className="login__bar"></div>
           </div>
-          <div className="login__group">
-            <input
-              className="login__input"
-              type="password"
-              name="input_password"
-              value={credentials.password}
-              onChange={(event) => {
-                setCredentials({ ...credentials, ...{ password: event.target.value } });
-              }}
-              required
-            />
-            <label className="login__label">Contraseña</label>
-            <div className="login__bar"></div>
-          </div>
+
           <p className="login__terms">
-            Al registrarme o hacer clic en continuar, confirmo que he leído y
-            acepto los <a href="#">Términos</a> y
-            <a href="#">la Política de privacidad</a>.
+            Si encontramos un usuario que coincida con este correo, enviaremos una nueva contraseña temporal para iniciar sesión a tu correo
           </p>
         </main>
         <footer className="login__footer">
@@ -83,7 +68,7 @@ function Login(props) {
             className="login__button"
             type="button"
             name="btn_signin"
-            value="Login"
+            value="Recuperar"
           />
           
         </footer>
