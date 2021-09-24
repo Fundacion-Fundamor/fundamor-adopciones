@@ -15,6 +15,11 @@ import About from './screens/About'
 import Home from './screens/Home'
 import Gallery from './screens/Gallery'
 import Login from './screens/Login'
+import './scss/_global.scss'
+import AppContext from './context/AppContext'
+import authToken from './config/authToken'
+import PrivateRoute from './components/PrivateRoute'
+import Employeee from './screens/Employee'
 import Test from './screens/CssTests'
 
 
@@ -35,7 +40,6 @@ function App() {
               <Route path="/about" component={About} />
               <PrivateRoute path="/gallery" component={Gallery} />
               <Route path="/login" component={Login} />
-              <Route path="/test" component={Test} />
             </div>
           </Switch>
         </Router>
