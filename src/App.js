@@ -16,7 +16,6 @@ import Home from './screens/Home'
 import Gallery from './screens/Gallery'
 import Login from './screens/Login'
 import './scss/_global.scss'
-import Employeee from './screens/Employee'
 import Test from './screens/CssTests'
 import PasswordReset from './screens/PasswordReset'
 

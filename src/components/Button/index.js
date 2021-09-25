@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import './button.scss';
 const STYLES = ['btn--primary', 'btn--outline','btn--submit'];
 

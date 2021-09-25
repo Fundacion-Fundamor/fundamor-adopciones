@@ -1,6 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react'
 import './login.scss'
-import Button from '../../components/Button'
 import { MyContext } from '../../context/AppContext'
 
 function Login(props) {

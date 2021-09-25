@@ -1,4 +1,3 @@
-import React, { Component } from 'react'
 import Slider from 'react-slick'
 import './slider.scss'
 import Card from '../Card'
@@ -55,7 +54,7 @@ function MultipleItems(props) {
     ],
   }
 
-  const objects = [...Array(20).keys()]
+  // const objects = [...Array(20).keys()]
 
   return (
     <div className="">

@@ -1,9 +1,9 @@
 import React, { useContext, useState, useEffect } from 'react'
-import './login.scss'
+import './passwordReset.scss'
 import Button from '../../components/Button'
 import { MyContext } from '../../context/AppContext'
 
-function Login(props) {
+function PasswordReset(props) {
   const {globalState, handleGlobalState, logIn, authenticatedUser} = useContext(MyContext)
 
 
@@ -36,15 +36,15 @@ function Login(props) {
   }, [globalState.authenticated, globalState.message, props.history])
 
   return (
-    <div className="login-container">
-      <form className="login__form" name="frm_login">
-        <header className="login__header">
-          <h1 className="login__title">Recuperar contraseña</h1>
+    <div className="passwordReset-container">
+      <form className="passwordReset__form" name="frm_passwordReset">
+        <header className="passwordReset__header">
+          <h1 className="passwordReset__title">Recuperar contraseña</h1>
         </header>
-        <main className="login__main">
-          <div className="login__group">
+        <main className="passwordReset__main">
+          <div className="passwordReset__group">
             <input
-              className="login__input"
+              className="passwordReset__input"
               type="text"
               name="input_email"
               value={credentials.email}
@@ -53,19 +53,19 @@ function Login(props) {
               }}
               required
             />
-            <label className="login__label">Correo</label>
-            <div className="login__bar"></div>
+            <label className="passwordReset__label">Correo</label>
+            <div className="passwordReset__bar"></div>
           </div>
 
-          <p className="login__terms">
+          <p className="passwordReset__terms">
             Si encontramos un usuario que coincida con este correo, enviaremos una nueva contraseña temporal para iniciar sesión a tu correo
           </p>
         </main>
-        <footer className="login__footer">
+        <footer className="passwordReset__footer">
           <input
 
             onClick={onSubmit}
-            className="login__button"
+            className="passwordReset__button"
             type="button"
             name="btn_signin"
             value="Recuperar"
@@ -78,4 +78,4 @@ function Login(props) {
   )
 }
 
-export default Login
+export default PasswordReset
