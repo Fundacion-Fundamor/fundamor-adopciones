@@ -1,16 +1,17 @@
-import React, { useState } from 'react'
-
-import './form.scss'
-
-import { MoonLoader } from 'react-spinners';
+import React, { useState, useEffect } from 'react'
+import './form.scss';
 import Select from 'react-select'
+import { Alert, Button, CircularProgress } from '@mui/material';
+import { BiMenuAltLeft } from 'react-icons/bi';
+import { GrClose } from 'react-icons/gr';
+
 
 const options = [
     { value: 'administrador', label: 'Adminsitrador' },
     { value: 'colaborador', label: 'Colaborador' },
 ];
 
-export default function Form({ saveEmployee }) {
+export default function Form({ saveEmployee, handleToggle, }) {
 
     const [values, setValues] = useState({
         name: "",
@@ -20,8 +21,8 @@ export default function Form({ saveEmployee }) {
         role: ""
     });
     const [loading, setLoading] = useState(false);
-
-    const [errorsRequest, setErrorsRequest] = useState([]);
+    const [errorRequest, setErrorRequest] = useState(null);
+    const [successMessage, setSuccessMessage] = useState(null);
 
     const onSubmit = async () => {
 
@@ -29,11 +30,25 @@ export default function Form({ saveEmployee }) {
 
         //se guarda el colaborador
         setLoading(true);
+        setErrorRequest(null);
+        setSuccessMessage(null);
 
-        
-        const res=await saveEmployee(values.email, values.password, values.name, values.ID, values.role);
+        const res = await saveEmployee(values.email, values.password, values.name, values.role, values.ID);
 
+        if (!res.state) {
+            setErrorRequest(res.msg);
+        } else {
 
+            setValues({
+                name: "",
+                email: "",
+                ID: "",
+                password: "",
+                role: ""
+            });
+
+            setSuccessMessage(res.msg);
+        }
         //se setean los errores
 
 
@@ -47,7 +62,11 @@ export default function Form({ saveEmployee }) {
 
     return (
         <div style={{ minWidth: 340, width: 400, backgroundColor: "#fff", padding: 15, borderRadius: 15, margin: 30, marginBottom: 30 }}>
-            <h3>Registra los colaboradores que tendrán acceso a la plataforma de adopción </h3>
+
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <h3>Registra los colaboradores que tendrán acceso a la plataforma de adopción </h3>
+                <GrClose size={35} color="#000" onClick={handleToggle} />
+            </div>
             <div class="form-group">
 
                 <input className="form-input" type="text" name="name" value={values.name} onChange={(event) => {
@@ -91,11 +110,15 @@ export default function Form({ saveEmployee }) {
             </div>
 
             {loading && <div style={{ marginTop: 15, display: "flex", flexDirection: "column", alignItems: "center" }}>
-                <MoonLoader color={"#007ee5"} loading={true} size={40} css={override} />
+                <CircularProgress color="success" />
                 <p>Cargando </p>
             </div>}
-            <button type="button" class="ripple" onClick={() => { onSubmit() }}>Guardar</button>
 
+            {successMessage && <Alert severity="success" variant="filled" style={{ marginTop: 25, marginBottom: 5 }}  >{successMessage}</Alert>}
+
+            {errorRequest && <Alert severity="error" variant="filled" style={{ marginTop: 25, marginBottom: 5 }} >{errorRequest}</Alert>}
+
+            <Button variant="contained" style={{ width: "100%", marginTop: 25 }} onClick={() => { onSubmit() }}>Guardar</Button>
 
         </div>
     )

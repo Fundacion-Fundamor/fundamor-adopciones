@@ -18,6 +18,7 @@ import Login from './screens/Login'
 import './scss/_global.scss'
 import Test from './screens/CssTests'
 import PasswordReset from './screens/PasswordReset'
+import Employeee from './screens/Employee'
 
 
 const token = localStorage.getItem("token");
@@ -38,6 +39,7 @@ function App() {
               <PrivateRoute path="/gallery" component={Gallery} />
               <Route path="/login" component={Login} />
               <Route path="/csstests" component={Test} />
+              <Route path="/employees" component={Employeee} />
               <Route path="/passwordReset" component={PasswordReset} />
             </div>
           </Switch>

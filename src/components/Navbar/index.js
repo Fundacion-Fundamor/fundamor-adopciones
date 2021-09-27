@@ -44,7 +44,7 @@ function Navbar() {
             }
           >
             <li className="navbar__item">
-              <Link to="/" className="navbar__link" onClick={closeMobileMenu}>
+              <Link to="/employees" className="navbar__link" onClick={closeMobileMenu}>
                 Colaboradores
               </Link>
             </li>
