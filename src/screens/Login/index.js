@@ -3,7 +3,7 @@ import './login.scss'
 import { MyContext } from '../../context/AppContext'
 
 function Login(props) {
-  const {globalState, handleGlobalState, logIn, authenticatedUser} = useContext(MyContext)
+  const { globalState, handleGlobalState, logIn, authenticatedUser } = useContext(MyContext)
 
 
   const [credentials, setCredentials] = useState({
@@ -24,7 +24,7 @@ function Login(props) {
 
 
   useEffect(() => {
-  
+
     if (globalState.authenticated) {
       props.history.push("/gallery");
     }
@@ -78,13 +78,13 @@ function Login(props) {
         <footer className="login__footer">
           <input
 
-            onClick={onSubmit}
+            onClick={() => onSubmit()}
             className="login__button"
             type="button"
             name="btn_signin"
             value="Login"
           />
-          
+
         </footer>
       </form>
       {/* Photo by <a href="https://unsplash.com/@charlesdeluvio?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Charles Deluvio</a> on <a href="https://unsplash.com/?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a> */}

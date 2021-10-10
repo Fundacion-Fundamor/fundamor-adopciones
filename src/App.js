@@ -39,7 +39,7 @@ function App() {
               <PrivateRoute path="/gallery" component={Gallery} />
               <Route path="/login" component={Login} />
               <Route path="/csstests" component={Test} />
-              <Route path="/employees" component={Employeee} />
+              <PrivateRoute path="/employees" component={Employeee} />
               <Route path="/passwordReset" component={PasswordReset} />
             </div>
           </Switch>

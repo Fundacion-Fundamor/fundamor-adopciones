@@ -5,7 +5,7 @@ import './employee.scss'
 import authToken from '../../config/authToken';
 import axiosClient from '../../config/axios';
 import Form from '../../components/employees/Form';
-import { Alert, Backdrop, Button, Snackbar } from '@mui/material';
+import { Backdrop, Button, Snackbar, Modal,Box } from '@mui/material';
 
 
 
@@ -85,14 +85,26 @@ export default function Employeee() {
                 <h1>Gestiona el acceso a la plataforma de adopción</h1>
                 <Button onClick={handleToggle}>Agregar colaborador</Button>
             </div>
-            <Backdrop
-                sx={{ color: '#000', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+
+            <Modal
                 open={showForm}
+                onClose={handleToggle}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
 
             >
-                {showForm && <Form saveEmployee={saveEmployee} handleToggle={handleToggle} />}
-            </Backdrop>
+                <Box sx={{display:"flex", justifyContent:"center"}}>
+                    {showForm && <Form saveEmployee={saveEmployee} handleToggle={handleToggle} />}
 
+                </Box>
+            </Modal>
+            {/* <Backdrop
+                sx={{ color: '#000', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={showForm}
+                scroll="body"
+            > */}
+            {/* {showForm && <Form saveEmployee={saveEmployee} handleToggle={handleToggle} />} */}
+            {/* </Backdrop> */}
 
             <div>
                 <List reloadList={reloadList} />
