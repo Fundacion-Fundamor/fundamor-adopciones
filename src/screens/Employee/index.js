@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import List from '../../components/employees/List';
 import './employee.scss'
 
 import authToken from '../../config/authToken';
 import axiosClient from '../../config/axios';
 import Form from '../../components/employees/Form';
-import { Backdrop, Button, Snackbar, Modal,Box } from '@mui/material';
+import { Backdrop, Button, Snackbar, Modal, Box } from '@mui/material';
 
 
 
@@ -13,30 +13,52 @@ export default function Employeee() {
 
     const [errors, setErrors] = useState(null);
     const [showForm, setShowForm] = useState(false);
+    const [formData, setFormData] = useState(null);
     const [reloadList, setReloadList] = useState(false);
 
     const handleToggle = () => {
         setShowForm(!showForm);
     }
-    const saveEmployee = async (correo, contrasenia, nombre, rol, id_empleado) => {
+    const saveEmployee = async (data, edit = false) => {
 
 
-        let formattedData = {
-            correo,
-            contrasenia,
-            nombre,
-            rol,
-            id_empleado: id_empleado
-        };
+        let formattedData = {};
+
+        if (!edit || data.enablePassword) {
+            formattedData = {
+                correo: data.email,
+                contrasenia: data.password,
+                nombre: data.name,
+                rol: data.role,
+                id_empleado: data.ID
+            }
+        } else {
+            formattedData = {
+                correo: data.email,
+                nombre: data.name,
+                rol: data.role,
+                id_empleado: data.ID
+            }
+        }
+
+
         try {
             let token = localStorage.getItem("token");
             authToken(token);
 
-            const res = await axiosClient.post("/api/employees", formattedData);
-            if (res.data.state) {
+            let res = null;
 
+            if (!edit) {
+                res = await axiosClient.post("/api/employees", formattedData);
+            } else {
+                res = await axiosClient.put("/api/employees", formattedData);
+
+            }
+
+            if (res.data.state) {
                 setReloadList(!reloadList);
             }
+
             return {
                 state: res.data.state, msg: res.data.message
             };
@@ -58,6 +80,62 @@ export default function Employeee() {
         }
 
     }
+
+
+
+
+    const removeEmployee = async (idEmployee) => {
+
+        try {
+            let token = localStorage.getItem("token");
+            authToken(token);
+
+            const res = await axiosClient.delete("/api/employees/" + idEmployee);
+            if (res.data.state) {
+
+                setReloadList(!reloadList);
+            }
+            console.log(res.data);
+
+
+        } catch (error) {
+            let errorsDecriptions = error.response?.data.errors;
+
+            if (errorsDecriptions) {
+                return { state: false, msg: errorsDecriptions[0] };
+            } else {
+                //como muestro el mensaje de token invalido
+
+                // setErrors(error.response.data.message);
+                return {
+                    state: false, msg: error.response.data.message
+                };
+            }
+
+        }
+
+    }
+
+    const handleEmployee = (employee) => {
+        setFormData(employee);
+    }
+
+    useEffect(() => {
+
+        if (!showForm) {
+
+            setFormData(null);
+        }
+
+    }, [showForm]);
+
+    useEffect(() => {
+
+        if (formData) {
+            setShowForm(!showForm);
+        }
+
+    }, [formData]);
 
 
     return (
@@ -88,13 +166,12 @@ export default function Employeee() {
 
             <Modal
                 open={showForm}
-                onClose={handleToggle}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
 
             >
-                <Box sx={{display:"flex", justifyContent:"center"}}>
-                    {showForm && <Form saveEmployee={saveEmployee} handleToggle={handleToggle} />}
+                <Box sx={{ display: "flex", justifyContent: "center" }}  >
+                    {showForm && <Form saveEmployee={saveEmployee} handleToggle={handleToggle} employee={formData} />}
 
                 </Box>
             </Modal>
@@ -107,7 +184,7 @@ export default function Employeee() {
             {/* </Backdrop> */}
 
             <div>
-                <List reloadList={reloadList} />
+                <List reloadList={reloadList} removeEmployee={removeEmployee} editEmployee={handleEmployee} />
             </div>
         </div >);
 }

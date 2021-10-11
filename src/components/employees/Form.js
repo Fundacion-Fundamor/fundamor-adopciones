@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import './form.scss';
-import { Alert, Button, CircularProgress, FormControl, InputLabel, MenuItem, TextField, Select, FormHelperText } from '@mui/material';
+import { Alert, Button, CircularProgress, FormControl, InputLabel, MenuItem, TextField, Select, FormHelperText, FormControlLabel, Checkbox } from '@mui/material';
 import { GrClose } from 'react-icons/gr';
 
 
@@ -12,12 +12,13 @@ import { GrClose } from 'react-icons/gr';
 export default function Form({ saveEmployee, handleToggle, employee = null }) {
 
     const [values, setValues] = useState({
-        name: employee ? employee.nombre:"",
-        email: employee ? employee.correo:"",
-        ID: employee ? employee.id_empleado:"",
+        name: employee ? employee.nombre : "",
+        email: employee ? employee.correo : "",
+        ID: employee ? employee.id_empleado : "",
         password: "",
         passwordConfirm: "",
         role: employee ? employee.rol : "",
+        enablePassword: employee === null
     });
 
 
@@ -48,36 +49,38 @@ export default function Form({ saveEmployee, handleToggle, employee = null }) {
             setErrors({ ...errors, ["email"]: "Debe ingresar un  correo válido" });
         } else if (values.role === "") {
             setErrors({ ...errors, ["role"]: "Debe seleccionar un rol" });
-        } else if (values.password === "") {
+        } else if (values.enablePassword && values.password === "") {
             setErrors({ ...errors, ["password"]: "Debe ingresar una contraseña" });
-        } else if (values.password.length < 6) {
+        } else if (values.enablePassword && values.password.length < 6) {
             setErrors({ ...errors, ["password"]: "La contraseña debe tener mínimo 6 caracteres" });
-        } else if (values.password !== values.passwordConfirm) {
+        } else if (values.enablePassword && values.password !== values.passwordConfirm) {
             setErrors({ ...errors, ["passwordConfirm"]: "Las contraseñas no coinciden" });
         } else {
 
-            //se guarda el colaborador
+
             setLoading(true);
             setErrorRequest(null);
             setSuccessMessage(null);
 
-            const res = await saveEmployee(values.email, values.password, values.name, values.role, values.ID);
+            //se guardan los datos del colaborador
+            const res = await saveEmployee(values, employee !== null);
 
             if (!res.state) {
                 setErrorRequest(res.msg);
             } else {
 
-                setValues({
-                    ...values, ...{
-                        name: "",
-                        email: "",
-                        ID: "",
-                        password: "",
-                        role: "",
-                        passwordConfirm: ""
-                    }
-                });
-
+                if (employee === null) {
+                    setValues({
+                        ...values, ...{
+                            name: "",
+                            email: "",
+                            ID: "",
+                            password: "",
+                            role: "",
+                            passwordConfirm: ""
+                        }
+                    });
+                }
                 setSuccessMessage(res.msg);
             }
             setLoading(false);
@@ -94,8 +97,11 @@ export default function Form({ saveEmployee, handleToggle, employee = null }) {
 
             <div className="form-container">
                 <div style={{ display: "flex", justifyContent: "space-between" }}>
-                    <h3>Registra los colaboradores que tendrán acceso a la plataforma de adopción </h3>
-                    <GrClose size={35} color="#000" onClick={handleToggle} cursor="pointer" />
+                    {employee ?
+                        <h3>Edita los datos del colaborador </h3>
+                        :
+                        <h3>Registra los colaboradores que tendrán acceso a la plataforma de adopción </h3>}
+                    <GrClose size={employee ? 25 : 35} color="#000" onClick={handleToggle} cursor="pointer" />
                 </div>
                 <div class="form-group">
 
@@ -118,6 +124,7 @@ export default function Form({ saveEmployee, handleToggle, employee = null }) {
                         fullWidth
                         error={errors.ID}
                         label="Identificación"
+                        disabled={employee !== null}
                         helperText={errors.ID}
                         variant="standard"
                         value={values.ID}
@@ -156,40 +163,43 @@ export default function Form({ saveEmployee, handleToggle, employee = null }) {
                         }}
                         error={errors.role}
                     >
-                        <MenuItem value={"Administrador"}>Administrador</MenuItem>
-                        <MenuItem value={"Colaborador"}>Colaborador</MenuItem>
+                        <MenuItem value={"administrador"}>Administrador</MenuItem>
+                        <MenuItem value={"colaborador"}>Colaborador</MenuItem>
                     </Select>
                     {errors.role && <FormHelperText error={true}>{errors.role}</FormHelperText>}
                 </FormControl>
-                <div class="form-group">
-                    <TextField
-                        fullWidth
-                        error={errors.password}
-                        label="Contraseña"
-                        helperText={errors.password}
-                        variant="standard"
-                        value={values.password}
-                        onChange={(event) => {
-                            setValues({ ...values, ["password"]: event.target.value });
-                            setErrors({ ...errors, ["password"]: null })
-                        }}
-                    />
-                </div>
-                <div class="form-group">
-                    <TextField
-                        fullWidth
-                        error={errors.passwordConfirm}
-                        label="Confirmación de contraseña"
-                        helperText={errors.passwordConfirm}
-                        variant="standard"
-                        value={values.passwordConfirm}
-                        onChange={(event) => {
-                            setValues({ ...values, ["passwordConfirm"]: event.target.value });
-                            setErrors({ ...errors, ["passwordConfirm"]: null })
-                        }}
-                    />
-                </div>
 
+                {employee !== null && <FormControlLabel style={{ marginTop: 15 }} control={<Checkbox defaultChecked checked={values.enablePassword} onChange={() => { setValues({ ...values, ["enablePassword"]: !values.enablePassword }) }} />} label="Editar contraseña" />}
+                {(values.enablePassword || employee === null) && <>
+                    <div class="form-group">
+                        <TextField
+                            fullWidth
+                            error={errors.password}
+                            label="Contraseña"
+                            helperText={errors.password}
+                            variant="standard"
+                            value={values.password}
+                            onChange={(event) => {
+                                setValues({ ...values, ["password"]: event.target.value });
+                                setErrors({ ...errors, ["password"]: null })
+                            }}
+                        />
+                    </div>
+                    <div class="form-group">
+                        <TextField
+                            fullWidth
+                            error={errors.passwordConfirm}
+                            label="Confirmación de contraseña"
+                            helperText={errors.passwordConfirm}
+                            variant="standard"
+                            value={values.passwordConfirm}
+                            onChange={(event) => {
+                                setValues({ ...values, ["passwordConfirm"]: event.target.value });
+                                setErrors({ ...errors, ["passwordConfirm"]: null })
+                            }}
+                        />
+                    </div>
+                </>}
 
                 {loading && <div style={{ marginTop: 15, display: "flex", justifyContent: "center", alignItems: "center" }}>
                     <CircularProgress color="success" />

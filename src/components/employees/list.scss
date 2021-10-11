@@ -243,8 +243,15 @@ a {
 .right-options{
   padding:15px;
 }
+.right-options:hover{
+  opacity: 0.7;
+}
 .left-options{
   padding:15px;
+}
+
+.left-options:hover{
+  opacity: 0.7;
 }
 .employee-info {
     color: #eee;

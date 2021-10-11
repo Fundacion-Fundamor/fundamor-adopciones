@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { Alert, Backdrop, CircularProgress, Snackbar } from '@mui/material';
-import { BiMenuAltLeft } from 'react-icons/bi';
-import { CgOptions } from 'react-icons/cg';
-import { FaUserCircle } from 'react-icons/fa';
+
+import { FaUserCircle, FaTrashAlt, FaUserEdit } from 'react-icons/fa';
 import authToken from '../../config/authToken';
 import axiosClient from '../../config/axios';
 import './list.scss'
 
-export default function List({ reloadList }) {
+export default function List({ reloadList, removeEmployee, editEmployee }) {
 
 
     //employee list
@@ -27,7 +26,7 @@ export default function List({ reloadList }) {
 
                 if (res.data.state) {
                     if (mounted) {
-                
+
                         setList(res.data.data);
                     }
                 } else {
@@ -36,7 +35,7 @@ export default function List({ reloadList }) {
 
             } catch (error) {
                 console.log(error);
-          
+
             }
             if (mounted) {
                 setLoading(false);
@@ -69,7 +68,7 @@ export default function List({ reloadList }) {
             <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-evenly" }}>
                 {list.map((element, index) =>
 
-                    <EmployeeItem item={element} key={index} />
+                    <EmployeeItem item={element} key={index} removeEmployee={removeEmployee} editEmployee={editEmployee} />
                 )}
             </div>
 
@@ -79,15 +78,15 @@ export default function List({ reloadList }) {
 }
 
 
-const EmployeeItem = ({ item }) => {
+const EmployeeItem = ({ item, removeEmployee, editEmployee }) => {
 
     return (<div className="employee-card">
         <div className="employee-menu">
             <div className="left-options">
-                <BiMenuAltLeft size={35} color="#fff" />
+                <FaUserEdit size={30} color="#fff" cursor="pointer" onClick={() => { editEmployee(item) }} />
             </div>
             <div className="right-options">
-                <CgOptions size={35} color="#fff" />
+                <FaTrashAlt size={25} color="#fff" onClick={() => { removeEmployee(item.id_empleado) }} cursor="pointer" />
             </div>
         </div>
 
