@@ -9,7 +9,8 @@ function AppContext(props) {
     token: localStorage.getItem('token'),
     authenticated: null,
     user: null,
-    message: null
+    message: null,
+    loading: false,
   })
 
   const handleGlobalState = (data) => {
@@ -24,6 +25,8 @@ function AppContext(props) {
     }
 
     try {
+
+      setGlobalState({ ...globalState, ["loading"]: true })
       const res = await axiosClient.post("/api/auth/token", formattedData);
 
       localStorage.setItem("token", res.data.token);
@@ -31,7 +34,8 @@ function AppContext(props) {
         token: res.data.token,
         authenticated: true,
         message: null,
-        user: null
+        user: null,
+        loading: false,
       });
 
       authenticatedUser();
@@ -40,7 +44,7 @@ function AppContext(props) {
       localStorage.removeItem("token");
       if (error.response) {
         setGlobalState({
-          ...globalState, ...{ message: error.response?.data.message }
+          ...globalState, ...{ message: error.response?.data.message, loading: false }
         });
       }
     }
@@ -58,7 +62,7 @@ function AppContext(props) {
       setGlobalState({
         ...globalState, ...{
           user: res.data.data,
-          authenticated:true,
+          authenticated: true,
         }
       });
 
@@ -79,7 +83,7 @@ function AppContext(props) {
   }
 
   return (
-    <MyContext.Provider value={{globalState, handleGlobalState, logIn, authenticatedUser}}>
+    <MyContext.Provider value={{ globalState, handleGlobalState, logIn, authenticatedUser }}>
       {props.children}
     </MyContext.Provider>
   )

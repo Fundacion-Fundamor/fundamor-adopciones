@@ -11,12 +11,16 @@
     -webkit-box-align: start;
     -ms-flex-align: start;
     align-items: flex-start;
+    justify-content: center;
+    background-color: #fff;
   }
   .login__form {
     background: $realWhite;
     color: $black;
     font-family: "Open Sans", sans-serif;
     border-radius: 5px;
+    width: 100%;
+    margin: 0 15px;
 
     .login__header {
       padding-top: 30px;
@@ -79,9 +83,9 @@
       .login__terms {
         font-size: 14px;
         color: $gray-5;
-        margin: 40px auto;
+        margin: 25px auto;
         line-height: 19px;
-  
+        text-align: center;
         a {
           text-decoration: none;
           color: $hyperBlue;
@@ -100,6 +104,9 @@
       font-size: 14px;
       bottom: 0;
       position: absolute;
+    }
+    .login__footer{
+           margin: 35px 33px;
     }
   }
   .login__button:hover {
@@ -144,8 +151,7 @@
       height: 100%;
     }
     .login__form {
-      max-width: 400px;
-      height: 470px;
+      width: 400px;
       margin-left: auto;
       margin-right: auto;
       
@@ -155,7 +161,7 @@
     }
     .login__footer {
       text-align: center;
-  
+ 
       .login__button {
         bottom: initial;
         position: initial;

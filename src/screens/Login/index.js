@@ -1,25 +1,34 @@
 import React, { useContext, useState, useEffect } from 'react'
 import './login.scss'
 import { MyContext } from '../../context/AppContext'
+import { Alert, Button, CircularProgress, FormHelperText } from '@mui/material';
+import { Link } from "react-router-dom";
 
 function Login(props) {
   const { globalState, handleGlobalState, logIn, authenticatedUser } = useContext(MyContext)
-
-
   const [credentials, setCredentials] = useState({
-
     email: "aurelio@gmail.com",
     password: "hola1234"
   });
 
+  const [errors, setErrors] = useState({
+    password: null,
+    email: null
+  })
 
   const onSubmit = async () => {
-
-
     //valida las credenciales
-    console.log("inicia sesion")
-    logIn(credentials.email, credentials.password);
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
+    if (credentials.email === "" || re.test(credentials.email) === false) {
+
+      setErrors({ ...errors, ["email"]: true })
+    } else if (credentials.password === "") {
+      setErrors({ ...errors, ["password"]: true })
+
+    }
+
+    logIn(credentials.email, credentials.password);
   }
 
 
@@ -29,9 +38,6 @@ function Login(props) {
       props.history.push("/gallery");
     }
 
-    if (globalState.message) {
-      console.log("Mostrando alerta", globalState.message);
-    }
   }, [globalState.authenticated, globalState.message, props.history])
 
   return (
@@ -49,11 +55,15 @@ function Login(props) {
               value={credentials.email}
               onChange={(event) => {
                 setCredentials({ ...credentials, "email": event.target.value });
+                setErrors({ ...errors, ["email"]: false });
               }}
               required
             />
+
             <label className="login__label">Correo</label>
             <div className="login__bar"></div>
+            {errors.email && <FormHelperText error={true}>Debe ingresar una ccorreo válido</FormHelperText>}
+
           </div>
           <div className="login__group">
             <input
@@ -63,28 +73,29 @@ function Login(props) {
               value={credentials.password}
               onChange={(event) => {
                 setCredentials({ ...credentials, ...{ password: event.target.value } });
+                setErrors({ ...errors, ["password"]: false });
+
               }}
               required
             />
             <label className="login__label">Contraseña</label>
             <div className="login__bar"></div>
+            {errors.password && <FormHelperText error={true}>Debe ingresar una contraseña</FormHelperText>}
+
           </div>
           <p className="login__terms">
-            Al registrarme o hacer clic en continuar, confirmo que he leído y
-            acepto los <a href="#">Términos</a> y
-            <a href="#">la Política de privacidad</a>.
+            <Link to="" style={{ textDecorationLine: "underline" }} >¿Olvidaste tu contraseña?</Link>
           </p>
         </main>
+
+        {globalState.loading && <div style={{ marginTop: 15, display: "flex", justifyContent: "center", alignItems: "center" }}>
+          <CircularProgress color="success" />
+          <p style={{ marginLeft: 10 }}>Cargando...</p>
+        </div>}
+        {globalState.message && <Alert severity="error" variant="filled" style={{ marginTop: 20, marginBottom: 5, marginLeft: 35, marginRight: 35 }} >{globalState.message}</Alert>}
+
         <footer className="login__footer">
-          <input
-
-            onClick={() => onSubmit()}
-            className="login__button"
-            type="button"
-            name="btn_signin"
-            value="Login"
-          />
-
+          <Button variant="contained" style={{ width: "100%" }} onClick={() => { if (!globalState.loading) { onSubmit() } }}>Iniciar sesión</Button>
         </footer>
       </form>
       {/* Photo by <a href="https://unsplash.com/@charlesdeluvio?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Charles Deluvio</a> on <a href="https://unsplash.com/?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a> */}
