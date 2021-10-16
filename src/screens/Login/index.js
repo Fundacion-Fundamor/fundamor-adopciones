@@ -84,7 +84,7 @@ function Login(props) {
 
           </div>
           <p className="login__terms">
-            <Link to="" style={{ textDecorationLine: "underline" }} >¿Olvidaste tu contraseña?</Link>
+            <Link to="/passwordReset" style={{ textDecorationLine: "underline" }} >¿Olvidaste tu contraseña?</Link>
           </p>
         </main>
 
