@@ -1,6 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react'
 import './passwordReset.scss'
-import Button from '../../components/Button'
 import { MyContext } from '../../context/AppContext'
 import { Link } from 'react-router-dom'
 

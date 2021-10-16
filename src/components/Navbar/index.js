@@ -1,96 +1,32 @@
-import React, { useState, useEffect } from 'react'
-import { Button } from '../Button'
+import React, { useState } from 'react'
+import { Navbar, Container, Nav } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import './navbar.scss'
 
-
-function Navbar() {
-  const [click, setClick] = useState(false)
-  const [button, setButton] = useState(true)
-
-  const handleClick = () => setClick(!click)
-  const closeMobileMenu = () => setClick(false)
-
-  const showButton = () => {
-    if (window.innerWidth <= 960) {
-      setButton(false)
-    } else {
-      setButton(true)
-    }
-  }
-
-  useEffect(() => {
-    showButton()
-  }, [])
-
-  window.addEventListener('resize', showButton)
-
+const NavbarComponent = () => {
   return (
     <>
-      <nav className="navbar">
-        <div className="navbar__container">
-          <Link to="/" className="navbar__logo" onClick={closeMobileMenu}>
-            <p className="navbar__title">Fundamor</p>
-            <p className="navbar__small-title">adopciones</p>
-            {/* <i className="fab fa-typo3" /> */}
-          </Link>
-          <div className="navbar__menu-icon" onClick={handleClick}>
-            
-            <i className={click ? 'fas fa-times' : 'fas fa-bars'} />
-          </div>
-          <ul
-            className={
-              click ? 'navbar__menu navbar__menu--active' : 'navbar__menu '
-            }
-          >
-            <li className="navbar__item">
-              <Link to="/employees" className="navbar__link" onClick={closeMobileMenu}>
-                Colaboradores
-              </Link>
-            </li>
-            <li className="navbar__item">
-              <Link
-                to="/about"
-                className="navbar__link"
-                onClick={closeMobileMenu}
-              >
+      <Navbar bg="light" expand="lg">
+        <Container>
+          <Navbar.Brand href="/">Fundamor</Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="ms-auto">
+              <Nav.Link as={Link} to="/about">
                 Acerca de
-              </Link>
-            </li>
-            <li className="navbar__item">
-              <Link
-                to="/gallery"
-                className="navbar__link"
-                onClick={closeMobileMenu}
-              >
-                Galería
-              </Link>
-            </li>
-
-            <li className="navbar__item">
-              <Link
-                to="/Login"
-                className="navbar__link"
-                onClick={closeMobileMenu}
-              >
-                Login 
-              </Link>
-            </li>
-
-            <li>
-              <Link
-                to="/"
-                className="navbar__link navbar__link--mobile"
-                onClick={closeMobileMenu}
-              >
-                Botón oculto
-              </Link>
-            </li>
-          </ul>
-        </div>
-      </nav>
+              </Nav.Link>
+              <Nav.Link as={Link} to="/gallery">
+                Galeria
+              </Nav.Link>
+              <Nav.Link as={Link} to="/login">
+                Login
+              </Nav.Link>
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
     </>
   )
 }
 
-export default Navbar
+export default NavbarComponent

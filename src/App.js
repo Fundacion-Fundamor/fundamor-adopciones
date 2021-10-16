@@ -5,10 +5,12 @@ import authToken from './config/authToken'
 import PrivateRoute from './components/PrivateRoute'
 
 //Components imports
-import NavBar from './components/Navbar'
+import NavbarComponent from './components/Navbar'
+import { Navbar } from 'react-bootstrap'
 
 //Styles imports
 import './scss/_global.scss'
+
 
 // Screens Imports
 import About from './screens/About'
@@ -31,7 +33,7 @@ function App() {
     <AppContext>
       <div className="App">
         <Router>
-          <NavBar />{' '}
+          <NavbarComponent />{' '}
           <Switch>
             <div className="main-content">
               <Route path="/" exact component={Home} />
