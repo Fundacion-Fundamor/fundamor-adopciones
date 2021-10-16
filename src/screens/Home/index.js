@@ -1,7 +1,9 @@
-import CardSlider from '../../components/Slider/Slider'
+import CardSlider from '../../components/Slider'
 import './home.scss'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
+import { Card, Button } from 'react-bootstrap'
+import Footer from '../../components/Footer'
 
 function Home(props) {
   const [allAnimals, setAllAnimals] = useState([])
@@ -31,6 +33,8 @@ function Home(props) {
   return (
     <div className="gallery-container">
       <CardSlider className="main-slider" items={allAnimals} />
+      <div style={{ background: 'blue', height: '40rem' }}></div>
+      <Footer></Footer>
     </div>
   )
 }
