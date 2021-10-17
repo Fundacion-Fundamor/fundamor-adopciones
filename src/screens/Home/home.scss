@@ -1,0 +1,52 @@
+.heroSection {
+
+display: grid; 
+grid-template-columns: auto 1fr; 
+grid-template-rows: auto auto; 
+gap: 2rem 20px ; 
+grid-template-areas: 
+  "heroSection__text heroSection__text"
+  "social-buttons clippedImage"; 
+}
+
+.heroSection__text {
+  
+padding: 2rem; 
+  grid-area: heroSection__text;
+  max-width: 30rem; 
+}
+
+.social-buttons {
+  grid-area: social-buttons;
+ padding-left: 2rem ;
+  }
+
+.clippedImage {
+  grid-area: clippedImage;
+  max-width: 100%;
+  right: -100px;
+}
+
+.heroSection__text h5 {
+    font-size: 2rem;
+    font-weight: bold;
+}
+.heroSection__callToAction{
+  margin-top: 1rem;
+  width: 15rem; 
+}
+
+.social-buttons{
+  display: flex;
+}
+
+.slider-container{
+  margin: 2rem 0;
+}
+
+/* On screens that are 992px or less, set the background color to blue */
+@media screen and (max-width: 992px) {
+  .social-buttons{
+    flex-direction: column;
+  }
+}

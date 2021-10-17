@@ -9,13 +9,14 @@ function MultipleItems(props) {
     className: 'center',
     infinite: true,
     slidesToShow: 5,
-    // autoplay: true,
+    autoplay: true,
     autoplaySpeed: 2000,
     arrows: false,
     // slidesToScroll: 2,
     speed: 500,
     swipeToSlide: true,
     initialSlide: 2,
+    dots: false,
     responsive: [
       {
         breakpoint: 1600,
@@ -57,16 +58,18 @@ function MultipleItems(props) {
   // const objects = [...Array(20).keys()]
 
   return (
-    <div className="">
+    <div className="slider-container">
       <Slider {...settings}>
         {props.items.map((pokemonStats, index) => (
-          <Card
-            key={index}
-            id={pokemonStats.id}
-            img={pokemonStats.sprites.other.dream_world.front_default}
-            title={pokemonStats.name}
-            author={pokemonStats.types[0].type.name}
-          />
+          <div className="card__container">
+            <Card
+              key={index}
+              id={pokemonStats.id}
+              img={pokemonStats.sprites.other.dream_world.front_default}
+              title={pokemonStats.name}
+              author={pokemonStats.types[0].type.name}
+            />
+          </div>
         ))}
       </Slider>
     </div>
