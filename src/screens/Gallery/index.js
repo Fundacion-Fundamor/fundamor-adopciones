@@ -2,16 +2,17 @@ import './gallery.scss'
 import axios from 'axios'
 import React, { useEffect, useState, useContext } from 'react'
 import Card from '../../components/Card'
-import { MyContext } from '../../context/AppContext'
+import AuthContext from '../../context/auth/authContext'
+
 
 
 function Gallery(props) {
 
-  const {globalState, authenticatedUser} = useContext(MyContext)
+  const {authenticatedUser} = useContext(AuthContext);
   const [allAnimals, setAllAnimals] = useState([])
 
 
-  console.log(globalState);
+  // console.log(globalState);
   useEffect(() => {
 
     let mounted = true;
@@ -27,6 +28,7 @@ function Gallery(props) {
     }
 
     authenticatedUser(); // se debe llamar desde cada ruta (con esto cada que se recargue se hace la petición y no se pierde la sesion)
+    
     getAllAnimals();
     
 
@@ -49,7 +51,6 @@ function Gallery(props) {
   }
   return (
     <div className="gallery-container">
-      {`hola ${globalState.user ? globalState.user.nombre: "Juan Carlos" } chupapijas`}
       <div className="card-gallery-container">
         {allAnimals.map((animalStats, index) => (
           <Card

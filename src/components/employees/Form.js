@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import './form.scss';
 import { Alert, Button, CircularProgress, FormControl, InputLabel, MenuItem, TextField, Select, FormHelperText, FormControlLabel, Checkbox } from '@mui/material';
 import { GrClose } from 'react-icons/gr';
+import EmployeeContext from '../../context/employee/employeeContext';
 
 
 /**Componente encargado del registro y edición de un colaborador
@@ -9,19 +10,19 @@ import { GrClose } from 'react-icons/gr';
  * @param {*} param0 
  * @returns 
  */
-export default function Form({ saveEmployee, handleToggle, employee = null }) {
+export default function Form({ handleToggle }) {
+
+    const { createEmployee, selectedEmployee, editEmployee, loading, message } = useContext(EmployeeContext);
 
     const [values, setValues] = useState({
-        name: employee ? employee.nombre : "",
-        email: employee ? employee.correo : "",
-        ID: employee ? employee.id_empleado : "",
+        name: selectedEmployee ? selectedEmployee.nombre : "",
+        email: selectedEmployee ? selectedEmployee.correo : "",
+        ID: selectedEmployee ? selectedEmployee.id_empleado : "",
         password: "",
         passwordConfirm: "",
-        role: employee ? employee.rol : "",
-        enablePassword: employee === null
+        role: selectedEmployee ? selectedEmployee.rol : "",
+        enablePassword: selectedEmployee === null
     });
-
-
     const [errors, setErrors] = useState({
         name: null,
         email: null,
@@ -30,11 +31,6 @@ export default function Form({ saveEmployee, handleToggle, employee = null }) {
         passwordConfirm: null,
         role: null
     });
-
-
-    const [loading, setLoading] = useState(false);
-    const [errorRequest, setErrorRequest] = useState(null);
-    const [successMessage, setSuccessMessage] = useState(null);
 
     const onSubmit = async () => {
         const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -57,51 +53,43 @@ export default function Form({ saveEmployee, handleToggle, employee = null }) {
             setErrors({ ...errors, ["passwordConfirm"]: "Las contraseñas no coinciden" });
         } else {
 
-
-            setLoading(true);
-            setErrorRequest(null);
-            setSuccessMessage(null);
-
-            //se guardan los datos del colaborador
-            const res = await saveEmployee(values, employee !== null);
-
-            if (!res.state) {
-                setErrorRequest(res.msg);
+            if (selectedEmployee) {
+                //se editan los datos del colaborador
+                editEmployee(values);
             } else {
-
-                if (employee === null) {
-                    setValues({
-                        ...values, ...{
-                            name: "",
-                            email: "",
-                            ID: "",
-                            password: "",
-                            role: "",
-                            passwordConfirm: ""
-                        }
-                    });
-                }
-                setSuccessMessage(res.msg);
+                //se guardan los datos del colaborador
+                createEmployee(values);
             }
-            setLoading(false);
+
         }
     }
 
     useEffect(() => {
-        setSuccessMessage(null);
-    }, [values])
 
+        if (message && message.category === "success" && selectedEmployee === null) {
+            setValues({
+                name: "",
+                email: "",
+                ID: "",
+                password: "",
+                passwordConfirm: "",
+                role: selectedEmployee ? selectedEmployee.rol : "",
+                enablePassword: selectedEmployee === null
+
+            });
+        }
+    }, [message]);
     return (
         <div style={{ minWidth: 340, width: 400, backgroundColor: "#fff", padding: 15, borderRadius: 15, margin: 30, marginBottom: 30 }}>
 
 
             <div className="form-container">
                 <div style={{ display: "flex", justifyContent: "space-between" }}>
-                    {employee ?
+                    {selectedEmployee ?
                         <h3>Edita los datos del colaborador </h3>
                         :
                         <h3>Registra los colaboradores que tendrán acceso a la plataforma de adopción </h3>}
-                    <GrClose size={employee ? 25 : 35} color="#000" onClick={handleToggle} cursor="pointer" />
+                    <GrClose size={selectedEmployee ? 25 : 35} color="#000" onClick={handleToggle} cursor="pointer" />
                 </div>
                 <div class="form-group">
 
@@ -124,7 +112,7 @@ export default function Form({ saveEmployee, handleToggle, employee = null }) {
                         fullWidth
                         error={errors.ID}
                         label="Identificación"
-                        disabled={employee !== null}
+                        disabled={selectedEmployee !== null}
                         helperText={errors.ID}
                         variant="standard"
                         value={values.ID}
@@ -169,8 +157,8 @@ export default function Form({ saveEmployee, handleToggle, employee = null }) {
                     {errors.role && <FormHelperText error={true}>{errors.role}</FormHelperText>}
                 </FormControl>
 
-                {employee !== null && <FormControlLabel style={{ marginTop: 15 }} control={<Checkbox defaultChecked checked={values.enablePassword} onChange={() => { setValues({ ...values, ["enablePassword"]: !values.enablePassword }) }} />} label="Editar contraseña" />}
-                {(values.enablePassword || employee === null) && <>
+                {selectedEmployee !== null && <FormControlLabel style={{ marginTop: 15 }} control={<Checkbox defaultChecked checked={values.enablePassword} onChange={() => { setValues({ ...values, ["enablePassword"]: !values.enablePassword }) }} />} label="Editar contraseña" />}
+                {(values.enablePassword || selectedEmployee === null) && <>
                     <div class="form-group">
                         <TextField
                             fullWidth
@@ -206,9 +194,7 @@ export default function Form({ saveEmployee, handleToggle, employee = null }) {
                     <p style={{ marginLeft: 10 }}>Cargando...</p>
                 </div>}
 
-                {successMessage && <Alert severity="success" variant="filled" style={{ marginTop: 20, }}  >{successMessage}</Alert>}
-
-                {errorRequest && <Alert severity="error" variant="filled" style={{ marginTop: 20, marginBottom: 5 }} >{errorRequest}</Alert>}
+                {message && <Alert severity={message.category} variant="filled" style={{ marginTop: 20, marginBottom: 5 }} >{message.text}</Alert>}
 
                 <Button variant="contained" style={{ width: "100%", marginTop: 25 }} onClick={() => { if (!loading) { onSubmit() } }}>Guardar</Button>
             </div>

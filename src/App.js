@@ -21,7 +21,8 @@ import './scss/_global.scss'
 import Test from './screens/CssTests'
 import PasswordReset from './screens/PasswordReset'
 import Employeee from './screens/Employee'
-
+import AuthState from './context/auth/authState'
+import EmployeeState from './context/employee/employeeState'
 
 const token = localStorage.getItem("token");
 if (token) {
@@ -30,24 +31,28 @@ if (token) {
 
 function App() {
   return (
-    <AppContext>
-      <div className="App">
-        <Router>
-          <NavbarComponent />{' '}
-          <Switch>
-            <div className="main-content">
-              <Route path="/" exact component={Home} />
-              <Route path="/about" component={About} />
-              <PrivateRoute path="/gallery" component={Gallery} />
-              <Route path="/login" component={Login} />
-              <Route path="/csstests" component={Test} />
-              <PrivateRoute path="/employees" component={Employeee} />
-              <Route path="/passwordReset" component={PasswordReset} />
-            </div>
-          </Switch>
-        </Router>
-      </div>
-    </AppContext>
+    <AuthState>
+      <AppContext>
+        <EmployeeState>
+          <div className="App">
+            <Router>
+              <NavbarComponent />{' '}
+              <Switch>
+                <div className="main-content">
+                  <Route path="/" exact component={Home} />
+                  <Route path="/about" component={About} />
+                  <PrivateRoute path="/gallery" component={Gallery} />
+                  <Route path="/login" component={Login} />
+                  <Route path="/csstests" component={Test} />
+                  <PrivateRoute path="/employees" component={Employeee} />
+                  <Route path="/passwordReset" component={PasswordReset} />
+                </div>
+              </Switch>
+            </Router>
+          </div>
+        </EmployeeState>
+      </AppContext>
+    </AuthState>
   )
 }
 

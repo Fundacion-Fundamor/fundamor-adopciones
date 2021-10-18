@@ -1,63 +1,27 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { Alert, Backdrop, CircularProgress, Snackbar } from '@mui/material';
 
 import { FaUserCircle, FaTrashAlt, FaUserEdit } from 'react-icons/fa';
-import authToken from '../../config/authToken';
-import axiosClient from '../../config/axios';
+
 import './list.scss'
+import EmployeeContext from '../../context/employee/employeeContext';
 
-export default function List({ reloadList, removeEmployee, editEmployee }) {
-
-
-    //employee list
-    const [list, setList] = useState([]);
-    const [errors, setErrors] = useState(null);
-    const [loading, setLoading] = useState(false);
+export default function List() {
+    const { getEmployees, removeEmployee, selectEmployee, employees, loading } = useContext(EmployeeContext);
+    // const [errors, setErrors] = useState(null);
 
     useEffect(() => {
-        let mounted = true;
-        const request = async () => {
-
-            try {
-                setLoading(true);
-                let token = localStorage.getItem("token");
-                authToken(token);
-                const res = await axiosClient.get("/api/employees");
-
-                if (res.data.state) {
-                    if (mounted) {
-
-                        setList(res.data.data);
-                    }
-                } else {
-
-                }
-
-            } catch (error) {
-                console.log(error);
-
-            }
-            if (mounted) {
-                setLoading(false);
-            }
-        }
-
-
-        request();
-
-        return () => {
-            mounted = false;
-        }
-    }, [reloadList]);
+        getEmployees();
+    }, []);
 
 
     return (
         <>
-            <Snackbar open={errors} autoHideDuration={6000} onClose={() => { console.log("%%%%") }} >
+            {/* <Snackbar open={errors} autoHideDuration={6000} onClose={() => { console.log("%%%%") }} >
                 <Alert severity="success" sx={{ width: '100%' }}>
                     This is a success message!
                 </Alert>
-            </Snackbar>
+            </Snackbar> */}
             <Backdrop
                 sx={{ color: '#fff', flex: 1, justifyContent: "center", flexDirection: "column", zIndex: (theme) => theme.zIndex.drawer + 1 }}
                 open={loading}
@@ -66,9 +30,9 @@ export default function List({ reloadList, removeEmployee, editEmployee }) {
                 <p style={{ marginLeft: 5 }}>Cargando ...</p>
             </Backdrop>
             <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-evenly" }}>
-                {list.map((element, index) =>
+                {employees.map((element, index) =>
 
-                    <EmployeeItem item={element} key={index} removeEmployee={removeEmployee} editEmployee={editEmployee} />
+                    <EmployeeItem item={element} key={index} removeEmployee={removeEmployee} selectEmployee={selectEmployee} />
                 )}
             </div>
 
@@ -78,12 +42,12 @@ export default function List({ reloadList, removeEmployee, editEmployee }) {
 }
 
 
-const EmployeeItem = ({ item, removeEmployee, editEmployee }) => {
+const EmployeeItem = ({ item, removeEmployee, selectEmployee }) => {
 
     return (<div className="employee-card">
         <div className="employee-menu">
             <div className="left-options">
-                <FaUserEdit size={30} color="#fff" cursor="pointer" onClick={() => { editEmployee(item) }} />
+                <FaUserEdit size={30} color="#fff" cursor="pointer" onClick={() => { selectEmployee(item) }} />
             </div>
             <div className="right-options">
                 <FaTrashAlt size={25} color="#fff" onClick={() => { removeEmployee(item.id_empleado) }} cursor="pointer" />
@@ -92,7 +56,6 @@ const EmployeeItem = ({ item, removeEmployee, editEmployee }) => {
 
         <div className="employee-logo">
             <FaUserCircle size={95} color="#fff" />
-            {/* <img src="https://pp.userapi.com/c636820/v636820839/52b83/FsPXJoBIcDc.jpg" /> */}
         </div>
         <div className="employee-info">
             <h2>{item.nombre}</h2>

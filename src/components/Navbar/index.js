@@ -1,9 +1,11 @@
-import React, { useState } from 'react'
+import React, { useContext } from 'react'
 import { Navbar, Container, Nav } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
+import AuthContext from '../../context/auth/authContext'
 import './navbar.scss'
 
 const NavbarComponent = () => {
+  const { authenticated, logout } = useContext(AuthContext);
   return (
     <>
       <Navbar bg="light" expand="lg">
@@ -18,9 +20,17 @@ const NavbarComponent = () => {
               <Nav.Link as={Link} to="/gallery">
                 Galeria
               </Nav.Link>
-              <Nav.Link as={Link} to="/login">
+              {authenticated ? <Nav.Link as={Link} to="/employees">
+                Colaboradores
+              </Nav.Link> : null}
+
+              {!authenticated ? <Nav.Link as={Link} to="/login" >
                 Login
-              </Nav.Link>
+              </Nav.Link> :
+                <Nav.Link as={Link} to="#" onClick={() => { logout() }} >
+                  Cerrar sesión
+                </Nav.Link>
+              }
             </Nav>
           </Navbar.Collapse>
         </Container>

@@ -1,11 +1,13 @@
 import React, { useContext, useState, useEffect } from 'react'
 import './login.scss'
-import { MyContext } from '../../context/AppContext'
 import { Alert, Button, CircularProgress, FormHelperText } from '@mui/material';
 import { Link } from "react-router-dom";
+import AuthContext from '../../context/auth/authContext';
 
 function Login(props) {
-  const { globalState, handleGlobalState, logIn, authenticatedUser } = useContext(MyContext)
+
+  const { login, authenticated, message, loading } = useContext(AuthContext);
+
   const [credentials, setCredentials] = useState({
     email: "aurelio@gmail.com",
     password: "hola1234"
@@ -21,24 +23,23 @@ function Login(props) {
     const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     if (credentials.email === "" || re.test(credentials.email) === false) {
-
       setErrors({ ...errors, ["email"]: true })
     } else if (credentials.password === "") {
       setErrors({ ...errors, ["password"]: true })
-
+    } else {
+    
+      login(credentials.email, credentials.password);
     }
-
-    logIn(credentials.email, credentials.password);
   }
 
 
   useEffect(() => {
 
-    if (globalState.authenticated) {
+    if (authenticated) {
       props.history.push("/gallery");
     }
 
-  }, [globalState.authenticated, globalState.message, props.history])
+  }, [authenticated, message, props.history])
 
   return (
     <div className="login-container">
@@ -88,14 +89,14 @@ function Login(props) {
           </p>
         </main>
 
-        {globalState.loading && <div style={{ marginTop: 15, display: "flex", justifyContent: "center", alignItems: "center" }}>
+        {loading && <div style={{ marginTop: 15, display: "flex", justifyContent: "center", alignItems: "center" }}>
           <CircularProgress color="success" />
           <p style={{ marginLeft: 10 }}>Cargando...</p>
         </div>}
-        {globalState.message && <Alert severity="error" variant="filled" style={{ marginTop: 20, marginBottom: 5, marginLeft: 35, marginRight: 35 }} >{globalState.message}</Alert>}
+        {message && <Alert severity="error" variant="filled" style={{ marginTop: 20, marginBottom: 5, marginLeft: 35, marginRight: 35 }} >{message}</Alert>}
 
         <footer className="login__footer">
-          <Button variant="contained" style={{ width: "100%" }} onClick={() => { if (!globalState.loading) { onSubmit() } }}>Iniciar sesión</Button>
+          <Button variant="contained" style={{ width: "100%" }} onClick={() => { if (!loading) { onSubmit() } }}>Iniciar sesión</Button>
         </footer>
       </form>
       {/* Photo by <a href="https://unsplash.com/@charlesdeluvio?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Charles Deluvio</a> on <a href="https://unsplash.com/?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a> */}
