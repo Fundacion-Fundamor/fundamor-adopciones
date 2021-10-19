@@ -66,7 +66,7 @@ export default function Form({ handleToggle }) {
 
     useEffect(() => {
 
-        if (message && message.category === "success" && selectedEmployee === null) {
+        if (message && message.category === "success" && message.showIn === "form" && selectedEmployee === null) {
             setValues({
                 name: "",
                 email: "",
@@ -194,7 +194,7 @@ export default function Form({ handleToggle }) {
                     <p style={{ marginLeft: 10 }}>Cargando...</p>
                 </div>}
 
-                {message && <Alert severity={message.category} variant="filled" style={{ marginTop: 20, marginBottom: 5 }} >{message.text}</Alert>}
+                {message && message.showIn === "form" && <Alert severity={message.category} variant="filled" style={{ marginTop: 20, marginBottom: 5 }} >{message.text}</Alert>}
 
                 <Button variant="contained" style={{ width: "100%", marginTop: 25 }} onClick={() => { if (!loading) { onSubmit() } }}>Guardar</Button>
             </div>

@@ -41,7 +41,22 @@ const EmployeeState = props => {
             }
 
         } catch (error) {
-            console.log(error);
+            let errorsDecriptions = error.response?.data.errors;
+
+            let text = "";
+            if (errorsDecriptions) {
+                text = errorsDecriptions[0];
+            } else {
+                text = error.response.data.message;
+            }
+
+            dispatch({
+                type: EMPLOYEE_MESSAGE, payload: {
+                    category: "error",
+                    text: text,
+                    showIn: "list"
+                }
+            });
 
         }
 
@@ -70,7 +85,9 @@ const EmployeeState = props => {
             dispatch({
                 type: EMPLOYEE_MESSAGE, payload: {
                     category: "success",
-                    text: res.data.message
+                    text: res.data.message,
+                    showIn: "form"
+
                 }
             })
             getEmployees();
@@ -89,7 +106,8 @@ const EmployeeState = props => {
             dispatch({
                 type: EMPLOYEE_MESSAGE, payload: {
                     category: "error",
-                    text: text
+                    text: text,
+                    showIn: "form"
                 }
             })
         }
@@ -126,7 +144,9 @@ const EmployeeState = props => {
             dispatch({
                 type: EMPLOYEE_MESSAGE, payload: {
                     category: "success",
-                    text: res.data.message
+                    text: res.data.message,
+                    showIn: "form"
+
                 }
             })
             getEmployees();
@@ -144,7 +164,8 @@ const EmployeeState = props => {
             dispatch({
                 type: EMPLOYEE_MESSAGE, payload: {
                     category: "error",
-                    text: text
+                    text: text,
+                    showIn: "form"
                 }
             })
         }
@@ -162,7 +183,8 @@ const EmployeeState = props => {
             dispatch({
                 type: EMPLOYEE_MESSAGE, payload: {
                     category: "success",
-                    text: res.data.message
+                    text: res.data.message,
+                    showIn: "list"
                 }
             })
             getEmployees();
@@ -180,7 +202,8 @@ const EmployeeState = props => {
             dispatch({
                 type: EMPLOYEE_MESSAGE, payload: {
                     category: "error",
-                    text: text
+                    text: text,
+                    showIn: "list"
                 }
             })
         }
