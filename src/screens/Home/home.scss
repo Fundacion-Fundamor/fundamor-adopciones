@@ -75,6 +75,7 @@ padding: 2rem;
   
   .clippedImage {
     min-height: 40vw;
+    max-height: 50vw;
     justify-self: end;
     align-self: start;
     grid-area: clippedImage;
