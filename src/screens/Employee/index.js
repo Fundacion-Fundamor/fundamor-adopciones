@@ -53,13 +53,11 @@ export default function Employeee() {
                     display: "flex",
                     flexDirection: "column",
                     width: "100%",
-                    marginBottom: 50,
                     justifyContent: "center",
                     alignItems: "center",
                     backgroundImage: `url("https://cdn.pixabay.com/photo/2017/12/27/14/02/friends-3042751_960_720.jpg"`,
                     backgroundSize:"cover",
                     backgroundColor:"#fff"
-
                 }}
             >
 

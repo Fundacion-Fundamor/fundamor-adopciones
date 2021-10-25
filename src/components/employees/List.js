@@ -62,7 +62,7 @@ export default function List() {
                 <CircularProgress color="inherit" />
                 <p style={{ marginLeft: 5 }}>Cargando ...</p>
             </Backdrop>
-            <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-evenly" }}>
+            <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-evenly",backgroundColor:"#FFF" }}>
                 {employees.map((element, index) =>
 
                     <EmployeeItem item={element} key={index} removeEmployee={selectEmployeeRemove} selectEmployee={selectEmployee} />
