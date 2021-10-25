@@ -1,3 +1,18 @@
 @import '../../scss/animations';
 
+.employeeBanner {
+  margin-bottom: 3rem;
+}
 
+.employeeBanner__divider {
+  position: absolute;
+  z-index: -1;
+  height: 500px;
+}
+
+.employeeBanner__content {
+  display: grid;
+  place-items: center;
+  padding: 2rem;
+  color: white;
+}
