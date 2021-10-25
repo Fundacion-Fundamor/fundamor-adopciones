@@ -1,18 +1,32 @@
 @import '../../scss/animations';
+@import '../../scss/variables';
 
 .employeeBanner {
-  margin-bottom: 3rem;
+  padding-top: 2rem;
+  background: #f29f058e;
 }
 
 .employeeBanner__divider {
   position: absolute;
   z-index: -1;
-  height: 500px;
 }
 
 .employeeBanner__content {
   display: grid;
   place-items: center;
   padding: 2rem;
-  color: white;
+}
+
+.employeeBanner__header {
+  display: grid;
+  place-items: center;
+  padding: 2rem;
+  color: $black;
+}
+
+@media (min-width: 1400px) {
+  .employeeBanner__divider {
+    position: absolute;
+    z-index: -1;
+  }
 }
