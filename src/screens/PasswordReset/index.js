@@ -1,15 +1,12 @@
 import React, { useContext, useState, useEffect } from 'react'
 import './passwordReset.scss'
-import { MyContext } from '../../context/AppContext'
+
 import { Link } from 'react-router-dom'
+import AuthContext from '../../context/auth/authContext'
+
 
 function PasswordReset(props) {
-  const {
-    globalState,
-    handleGlobalState,
-    logIn,
-    authenticatedUser,
-  } = useContext(MyContext)
+
 
   const [credentials, setCredentials] = useState({
     email: 'aurelio@gmail.com',
@@ -18,19 +15,8 @@ function PasswordReset(props) {
 
   const onSubmit = async () => {
     //valida las credenciales
-    console.log('inicia sesion')
-    logIn(credentials.email, credentials.password)
+ 
   }
-
-  useEffect(() => {
-    if (globalState.authenticated) {
-      props.history.push('/gallery')
-    }
-
-    if (globalState.message) {
-      console.log('Mostrando alerta', globalState.message)
-    }
-  }, [globalState.authenticated, globalState.message, props.history])
 
   return (
     <div className="passwordReset-container">

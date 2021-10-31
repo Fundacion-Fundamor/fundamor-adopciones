@@ -91,7 +91,7 @@ export default function Form({ handleToggle }) {
                         <h3>Registra los colaboradores que tendrán acceso a la plataforma de adopción </h3>}
                     <GrClose size={selectedEmployee ? 25 : 35} color="#000" onClick={handleToggle} cursor="pointer" />
                 </div>
-                <div class="form-group">
+                <div className="form-group">
 
                     <TextField
                         fullWidth
@@ -107,7 +107,7 @@ export default function Form({ handleToggle }) {
                     />
                 </div>
 
-                <div class="form-group">
+                <div className="form-group">
                     <TextField
                         fullWidth
                         error={errors.ID}
@@ -122,7 +122,7 @@ export default function Form({ handleToggle }) {
                         }}
                     />
                 </div>
-                <div class="form-group">
+                <div className="form-group">
                     <TextField
                         fullWidth
                         error={errors.email}
@@ -157,9 +157,9 @@ export default function Form({ handleToggle }) {
                     {errors.role && <FormHelperText error={true}>{errors.role}</FormHelperText>}
                 </FormControl>
 
-                {selectedEmployee !== null && <FormControlLabel style={{ marginTop: 15 }} control={<Checkbox defaultChecked checked={values.enablePassword} onChange={() => { setValues({ ...values, ["enablePassword"]: !values.enablePassword }) }} />} label="Editar contraseña" />}
+                {selectedEmployee !== null && <FormControlLabel style={{ marginTop: 15 }} control={<Checkbox checked={values.enablePassword} onChange={() => { setValues({ ...values, ["enablePassword"]: !values.enablePassword }) }} />} label="Editar contraseña" />}
                 {(values.enablePassword || selectedEmployee === null) && <>
-                    <div class="form-group">
+                    <div className="form-group">
                         <TextField
                             fullWidth
                             error={errors.password}
@@ -173,7 +173,7 @@ export default function Form({ handleToggle }) {
                             }}
                         />
                     </div>
-                    <div class="form-group">
+                    <div className="form-group">
                         <TextField
                             fullWidth
                             error={errors.passwordConfirm}

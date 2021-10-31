@@ -133,21 +133,21 @@ const EmployeeItem = ({ item, removeEmployee, selectEmployee }) => {
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
+        <IconButton aria-label="add to favorites" onClick={() => {
+          selectEmployee(item)
+        }}>
           <FaUserEdit
             size={30}
             cursor="pointer"
-            onClick={() => {
-              selectEmployee(item)
-            }}
+           
           />
         </IconButton>
-        <IconButton aria-label="share">
+        <IconButton aria-label="share" onClick={() => {
+          removeEmployee(item.id_empleado)
+        }}>
           <FaTrashAlt
             size={25}
-            onClick={() => {
-              removeEmployee(item.id_empleado)
-            }}
+        
             cursor="pointer"
           />
         </IconButton>

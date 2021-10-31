@@ -61,9 +61,8 @@ function MultipleItems(props) {
     <div className="slider-container">
       <Slider {...settings}>
         {props.items.map((pokemonStats, index) => (
-          <div className="card__container">
+          <div className="card__container" key={index}>
             <Card
-              key={index}
               id={pokemonStats.id}
               img={pokemonStats.sprites.other.dream_world.front_default}
               title={pokemonStats.name}
