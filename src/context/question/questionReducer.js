@@ -1,6 +1,6 @@
 /* eslint-disable*/
 
-import { QUESTIONS, SELECT_QUESTION, UNSELECT_QUESTION, TOGGLE_QUESTIONS_LOADING, QUESTION_MESSAGE } from '../../types';
+import { QUESTIONS, SELECT_QUESTION, UNSELECT_QUESTION, TOGGLE_QUESTION_LOADING, QUESTION_MESSAGE } from '../../types';
 
 export default (state, action) => {
 
@@ -12,7 +12,7 @@ export default (state, action) => {
                 loading: false
 
             }
-        case TOGGLE_QUESTIONS_LOADING:
+        case TOGGLE_QUESTION_LOADING:
             return {
                 ...state,
                 loading: action.payload

@@ -1,7 +1,7 @@
 import React, { useReducer } from 'react';
 import QuestionContext from './questionContext';
 import QuestionReducer from './questionReducer';
-import { QUESTIONS, SELECT_QUESTION,UNSELECT_QUESTION, TOGGLE_QUESTIONS_LOADING, QUESTION_MESSAGE } from '../../types';
+import { QUESTIONS, SELECT_QUESTION,UNSELECT_QUESTION, TOGGLE_QUESTION_LOADING, QUESTION_MESSAGE } from '../../types';
 import axiosClient from '../../config/axios';
 
 /**TODO: hacer el metodo de asociacion de preguntas
@@ -29,7 +29,7 @@ const QuestionState = props => {
 
         try {
             dispatch({
-                type: TOGGLE_QUESTIONS_LOADING,
+                type: TOGGLE_QUESTION_LOADING,
                 payload: true
             });
             const res = await axiosClient.get("/api/questions");
@@ -73,7 +73,7 @@ const QuestionState = props => {
     const createQuestion = async (data) => {
 
         dispatch({
-            type: TOGGLE_QUESTIONS_LOADING,
+            type: TOGGLE_QUESTION_LOADING,
             payload: true
         });
         let formattedData = {
@@ -117,7 +117,7 @@ const QuestionState = props => {
     const editQuestion = async (data, edit = false) => {
 
         dispatch({
-            type: TOGGLE_QUESTIONS_LOADING,
+            type: TOGGLE_QUESTION_LOADING,
             payload: true
         });
 
@@ -163,7 +163,7 @@ const QuestionState = props => {
     const removeQuestion = async (questionID) => {
 
         dispatch({
-            type: TOGGLE_QUESTIONS_LOADING,
+            type: TOGGLE_QUESTION_LOADING,
             payload: true
         });
         try {

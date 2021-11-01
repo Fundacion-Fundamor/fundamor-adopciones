@@ -23,7 +23,9 @@ const NavbarComponent = () => {
               {authenticated ? <Nav.Link as={Link} to="/employees">
                 Colaboradores
               </Nav.Link> : null}
-
+              {authenticated ? <Nav.Link as={Link} to="/questions">
+                Preguntas
+              </Nav.Link> : null}
               {!authenticated ? <Nav.Link as={Link} to="/login" >
                 Login
               </Nav.Link> :

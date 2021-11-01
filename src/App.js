@@ -18,8 +18,11 @@ import './scss/_global.scss'
 import Test from './screens/CssTests'
 import PasswordReset from './screens/PasswordReset'
 import Employeee from './screens/Employee'
+
 import AuthState from './context/auth/authState'
 import EmployeeState from './context/employee/employeeState'
+import QuestionState from './context/question/questionState'
+import Question from './screens/Questions'
 
 const token = localStorage.getItem("token");
 if (token) {
@@ -30,22 +33,25 @@ function App() {
   return (
     <AuthState>
       <EmployeeState>
-        <div className="App">
-          <Router>
-            <NavbarComponent />{' '}
-            <div className="main-content">
-            <Switch>
-              <Route path="/" exact component={Home} />
-              <Route path="/about" component={About} />
-              <PrivateRoute path="/gallery" component={Gallery} />
-              <Route path="/login" component={Login} />
-              <Route path="/csstests" component={Test} />
-              <PrivateRoute path="/employees" component={Employeee} />
-              <Route path="/passwordReset" component={PasswordReset} />
-            </Switch>
-            </div>
-          </Router>
-        </div>
+        <QuestionState>
+          <div className="App">
+            <Router>
+              <NavbarComponent />{' '}
+              <div className="main-content">
+                <Switch>
+                  <Route path="/" exact component={Home} />
+                  <Route path="/about" component={About} />
+                  <PrivateRoute path="/gallery" component={Gallery} />
+                  <Route path="/login" component={Login} />
+                  <Route path="/passwordReset" component={PasswordReset} />
+                  <PrivateRoute path="/employees" component={Employeee} />
+                  <PrivateRoute path="/questions" component={Question} />
+                  <Route path="/csstests" component={Test} />
+                </Switch>
+              </div>
+            </Router>
+          </div>
+        </QuestionState>
       </EmployeeState>
     </AuthState>
   )

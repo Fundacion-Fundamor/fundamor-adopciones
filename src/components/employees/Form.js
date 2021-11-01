@@ -6,7 +6,7 @@ import EmployeeContext from '../../context/employee/employeeContext';
 
 
 /**Componente encargado del registro y edición de un colaborador
- * 
+ *
  * @param {*} param0 
  * @returns 
  */
