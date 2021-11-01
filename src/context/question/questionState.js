@@ -1,7 +1,7 @@
 import React, { useReducer } from 'react';
 import QuestionContext from './questionContext';
 import QuestionReducer from './questionReducer';
-import { QUESTIONS, SELECT_QUESTION,UNSELECT_QUESTION, TOGGLE_QUESTION_LOADING, QUESTION_MESSAGE } from '../../types';
+import { QUESTIONS, SELECT_QUESTION, UNSELECT_QUESTION, TOGGLE_QUESTION_LOADING, QUESTION_MESSAGE, SELECT_QUESTION_EDIT } from '../../types';
 import axiosClient from '../../config/axios';
 
 /**TODO: hacer el metodo de asociacion de preguntas
@@ -16,7 +16,8 @@ const QuestionState = props => {
         questions: [],
         message: null,
         loading: false,
-        selectedQuestions:[]
+        selectedQuestions: [],
+        selectedQuestion: null, //for editing
 
     }
 
@@ -83,12 +84,12 @@ const QuestionState = props => {
         }
         try {
             const res = await axiosClient.post("/api/questions", formattedData);
+
             dispatch({
                 type: QUESTION_MESSAGE, payload: {
-                    category: "success",
+                    category: res.data.state ? "success" : "error",
                     text: res.data.message,
                     showIn: "form"
-
                 }
             })
             getQuestions();
@@ -125,7 +126,7 @@ const QuestionState = props => {
             id_pregunta: data.questionID,
             titulo: data.title,
             tipo_pregunta: data.questionType,
-           
+
         }
 
         try {
@@ -171,7 +172,7 @@ const QuestionState = props => {
 
             dispatch({
                 type: QUESTION_MESSAGE, payload: {
-                    category: "success",
+                    category: res.data.state ? "success" : "error",
                     text: res.data.message,
                     showIn: "list"
                 }
@@ -202,7 +203,10 @@ const QuestionState = props => {
 
         dispatch({ type: SELECT_QUESTION, payload: item });
     }
+    const selectQuestionEdit = (item) => {
 
+        dispatch({ type: SELECT_QUESTION_EDIT, payload: item });
+    }
     const unselectQuestion = (item) => {
 
         dispatch({ type: UNSELECT_QUESTION, payload: item.id_opcion_pregunta });
@@ -216,11 +220,13 @@ const QuestionState = props => {
         <QuestionContext.Provider value={{
             questions: state.questions,
             loading: state.loading,
-            selectedQuestion: state.selectedQuestion,
+            selectedQuestions: state.selectedQuestions,
+            selectedEditQuestion: state.selectedQuestion,
             message: state.message,
             getQuestions,
             createQuestion,
             selectQuestion,
+            selectQuestionEdit,
             unselectQuestion,
             removeQuestion,
             editQuestion,

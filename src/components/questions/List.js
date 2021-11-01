@@ -8,13 +8,20 @@ import QuestionContext from '../../context/question/questionContext';
 export default function QuestionList() {
 
 
-    const { questions, getQuestions } = useContext(QuestionContext);
+    const { questions, getQuestions, removeQuestion, selectQuestionEdit } = useContext(QuestionContext);
 
     useEffect(() => {
 
         getQuestions();
     }, [])
-    return <Container maxWidth="xl" sx={{ marginTop: 8 }}>
+
+    const handleRemoveQuestion = (id) => {
+        removeQuestion(id);
+    }
+    const handleSelectQuestionEdit = (item) => {
+        selectQuestionEdit(item);
+    }
+    return <Container maxWidth="xl" sx={{ marginTop: 8, marginBottom: 15 }}>
 
         <Paper elevation={3} >
 
@@ -28,7 +35,7 @@ export default function QuestionList() {
                     </ListSubheader>
                 }
             >
-                {questions.map((element, index) => (<ListCustomItem question={element} key={index} />))}
+                {questions.map((element, index) => (<ListCustomItem question={element} handleSelectQuestionEdit={handleSelectQuestionEdit} removeQuestion={handleRemoveQuestion} key={index} />))}
             </List>
         </Paper>
     </Container >
@@ -36,7 +43,7 @@ export default function QuestionList() {
 }
 
 
-const ListCustomItem = ({ question }) => {
+const ListCustomItem = ({ question, removeQuestion, handleSelectQuestionEdit }) => {
 
     const [anchorEl, setAnchorEl] = useState(null);
 
@@ -48,7 +55,6 @@ const ListCustomItem = ({ question }) => {
     const handleClose = () => {
         setAnchorEl(null);
     };
-
 
     return (<>
 
@@ -67,43 +73,32 @@ const ListCustomItem = ({ question }) => {
                     }
                 </ListItemIcon>
                 <ListItemText primary={question.titulo} />
-
-
-
             </ListItemButton>
             <ListItemIcon>
                 <BsThreeDotsVertical color="#616161" size={25} onClick={handleClick} />
                 <Menu
                     id="basic-menu"
                     anchorEl={anchorEl}
-
                     open={open}
                     onClose={handleClose}
-
-
                     MenuListProps={{
                         'aria-labelledby': 'basic-button',
                     }}
                 >
-                    <MenuItem >Editar</MenuItem>
-                    <MenuItem >Eliminar</MenuItem>
+                    <MenuItem onClick={() => {  handleSelectQuestionEdit(question) }} >Editar</MenuItem>
+                    <MenuItem onClick={() => removeQuestion(question.id_pregunta)} >Eliminar</MenuItem>
 
                 </Menu>
             </ListItemIcon>
         </div>
         {question.tipo_pregunta === "multiple" ? <Collapse in={collapsed} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-                <ListItemButton sx={{ pl: 4 }}>
-
-                    <ListItemText primary="Si" />
-                </ListItemButton>
-                <ListItemButton sx={{ pl: 4 }}>
-
-                    <ListItemText primary="No" />
-                </ListItemButton>
+                {question.questionOptions.map((element, index) => (
+                    <ListItemButton sx={{ pl: 4 }} key={index}>
+                        <ListItemText primary={element.descripcion} />
+                    </ListItemButton>
+                ))}
             </List>
         </Collapse> : null}
-
-
     </>);
 }

@@ -4,17 +4,17 @@ import { v4 as uuidv4 } from 'uuid';
 import { CardActions, CardContent, Container, Typography, Button, Paper, TextField, IconButton, CircularProgress, Alert } from '@mui/material';
 import QuestionContext from '../../context/question/questionContext';
 
+import { GrClose } from 'react-icons/gr';
 
-export default function Form() {
-
-
+export default function EditModal({ handleToggle }) {
+    const { createQuestion, message, loading, selectedEditQuestion } = useContext(QuestionContext);
     const [questionOptions, setQuestionOptions] = useState([]);
-    const [question, setQuestion] = useState("");
-    const { createQuestion, message, loading } = useContext(QuestionContext);
-    const addQuestionOption = () => {
+    const [question, setQuestion] = useState(selectedEditQuestion.titulo);
+
+    const addQuestionOption = (text = "", id = "") => {
 
         let tmp = [...questionOptions];
-        tmp.push({ text: "", key: uuidv4() });
+        tmp.push({ text: text, key: uuidv4(), id: id });
         setQuestionOptions(tmp);
     }
     const saveQuestionOption = (option) => {
@@ -57,42 +57,59 @@ export default function Form() {
             setQuestionOptions([]);
         }
     }, [message])
+    useEffect(() => {
+        let tmp = selectedEditQuestion.questionOptions;
 
-    return <Container maxWidth="sm">
-        <Paper elevation={3} sx={{ marginTop: 5 }} >
-            <CardContent sx={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center" }} >
-                <TextField
-                    multiline={true}
-                    id="question-field"
-                    sx={{ width: "100%", marginRight: 3 }}
-                    variant="filled"
-                    label="Ingresa aquí tu pregunta"
-                    placeholder="Ejemplo: ¿Por que está interesado en adoptar?"
-                    value={question}
-                    onChange={(e) => { setQuestion(e.target.value) }}
-                />
-                <Button size="small" variant="contained" disabled={question.length === 0} color="success" onClick={saveQuestion}>Guardar</Button>
-            </CardContent>
-            <CardActions sx={{ flexDirection: "column", padding: 3 }}>
-        
-                {message && message.showIn === "form" && <Alert severity={message.category} variant="filled" style={{ marginTop: 20, marginBottom: 5 }} >{message.text}</Alert>}
-                {questionOptions.length !== 0 ? <Typography variant="body2" color="text.secondary" sx={{ marginBottom: 3 }}>
-                    Las opciones de respuesta se mostrarán en el orden en sean registradas
-                </Typography> : null}
-                {questionOptions.map((element, index) => (
-                    <QuestionOption key={index} index={index} option={element} saveQuestionOption={saveQuestionOption} removeQuestionOption={removeQuestionOption} />
-                ))}
-                <Button size="small" onClick={addQuestionOption}>Añadir opción de respuesta</Button>
-            </CardActions>
+        let options = []
+        tmp.forEach(element => {
+            options.push({ text: element.descripcion, key: uuidv4(), id: element.id_opcion });
+        });
+        setQuestionOptions(options);
+    }, [])
 
-        </Paper>
-    </Container>
+    return <div style={{ minWidth: 340, width: 400, backgroundColor: "#fff", padding: 15, borderRadius: 15, margin: 30, marginBottom: 30 }}>
+
+
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+
+            <h3>Edita la pregunta</h3>
+
+
+            <GrClose size={35} color="#000" onClick={handleToggle} cursor="pointer" />
+        </div>
+        <CardContent sx={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center" }} >
+            <TextField
+                multiline={true}
+                id="question-field"
+                sx={{ width: "100%", marginRight: 3 }}
+                variant="filled"
+                label="Ingresa aquí tu pregunta"
+                placeholder="Ejemplo: ¿Por que está interesado en adoptar?"
+                value={question}
+                onChange={(e) => { setQuestion(e.target.value) }}
+            />
+            <Button size="small" variant="contained" disabled={question.length === 0} color="success" onClick={saveQuestion}>Guardar</Button>
+        </CardContent>
+        <CardActions sx={{ flexDirection: "column", padding: 3 }}>
+
+            {message && message.showIn === "form" && <Alert severity={message.category} variant="filled" style={{ marginTop: 20, marginBottom: 5 }} >{message.text}</Alert>}
+            {questionOptions.length !== 0 ? <Typography variant="body2" color="text.secondary" sx={{ marginBottom: 3 }}>
+                Las opciones de respuesta se mostrarán en el orden en sean registradas
+            </Typography> : null}
+            {questionOptions.map((element, index) => (
+                <QuestionOption key={index} index={index} option={element} saveQuestionOption={saveQuestionOption} removeQuestionOption={removeQuestionOption} />
+            ))}
+            <Button size="small" onClick={() => addQuestionOption()}>Añadir opción de respuesta</Button>
+        </CardActions>
+
+    </div>
 
 
 }
 
 const QuestionOption = ({ index, option, saveQuestionOption, removeQuestionOption }) => {
 
+    console.log(option.text)
     const [text, setText] = useState(option.text);
 
     useEffect(() => {
