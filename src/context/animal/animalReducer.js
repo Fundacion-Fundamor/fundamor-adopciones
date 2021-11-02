@@ -1,6 +1,6 @@
 /* eslint-disable*/
 
-import { ANIMALS, SELECT_ANIMAL, TOGGLE_ANIMALS_LOADING, ANIMAL_MESSAGE } from '../../types';
+import { ANIMALS, SELECT_ANIMAL, TOGGLE_ANIMAL_LOADING, ANIMAL_MESSAGE } from '../../types';
 
 export default (state, action) => {
 
@@ -12,7 +12,7 @@ export default (state, action) => {
                 loading: false
 
             }
-        case TOGGLE_ANIMALS_LOADING:
+        case TOGGLE_ANIMAL_LOADING:
             return {
                 ...state,
                 loading: action.payload

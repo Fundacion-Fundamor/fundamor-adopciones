@@ -1,7 +1,7 @@
 import React, { useReducer } from 'react';
 import AnimalContext from './animalContext';
 import AnimalReducer from './animalReducer';
-import { ANIMAL, SELECT_ANIMAL, TOGGLE_ANIMAL_LOADING, ANIMAL_MESSAGE } from '../../types';
+import { ANIMALS, SELECT_ANIMAL, TOGGLE_ANIMAL_LOADING, ANIMAL_MESSAGE } from '../../types';
 import axiosClient from '../../config/axios';
 
 const AnimalState = props => {
@@ -30,12 +30,12 @@ const AnimalState = props => {
 
             if (res.data.state) {
                 dispatch({
-                    type: ANIMAL,
+                    type: ANIMALS,
                     payload: res.data.data
                 });
             } else {
                 dispatch({
-                    type: ANIMAL,
+                    type: ANIMALS,
                     payload: []
                 });
             }
