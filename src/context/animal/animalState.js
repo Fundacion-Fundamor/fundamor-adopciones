@@ -62,7 +62,7 @@ const AnimalState = props => {
 
     }
 
-    const createAnimal = async (data) => {
+    const createAnimal = async (data,images) => {
 
         dispatch({
             type: TOGGLE_ANIMAL_LOADING,
@@ -77,17 +77,19 @@ const AnimalState = props => {
             caracteristicas: data.characteristics,
             sitio_rescate: data.rescueSite,
             fecha_rescate: data.rescueDate,
-            color: data.color,
+            color: "negro",
             vacunas: data.vaccine,
             esterilizado: data.sterilized,
             desparasitado: data.dewormed,
             tamanio: data.size,
-            estado: data.animalState
+            estado: "Sin adoptar"
 
         }
 
         try {
             const res = await axiosClient.post("/api/animals", formattedData);
+            console.log(res.data);
+            await insertImages(images, res.data.data);
             dispatch({
                 type: ANIMAL_MESSAGE, payload: {
                     category: "success",
@@ -119,6 +121,46 @@ const AnimalState = props => {
         }
     }
 
+
+    const insertImages = async (images, animalID) => {
+
+        let formattedData = new FormData();
+        images.forEach((element) => {
+            formattedData.append("animalImages", element.file);
+        });
+        formattedData.append('id_animal', animalID);
+        try {
+            const res = await axiosClient.post("/api/animalImages/uploadImages", formattedData,
+                {
+                    headers: {
+                        Accept: "*/*",
+                        "Content-Type": "multipart/form-data;",
+                    },
+                }
+            );
+
+            console.log(res.data);
+        } catch (error) {
+
+            let errorsDecriptions = error.response?.data.errors;
+
+            let text = "";
+            if (errorsDecriptions) {
+                text = errorsDecriptions[0];
+            } else {
+                text = error.response.data.message;
+            }
+
+            dispatch({
+                type: ANIMAL_MESSAGE, payload: {
+                    category: "error",
+                    text: text,
+                    showIn: "form"
+                }
+            })
+        }
+
+    }
     const editAnimal = async (data) => {
 
         dispatch({
@@ -127,7 +169,7 @@ const AnimalState = props => {
         });
         let formattedData =
         {
-            id_animal:data.animalID,
+            id_animal: data.animalID,
             especie: data.specie,
             nombre: data.name,
             fecha_nacimiento: data.birthday,

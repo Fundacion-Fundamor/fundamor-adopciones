@@ -1,5 +1,5 @@
 import { Paper, Container, Button, Grid, Box, TextField, IconButton, Chip, Checkbox } from '@mui/material'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
@@ -17,6 +17,7 @@ import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
 import { BiTrashAlt } from 'react-icons/bi';
 import moment from 'moment';
+import AnimalContext from '../../context/animal/animalContext';
 const steps = [
     'Características',
     'Vacunas',
@@ -47,7 +48,7 @@ export default function Form() {
 
     const [activeStep, setActiveStep] = useState(0);
 
-
+    const { createAnimal } = useContext(AnimalContext);
     const [images, setImages] = React.useState([]);
 
     const [values, setValues] = useState({
@@ -64,7 +65,8 @@ export default function Form() {
         dewormed: false,
         size: "",
         animalState: "",
-        gender: ""
+        gender: "",
+        images: []
     });
 
     const [errors, setErrors] = useState({
@@ -81,6 +83,7 @@ export default function Form() {
         size: null,
         animalState: null,
         gender: null
+
     });
     const maxNumber = 8;
 
@@ -89,15 +92,17 @@ export default function Form() {
     }, [values.gender])
     const onChange = (imageList, addUpdateIndex) => {
         // data for submit
-        console.log(imageList, addUpdateIndex);
         setImages(imageList);
     };
 
     const nextStep = () => {
         if (activeStep !== 1) {
             setActiveStep(activeStep + 1);
-        }else{
-            console.log(values);
+        } else {
+
+            console.log(images);
+            createAnimal(values, images);
+
         }
     }
 
@@ -195,8 +200,8 @@ export default function Form() {
                         padding={3}
                     >
                         <FormControl component="fieldset" sx={{ marginTop: 2 }}>
-                            <FormLabel component="label" sx={{ fontSize: 14 }} value={values.specie} onChange={(event) => { setValues({ ...values, ["specie"]: event.target.value }); }} >Especie</FormLabel>
-                            <RadioGroup row aria-label="specie" name="row-radio-buttons-group">
+                            <FormLabel component="label" sx={{ fontSize: 14 }}  >Especie</FormLabel>
+                            <RadioGroup row aria-label="specie" name="row-radio-buttons-group" value={values.specie} onChange={(event) => { setValues({ ...values, ["specie"]: event.target.value }); }}>
                                 <FormControlLabel value="perro" control={<Radio />} label="Perro" />
                                 <FormControlLabel value="gato" control={<Radio />} label="Gato" />
                             </RadioGroup>
