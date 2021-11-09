@@ -77,7 +77,7 @@ const AnimalState = props => {
             caracteristicas: data.characteristics,
             sitio_rescate: data.rescueSite,
             fecha_rescate: data.rescueDate,
-            color: "negro",
+            color: data.color,
             vacunas: data.vaccine,
             esterilizado: data.sterilized,
             desparasitado: data.dewormed,

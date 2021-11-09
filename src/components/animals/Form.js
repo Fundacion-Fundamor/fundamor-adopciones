@@ -1,4 +1,4 @@
-import { Paper, Container, Button, Grid, Box, TextField, IconButton, Chip, Checkbox } from '@mui/material'
+import { Paper, Container, Button, Grid, Box, TextField, IconButton, Chip, Checkbox, InputLabel, Select, MenuItem, FormHelperText } from '@mui/material'
 import React, { useState, useEffect, useContext } from 'react'
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -20,7 +20,7 @@ import moment from 'moment';
 import AnimalContext from '../../context/animal/animalContext';
 const steps = [
     'Características',
-    'Vacunas',
+    'Estado',
 ];
 
 //buscar como customizar 
@@ -46,6 +46,27 @@ const steps = [
 // });
 export default function Form() {
 
+
+  moment.updateLocale('es', {
+    relativeTime: {
+        future: "in %s",
+        past: "%s ",
+        s: 'unos segundos',
+        ss: '%d segundos',
+        m: "un minuto",
+        mm: "%d minutos",
+        h: "an hora",
+        hh: "%d horas",
+        d: "un día",
+        dd: "%d dias",
+        w: "una semana",
+        ww: "%d semanas",
+        M: "un mes",
+        MM: "%d meses",
+        y: "un año",
+        yy: "%d años"
+    }
+});
     const [activeStep, setActiveStep] = useState(0);
 
     const { createAnimal } = useContext(AnimalContext);
@@ -55,7 +76,7 @@ export default function Form() {
 
         name: "",
         specie: "",
-        birthday: moment().format('L'),
+        birthday: null,
         characteristics: "",
         rescueSite: "",
         rescueDate: moment().format('L'),
@@ -64,7 +85,7 @@ export default function Form() {
         sterilized: false,
         dewormed: false,
         size: "",
-        animalState: "",
+        animalState: "Sin adoptar",
         gender: "",
         images: []
     });
@@ -139,14 +160,14 @@ export default function Form() {
                     ))}
                 </Stepper>
 
-                {activeStep === 0 ? <Grid container >
+                {activeStep === 0 ? <Grid container sx={{ padding: 3 }} >
                     <Grid item md={6}
                         xs={12}
                         justifyContent="center"
                         // alignItems="center"
                         display="flex"
                         flexDirection="column"
-                        padding={3}
+                        padding={1}
                     >
 
                         <TextField
@@ -161,43 +182,17 @@ export default function Form() {
                                 setErrors({ ...errors, ["name"]: null })
                             }}
                         />
-                        <FormControl component="fieldset" sx={{ marginTop: 2 }}>
-                            <FormLabel component="label" sx={{ fontSize: 14 }}>Sexo</FormLabel>
-                            <RadioGroup row aria-label="gender" name="row-radio-buttons-group" value={values.gender} onChange={(event) => { setValues({ ...values, ["gender"]: event.target.value }); }}>
-                                <FormControlLabel value="macho" control={<Radio />} label="Macho" />
-                                <FormControlLabel value="hembra" control={<Radio />} label="Hembra" />
-                            </RadioGroup>
-                        </FormControl>
+
 
                     </Grid>
 
-
-                    <Grid item xs={12} md={6}
-                        justifyContent="flex-start"
-                        flexDirection="column"
-                        display="flex"
-                        padding={3}
-                    >
-                        <LocalizationProvider dateAdapter={DateAdapter}>
-                            <DatePicker
-                                label="Fecha de nacimiento (aproximada)"
-                                value={values.birthday}
-                                onChange={(newValue) => {
-                                    console.log(newValue)
-                                    setValues({ ...values, ["birthday"]: newValue });
-                                }}
-                                renderInput={(params) => <TextField {...params} variant="standard" />}
-                            />
-                        </LocalizationProvider>
-                        <TextField disabled sx={{ marginTop: 3 }} label="Edad calculada" value={moment(values.birthday, "YYYYMMDD").fromNow()} variant="filled" />
-                    </Grid>
                     <Grid item md={6}
                         xs={12}
                         justifyContent="center"
                         // alignItems="center"
                         display="flex"
                         flexDirection="column"
-                        padding={3}
+                        padding={1}
                     >
                         <FormControl component="fieldset" sx={{ marginTop: 2 }}>
                             <FormLabel component="label" sx={{ fontSize: 14 }}  >Especie</FormLabel>
@@ -208,29 +203,93 @@ export default function Form() {
                         </FormControl>
                     </Grid>
 
+                    <Grid item xs={12} md={6}
+                        justifyContent="flex-end"
+                        flexDirection="column"
+                        display="flex"
+                        padding={1}
+                    >
+                        <LocalizationProvider dateAdapter={DateAdapter} locale="es">
+                            <DatePicker
+                                label="Fecha de nacimiento (aprox)"
+                                
+                                value={values.birthday}
+                                onChange={(newValue) => {
+                                    console.log(newValue)
+                                    setValues({ ...values, ["birthday"]: newValue });
+                                }}
+                                renderInput={(params) => <TextField {...params} variant="standard" />}
+                            />
+                        </LocalizationProvider>
+                        
+                        <FormHelperText sx={{ color: "#0554b5" }} >{moment(values.birthday, "YYYYMMDD").fromNow()} de edad (Aproximadamente)</FormHelperText>
+                    </Grid>
+
+
+                    <Grid item xs={12} md={6}
+                        justifyContent="flex-start"
+                        flexDirection="column"
+                        display="flex"
+                        padding={1}
+                    >
+                        {/* <TextField disabled  label="Edad calculada" value={moment(values.birthday, "YYYYMMDD").fromNow()} variant="filled" /> */}
+                        <TextField label="Color" value={values.color} variant="standard" onChange={(event) => {
+                            setValues({ ...values, ["color"]: event.target.value });
+                            setErrors({ ...errors, ["color"]: null })
+                        }} />
+
+
+                    </Grid>
+
+                    <Grid item xs={12} md={6}
+                        justifyContent="flex-start"
+                        flexDirection="column"
+                        display="flex"
+                        padding={1}
+                    >
+                        <FormControl component="fieldset" sx={{ marginTop: 2 }}>
+                            <FormLabel component="label" sx={{ fontSize: 14 }}>Sexo</FormLabel>
+                            <RadioGroup row aria-label="gender" name="row-radio-buttons-group" value={values.gender} onChange={(event) => { setValues({ ...values, ["gender"]: event.target.value }); }}>
+                                <FormControlLabel value="macho" control={<Radio />} label="Macho" />
+                                <FormControlLabel value="hembra" control={<Radio />} label="Hembra" />
+                            </RadioGroup>
+                        </FormControl>
+
+                    </Grid>
                     <Grid item md={6}
                         xs={12}
                         justifyContent="center"
-                        // alignItems="center"
+
                         display="flex"
                         flexDirection="column"
-                        padding={3}
+                        padding={1}
                     >
-                        <TextField
-                            fullWidth
-                            placeholder="grande, mediano o pequeño"
-                            error={errors.size}
-                            label="Tamaño"
-                            helperText={errors.size}
-                            variant="standard"
-                            value={values.size}
-                            onChange={(event) => {
-                                setValues({ ...values, ["size"]: event.target.value });
-                                setErrors({ ...errors, ["size"]: null })
-                            }}
-                        />
+
+                        <FormControl fullWidth variant="standard">
+                            <InputLabel id="animal-size" error={errors.size} >Tamaño</InputLabel>
+                            <Select
+                                labelId="animal-size"
+                                id="animal-size-select"
+                                value={values.role}
+                                label="Seleccione el tamaño"
+                                onChange={(event) => {
+                                    setValues({
+                                        ...values, ["size"]: event.target.value
+                                    });
+                                    setErrors({ ...errors, ["size"]: null });
+                                }}
+                                error={errors.role}
+                            >
+                                <MenuItem value={"grande"}>Grande</MenuItem>
+                                <MenuItem value={"mediano"}>Mediano</MenuItem>
+                                <MenuItem value={"pequeño"}>Pequeño</MenuItem>
+
+                            </Select>
+                            {errors.size && <FormHelperText error={true}>{errors.size}</FormHelperText>}
+                        </FormControl>
+               
                     </Grid>
-                    <Grid item xs={12} md={12} padding={3}>
+                    <Grid item xs={12} md={12} padding={1}>
                         <TextField label="Descripción" value={values.characteristics}
                             onChange={(event) => {
                                 setValues({ ...values, ["characteristics"]: event.target.value });
@@ -243,14 +302,14 @@ export default function Form() {
 
                 </Grid> :
 
-                    <Grid container >
+                    <Grid container sx={{ padding: 3 }} >
                         <Grid item md={6}
                             xs={12}
                             justifyContent="center"
                             // alignItems="center"
                             display="flex"
                             flexDirection="column"
-                            padding={3}
+                            padding={1}
                         >
 
                             <TextField
@@ -273,7 +332,7 @@ export default function Form() {
                             justifyContent="flex-start"
                             flexDirection="column"
                             display="flex"
-                            padding={3}
+                            padding={1}
                         >
                             <LocalizationProvider dateAdapter={DateAdapter}>
                                 <DatePicker
@@ -287,13 +346,13 @@ export default function Form() {
                                 />
                             </LocalizationProvider>
                         </Grid>
-                        <Grid item md={12}
+                        <Grid item md={6}
                             xs={12}
                             justifyContent="center"
-                            alignItems="center"
+                            alignItems="flex-start"
                             display="flex"
                             flexDirection="column"
-                        // padding={3}
+                            padding={1}
                         >
                             <FormControl component="fieldset" sx={{ marginTop: 2 }}>
                                 <FormLabel component="label" sx={{ fontSize: 14 }}>Estado</FormLabel>
@@ -302,7 +361,41 @@ export default function Form() {
 
                             </FormControl>
                         </Grid>
-                        <Grid item xs={12} md={12} padding={3}>
+                        <Grid item
+                            md={6}
+                            xs={12}
+                            justifyContent="center"
+                            alignItems="flex-start"
+                            display="flex"
+                          
+                            padding={1}
+                        >
+
+                            <FormControl fullWidth variant="standard" sx={{marginTop:2}}>
+                                <InputLabel id="animal-adoption-state" >Estado de adopción</InputLabel>
+                                <Select
+                                    labelId="animal-adoption-state"
+                                    id="animal-adoption-state-select"
+                                    value={values.animalState}
+                                    label="Seleccione el estado actua"
+                                    disabled
+                                    onChange={(event) => {
+                                        setValues({
+                                            ...values, ["animalState"]: event.target.value
+                                        });
+                                        setErrors({ ...errors, ["animalState"]: null });
+                                    }}
+
+                                >
+                                    <MenuItem value={"Sin adoptar"} selected={true} >Sin adoptar</MenuItem>
+
+
+                                </Select>
+
+                            </FormControl>
+
+                        </Grid>
+                        <Grid item xs={12} md={12} padding={1}>
                             <TextField label="Vacunas" fullWidth multiline={true} minRows={4} variant="filled"
                                 value={values.vaccine}
                                 onChange={(event) => {
