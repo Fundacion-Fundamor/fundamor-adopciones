@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react'
 import { Card, Button } from 'react-bootstrap'
 import Footer from '../../components/Footer'
 import SocialButton from '../../components/SocialButton'
+import List from '../../components/Post/List'
 
 function Home(props) {
   const [allAnimals, setAllAnimals] = useState([])
@@ -61,8 +62,11 @@ function Home(props) {
       <div className="slider-container">
         <CardSlider className="main-slider" items={allAnimals} />
       </div>
-      <div style={{ background: 'blue', height: '40rem' }}></div>
-      <Footer></Footer>
+      {/* <div style={{ background: 'blue', height: '40rem' }}></div> */}
+
+<List/>
+
+      <Footer/>
     </div>
   )
 }

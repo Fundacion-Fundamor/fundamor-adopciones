@@ -6,8 +6,8 @@ $screen-xl: 1200px;
 $screen-xxl: 1300px;
 $screen-full: 1400px;
 
-$nav-bar-size:56px;
-$footer-size:0px;
+$nav-bar-size: 56px;
+$footer-size: 0px;
 
 // Colors
 $textColor: #42474c;
@@ -32,20 +32,18 @@ $warningLight1Color: #c432571f;
 
 // shades - generated using chroma.js - 12 steps
 
-$realBlack: #000000;
-$black: #222222;
-$gray-10: #2e2e31;
-$gray-6: #7b7a7d;
-$gray-5:#a8b8c4;
-$gray-4: #a5a5a6;
-$gray-3: #bbbbbc;
-$gray-2: #d1d0d2;
-$gray-1: #e8e7e8;
-$white: white;
-$realWhite: #ffffff;
+$black: #000000;
+$gray-10: #333333;
+$gray-6: #5a5a5a;
+$gray-5: #666666;
+$gray-4: #999999;
+$gray-3: #bbbbbb;
+$gray-2: #cccccc;
+$gray-1: #dddddd;
+$white: #ffffff;
 
 /*Hyperlinks*/
-$hyperBlue:#007ee5;
+$hyperBlue: #007ee5;
 
 /* feedback */
 $color-success: #88c459;
