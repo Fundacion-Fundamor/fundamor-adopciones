@@ -12,7 +12,8 @@ import {
     InputLabel,
     Select,
     MenuItem,
-    FormHelperText
+    FormHelperText,
+    CircularProgress
 } from '@mui/material'
 import React, { useState, useEffect, useContext } from 'react'
 import Radio from '@mui/material/Radio';
@@ -31,6 +32,7 @@ import { BiTrashAlt } from 'react-icons/bi';
 import moment from 'moment';
 import 'moment/locale/es';
 import AnimalContext from '../../context/animal/animalContext';
+import { useHistory } from "react-router-dom";
 
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
@@ -66,9 +68,10 @@ export default function Form() {
     });
     const maxNumber = 8; //max number images
 
+    let history = useHistory();
 
     const MySwal = withReactContent(Swal);
-    const { createAnimal, message } = useContext(AnimalContext); // contexto de animales
+    const { createAnimal, message, loading, handleAnimalMessage } = useContext(AnimalContext); // contexto de animales
 
     const [images, setImages] = React.useState([]);
 
@@ -135,48 +138,29 @@ export default function Form() {
         } else if (values.size === "") {
             setErrors({ ...errors, size: "Debe seleccionar un tamaño" });
         } else {
-
             createAnimal(values, images);
-
-
-
         }
     }
 
     useEffect(() => {
-
-        // const displayAlert = async () => {
-
-        //     let res = await MySwal.fire({
-        //         title: <strong>Good job!</strong>,
-        //         html: <i>You clicked the button!</i>,
-        //         icon: 'question',
-        //         showDenyButton: true,
-        //         showCancelButton: true,
-        //         confirmButtonText: 'Save',
-        //         denyButtonText: `Don't save`,
-
-        //     });
-
-        //     if (res.isConfirmed) {
-        //         MySwal.fire('Saved!', '', 'success')
-        //     } else if (res.isDenied) {
-        //         MySwal.fire('Changes are not saved', '', 'info')
-        //     }
-        // }
-
         const displayAlert = async () => {
-            await MySwal.fire({
-                title: <p style={{fontSize:22,fontWeight:"bold"}}>{message.text}</p>,
+            let res = await MySwal.fire({
+                title: <p style={{ fontSize: 22, fontWeight: "bold" }}>{message.text}</p>,
+                allowOutsideClick: false,
                 icon: message.category,
-    
+
             });
+
+
+            if (res.isConfirmed) {
+
+                await handleAnimalMessage(null);
+                history.push("/gallery");
+            }
         }
-        console.log(message);
         if (message && message.showIn === "form") {
 
             displayAlert();
-            // MySwal.fire(message, '', 'success');
         }
 
     }, [message]);
@@ -391,7 +375,7 @@ export default function Form() {
                     >
                         <LocalizationProvider dateAdapter={DateAdapter}>
                             <DatePicker
-                                label="Fecha de rescate (aproximada)"
+                                label="Fecha de rescate (aprox)"
                                 value={values.rescueDate}
                                 maxDate={new moment()}
                                 onChange={(newValue) => {
@@ -528,9 +512,18 @@ export default function Form() {
                     )}
                 </ImageUploading>
 
-
+                {loading && <div style={{ marginTop: 25, marginBottom: 25, display: "flex", justifyContent: "center", alignItems: "center" }}>
+                    <CircularProgress color="success" />
+                    <p style={{ marginLeft: 10 }}>Guardando...</p>
+                </div>}
                 <Box sx={{ justifyContent: "center", paddingBottom: 3 }} display="flex">
-                    <Button size="medium" variant="contained" color="success" onClick={() => onSubmit()}>Guardar registro</Button>
+
+                    <Button size="medium" variant="contained" color="success" onClick={() => {
+                        console.log(loading)
+                        if (!loading) {
+                            onSubmit()
+                        }
+                    }}>Guardar registro</Button>
                 </Box>
             </Paper >
         </Container>

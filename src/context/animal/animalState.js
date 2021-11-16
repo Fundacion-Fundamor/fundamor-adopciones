@@ -90,19 +90,22 @@ const AnimalState = props => {
             const res = await axiosClient.post("/api/animals", formattedData);
             if (images.length !== 0) {
                 await insertImages(images, res.data.data);
-            }
-            dispatch({
-                type: ANIMAL_MESSAGE, payload: {
-                    category: "success",
-                    text: res.data.message,
-                    showIn: "form"
+            }else{
+                dispatch({
+                    type: ANIMAL_MESSAGE, payload: {
+                        category: "success",
+                        text: res.data.message,
+                        showIn: "form"
 
-                }
-            })
+                    }
+                })
+            }
+
             // getAnimals();
 
         } catch (error) {
 
+            console.log(error.response)
             let errorsDecriptions = error.response?.data.errors;
 
             let text = "";
@@ -140,22 +143,19 @@ const AnimalState = props => {
                 }
             );
 
-            console.log(res.data);
+            dispatch({
+                type: ANIMAL_MESSAGE, payload: {
+                    category: "success",
+                    text: "Se ha registrado el animal con éxito",
+                    showIn: "form"
+
+                }
+            });
         } catch (error) {
-
-            let errorsDecriptions = error.response?.data.errors;
-
-            let text = "";
-            if (errorsDecriptions) {
-                text = errorsDecriptions[0];
-            } else {
-                text = error.response.data.message;
-            }
-
             dispatch({
                 type: ANIMAL_MESSAGE, payload: {
                     category: "error",
-                    text: text,
+                    text: "El animal ha sido registrado exitosamente pero ha ocurrido un error al registrar sus imagenes",
                     showIn: "form"
                 }
             })
