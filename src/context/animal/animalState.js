@@ -27,7 +27,6 @@ const AnimalState = props => {
                 payload: true
             });
             const res = await axiosClient.get("/api/animals");
-
             if (res.data.state) {
                 dispatch({
                     type: ANIMALS,
@@ -90,7 +89,7 @@ const AnimalState = props => {
             const res = await axiosClient.post("/api/animals", formattedData);
             if (images.length !== 0) {
                 await insertImages(images, res.data.data);
-            }else{
+            } else {
                 dispatch({
                     type: ANIMAL_MESSAGE, payload: {
                         category: "success",

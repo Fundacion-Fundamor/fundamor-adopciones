@@ -8,7 +8,7 @@ export default (state, action) => {
         case ANIMALS:
             return {
                 ...state,
-                employees: action.payload,
+                animals: action.payload,
                 loading: false
 
             }

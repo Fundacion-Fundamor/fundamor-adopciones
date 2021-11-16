@@ -1,35 +1,19 @@
 import CardSlider from '../../components/Slider'
 import './home.scss'
-import axios from 'axios'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useContext } from 'react'
 import { Card, Button } from 'react-bootstrap'
 import Footer from '../../components/Footer'
 import SocialButton from '../../components/SocialButton'
 import List from '../../components/Post/List'
+import AnimalContext from '../../context/animal/animalContext'
 
 function Home(props) {
-  const [allAnimals, setAllAnimals] = useState([])
 
-  const getAllAnimals = async () => {
-    const res = await axios.get('https://pokeapi.co/api/v2/pokemon?limit=20')
-    const data = await res.data
 
-    function createAnimalObject(results) {
-      results.forEach(async (animal) => {
-        const res = await axios.get(
-          `https://pokeapi.co/api/v2/pokemon/${animal.name}`,
-        )
-        const data = await res.data
-        setAllAnimals((currentList) => [...currentList, data])
-        await allAnimals.sort((a, b) => a.id - b.id)
-      })
-    }
-    createAnimalObject(data.results)
-    // console.log(allAnimals)
-  }
+  const { animals, message, loading, getAnimals, handleAnimalMessage } = useContext(AnimalContext); // contexto de animales
 
   useEffect(() => {
-    getAllAnimals()
+    getAnimals()
   }, [])
 
   return (
@@ -60,7 +44,7 @@ function Home(props) {
         <img className="clippedImage" src="./images/maskedCat.png" alt="" />
       </section>
       <div className="slider-container">
-        <CardSlider className="main-slider" items={allAnimals} />
+        <CardSlider className="main-slider" items={animals} />
       </div>
       {/* <div style={{ background: 'blue', height: '40rem' }}></div> */}
 

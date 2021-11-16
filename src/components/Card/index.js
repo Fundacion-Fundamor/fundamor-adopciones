@@ -1,20 +1,25 @@
 import React from 'react'
 import './card.scss'
 
-function Card(props) {
+/**Los animales pueden tener varias imagenes
+ * 
+ * @param {*} param0 
+ * @returns 
+ */
+function Card({ animal }) {
+
   return (
     <div className="card-container">
       <div className="image-container">
-        <img src={props.img} alt="card" />
+        {animal.animalImage.length !== 0 ? <img src={`${process.env.REACT_APP_API_URL}/${animal.animalImage[0].ruta}`} alt="card" /> : 
+          <img src={`${process.env.REACT_APP_URL}/images/sin_imagen.png`} alt="card" />}
       </div>
       <div className="card-body">
-        <h2>{props.title}</h2>
+        <h2>{animal.nombre}</h2>
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam.
+          {animal.caracteristicas}
         </p>
-        <h5>{props.author}</h5>
+        <h5>{animal.sexo}</h5>
       </div>
     </div>
   )
