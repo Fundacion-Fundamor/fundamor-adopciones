@@ -80,7 +80,7 @@ export default function Form({ handleToggle }) {
         }
     }, [message]);
     return (
-        <div style={{ minWidth: 340, width: 400, backgroundColor: "#fff", padding: 15, borderRadius: 15, margin: 30, marginBottom: 30 }}>
+        <div style={{ minWidth: 340, width: 400, backgroundColor: "#fff", padding: 15, borderRadius:4, margin: 30, marginBottom: 30 }}>
 
 
             <div className="form-container">

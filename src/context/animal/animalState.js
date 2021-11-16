@@ -62,7 +62,7 @@ const AnimalState = props => {
 
     }
 
-    const createAnimal = async (data,images) => {
+    const createAnimal = async (data, images) => {
 
         dispatch({
             type: TOGGLE_ANIMAL_LOADING,
@@ -88,8 +88,9 @@ const AnimalState = props => {
 
         try {
             const res = await axiosClient.post("/api/animals", formattedData);
-            console.log(res.data);
-            await insertImages(images, res.data.data);
+            if (images.length !== 0) {
+                await insertImages(images, res.data.data);
+            }
             dispatch({
                 type: ANIMAL_MESSAGE, payload: {
                     category: "success",
@@ -98,7 +99,7 @@ const AnimalState = props => {
 
                 }
             })
-            getAnimals();
+            // getAnimals();
 
         } catch (error) {
 
