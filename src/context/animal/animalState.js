@@ -61,6 +61,49 @@ const AnimalState = props => {
 
     }
 
+
+    const getAnimal = async (animalId) => {
+
+        try {
+            dispatch({
+                type: TOGGLE_ANIMAL_LOADING,
+                payload: true
+            });
+            const res = await axiosClient.get(`/api/animals/${animalId}`);
+            if (res.data.state) {
+                dispatch({
+                    type: SELECT_ANIMAL,
+                    payload: res.data.data
+                });
+            } else {
+                dispatch({
+                    type: SELECT_ANIMAL,
+                    payload: null
+                });
+            }
+
+        } catch (error) {
+            let errorsDecriptions = error.response?.data.errors;
+
+            let text = "";
+            if (errorsDecriptions) {
+                text = errorsDecriptions[0];
+            } else {
+                text = error.response.data.message;
+            }
+
+            dispatch({
+                type: ANIMAL_MESSAGE, payload: {
+                    category: "error",
+                    text: text,
+                    showIn: "detail"
+                }
+            });
+
+        }
+
+    }
+
     const createAnimal = async (data, images) => {
 
         dispatch({
@@ -273,6 +316,7 @@ const AnimalState = props => {
             selectedAnimal: state.selectedAnimal,
             message: state.message,
             getAnimals,
+            getAnimal,
             createAnimal,
             selectAnimal,
             removeAnimal,

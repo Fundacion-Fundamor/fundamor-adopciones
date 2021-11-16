@@ -27,7 +27,8 @@ export default (state, action) => {
         case SELECT_ANIMAL:
             return {
                 ...state,
-                selectedAnimal: action.payload
+                selectedAnimal: action.payload,
+                loading: false
             }
         default:
             return state;

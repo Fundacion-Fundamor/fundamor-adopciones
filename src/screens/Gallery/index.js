@@ -3,11 +3,13 @@ import React, { useEffect, useState, useContext } from 'react'
 import Card from '../../components/Card'
 import AuthContext from '../../context/auth/authContext'
 import AnimalContext from '../../context/animal/animalContext'
-
+import { useRouteMatch, Switch, Route } from "react-router-dom";
+import Animal from '../../components/animals/Animal'
 
 
 function Gallery(props) {
 
+  let { path, url } = useRouteMatch();
   // const {authenticatedUser} = useContext(AuthContext);
 
   const { animals, message, loading, getAnimals, handleAnimalMessage } = useContext(AnimalContext); // contexto de animales
@@ -19,23 +21,31 @@ function Gallery(props) {
     getAnimals();
   }, []);
 
-
-
-
   return (
-    <div className="gallery-container">
-      <div className="card-gallery-container">
-        {animals.map((element, index) => (
-          <Card
-            key={index}
-            // img={element.sprites.other.dream_world.front_default}
-            // title={element.name}
-            // author={element.types[0].type.name}
-            animal={element}
-          />
-        ))}
-      </div>
+
+    <div>
+      <Switch>
+        <Route exact path={path}>
+          <div className="gallery-container">
+            <div className="card-gallery-container">
+              {animals.map((element, index) => (
+                <Card
+                  key={index}
+                  // img={element.sprites.other.dream_world.front_default}
+                  // title={element.name}
+                  // author={element.types[0].type.name}
+                  animal={element}
+                />
+              ))}
+            </div>
+          </div>
+        </Route>
+        <Route path={`${path}/:animalId`}>
+          <Animal />
+        </Route>
+      </Switch>
     </div>
+
   )
 }
 export default Gallery
