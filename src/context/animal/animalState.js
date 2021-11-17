@@ -158,7 +158,7 @@ const AnimalState = props => {
                         }
                     });
                 }
-
+                getAnimals();
             } else {
                 dispatch({
                     type: ANIMAL_MESSAGE, payload: {
@@ -294,7 +294,7 @@ const AnimalState = props => {
 
                         }
                     });
-
+                    getAnimals();
                 } else {
                     dispatch({
                         type: ANIMAL_MESSAGE, payload: {
@@ -345,17 +345,16 @@ const AnimalState = props => {
             payload: true
         });
         try {
-            let res = await axiosClient.delete("/api/animals/" + animalID);
 
+            let res = await axiosClient.delete("/api/animals/" + animalID);
             dispatch({
                 type: ANIMAL_MESSAGE, payload: {
                     category: "success",
                     text: res.data.message,
-                    showIn: "list"
+                    showIn: "detail"
                 }
-            })
+            });
             getAnimals();
-
         } catch (error) {
 
             let errorsDecriptions = error.response?.data.errors;
@@ -370,7 +369,7 @@ const AnimalState = props => {
                 type: ANIMAL_MESSAGE, payload: {
                     category: "error",
                     text: text,
-                    showIn: "list"
+                    showIn: "detail"
                 }
             })
         }
