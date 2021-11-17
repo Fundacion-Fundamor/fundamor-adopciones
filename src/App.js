@@ -23,9 +23,11 @@ import AuthState from './context/auth/authState'
 import EmployeeState from './context/employee/employeeState'
 import QuestionState from './context/question/questionState'
 import AnimalState from './context/animal/animalState'
+import AdopterState from './context/adopter/adopterState'
 
 import Question from './screens/Questions'
 import Animal from './screens/Animal'
+import Adopter from './screens/Adopter'
 
 const token = localStorage.getItem("token");
 if (token) {
@@ -37,26 +39,29 @@ function App() {
     <AuthState>
       <AnimalState>
         <EmployeeState>
-          <QuestionState>
-            <div className="App">
-              <Router>
-                <NavbarComponent />{' '}
-                <div className="main-content">
-                  <Switch>
-                    <Route path="/" exact component={Home} />
-                    <Route path="/about" component={About} />
-                    <PrivateRoute path="/gallery" component={Gallery} />
-                    <Route path="/login" component={Login} />
-                    <Route path="/passwordReset" component={PasswordReset} />
-                    <PrivateRoute path="/employees" component={Employeee} />
-                    <PrivateRoute path="/animals" component={Animal} />
-                    <PrivateRoute path="/questions" component={Question} />
-                    <Route path="/csstests" component={Test} />
-                  </Switch>
-                </div>
-              </Router>
-            </div>
-          </QuestionState>
+          <AdopterState>
+            <QuestionState>
+              <div className="App">
+                <Router>
+                  <NavbarComponent />{' '}
+                  <div className="main-content">
+                    <Switch>
+                      <Route path="/" exact component={Home} />
+                      <Route path="/about" component={About} />
+                      <PrivateRoute path="/gallery" component={Gallery} />
+                      <Route path="/login" component={Login} />
+                      <Route path="/passwordReset" component={PasswordReset} />
+                      <PrivateRoute path="/employees" component={Employeee} />
+                      <PrivateRoute path="/animals" component={Animal} />
+                      <PrivateRoute path="/questions" component={Question} />
+                      <PrivateRoute path="/adopters" component={Adopter} />
+                      <Route path="/csstests" component={Test} />
+                    </Switch>
+                  </div>
+                </Router>
+              </div>
+            </QuestionState>
+          </AdopterState>
         </EmployeeState>
       </AnimalState>
     </AuthState>

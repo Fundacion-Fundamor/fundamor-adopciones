@@ -1,20 +1,20 @@
 import React, { useState, useEffect, useContext } from 'react'
-import List from '../../components/employees/List'
-import './employee.scss'
+import List from '../../components/adopters/List'
+import './adopter.scss'
 
-import Form from '../../components/employees/Form'
+import Form from '../../components/adopters/Form'
 import {
   Button,
   Modal,
   Box,
 } from '@mui/material'
-import EmployeeContext from '../../context/employee/employeeContext'
-export default function Employeee() {
+import AdopterContext from '../../context/adopter/adopterContext'
+export default function Adopter() {
   const {
-    selectedEmployee,
-    selectEmployee,
-    handleEmployeeMessage,
-  } = useContext(EmployeeContext)
+    selectedAdopter,
+    selectAdopter,
+    handleAdopterMessage,
+  } = useContext(AdopterContext)
 
   const [showForm, setShowForm] = useState(false)
 
@@ -24,25 +24,25 @@ export default function Employeee() {
 
   useEffect(() => {
     if (!showForm) {
-      selectEmployee(null)
-      handleEmployeeMessage(null)
+      selectAdopter(null)
+      handleAdopterMessage(null)
     }
   }, [showForm])
 
   useEffect(() => {
-    if (selectedEmployee) {
+    if (selectedAdopter) {
       setShowForm(!showForm)
     }
-  }, [selectedEmployee])
+  }, [selectedAdopter])
 
   return (
-    <div className="employee-container">
-      <div className="employeeBanner">
-        <div className="employeeBanner__header">
-          <h1>Gestiona el acceso a la plataforma</h1>
+    <div className="adopter-container">
+      <div className="adopterBanner">
+        <div className="adopterBanner__header">
+          <h1>Gestiona los adoptantes vinculados a procesos de adopción</h1>
         </div>
         <svg
-          className="employeeBanner__divider"
+          className="adopterBanner__divider"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 1440 320"
         >
@@ -53,15 +53,15 @@ export default function Employeee() {
           ></path>
         </svg>
       </div>
-      <div className="employeeBanner__content">
+      <div className="adopterBanner__content">
         <Button
-          className="employeeBanner__button"
+          className="adopterBanner__button"
           style={{ maxWidth: 220 }}
           color="error"
           onClick={handleToggle}
           variant="contained"
         >
-          Agregar colaborador
+          Agregar adoptante
         </Button>
       </div>
   

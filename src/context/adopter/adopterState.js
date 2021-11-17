@@ -1,7 +1,7 @@
 import React, { useReducer } from 'react';
 import AdopterContext from './adopterContext';
 import AdopterReducer from './adopterReducer';
-import { ADOPTERS, SELECT_ADOPTER, TOGGLE_ADOPTERS_LOADING, ADOPTER_MESSAGE } from '../../types';
+import { ADOPTERS, SELECT_ADOPTER, TOGGLE_ADOPTER_LOADING, ADOPTER_MESSAGE } from '../../types';
 import axiosClient from '../../config/axios';
 
 const AdopterState = props => {
@@ -22,11 +22,12 @@ const AdopterState = props => {
 
         try {
             dispatch({
-                type: TOGGLE_ADOPTERS_LOADING,
+                type: TOGGLE_ADOPTER_LOADING,
                 payload: true
             });
             const res = await axiosClient.get("/api/adopters");
 
+            console.log(res.data);
             if (res.data.state) {
                 dispatch({
                     type: ADOPTERS,
@@ -64,21 +65,24 @@ const AdopterState = props => {
     const createAdopter = async (data) => {
 
         dispatch({
-            type: TOGGLE_ADOPTERS_LOADING,
+            type: TOGGLE_ADOPTER_LOADING,
             payload: true
         });
         let formattedData = {
-            correo: data.email,
-            contrasenia: data.password,
+            correo: data.email !== "" ? data.email : null,
+            contrasenia: data.password !== "" ? data.password : null,
             nombre: data.name,
-            rol: data.role,
-            id_empleado: data.ID
+            telefono_casa: data.housePhone === "" ? null : data.housePhone,
+            telefono_celular: data.phone,
+            ocupacion: data.profession,
+            ciudad: data.address,
+            id_adoptante: data.ID
         }
         try {
             const res = await axiosClient.post("/api/adopters", formattedData);
             dispatch({
                 type: ADOPTER_MESSAGE, payload: {
-                    category: "success",
+                    category: res.data.state ? "success" : "error",
                     text: res.data.message,
                     showIn: "form"
 
@@ -110,25 +114,31 @@ const AdopterState = props => {
     const editAdopter = async (data, edit = false) => {
 
         dispatch({
-            type: TOGGLE_ADOPTERS_LOADING,
+            type: TOGGLE_ADOPTER_LOADING,
             payload: true
         });
         let formattedData = {};
 
         if (!edit || data.enablePassword) {
             formattedData = {
-                correo: data.email,
+                correo: data.email !== "" ? data.email : null,
                 contrasenia: data.password,
                 nombre: data.name,
-                rol: data.role,
-                id_empleado: data.ID
+                telefono_casa: data.housePhone === "" ? null : data.housePhone,
+                telefono_celular: data.phone,
+                ocupacion: data.profession,
+                ciudad: data.address,
+                id_adoptante: data.ID
             }
         } else {
             formattedData = {
-                correo: data.email,
+                correo: data.email !== "" ? data.email : null,
                 nombre: data.name,
-                rol: data.role,
-                id_empleado: data.ID
+                telefono_casa: data.housePhone === "" ? null : data.housePhone,
+                telefono_celular: data.phone,
+                ocupacion: data.profession,
+                ciudad: data.address,
+                id_adoptante: data.ID
             }
         }
 
@@ -137,7 +147,7 @@ const AdopterState = props => {
             let res = await axiosClient.put("/api/adopters", formattedData);
             dispatch({
                 type: ADOPTER_MESSAGE, payload: {
-                    category: "success",
+                    category: res.data.state ? "success" : "error",
                     text: res.data.message,
                     showIn: "form"
 
@@ -168,7 +178,7 @@ const AdopterState = props => {
     const removeAdopter = async (idAdopter) => {
 
         dispatch({
-            type: TOGGLE_ADOPTERS_LOADING,
+            type: TOGGLE_ADOPTER_LOADING,
             payload: true
         });
         try {
@@ -176,7 +186,7 @@ const AdopterState = props => {
 
             dispatch({
                 type: ADOPTER_MESSAGE, payload: {
-                    category: "success",
+                    category: res.data.state ? "success" : "error",
                     text: res.data.message,
                     showIn: "list"
                 }

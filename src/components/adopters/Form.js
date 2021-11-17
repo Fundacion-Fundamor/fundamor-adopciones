@@ -3,26 +3,30 @@ import React, { useState, useEffect, useContext } from 'react'
 import './form.scss';
 import { Alert, Button, CircularProgress, FormControl, InputLabel, MenuItem, TextField, Select, FormHelperText, FormControlLabel, Checkbox } from '@mui/material';
 import { GrClose } from 'react-icons/gr';
-import EmployeeContext from '../../context/employee/employeeContext';
+import AdopterContext from '../../context/adopter/adopterContext';
 
 
-/**Componente encargado del registro y edición de un colaborador
+/**Componente encargado del registro y edición de un adoptante
  *
  * @param {*} param0 
  * @returns 
  */
 export default function Form({ handleToggle }) {
 
-    const { createEmployee, selectedEmployee, editEmployee, loading, message } = useContext(EmployeeContext);
+    const { createAdopter, selectedAdopter, editAdopter, loading, message } = useContext(AdopterContext);
 
     const [values, setValues] = useState({
-        name: selectedEmployee ? selectedEmployee.nombre : "",
-        email: selectedEmployee ? selectedEmployee.correo : "",
-        ID: selectedEmployee ? selectedEmployee.id_empleado : "",
+        name: selectedAdopter ? selectedAdopter.nombre : "",
+        email: selectedAdopter ? selectedAdopter.correo : "",
+        ID: selectedAdopter ? selectedAdopter.id_adoptante : "",
         password: "",
         passwordConfirm: "",
-        role: selectedEmployee ? selectedEmployee.rol : "",
-        enablePassword: selectedEmployee === null
+
+        enablePassword: false,
+        profession: selectedAdopter ? selectedAdopter.ocupacion : "",
+        address: selectedAdopter ? selectedAdopter.ciudad : "",
+        housePhone: selectedAdopter ? (selectedAdopter.telefono_casa ?? "") : "",
+        phone: selectedAdopter ? (selectedAdopter.telefono_celular ?? "") : "",
     });
     const [errors, setErrors] = useState({
         name: null,
@@ -30,7 +34,10 @@ export default function Form({ handleToggle }) {
         ID: null,
         password: null,
         passwordConfirm: null,
-        role: null
+
+        profession: null,
+        address: null,
+        phone: null
     });
 
     const onSubmit = async () => {
@@ -42,11 +49,16 @@ export default function Form({ handleToggle }) {
             setErrors({ ...errors, name: "Debe ingresar un nombre" });
         } else if (values.ID === "") {
             setErrors({ ...errors, ID: "Debe ingresar una identificación" });
-        } else if (values.email === "" || re.test(values.email) === false) {
+        } else if ((values.enablePassword && values.email === "") || (values.email !== "" && re.test(values.email) === false)) {
             setErrors({ ...errors, email: "Debe ingresar un  correo válido" });
-        } else if (values.role === "") {
-            setErrors({ ...errors, role: "Debe seleccionar un rol" });
-        } else if (values.enablePassword && values.password === "") {
+        } else if (values.profession === "") {
+            setErrors({ ...errors, profession: "Debe especificar una profesión" });
+        } else if (values.address === "") {
+            setErrors({ ...errors, address: "Debe ingresar una dirección" });
+        } else if (values.phone === "") {
+            setErrors({ ...errors, phone: "Debe ingresar un número de celular" });
+        }
+        else if (values.enablePassword && values.password === "") {
             setErrors({ ...errors, password: "Debe ingresar una contraseña" });
         } else if (values.enablePassword && values.password.length < 6) {
             setErrors({ ...errors, password: "La contraseña debe tener mínimo 6 caracteres" });
@@ -54,12 +66,12 @@ export default function Form({ handleToggle }) {
             setErrors({ ...errors, passwordConfirm: "Las contraseñas no coinciden" });
         } else {
 
-            if (selectedEmployee) {
-                //se editan los datos del colaborador
-                editEmployee(values);
+            if (selectedAdopter) {
+                //se editan los datos del adoptante
+                editAdopter(values);
             } else {
-                //se guardan los datos del colaborador
-                createEmployee(values);
+                //se guardan los datos del adoptante
+                createAdopter(values);
             }
 
         }
@@ -67,30 +79,38 @@ export default function Form({ handleToggle }) {
 
     useEffect(() => {
 
-        if (message && message.category === "success" && message.showIn === "form" && selectedEmployee === null) {
+        if (message && message.category === "success" && message.showIn === "form" && selectedAdopter === null) {
             setValues({
                 name: "",
                 email: "",
                 ID: "",
                 password: "",
                 passwordConfirm: "",
-                role: selectedEmployee ? selectedEmployee.rol : "",
-                enablePassword: selectedEmployee === null
+                enablePassword: false,
+                profession: "",
+                address: "",
+                housePhone: "",
+                phone: "",
+
 
             });
         }
     }, [message]);
+
+    useEffect(() => {
+        setValues({ ...values, password: "", passwordConfirm: "" })
+    }, [values.enablePassword])
     return (
         <div style={{ minWidth: 340, width: 400, backgroundColor: "#fff", padding: 15, borderRadius: 4, margin: 30, marginBottom: 30 }}>
 
 
             <div className="form-container">
                 <div style={{ display: "flex", justifyContent: "space-between" }}>
-                    {selectedEmployee ?
-                        <h3>Edita los datos del colaborador </h3>
+                    {selectedAdopter ?
+                        <h3>Edita los datos del adoptante </h3>
                         :
-                        <h3>Registra los colaboradores que tendrán acceso a la plataforma de adopción </h3>}
-                    <GrClose size={selectedEmployee ? 25 : 35} color="#000" onClick={handleToggle} cursor="pointer" />
+                        <h3>Registra algún adoptante para vincularlo a un proceso de adopción</h3>}
+                    <GrClose size={selectedAdopter ? 25 : 35} color="#000" onClick={handleToggle} cursor="pointer" />
                 </div>
                 <div className="form-group">
 
@@ -113,7 +133,7 @@ export default function Form({ handleToggle }) {
                         fullWidth
                         error={errors.ID !== null}
                         label="Identificación"
-                        disabled={selectedEmployee !== null}
+                        disabled={selectedAdopter !== null}
                         helperText={errors.ID}
                         variant="standard"
                         value={values.ID}
@@ -137,29 +157,64 @@ export default function Form({ handleToggle }) {
                         }}
                     />
                 </div>
-                <FormControl fullWidth variant="standard">
-                    <InputLabel id="demo-simple-select-label" error={errors.role !== null} >Rol</InputLabel>
-                    <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={values.role}
-                        label="Seleccione el rol"
+                <div className="form-group">
+                    <TextField
+                        fullWidth
+                        error={errors.profession != null}
+                        label="Profesión"
+                        helperText={errors.profession}
+                        variant="standard"
+                        value={values.profession}
                         onChange={(event) => {
-                            setValues({
-                                ...values, role: event.target.value
-                            });
-                            setErrors({ ...errors, role: null });
+                            setValues({ ...values, profession: event.target.value });
+                            setErrors({ ...errors, profession: null })
                         }}
-                        error={errors.role !== null}
-                    >
-                        <MenuItem value={"administrador"}>Administrador</MenuItem>
-                        <MenuItem value={"colaborador"}>Colaborador</MenuItem>
-                    </Select>
-                    {errors.role && <FormHelperText error={true}>{errors.role}</FormHelperText>}
-                </FormControl>
+                    />
+                </div>
+                <div className="form-group">
+                    <TextField
+                        fullWidth
+                        error={errors.address != null}
+                        label="Dirección"
+                        helperText={errors.address}
+                        variant="standard"
+                        value={values.address}
+                        onChange={(event) => {
+                            setValues({ ...values, address: event.target.value });
+                            setErrors({ ...errors, address: null })
+                        }}
+                    />
+                </div>
 
-                {selectedEmployee !== null && <FormControlLabel style={{ marginTop: 15 }} control={<Checkbox checked={values.enablePassword} onChange={() => { setValues({ ...values, enablePassword: !values.enablePassword }) }} />} label="Editar contraseña" />}
-                {(values.enablePassword || selectedEmployee === null) && <>
+                <div className="form-group">
+                    <TextField
+                        fullWidth
+                        error={errors.phone != null}
+                        label="Celular"
+                        helperText={errors.phone}
+                        variant="standard"
+                        value={values.phone}
+                        onChange={(event) => {
+                            setValues({ ...values, phone: event.target.value });
+                            setErrors({ ...errors, phone: null })
+                        }}
+                    />
+                </div>
+
+                <div className="form-group">
+                    <TextField
+                        fullWidth
+                        label="Teléfono fijo"
+                        variant="standard"
+                        value={values.housePhone}
+                        onChange={(event) => {
+                            setValues({ ...values, housePhone: event.target.value });
+                            setErrors({ ...errors, housePhone: null })
+                        }}
+                    />
+                </div>
+                <FormControlLabel style={{ marginTop: 15 }} control={<Checkbox checked={values.enablePassword} onChange={() => { setValues({ ...values, enablePassword: !values.enablePassword }) }} />} label={selectedAdopter ? "Editar y/o habilitar contraseña" : "Habilitar contraseña para el acceso"} />
+                {values.enablePassword && <>
                     <div className="form-group">
                         <TextField
                             fullWidth

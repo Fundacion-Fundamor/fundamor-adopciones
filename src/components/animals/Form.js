@@ -222,7 +222,7 @@ export default function Form() {
                                 name="row-radio-buttons-group"
                                 value={values.specie}
                                 onChange={(event) => {
-                                    setValues({ ...values, ["specie"]: event.target.value });
+                                    setValues({ ...values, specie: event.target.value });
                                     setErrors({ ...errors, specie: null });
                                 }}>
                                 <FormControlLabel value="perro" control={<Radio />} label="Perro" />
@@ -248,8 +248,8 @@ export default function Form() {
                                 mask={'__/__/____'}
                                 onChange={(newValue) => {
 
-                                    setValues({ ...values, ["birthday"]: newValue });
-                                    setErrors({ ...errors, ["birthday"]: null });
+                                    setValues({ ...values, birthday: newValue });
+                                    setErrors({ ...errors, birthday: null });
                                 }}
 
                                 renderInput={(params) => <TextField {...params} variant="standard" helperText={errors.birthday} error={errors.birthday !== null} />}
@@ -270,9 +270,9 @@ export default function Form() {
                             variant="standard"
                             helperText={errors.color}
                             onBlur={(event) => {
-                                setValues({ ...values, ["color"]: event.target.value });
+                                setValues({ ...values, color: event.target.value });
                                 if (event.target.value !== "") {
-                                    setErrors({ ...errors, ["color"]: null });
+                                    setErrors({ ...errors, color: null });
                                 }
                             }}
                             inputProps={{ maxLength: 45 }}
@@ -292,8 +292,8 @@ export default function Form() {
                             <FormLabel component="label" sx={{ fontSize: 14 }}>Sexo</FormLabel>
                             <RadioGroup row aria-label="gender" name="row-radio-buttons-group" value={values.gender}
                                 onChange={(event) => {
-                                    setValues({ ...values, ["gender"]: event.target.value });
-                                    setErrors({ ...errors, ["gender"]: null });
+                                    setValues({ ...values, gender: event.target.value });
+                                    setErrors({ ...errors, gender: null });
                                 }}>
                                 <FormControlLabel value="macho" control={<Radio />} label="Macho" />
                                 <FormControlLabel value="hembra" control={<Radio />} label="Hembra" />
@@ -320,9 +320,9 @@ export default function Form() {
                                 label="Seleccione el tamaño"
                                 onChange={(event) => {
                                     setValues({
-                                        ...values, ["size"]: event.target.value
+                                        ...values, size: event.target.value
                                     });
-                                    setErrors({ ...errors, ["size"]: null });
+                                    setErrors({ ...errors, size: null });
                                 }}
                                 error={errors.size !== null}
                             >
@@ -338,8 +338,8 @@ export default function Form() {
                     <Grid item xs={12} md={12} padding={1}>
                         <TextField label="Descripción"
                             onBlur={(event) => {
-                                setValues({ ...values, ["characteristics"]: event.target.value });
-                                setErrors({ ...errors, ["characteristics"]: null })
+                                setValues({ ...values, characteristics: event.target.value });
+                                setErrors({ ...errors, characteristics: null })
                             }}
                             inputProps={{ maxLength: 300 }}
                             fullWidth multiline={true} minRows={4} variant="filled" />
@@ -359,7 +359,7 @@ export default function Form() {
                             label="Sitio de rescate"
                             variant="standard"
                             onBlur={(event) => {
-                                setValues({ ...values, ["rescueSite"]: event.target.value });
+                                setValues({ ...values, rescueSite: event.target.value });
                             }}
                             inputProps={{ maxLength: 190 }}
                         />
@@ -379,7 +379,7 @@ export default function Form() {
                                 value={values.rescueDate}
                                 maxDate={new moment()}
                                 onChange={(newValue) => {
-                                    setValues({ ...values, ["rescueDate"]: newValue });
+                                    setValues({ ...values, rescueDate: newValue });
                                 }}
                                 renderInput={(params) => <TextField {...params} variant="standard" />}
                             />
@@ -420,9 +420,9 @@ export default function Form() {
                                 disabled
                                 onChange={(event) => {
                                     setValues({
-                                        ...values, ["animalState"]: event.target.value
+                                        ...values, animalState: event.target.value
                                     });
-                                    setErrors({ ...errors, ["animalState"]: null });
+                                    setErrors({ ...errors, animalState: null });
                                 }}
 
                             >
@@ -437,7 +437,7 @@ export default function Form() {
                     <Grid item xs={12} md={12} padding={1}>
                         <TextField label="Vacunas" fullWidth multiline={true} minRows={4} variant="filled"
                             onBlur={(event) => {
-                                setValues({ ...values, ["vaccine"]: event.target.value });
+                                setValues({ ...values, vaccine: event.target.value });
                             }}
                             inputProps={{ maxLength: 100 }}
                         />

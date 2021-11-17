@@ -26,6 +26,9 @@ const NavbarComponent = () => {
               {authenticated ? <Nav.Link as={Link} to="/animals">
                 Animales
               </Nav.Link> : null}
+              {authenticated ? <Nav.Link as={Link} to="/adopters">
+                Adoptantes
+              </Nav.Link> : null}
               {authenticated ? <Nav.Link as={Link} to="/questions">
                 Preguntas
               </Nav.Link> : null}

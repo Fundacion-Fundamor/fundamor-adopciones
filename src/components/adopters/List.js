@@ -13,26 +13,25 @@ import {
 import { FaTrashAlt, FaUserEdit } from 'react-icons/fa'
 
 import './list.scss'
-import EmployeeContext from '../../context/employee/employeeContext'
+import AdopterContext from '../../context/adopter/adopterContext'
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 
 export default function List() {
     const {
-        employees,
-        getEmployees,
-        removeEmployee,
-        selectEmployee,
+        adopters,
+        getAdopters,
+        removeAdopter,
+        selectAdopter,
         loading,
         message,
-        handleEmployeeMessage
-
-    } = useContext(EmployeeContext);
+        handleAdopterMessage
+    } = useContext(AdopterContext);
 
     const MySwal = withReactContent(Swal);
 
  
-    const selectEmployeeRemove = async (idEmployee) => {
+    const selectAdopterRemove = async (idAdopter) => {
         MySwal.fire({
             title: <p style={{ fontSize: 22, fontWeight: "bold" }}>{"Confirmación"}</p>,
             text: "¿Está seguro que desea eliminar este colaborador?",
@@ -43,7 +42,7 @@ export default function List() {
             backdrop: true,
             preConfirm: async (response) => {
 
-                await removeEmployee(idEmployee);
+                await removeAdopter(idAdopter);
                 return true;
             },
 
@@ -53,7 +52,7 @@ export default function List() {
 
 
     useEffect(() => {
-        getEmployees()
+        getAdopters()
     }, [])
 
     
@@ -70,7 +69,7 @@ export default function List() {
 
 
             if (res.isConfirmed) {
-                await handleEmployeeMessage(null);
+                await handleAdopterMessage(null);
             }
         }
         if (message && message.showIn === "list" && !loading) {
@@ -102,12 +101,12 @@ export default function List() {
                     margin: '0 5%',
                 }}
             >
-                {employees.map((element, index) => (
-                    <EmployeeItem
+                {adopters.map((element, index) => (
+                    <AdopterItem
                         item={element}
                         key={index}
-                        removeEmployee={selectEmployeeRemove}
-                        selectEmployee={selectEmployee}
+                        removeAdopter={selectAdopterRemove}
+                        selectAdopter={selectAdopter}
                     />
                 ))}
             </div>
@@ -115,7 +114,7 @@ export default function List() {
     )
 }
 
-const EmployeeItem = ({ item, removeEmployee, selectEmployee }) => {
+const AdopterItem = ({ item, removeAdopter, selectAdopter }) => {
     return (
         <Card
             sx={{ maxWidth: 275, padding: 2, borderRadius: '4px', margin: '0.8rem' }}
@@ -137,7 +136,7 @@ const EmployeeItem = ({ item, removeEmployee, selectEmployee }) => {
             </CardContent>
             <CardActions disableSpacing>
                 <IconButton aria-label="add to favorites" onClick={() => {
-                    selectEmployee(item)
+                    selectAdopter(item)
                 }}>
                     <FaUserEdit
                         size={30}
@@ -146,7 +145,7 @@ const EmployeeItem = ({ item, removeEmployee, selectEmployee }) => {
                     />
                 </IconButton>
                 <IconButton aria-label="share" onClick={() => {
-                    removeEmployee(item.id_empleado)
+                    removeAdopter(item.id_adoptante)
                 }}>
                     <FaTrashAlt
                         size={25}

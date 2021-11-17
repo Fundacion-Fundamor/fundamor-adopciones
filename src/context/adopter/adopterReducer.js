@@ -1,6 +1,6 @@
 /* eslint-disable*/
 
-import { ADOPTERS, SELECT_ADOPTER, TOGGLE_ADOPTERS_LOADING, ADOPTER_MESSAGE } from '../../types';
+import { ADOPTERS, SELECT_ADOPTER, TOGGLE_ADOPTER_LOADING, ADOPTER_MESSAGE } from '../../types';
 
 export default (state, action) => {
 
@@ -12,7 +12,7 @@ export default (state, action) => {
                 loading: false
 
             }
-        case TOGGLE_ADOPTERS_LOADING:
+        case TOGGLE_ADOPTER_LOADING:
             return {
                 ...state,
                 loading: action.payload

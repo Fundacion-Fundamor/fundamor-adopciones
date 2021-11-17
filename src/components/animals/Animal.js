@@ -31,6 +31,7 @@ export default function Animal() {
             confirmButtonText: 'Aceptar',
             showCancelButton: true,
             showLoaderOnConfirm: true,
+            backdrop:true,
             preConfirm: async (response) => {
 
                 await removeAnimal(animalId);
@@ -67,7 +68,7 @@ export default function Animal() {
                 title: <p style={{ fontSize: 22, fontWeight: "bold" }}>{message.text}</p>,
                 allowOutsideClick: false,
                 icon: message.category,
-
+                backdrop:true,
             });
 
 

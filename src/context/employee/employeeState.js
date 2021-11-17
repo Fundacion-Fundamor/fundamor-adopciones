@@ -84,7 +84,7 @@ const EmployeeState = props => {
             const res = await axiosClient.post("/api/employees", formattedData);
             dispatch({
                 type: EMPLOYEE_MESSAGE, payload: {
-                    category: "success",
+                    category: res.data.state ? "success" : "error",
                     text: res.data.message,
                     showIn: "form"
 
@@ -138,12 +138,12 @@ const EmployeeState = props => {
             }
         }
 
-
+        console.log(formattedData);
         try {
             let res = await axiosClient.put("/api/employees", formattedData);
             dispatch({
                 type: EMPLOYEE_MESSAGE, payload: {
-                    category: "success",
+                    category: res.data.state ? "success" : "error",
                     text: res.data.message,
                     showIn: "form"
 
@@ -182,7 +182,7 @@ const EmployeeState = props => {
 
             dispatch({
                 type: EMPLOYEE_MESSAGE, payload: {
-                    category: "success",
+                    category: res.data.state ? "success" : "error",
                     text: res.data.message,
                     showIn: "list"
                 }

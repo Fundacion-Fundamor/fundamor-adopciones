@@ -1,0 +1,32 @@
+@import '../../scss/animations';
+@import '../../scss/variables';
+
+.adopterBanner {
+  padding-top: 2rem;
+  background: #f29f058e;
+}
+
+.adopterBanner__divider {
+  position: absolute;
+  z-index: -1;
+}
+
+.adopterBanner__content {
+  display: grid;
+  place-items: center;
+  padding: 2rem;
+}
+
+.adopterBanner__header {
+  display: grid;
+  place-items: center;
+  padding: 2rem;
+  color: $black;
+}
+
+@media (min-width: 1400px) {
+  .adopterBanner__divider {
+    position: absolute;
+    z-index: -1;
+  }
+}
