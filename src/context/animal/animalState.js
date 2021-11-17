@@ -4,6 +4,12 @@ import AnimalReducer from './animalReducer';
 import { ANIMALS, SELECT_ANIMAL, TOGGLE_ANIMAL_LOADING, ANIMAL_MESSAGE } from '../../types';
 import axiosClient from '../../config/axios';
 
+/**gestionar codigos de errores y timeout
+ * 
+ * @param {*} props 
+ * @returns 
+ */
+
 const AnimalState = props => {
 
     const initialState = {
@@ -130,20 +136,40 @@ const AnimalState = props => {
 
         try {
             const res = await axiosClient.post("/api/animals", formattedData);
-            if (images.length !== 0) {
-                await insertImages(images, res.data.data);
+
+            if (res.data.state) {
+                if (images.length !== 0) {
+                    let resultImagesInsert = await insertImages(images, res.data.data);
+                    dispatch({
+                        type: ANIMAL_MESSAGE, payload: {
+                            category: resultImagesInsert.state ? "success" : "error",
+                            text: resultImagesInsert.state ? res.data.message : "El animal se ha registrado exitosamente, pero ha ocurrido un error al subir las imagenes",
+                            showIn: "form"
+
+                        }
+                    });
+                } else {
+                    dispatch({
+                        type: ANIMAL_MESSAGE, payload: {
+                            category: "success",
+                            text: res.data.message,
+                            showIn: "form"
+
+                        }
+                    });
+                }
+
             } else {
                 dispatch({
                     type: ANIMAL_MESSAGE, payload: {
-                        category: "success",
+                        category: "error",
                         text: res.data.message,
                         showIn: "form"
 
                     }
-                })
+                });
             }
 
-            // getAnimals();
 
         } catch (error) {
 
@@ -185,31 +211,45 @@ const AnimalState = props => {
                 }
             );
 
-            dispatch({
-                type: ANIMAL_MESSAGE, payload: {
-                    category: "success",
-                    text: "Se ha registrado el animal con éxito",
-                    showIn: "form"
-
-                }
-            });
+            return res.data;
         } catch (error) {
-            dispatch({
-                type: ANIMAL_MESSAGE, payload: {
-                    category: "error",
-                    text: "El animal ha sido registrado exitosamente pero ha ocurrido un error al registrar sus imagenes",
-                    showIn: "form"
-                }
-            })
-        }
 
+            return error.response.data;
+        }
     }
-    const editAnimal = async (data) => {
+
+    const removeImages = async (images) => {
+
+        let formattedData = [];
+        images.forEach(element => {
+            formattedData.push(element.id_imagen_animal)
+        })
+
+        try {
+            const res = await axiosClient.delete("/api/animalImages", { data: { id_imagenes: formattedData } },
+                {
+                    headers: {
+                        Accept: "*/*",
+                        "Content-Type": "multipart/form-data;",
+                    },
+                }
+            );
+            return res.data;
+
+        } catch (error) {
+            console.log(error);
+            return error.response.data;
+        }
+    }
+
+
+    const editAnimal = async (data, imagesInsert, imagesRemove) => {
 
         dispatch({
             type: TOGGLE_ANIMAL_LOADING,
             payload: true
         });
+
         let formattedData =
         {
             id_animal: data.animalID,
@@ -229,20 +269,56 @@ const AnimalState = props => {
 
         }
 
-
         try {
             let res = await axiosClient.put("/api/animals", formattedData);
-            dispatch({
-                type: ANIMAL_MESSAGE, payload: {
-                    category: "success",
-                    text: res.data.message,
-                    showIn: "form"
+            if (res.data.state) {
+
+                let resImagesInsert = { state: true };
+                let resImagesRemove = { state: true };
+
+                if (imagesInsert.length !== 0) {
+                    resImagesInsert = await insertImages(imagesInsert, data.animalID);
+                }
+
+                if (imagesRemove.length !== 0) {
+                    resImagesRemove = await removeImages(imagesRemove);
 
                 }
-            })
-            getAnimals();
+                if (resImagesInsert.state && resImagesRemove.state) {
+
+                    dispatch({
+                        type: ANIMAL_MESSAGE, payload: {
+                            category: "success",
+                            text: res.data.message,
+                            showIn: "form"
+
+                        }
+                    });
+
+                } else {
+                    dispatch({
+                        type: ANIMAL_MESSAGE, payload: {
+                            category: "error",
+                            text: "Los datos del animal se han actualizado satisfactoriamente, pero en las imagenes se ha presentado un error, intente actualizarlas de nuevo",
+                            showIn: "form"
+
+                        }
+                    });
+                }
+
+            } else {
+                dispatch({
+                    type: ANIMAL_MESSAGE, payload: {
+                        category: "error",
+                        text: res.data.message,
+                        showIn: "form"
+
+                    }
+                });
+            }
 
         } catch (error) {
+            console.log(error)
             let errorsDecriptions = error.response?.data.errors;
 
             let text = "";
