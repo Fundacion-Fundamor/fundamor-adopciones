@@ -31,7 +31,7 @@ export default function Animal() {
             confirmButtonText: 'Aceptar',
             showCancelButton: true,
             showLoaderOnConfirm: true,
-            backdrop:true,
+            backdrop: true,
             preConfirm: async (response) => {
 
                 await removeAnimal(animalId);
@@ -68,7 +68,7 @@ export default function Animal() {
                 title: <p style={{ fontSize: 22, fontWeight: "bold" }}>{message.text}</p>,
                 allowOutsideClick: false,
                 icon: message.category,
-                backdrop:true,
+                backdrop: true,
             });
 
 
@@ -102,7 +102,11 @@ export default function Animal() {
                 history.push(`/animals/edit/${animalId}`);
 
             }}>Editar</Button>
+            {/*Validar que solo se pueda iniciar un proceso si no se está en alguno actualmente */}
+            <Button size="medium" variant="contained" color="primary" onClick={() => {
+                history.push(`/adoptions/new/${animalId}`);
 
+            }}>Nuevo proceso de adopción</Button>
             <Button size="medium" variant="contained" color="error" onClick={() => onRemoveAnimal()}>Eliminar</Button>
 
         </div>

@@ -1,7 +1,7 @@
 import React, { useReducer } from 'react';
 import AdoptionContext from './adoptionContext';
 import AdoptionReducer from './adoptionReducer';
-import { ADOPTIONS, SELECT_ADOPTION, TOGGLE_ADOPTIONS_LOADING, ADOPTION_MESSAGE } from '../../types';
+import { ADOPTIONS, SELECT_ADOPTION, TOGGLE_ADOPTION_LOADING, ADOPTION_MESSAGE } from '../../types';
 import axiosClient from '../../config/axios';
 
 const AdoptionState = props => {
@@ -28,7 +28,7 @@ const AdoptionState = props => {
 
         try {
             dispatch({
-                type: TOGGLE_ADOPTIONS_LOADING,
+                type: TOGGLE_ADOPTION_LOADING,
                 payload: true
             });
             const res = await axiosClient.get("/api/adoptions");
@@ -70,7 +70,7 @@ const AdoptionState = props => {
     const createAdoption = async (data) => {
 
         dispatch({
-            type: TOGGLE_ADOPTIONS_LOADING,
+            type: TOGGLE_ADOPTION_LOADING,
             payload: true
         });
         let formattedData = {
@@ -116,7 +116,7 @@ const AdoptionState = props => {
     const editAdoption = async (data) => {
 
         dispatch({
-            type: TOGGLE_ADOPTIONS_LOADING,
+            type: TOGGLE_ADOPTION_LOADING,
             payload: true
         });
         let formattedData = {
@@ -162,7 +162,7 @@ const AdoptionState = props => {
     const removeAdoption = async (adoptionID) => {
 
         dispatch({
-            type: TOGGLE_ADOPTIONS_LOADING,
+            type: TOGGLE_ADOPTION_LOADING,
             payload: true
         });
         try {
