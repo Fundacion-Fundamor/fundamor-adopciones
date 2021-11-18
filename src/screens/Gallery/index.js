@@ -37,6 +37,8 @@ function Gallery(props) {
                   animal={element}
                 />
               ))}
+
+              {animals.length === 0 && !loading ? <h3>No hay animales registrados</h3> : null}
             </div>
           </div>
         </Route>

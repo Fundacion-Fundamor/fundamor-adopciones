@@ -109,7 +109,10 @@ export default function List() {
                         selectAdopter={selectAdopter}
                     />
                 ))}
+                {adopters.length === 0 && !loading ? <h3>No hay adoptantes registrados</h3> : null}
             </div>
+
+           
         </>
     )
 }
