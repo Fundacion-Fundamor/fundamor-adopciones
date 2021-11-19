@@ -9,23 +9,26 @@ import {
     Button,
 
 } from '@mui/material';
+import List from '../../components/adoptions/List';
+import Form from '../../components/adoptions/Form';
 export default function Adoption() {
     let history = useHistory();
     let { path } = useRouteMatch();
 
-    return <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+    return <div>
         <Switch>
             <Route exact path={path}>
-                <div>
-                    <p>Lista de adopciones</p>
-                    <Button size="medium" variant="contained" color="success" onClick={() => {
-                        history.push(`/adoptions/new/blank`);
+                <div style={{ display: "flex", alignItems: "center", flexDirection: "column" }}>
+                    <Button size="medium" variant="contained" color="success" sx={{ marginTop: 5 }} onClick={() => {
+                        history.push(`/adoptions/new/-1`);
 
                     }}>Nuevo proceso</Button>
+                    <List />
+
                 </div>
             </Route>
             <Route path={`${path}/new/:animalId`}>
-                <p>Formulario para nuevo proceso</p>
+                <Form />
             </Route>
         </Switch>
     </div>

@@ -32,7 +32,7 @@ const AdoptionState = props => {
                 payload: true
             });
             const res = await axiosClient.get("/api/adoptions");
-
+            console.log(res.data);
             if (res.data.state) {
                 dispatch({
                     type: ADOPTIONS,

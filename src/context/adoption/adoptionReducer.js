@@ -8,7 +8,7 @@ export default (state, action) => {
         case ADOPTIONS:
             return {
                 ...state,
-                adopters: action.payload,
+                adoptions: action.payload,
                 loading: false
 
             }
