@@ -53,18 +53,7 @@ export default function Adopter() {
           ></path>
         </svg>
       </div>
-      <div className="adopterBanner__content">
-        <Button
-          className="adopterBanner__button"
-          style={{ maxWidth: 220 }}
-          color="error"
-          onClick={handleToggle}
-          variant="contained"
-        >
-          Agregar adoptante
-        </Button>
-      </div>
-  
+ 
 
       <Modal
         open={showForm}

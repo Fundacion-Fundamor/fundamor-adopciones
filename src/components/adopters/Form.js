@@ -19,10 +19,6 @@ export default function Form({ handleToggle }) {
         name: selectedAdopter ? selectedAdopter.nombre : "",
         email: selectedAdopter ? selectedAdopter.correo : "",
         ID: selectedAdopter ? selectedAdopter.id_adoptante : "",
-        password: "",
-        passwordConfirm: "",
-
-        enablePassword: false,
         profession: selectedAdopter ? selectedAdopter.ocupacion : "",
         address: selectedAdopter ? selectedAdopter.ciudad : "",
         housePhone: selectedAdopter ? (selectedAdopter.telefono_casa ?? "") : "",
@@ -32,9 +28,6 @@ export default function Form({ handleToggle }) {
         name: null,
         email: null,
         ID: null,
-        password: null,
-        passwordConfirm: null,
-
         profession: null,
         address: null,
         phone: null
@@ -49,21 +42,14 @@ export default function Form({ handleToggle }) {
             setErrors({ ...errors, name: "Debe ingresar un nombre" });
         } else if (values.ID === "") {
             setErrors({ ...errors, ID: "Debe ingresar una identificación" });
-        } else if ((values.enablePassword && values.email === "") || (values.email !== "" && re.test(values.email) === false)) {
+        } else if (values.email !== "" && re.test(values.email) === false) {
             setErrors({ ...errors, email: "Debe ingresar un  correo válido" });
-        } else if (values.profession === "") {
+        }else if (values.profession === "") {
             setErrors({ ...errors, profession: "Debe especificar una profesión" });
         } else if (values.address === "") {
             setErrors({ ...errors, address: "Debe ingresar una dirección" });
         } else if (values.phone === "") {
             setErrors({ ...errors, phone: "Debe ingresar un número de celular" });
-        }
-        else if (values.enablePassword && values.password === "") {
-            setErrors({ ...errors, password: "Debe ingresar una contraseña" });
-        } else if (values.enablePassword && values.password.length < 6) {
-            setErrors({ ...errors, password: "La contraseña debe tener mínimo 6 caracteres" });
-        } else if (values.enablePassword && values.password !== values.passwordConfirm) {
-            setErrors({ ...errors, passwordConfirm: "Las contraseñas no coinciden" });
         } else {
 
             if (selectedAdopter) {
@@ -84,9 +70,6 @@ export default function Form({ handleToggle }) {
                 name: "",
                 email: "",
                 ID: "",
-                password: "",
-                passwordConfirm: "",
-                enablePassword: false,
                 profession: "",
                 address: "",
                 housePhone: "",
@@ -97,9 +80,7 @@ export default function Form({ handleToggle }) {
         }
     }, [message]);
 
-    useEffect(() => {
-        setValues({ ...values, password: "", passwordConfirm: "" })
-    }, [values.enablePassword])
+
     return (
         <div style={{ minWidth: 340, width: 400, backgroundColor: "#fff", padding: 15, borderRadius: 4, margin: 30, marginBottom: 30 }}>
 
@@ -213,37 +194,8 @@ export default function Form({ handleToggle }) {
                         }}
                     />
                 </div>
-                <FormControlLabel style={{ marginTop: 15 }} control={<Checkbox checked={values.enablePassword} onChange={() => { setValues({ ...values, enablePassword: !values.enablePassword }) }} />} label={selectedAdopter ? "Editar y/o habilitar contraseña" : "Habilitar contraseña para el acceso"} />
-                {values.enablePassword && <>
-                    <div className="form-group">
-                        <TextField
-                            fullWidth
-                            error={errors.password !== null}
-                            label="Contraseña"
-                            helperText={errors.password}
-                            variant="standard"
-                            value={values.password}
-                            onChange={(event) => {
-                                setValues({ ...values, password: event.target.value });
-                                setErrors({ ...errors, password: null })
-                            }}
-                        />
-                    </div>
-                    <div className="form-group">
-                        <TextField
-                            fullWidth
-                            error={errors.passwordConfirm !== null}
-                            label="Confirmación de contraseña"
-                            helperText={errors.passwordConfirm}
-                            variant="standard"
-                            value={values.passwordConfirm}
-                            onChange={(event) => {
-                                setValues({ ...values, passwordConfirm: event.target.value });
-                                setErrors({ ...errors, passwordConfirm: null })
-                            }}
-                        />
-                    </div>
-                </>}
+
+
 
                 {loading && <div style={{ marginTop: 15, display: "flex", justifyContent: "center", alignItems: "center" }}>
                     <CircularProgress color="success" />
