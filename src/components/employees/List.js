@@ -136,7 +136,7 @@ const EmployeeItem = ({ item, removeEmployee, selectEmployee }) => {
                 </Typography>
             </CardContent>
             <CardActions disableSpacing>
-                <IconButton aria-label="add to favorites" onClick={() => {
+                <IconButton aria-label="Editar colaborador" onClick={() => {
                     selectEmployee(item)
                 }}>
                     <FaUserEdit
@@ -145,7 +145,7 @@ const EmployeeItem = ({ item, removeEmployee, selectEmployee }) => {
 
                     />
                 </IconButton>
-                <IconButton aria-label="share" onClick={() => {
+                <IconButton aria-label="Eliminar colaborador" onClick={() => {
                     removeEmployee(item.id_empleado)
                 }}>
                     <FaTrashAlt
