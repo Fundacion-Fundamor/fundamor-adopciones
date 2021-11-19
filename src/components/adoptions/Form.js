@@ -286,45 +286,46 @@ export default function Form() {
 
                         : null}
                     {currentStep === 1 ?
+                        <>
+                            <Autocomplete
+                                id=""
+                                sx={{ width: "90%", marginTop: 5 }}
+                                options={[]}
+                                value={adopterSelected}
+                                disableClearable
+                                onChange={(event, newValue) => {
 
-                        <Autocomplete
-                            id=""
-                            sx={{ width: "90%", marginTop: 5 }}
-                            options={[]}
-                            value={adopterSelected}
-                            disableClearable
-                            onChange={(event, newValue) => {
-
-                                setAdopterSelected(newValue);
-                            }}
-                            onInputChange={(event, newInputValue) => {
-                                setInputAdopterValue(newInputValue);
-                            }}
-                            getOptionLabel={(option, props) => option.id_adoptante.toString() + " " + option.nombre.toString()}
-                            inputValue={inputAnimalValue}
-                            lang="Colombia"
-                            renderOption={(props, option) => {
-                                return (
-                                    <Box key={option.id_adoptante.toString()} component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
-                                        {/* {option.animalImage.length !== 0 ? <img width="20" src={`${process.env.REACT_APP_API_URL}/${option.animalImage[0].ruta}`} alt="card" /> :
+                                    setAdopterSelected(newValue);
+                                }}
+                                onInputChange={(event, newInputValue) => {
+                                    setInputAdopterValue(newInputValue);
+                                }}
+                                getOptionLabel={(option, props) => option.id_adoptante.toString() + " " + option.nombre.toString()}
+                                inputValue={inputAnimalValue}
+                                lang="Colombia"
+                                renderOption={(props, option) => {
+                                    return (
+                                        <Box key={option.id_adoptante.toString()} component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+                                            {/* {option.animalImage.length !== 0 ? <img width="20" src={`${process.env.REACT_APP_API_URL}/${option.animalImage[0].ruta}`} alt="card" /> :
                                             <img width="20" src={`${process.env.REACT_APP_URL}/images/sin_imagen.png`} alt="card" />} */}
 
-                                        {option.id_adoptante}{" "}{option.nombre}
-                                    </Box>
-                                )
-                            }}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    label="Identificación del adoptante"
-                                    inputProps={{
-                                        ...params.inputProps,
-                                        autoComplete: 'new-password', // disable autocomplete and autofill
-                                    }}
-                                />
-                            )}
-                        />
-
+                                            {option.id_adoptante}{" "}{option.nombre}
+                                        </Box>
+                                    )
+                                }}
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        label="Identificación del adoptante"
+                                        inputProps={{
+                                            ...params.inputProps,
+                                            autoComplete: 'new-password', // disable autocomplete and autofill
+                                        }}
+                                    />
+                                )}
+                            />
+                            {/* {showForm && <Form handleToggle={handleToggle} />} */}
+                        </>
                         : null}
                     {currentStep === 2 ? <p>paso 3</p> : null}
                     {currentStep === 3 ?
@@ -394,7 +395,7 @@ export default function Form() {
                                     disabled
 
                                 />
-                               
+
 
                             </Grid>
 
@@ -413,7 +414,7 @@ export default function Form() {
                                         labelId="animal-size"
                                         id="animal-size-select"
                                         value={values.size}
-                                        label="Seleccione el tamaño"
+                                        label="Seleccione el estado"
                                         onChange={(event) => {
                                             setValues({
                                                 ...values, size: event.target.value
@@ -454,8 +455,8 @@ export default function Form() {
                                 display="flex"
                                 padding={1}
                             >
-                            
-                            <h4>Revisar respuestas del formulario</h4>
+
+                                <h4>Revisar respuestas del formulario</h4>
                                 <IconButton aria-label="share" onClick={() => {
                                     console.log("despliega un modal con la lista de preguntas y respuestas");
                                 }}>
