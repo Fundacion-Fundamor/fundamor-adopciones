@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react'
 import List from '../../components/adopters/List'
 import './adopter.scss'
 
-import Form from '../../components/adopters/Form'
+import AdopterForm from '../../components/adopters/AdopterForm'
 import {
   Button,
   Modal,
@@ -62,7 +62,7 @@ export default function Adopter() {
         style={{ overflowY: 'scroll' }}
       >
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-          {showForm && <Form handleToggle={handleToggle} />}
+          {showForm && <AdopterForm handleToggle={handleToggle} />}
         </Box>
       </Modal>
 

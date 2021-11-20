@@ -273,8 +273,8 @@ const AnimalState = props => {
             let res = await axiosClient.put("/api/animals", formattedData);
             if (res.data.state) {
 
-                let resImagesInsert = { state: true };
-                let resImagesRemove = { state: true };
+                let resImagesInsert = { data: { state: true } };
+                let resImagesRemove = { data: { state: true }  };
 
                 if (imagesInsert.length !== 0) {
                     resImagesInsert = await insertImages(imagesInsert, data.animalID);
@@ -284,7 +284,7 @@ const AnimalState = props => {
                     resImagesRemove = await removeImages(imagesRemove);
 
                 }
-                if (resImagesInsert.state && resImagesRemove.state) {
+                if (resImagesInsert.data.state && resImagesRemove.data.state) {
 
                     dispatch({
                         type: ANIMAL_MESSAGE, payload: {

@@ -3,11 +3,12 @@ import { CardActions, CardContent, Container, List, Typography, Button, Paper, T
 
 import { BsThreeDotsVertical, BsChevronDown, BsChevronRight } from 'react-icons/bs';
 import { GoPencil } from 'react-icons/go';
-
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 import QuestionContext from '../../context/question/questionContext';
 export default function QuestionList() {
 
-
+    const MySwal = withReactContent(Swal);
     const { questions, getQuestions, removeQuestion, selectQuestionEdit } = useContext(QuestionContext);
 
     useEffect(() => {
@@ -16,7 +17,24 @@ export default function QuestionList() {
     }, [])
 
     const handleRemoveQuestion = (id) => {
-        removeQuestion(id);
+
+        MySwal.fire({
+            title: <p style={{ fontSize: 22, fontWeight: "bold" }}>{"Confirmación"}</p>,
+            text: "¿Está seguro que desea eliminar esta pregunta",
+            icon: "question",
+            confirmButtonText: 'Aceptar',
+            showCancelButton: true,
+            showLoaderOnConfirm: true,
+            backdrop: true,
+            preConfirm: async (response) => {
+
+                await removeQuestion(id);;
+                return true;
+            },
+
+            allowOutsideClick: () => !MySwal.isLoading()
+        })
+  
     }
     const handleSelectQuestionEdit = (item) => {
         selectQuestionEdit(item);
@@ -79,14 +97,15 @@ const ListCustomItem = ({ question, removeQuestion, handleSelectQuestionEdit }) 
                 <Menu
                     id="basic-menu"
                     anchorEl={anchorEl}
+                    
                     open={open}
                     onClose={handleClose}
                     MenuListProps={{
-                        'aria-labelledby': 'basic-button',
+                        'aria-labelledby': 'lock-button',
                     }}
                 >
-                    <MenuItem onClick={() => {  handleSelectQuestionEdit(question) }} >Editar</MenuItem>
-                    <MenuItem onClick={() => removeQuestion(question.id_pregunta)} >Eliminar</MenuItem>
+                    <MenuItem  onClick={() => { handleClose(); handleSelectQuestionEdit(question) }} >Editar</MenuItem>
+                    <MenuItem onClick={() => { handleClose();removeQuestion(question.id_pregunta)}} >Eliminar</MenuItem>
 
                 </Menu>
             </ListItemIcon>

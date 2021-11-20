@@ -115,7 +115,48 @@ const QuestionState = props => {
         }
     }
 
-    const editQuestion = async (data, edit = false) => {
+    const editQuestion = async (data, questionOptions, questionOptionsRemove) => {
+
+
+        let newOptions = [];
+        let updateOptions = [];
+        let removeOptions = [];
+
+   
+        questionOptions.forEach(element => {
+            // if (element.id === "") {
+            //     newOptions.push({
+            //         id_pregunta: element.questionID,
+            //         descripcion: element.text
+            //     });
+            // } else {
+            //     updateOptions.push({
+            //         id_pregunta: element.questionID,
+            //         descripcion: element.text,
+            //         id_opcion: element.id
+            //     });
+            // }
+
+            if (element.id === "") {
+                newOptions.push({
+                    id_pregunta: data.questionID,
+                    descripcion: element.text,
+                });
+            } else {
+                newOptions.push({
+                    id_pregunta: data.questionID,
+                    descripcion: element.text,
+                    id_opcion: element.id
+                });
+            }
+        });
+
+        questionOptionsRemove.forEach(element => {
+            if (element.id !== "") {
+
+                removeOptions.push(element.id);
+            }
+        });
 
         dispatch({
             type: TOGGLE_QUESTION_LOADING,
@@ -125,23 +166,53 @@ const QuestionState = props => {
         let formattedData = {
             id_pregunta: data.questionID,
             titulo: data.title,
-            tipo_pregunta: data.questionType,
-
+            tipo_pregunta: (newOptions.length > 0 || updateOptions.length > 0) ? "multiple" : "abierta"
         }
 
+
         try {
-            let res = await axiosClient.put("/api/questions", formattedData);
-            dispatch({
-                type: QUESTION_MESSAGE, payload: {
-                    category: "success",
-                    text: res.data.message,
-                    showIn: "form"
+
+            let resEdit = await axiosClient.put("/api/questions", formattedData);
+            if (resEdit.data.state) {
+                let resInsert = { data: { state: true } };
+                if (newOptions.length !== 0) {
+                    resInsert = await axiosClient.post("/api/questionOptions", { opciones: newOptions });
+                }
+                let resRemove = {
+                    data: { state: true }
+                };
+                if (removeOptions.length !== 0) {
+                    resRemove = await axiosClient.delete("/api/questionOptions", { data: { ids_opciones: removeOptions } });
 
                 }
-            })
+
+                if (resInsert.data.state && resRemove.data.state) {
+
+                    dispatch({
+                        type: QUESTION_MESSAGE, payload: {
+                            category: "success",
+                            text: "La pregunta se ha actualizado exitosamente",
+                            showIn: "list"
+
+                        }
+                    })
+                }
+            } else {
+                dispatch({
+                    type: QUESTION_MESSAGE, payload: {
+                        category: "error",
+                        text: resEdit.data.message,
+                        showIn: "detail"
+
+                    }
+                })
+            }
+
+
             getQuestions();
 
         } catch (error) {
+            console.log(error)
             let errorsDecriptions = error.response?.data.errors;
 
             let text = "";
@@ -155,7 +226,7 @@ const QuestionState = props => {
                 type: QUESTION_MESSAGE, payload: {
                     category: "error",
                     text: text,
-                    showIn: "form"
+                    showIn: "detail"
                 }
             })
         }
