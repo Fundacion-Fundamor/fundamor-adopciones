@@ -3,68 +3,54 @@ import './slider.scss'
 import Card from '../Card'
 
 function MultipleItems(props) {
+  const cardsNum = props.items.length
   var settings = {
     centerMode: true,
-    dots: true,
     className: 'center',
     infinite: true,
-    slidesToShow: 5,
+    slidesToShow: cardsNum > 5 ? 5 : cardsNum,
     autoplay: true,
     autoplaySpeed: 2000,
     arrows: false,
-    // slidesToScroll: 2,
     speed: 500,
     swipeToSlide: true,
-    initialSlide: 2,
     dots: false,
     responsive: [
       {
         breakpoint: 1600,
         settings: {
-          dots: false,
-          slidesToShow: 4,
-          initialSlide: 4,
-          infinite: true,
+          slidesToShow: cardsNum > 4 ? 4 : cardsNum,
         },
       },
       {
         breakpoint: 1400,
         settings: {
-          dots: false,
           infinite: true,
-          slidesToShow: 3,
-          initialSlide: 2,
+          slidesToShow: cardsNum > 3 ? 3 : cardsNum,
         },
       },
       {
         breakpoint: 1080,
         settings: {
-          dots: false,
-          slidesToShow: 2,
-          initialSlide: 2,
+          slidesToShow: cardsNum > 2 ? 2 : cardsNum,
         },
       },
       {
         breakpoint: 700,
         settings: {
-          dots: false,
           slidesToShow: 1,
-          initialSlide: 2,
         },
       },
     ],
   }
-
-  // const objects = [...Array(20).keys()]
+  console.log(settings)
 
   return (
     <div className="slider-container">
       <Slider {...settings}>
         {props.items.map((element, index) => (
           <div className="card__container" key={index}>
-            <Card
-              animal={element}
-            />
+            <Card animal={element} />
           </div>
         ))}
       </Slider>
