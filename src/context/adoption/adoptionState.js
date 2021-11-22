@@ -158,6 +158,7 @@ const AdoptionState = props => {
                             }
                         }
 
+                        //?cambiar el estado del animal cuando se inserte la adopcion
                         dispatch({
                             type: ADOPTION_MESSAGE, payload: {
                                 category: "error",
