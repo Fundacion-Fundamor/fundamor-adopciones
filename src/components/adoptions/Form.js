@@ -8,7 +8,6 @@ import {
     TextField,
     IconButton,
     Chip,
-    Checkbox,
     InputLabel,
     Select,
     MenuItem,
@@ -42,6 +41,8 @@ import { useHistory } from "react-router-dom";
 
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import QuestionContext from '../../context/question/questionContext';
+import AdoptionContext from '../../context/adoption/adoptionContext';
 
 
 const steps = [
@@ -52,7 +53,7 @@ const steps = [
 ]
 
 
-/**Formulario de registro para animales
+/**Formulario de registro de adopciones
  * 
  * Solo los campos requeridos en la bd son validados
  * @returns 
@@ -81,53 +82,24 @@ export default function Form() {
     });
 
     let history = useHistory();
-
     const MySwal = withReactContent(Swal);
     const [currentStep, setCurrentStep] = useState(0);
-    const { message, loading, handleAnimalMessage, animals, getAnimals } = useContext(AnimalContext); // contexto de animales
-
+    const { animals, getAnimals } = useContext(AnimalContext); // contexto de animales
+    const { questions, getQuestions } = useContext(QuestionContext); // contexto de preguntas
+    const { message, loading, handleAdoptionMessage, createAdoption } = useContext(AdoptionContext);// contexto de adopcion
     const [showAdopterForm, setShowAdopterForm] = useState(false);
 
-
-    const toggleAdopterForm = () => {
-
-        setShowAdopterForm(!showAdopterForm);
-    }
     const [values, setValues] = useState({
-
-        name: "",
-        specie: "",
-        birthday: null,
-        characteristics: "",
-        rescueSite: "",
-        rescueDate: null,
-        color: "",
-        vaccine: "",
-        sterilized: false,
-        dewormed: false,
-        size: "",
-        animalState: "Sin adoptar",
-        gender: "",
-        images: []
+        adoptionState: "",
+        adoptionFinalDate: null,
+        observations: ""
     });
 
     const [errors, setErrors] = useState({
-        name: null,
-        specie: null,
-        birthday: null,
-        characteristics: null,
-        rescueSite: null,
-        rescueDate: null,
-        color: null,
-        vaccine: null,
-        sterilized: null,
-        dewormed: null,
-        size: null,
-        animalState: null,
-        gender: null
-
+        adoptionFinalDate: null,
+        adoptionState: null,
+        stepError: null
     });
-
 
     const [adopterValues, setAdopterValues] = useState({
         name: "",
@@ -148,12 +120,44 @@ export default function Form() {
         phone: null
     });
 
-
     const [animalSelected, setAnimalSelected] = useState(null);
     const [inputAnimalValue, setInputAnimalValue] = useState('');
     const [adopterSelected, setAdopterSelected] = useState(null);
     const [inputAdopterValue, setInputAdopterValue] = useState('');
+    const [localQuestions, setLocalQuestions] = useState([]);
 
+
+    const resetForm = () => {
+        setValues({
+            adoptionState: "",
+            adoptionFinalDate: null,
+            observations: ""
+        });
+        setAdopterValues(
+            {
+                name: "",
+                email: "",
+                ID: "",
+                profession: "",
+                address: "",
+                housePhone: "",
+                phone: "",
+            }
+        );
+        setShowAdopterForm(false);
+        setAnimalSelected(null);
+        setInputAnimalValue("");
+        setAdopterSelected(null);
+        setInputAdopterValue("");
+        getAnimals();
+        // getAdopters();
+        getQuestions();
+        setCurrentStep(0);
+    }
+    const toggleAdopterForm = () => {
+
+        setShowAdopterForm(!showAdopterForm);
+    }
 
     const validateAdopterForm = () => {
         const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -175,13 +179,32 @@ export default function Form() {
         }
         return false;
     }
+
+    const handleAnswersAdopter = (text, questionId) => {
+
+        let tmp = localQuestions.filter(element => {
+            if (element.id_pregunta === questionId) {
+                element.answer = text.trim();
+            }
+            return element;
+        });
+        setLocalQuestions(tmp);
+    }
+
+    /**Maneja siguiente paso del stepper y valida que se cumpla con todo lo requerido si se quiere continuar
+     * 
+     */
     const next = () => {
+
         if (currentStep !== 4) {
             if (currentStep === 0) {
                 if (animalSelected !== null) {
                     setCurrentStep(currentStep + 1);
                 } else {
-                    console.log("debe seleccionar un animal");
+
+                    setErrors({
+                        ...errors, stepError: "debe seleccionar un animal"
+                    });
                 }
             } else if (currentStep === 1) {
                 if (adopterSelected !== null) {//? cambiar cuando haga la correccion
@@ -191,17 +214,26 @@ export default function Form() {
                     setCurrentStep(currentStep + 1);
 
                 } else {
-                    console.log("debe seleccionar un adoptante");
+                    setErrors({ ...errors, stepError: "Debe seleccionar un adoptante" });
+
                 }
             }
             else if (currentStep === 2) {
-                if (adopterSelected === null) {//? cambiar cuando haga la correccion
+                let answered = (localQuestions.filter(element => element.answer !== undefined && element.answer !== ""));
+                if (answered.length === localQuestions.length) {
                     setCurrentStep(currentStep + 1);
                 } else {
-                    console.log("debe seleccionar un adoptante");
+                    setErrors({ ...errors, stepError: "Debe responder todas las preguntas" });
+
                 }
             } else if (currentStep === 3) {
-                setCurrentStep(currentStep + 1);
+                if (!loading) {
+                    if (values.adoptionState === "") {
+                        setErrors({ ...errors, adoptionState: "Debe seleccionar un estado" });
+                    } else {
+                        createAdoption(values, animalSelected, adopterSelected, adopterValues, localQuestions);
+                    }
+                }
             }
 
         }
@@ -209,34 +241,6 @@ export default function Form() {
     const previous = () => {
         if (currentStep !== 0) {
             setCurrentStep(currentStep - 1);
-        }
-    }
-    /**Captura el cambio al seleccionar una nueva imágen
-     * 
-     * @param {*} imageList 
-     * @param {*} addUpdateIndex 
-     */
-
-
-    /**Se validan los campos requeridos en la bd
-     * 
-     */
-    const onSubmit = async () => {
-
-        if (values.name === "") {
-            setErrors({ ...errors, name: "Debe ingresar un nombre" });
-        } else if (values.specie === "") {
-            setErrors({ ...errors, specie: "Debe seleccionar una especie" });
-        } else if (values.birthday === null) {
-            setErrors({ ...errors, birthday: "Debe seleccionar una fecha" });
-        } else if (values.color === "") {
-            setErrors({ ...errors, color: "Debe seleccionar un color" });
-        } else if (values.gender === "") {
-            setErrors({ ...errors, gender: "Debe seleccionar una opción" });
-        } else if (values.size === "") {
-            setErrors({ ...errors, size: "Debe seleccionar un tamaño" });
-        } else {
-
         }
     }
 
@@ -252,20 +256,31 @@ export default function Form() {
 
             if (res.isConfirmed) {
 
-                await handleAnimalMessage(null);
-                history.push("/gallery");
+                await handleAdoptionMessage(null);
+                // history.push("/adoptions");
             }
         }
         if (message && message.showIn === "form") {
 
-            displayAlert();
+            if (message.category === "success") {
+                setCurrentStep(currentStep + 1);
+            } else {
+                displayAlert();
+            }
         }
 
     }, [message]);
 
     useEffect(() => {
         getAnimals();
+        getQuestions();
     }, [])
+
+    useEffect(() => {
+        setLocalQuestions([...questions]);
+      
+    }, [questions])
+
 
     return (
         <Container maxWidth="sm" sx={{ marginBottom: 5, marginTop: 5 }}>
@@ -416,7 +431,7 @@ export default function Form() {
                                             label="Correo electrónico"
                                             helperText={adopterErrors.email}
                                             variant="standard"
-                                            value={values.email}
+                                            value={adopterValues.email}
                                             onChange={(event) => {
                                                 setAdopterValues({ ...adopterValues, email: event.target.value });
                                                 setAdopterErrors({ ...adopterErrors, email: null })
@@ -487,7 +502,35 @@ export default function Form() {
                             }
                         </>
                         : null}
-                    {currentStep === 2 ? <p>paso 3</p> : null}
+                    {currentStep === 2 ?
+                        <div>
+                            {localQuestions.map((element, index) => element.tipo_pregunta === "abierta" ? (
+
+                                <div className="form-group" key={index}>
+                                    <OPTextField onBlur={handleAnswersAdopter} data={element} />
+                                </div>
+                            ) : (
+                                <FormControl component="fieldset" sx={{ marginTop: 2 }} key={index} >
+                                    <FormLabel component="label" sx={{ fontSize: 14 }} >{element.titulo}</FormLabel>
+                                    <RadioGroup
+
+                                        aria-label={element.titulo}
+                                        name="radio-buttons-group"
+                                        onChange={(event) => handleAnswersAdopter(event.target.value, element.id_pregunta)}
+                                    >
+
+                                        {element.questionOptions.map((questionOption, subIndex) => (
+                                            <FormControlLabel value={questionOption.descripcion} checked={questionOption.descripcion === element.answer} key={subIndex} control={<Radio />} label={questionOption.descripcion} />
+                                        ))}
+
+
+                                    </RadioGroup>
+
+
+                                </FormControl>
+                            ))}
+                        </div>
+                        : null}
                     {currentStep === 3 ?
 
                         <Grid container sx={{ padding: 3 }} >
@@ -502,7 +545,7 @@ export default function Form() {
                                 <LocalizationProvider dateAdapter={DateAdapter} >
                                     <DatePicker
                                         label="Fecha de estudio"
-
+                                        onChange={() => { }}
                                         value={new moment()}
                                         disabled
                                         mask={'__/__/____'}
@@ -551,8 +594,9 @@ export default function Form() {
                             >
                                 <TextField label="Adoptante involucrado"
                                     variant="standard"
-                                    // value="el que se seleccione"
+                                    value={adopterSelected ? adopterSelected.nombre : adopterValues.name}
                                     disabled
+                                    fullWidth
 
                                 />
 
@@ -567,30 +611,30 @@ export default function Form() {
                             >
 
 
-                                <FormControl fullWidth variant="standard" error={errors.size !== null} >
+                                <FormControl fullWidth variant="standard" error={errors.adoptionState !== null} >
                                     <InputLabel id="animal-size"  >Estado</InputLabel>
                                     <Select
 
                                         labelId="animal-size"
                                         id="animal-size-select"
-                                        value={values.size}
+                                        value={values.adoptionState}
                                         label="Seleccione el estado"
                                         onChange={(event) => {
                                             setValues({
-                                                ...values, size: event.target.value
+                                                ...values, adoptionState: event.target.value
                                             });
-                                            setErrors({ ...errors, size: null });
+                                            setErrors({ ...errors, adoptionState: null });
                                         }}
-                                        error={errors.size !== null}
+                                        error={errors.adoptionState !== null}
                                     >
-                                        <MenuItem value={"en espera"}>En espera</MenuItem>
-                                        <MenuItem value={"en proceso"}>En proceso</MenuItem>
-                                        <MenuItem value={"finalizada"}>Finalizada</MenuItem>
+                                        <MenuItem value={"En espera"}>En espera</MenuItem>
+                                        <MenuItem value={"En proceso"}>En proceso</MenuItem>
+                                        <MenuItem value={"Finalizada"}>Finalizada</MenuItem>
 
                                     </Select>
 
                                 </FormControl>
-                                {errors.size && <FormHelperText error={true}>{errors.size}</FormHelperText>}
+                                {errors.adoptionState && <FormHelperText error={true}>{errors.adoptionState}</FormHelperText>}
                             </Grid>
                             <Grid item md={6}
                                 xs={12}
@@ -603,9 +647,14 @@ export default function Form() {
                                 <LocalizationProvider dateAdapter={DateAdapter} >
                                     <DatePicker
                                         label="Fecha de entrega"
-                                        value={null}
+                                        value={values.adoptionFinalDate}
                                         mask={'__/__/____'}
                                         renderInput={(params) => <TextField {...params} variant="standard" />}
+                                        onChange={(newValue) => {
+
+                                            setValues({ ...values, adoptionFinalDate: newValue });
+
+                                        }}
                                     />
                                 </LocalizationProvider>
                             </Grid>
@@ -631,16 +680,19 @@ export default function Form() {
                             </Grid>
                             <Grid item xs={12} md={12} padding={1}>
                                 <TextField label="Observaciones" fullWidth multiline={true} minRows={4} variant="filled"
-                                    // onBlur={(event) => {
-                                    //     setValues({ ...values, vaccine: event.target.value });
-                                    // }}
+                                    onBlur={(event) => {
+                                        setValues({ ...values, observations: event.target.value });
+                                    }}
                                     inputProps={{ maxLength: 100 }}
                                 />
                             </Grid>
                         </Grid>
 
                         : null}
-                    {currentStep === 4 ? <p>Se ha registrado el proceso con exito</p> : null}
+                    {currentStep === 4 ? <div>
+                        <p>Se ha registrado el proceso con exito</p>
+                        <Button size="medium" variant="contained" sx={{ marginTop: 5 }} color="secondary" onClick={() => { resetForm(); }} >Ir al inicio</Button>
+                    </div> : null}
 
 
 
@@ -652,19 +704,39 @@ export default function Form() {
 
                         {currentStep > 0 && currentStep < 4 && <Button size="medium" variant="contained" sx={{ marginTop: 5 }} color="secondary" onClick={() => previous()} >Atrás</Button>}
 
-                        {currentStep !== 4 && <Button size="medium" variant="contained" color="success" sx={{ marginTop: 5, marginLeft: 5 }} onClick={() => next()} >{currentStep === 3 ? "Finalizar" : "Siguiente"}</Button>}
-                        {/* <Button size="medium" variant="contained" color="success" onClick={() => {
-                        console.log(loading)
-                        if (!loading) {
-                            onSubmit()
-                        }
-                    }}>Guardar registro</Button> */}
+                        {currentStep !== 4 && <Button size="medium" variant="contained" color="success" sx={{ marginTop: 5, marginLeft: 5 }}
+                            onClick={() => next()}>{currentStep === 3 ? "Finalizar" : "Siguiente"}</Button>}
+
                     </Box>
                 </Box>
 
             </Paper >
         </Container>
     );
+
+}
+
+
+/**Textfield construido de manera diferente para evitar delay al momento de teclear
+ * 
+ */
+const OPTextField = ({ onBlur, data }) => {
+
+    const [value, setValue] = useState(data.answer !== undefined ? data.answer : "");
+
+    return (
+        <TextField
+            fullWidth
+            label={data.titulo}
+            variant="standard"
+            value={value}
+            onChange={(event) => {
+                setValue(event.target.value);
+            }}
+
+            onBlur={(event) => onBlur(event.target.value, data.id_pregunta)}
+        />
+    )
 
 }
 

@@ -35,6 +35,7 @@ const QuestionState = props => {
             });
             const res = await axiosClient.get("/api/questions");
 
+            console.log("preguntas", res.data);
             if (res.data.state) {
                 dispatch({
                     type: QUESTIONS,
@@ -122,7 +123,7 @@ const QuestionState = props => {
         let updateOptions = [];
         let removeOptions = [];
 
-   
+
         questionOptions.forEach(element => {
             // if (element.id === "") {
             //     newOptions.push({

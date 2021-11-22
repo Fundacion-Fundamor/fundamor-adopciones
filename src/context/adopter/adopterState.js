@@ -70,7 +70,6 @@ const AdopterState = props => {
         });
         let formattedData = {
             correo: data.email !== "" ? data.email : null,
-            contrasenia: data.password !== "" ? data.password : null,
             nombre: data.name,
             telefono_casa: data.housePhone === "" ? null : data.housePhone,
             telefono_celular: data.phone,

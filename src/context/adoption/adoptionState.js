@@ -67,32 +67,145 @@ const AdoptionState = props => {
 
     }
 
-    const createAdoption = async (data) => {
+    /**Primero se inserta el adoptante, luego la adopcion y finalmente las preguntas 
+     * 
+     * @param {*} data 
+     * @param {*} selectedAnimal 
+     * @param {*} selectedAdopter 
+     * @param {*} adopterData 
+     * @param {*} questionsData 
+     */
+    const createAdoption = async (data, selectedAnimal, selectedAdopter, adopterData, questionsData) => {
 
         dispatch({
             type: TOGGLE_ADOPTION_LOADING,
             payload: true
         });
-        let formattedData = {
-            id_animal: data.animalID,
+
+        let resAdoption = null;
+
+        let resAdopter = null;
+
+        let adoptionFormattedData = {
+            id_animal: selectedAnimal.id_animal,
             estado: data.adoptionState,
-            id_adoptante: data.adopterID,
             observaciones: data.observations === "" ? null : data.observations,
             fecha_entrega: data.adoptionFinalDate === "" ? null : data.adoptionFinalDate
         }
-        try {
-            const res = await axiosClient.post("/api/adoptions", formattedData);
-            dispatch({
-                type: ADOPTION_MESSAGE, payload: {
-                    category: "success",
-                    text: res.data.message,
-                    showIn: "form"
 
+        let adopterFormattedData = {};
+
+        if (selectedAdopter) {
+            adopterFormattedData = {
+                correo: selectedAdopter.correo !== "" ? data.correo : null,
+                nombre: selectedAdopter.nombre,
+                telefono_casa: selectedAdopter.telefono_casa === "" ? null : data.telefono_casa,
+                telefono_celular: selectedAdopter.telefono_celular,
+                ocupacion: selectedAdopter.ocupacion,
+                ciudad: selectedAdopter.ciudad,
+                id_adoptante: selectedAdopter.id_adoptante
+            };
+        } else {
+            adopterFormattedData = {
+                correo: adopterData.email !== "" ? adopterData.email : null,
+                nombre: adopterData.name,
+                telefono_casa: adopterData.housePhone === "" ? null : adopterData.housePhone,
+                telefono_celular: adopterData.phone,
+                ocupacion: adopterData.profession,
+                ciudad: adopterData.address,
+                id_adoptante: adopterData.ID
+            }
+        }
+
+        try {
+            resAdopter = await axiosClient.post("/api/adopters", adopterFormattedData);
+
+            if (resAdopter.data.state) {
+                adoptionFormattedData.id_adoptante = resAdopter.data.data;
+                resAdoption = await axiosClient.post("/api/adoptions", adoptionFormattedData);
+                if (resAdoption.data.state) {
+
+                    let questionsFormattedData = [];
+
+                    questionsData.forEach(element => {
+                        questionsFormattedData.push({
+                            id_adopcion: resAdoption.data.data,
+                            id_pregunta: element.id_pregunta,
+                            respuesta: element.answer
+                        })
+
+                    });
+
+                    const resAnswers = await axiosClient.post("/api/adoptionQuestions", { respuestas: questionsFormattedData });
+
+                    if (resAnswers.data.state) {
+                        dispatch({
+                            type: ADOPTION_MESSAGE, payload: {
+                                category: "success",
+                                text: "La adopción se ha resgistrado con exito",
+                                showIn: "form"
+
+                            }
+                        })
+                    } else {
+                        let resDeleteAdoption = await axiosClient.delete("/api/adoptions/" + resAdoption.data.data);
+
+                        if (resDeleteAdoption.data.state) {
+                            let resDeleteAdopters = await axiosClient.delete("/api/adopters/" + adopterFormattedData.id_adoptante);
+                            if (!resDeleteAdopters) {
+
+                            }
+                        }
+
+                        dispatch({
+                            type: ADOPTION_MESSAGE, payload: {
+                                category: "error",
+                                text: resAnswers.data.message,
+                                showIn: "form"
+
+                            }
+                        })
+                    }
+                } else {
+                    await axiosClient.delete("/api/adopters/" + adopterFormattedData.id_adoptante);
+
+                    dispatch({
+                        type: ADOPTION_MESSAGE, payload: {
+                            category: "error",
+                            text: resAdoption.data.message,
+                            showIn: "form"
+
+                        }
+                    })
                 }
-            })
-            getAdoptions();
+            } else {
+                dispatch({
+                    type: ADOPTION_MESSAGE, payload: {
+                        category: "error",
+                        text: resAdopter.data.message,
+                        showIn: "form"
+
+                    }
+                })
+            }
+
+
+            // getAdoptions();
 
         } catch (error) {
+
+            //si ocurre un error ha que eliminar las insersiones
+            if (resAdoption && resAdoption.data.state) {
+                axiosClient.delete("/api/adoptions/" + resAdoption.data.data).then((resDeleteAdoption) => {
+        
+                    if (resDeleteAdoption.data.state) {
+                        axiosClient.delete("/api/adopters/" + adopterFormattedData.id_adoptante);
+                    }
+                });
+
+            } else if (resAdopter && resAdopter.data.state) {
+                axiosClient.delete("/api/adopters/" + adopterFormattedData.id_adoptante);
+            }
 
             let errorsDecriptions = error.response?.data.errors;
 
