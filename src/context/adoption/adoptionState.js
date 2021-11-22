@@ -118,10 +118,11 @@ const AdoptionState = props => {
         }
 
         try {
-            resAdopter = await axiosClient.post("/api/adopters", adopterFormattedData);
-
-            if (resAdopter.data.state) {
-                adoptionFormattedData.id_adoptante = resAdopter.data.data;
+            if (selectedAdopter === null) {
+                resAdopter = await axiosClient.post("/api/adopters", adopterFormattedData);
+            }
+            if (selectedAdopter || resAdopter.data.state) {
+                adoptionFormattedData.id_adoptante = selectedAdopter === null ? resAdopter.data.data : selectedAdopter.id_adoptante;
                 resAdoption = await axiosClient.post("/api/adoptions", adoptionFormattedData);
                 if (resAdoption.data.state) {
 
@@ -197,7 +198,7 @@ const AdoptionState = props => {
             //si ocurre un error ha que eliminar las insersiones
             if (resAdoption && resAdoption.data.state) {
                 axiosClient.delete("/api/adoptions/" + resAdoption.data.data).then((resDeleteAdoption) => {
-        
+
                     if (resDeleteAdoption.data.state) {
                         axiosClient.delete("/api/adopters/" + adopterFormattedData.id_adoptante);
                     }

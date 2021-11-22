@@ -25,14 +25,22 @@ const AnimalState = props => {
 
     //funciones que modifican el state
 
-    const getAnimals = async () => {
+    const getAnimals = async (filters) => {
 
+
+
+        let filtersString = "?";
+        for (let key in filters) {
+            filtersString += key + "=" + filters[key]
+
+        }
+        console.log(filtersString);
         try {
             dispatch({
                 type: TOGGLE_ANIMAL_LOADING,
                 payload: true
             });
-            const res = await axiosClient.get("/api/animals");
+            const res = await axiosClient.get("/api/animals?estado=Sin adoptar");
             if (res.data.state) {
                 dispatch({
                     type: ANIMALS,
@@ -274,7 +282,7 @@ const AnimalState = props => {
             if (res.data.state) {
 
                 let resImagesInsert = { data: { state: true } };
-                let resImagesRemove = { data: { state: true }  };
+                let resImagesRemove = { data: { state: true } };
 
                 if (imagesInsert.length !== 0) {
                     resImagesInsert = await insertImages(imagesInsert, data.animalID);

@@ -17,7 +17,7 @@ import {
     Step,
     StepLabel,
     Autocomplete,
-
+    Alert
 } from '@mui/material'
 import React, { useState, useEffect, useContext } from 'react'
 import { GrDocumentText } from 'react-icons/gr'
@@ -43,7 +43,7 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import QuestionContext from '../../context/question/questionContext';
 import AdoptionContext from '../../context/adoption/adoptionContext';
-
+import AdopterContext from '../../context/adopter/adopterContext';
 
 const steps = [
     "Selecciona el animal",
@@ -87,6 +87,8 @@ export default function Form() {
     const { animals, getAnimals } = useContext(AnimalContext); // contexto de animales
     const { questions, getQuestions } = useContext(QuestionContext); // contexto de preguntas
     const { message, loading, handleAdoptionMessage, createAdoption } = useContext(AdoptionContext);// contexto de adopcion
+    const { getAdopters, adopters } = useContext(AdopterContext);// contexto de adoptante
+
     const [showAdopterForm, setShowAdopterForm] = useState(false);
 
     const [values, setValues] = useState({
@@ -98,7 +100,8 @@ export default function Form() {
     const [errors, setErrors] = useState({
         adoptionFinalDate: null,
         adoptionState: null,
-        stepError: null
+        stepError: null,
+        showErrorInStep: null
     });
 
     const [adopterValues, setAdopterValues] = useState({
@@ -149,7 +152,7 @@ export default function Form() {
         setInputAnimalValue("");
         setAdopterSelected(null);
         setInputAdopterValue("");
-        getAnimals();
+        getAnimals({ estado: "Sin adoptar" });
         // getAdopters();
         getQuestions();
         setCurrentStep(0);
@@ -200,21 +203,27 @@ export default function Form() {
             if (currentStep === 0) {
                 if (animalSelected !== null) {
                     setCurrentStep(currentStep + 1);
+                    if (errors.showErrorInStep === 0) {
+                        setErrors({
+                            ...errors, showErrorInStep: null
+                        });
+                    }
                 } else {
 
                     setErrors({
-                        ...errors, stepError: "debe seleccionar un animal"
+                        ...errors, ...{ stepError: "Debe seleccionar un animal", showErrorInStep: 0 }
                     });
                 }
             } else if (currentStep === 1) {
-                if (adopterSelected !== null) {//? cambiar cuando haga la correccion
+                if (adopterSelected !== null || (adopterSelected === null && showAdopterForm && validateAdopterForm())) {//? cambiar cuando haga la correccion
                     setCurrentStep(currentStep + 1);
-                } else if (adopterSelected === null && showAdopterForm && validateAdopterForm()) {
-
-                    setCurrentStep(currentStep + 1);
-
+                    if (errors.showErrorInStep === 1) {
+                        setErrors({
+                            ...errors, showErrorInStep: null
+                        });
+                    }
                 } else {
-                    setErrors({ ...errors, stepError: "Debe seleccionar un adoptante" });
+                    setErrors({ ...errors, ...{ stepError: "Debe seleccionar o registrar un adoptante", showErrorInStep: 1 } });
 
                 }
             }
@@ -222,14 +231,19 @@ export default function Form() {
                 let answered = (localQuestions.filter(element => element.answer !== undefined && element.answer !== ""));
                 if (answered.length === localQuestions.length) {
                     setCurrentStep(currentStep + 1);
+                    if (errors.showErrorInStep === 2) {
+                        setErrors({
+                            ...errors, showErrorInStep: null
+                        });
+                    }
                 } else {
-                    setErrors({ ...errors, stepError: "Debe responder todas las preguntas" });
+                    setErrors({ ...errors, ...{ stepError: "Debe responder todas las preguntas", showErrorInStep: 2 } });
 
                 }
             } else if (currentStep === 3) {
                 if (!loading) {
                     if (values.adoptionState === "") {
-                        setErrors({ ...errors, adoptionState: "Debe seleccionar un estado" });
+                        setErrors({ ...errors, ...{ adoptionState: "Debe seleccionar un estado" } });
                     } else {
                         createAdoption(values, animalSelected, adopterSelected, adopterValues, localQuestions);
                     }
@@ -272,15 +286,30 @@ export default function Form() {
     }, [message]);
 
     useEffect(() => {
-        getAnimals();
+        getAnimals({ estado: "Sin adoptar" });
         getQuestions();
+        getAdopters();
     }, [])
 
     useEffect(() => {
         setLocalQuestions([...questions]);
-      
+
     }, [questions])
 
+    useEffect(() => {
+        setAdopterValues(
+            {
+                name: "",
+                email: "",
+                ID: "",
+                profession: "",
+                address: "",
+                housePhone: "",
+                phone: "",
+            }
+        );
+        setAdopterSelected(null);
+    }, [showAdopterForm])
 
     return (
         <Container maxWidth="sm" sx={{ marginBottom: 5, marginTop: 5 }}>
@@ -308,6 +337,9 @@ export default function Form() {
                     ))}
                 </Stepper>
                 <Box component="div" sx={{ margin: 2, display: "flex", flexDirection: "column", alignItems: "center" }}>
+
+                    {(errors.stepError !== null && errors.showErrorInStep !== null && errors.showErrorInStep === currentStep) ? <Alert severity="error" variant="filled" style={{ marginTop: 20, marginBottom: 5, width: "90%" }} >{errors.stepError}</Alert> : null}
+
                     {currentStep === 0 ?
 
                         <Autocomplete
@@ -355,7 +387,7 @@ export default function Form() {
                             {!showAdopterForm ? <Autocomplete
                                 id=""
                                 sx={{ width: "90%", marginTop: 5 }}
-                                options={[]}
+                                options={adopters}
                                 value={adopterSelected}
                                 disableClearable
                                 onChange={(event, newValue) => {
