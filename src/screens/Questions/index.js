@@ -5,11 +5,12 @@ import EditModal from '../../components/questions/EditModal';
 import Form from '../../components/questions/Form';
 import QuestionList from '../../components/questions/List';
 import QuestionContext from '../../context/question/questionContext';
-
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 export default function Question() {
     const { loading, message, selectQuestionEdit, selectedEditQuestion, handleQuestionMessage } = useContext(QuestionContext);
     const [showForm, setShowForm] = useState(false);
-
+    const MySwal = withReactContent(Swal);
     const handleToggle = () => {
         setShowForm(!showForm);
     }
@@ -18,9 +19,32 @@ export default function Question() {
     useEffect(() => {
         if (!showForm) {
             selectQuestionEdit(null);
-            handleQuestionMessage(null);
+
         }
-    }, [showForm])
+    }, [showForm]);
+
+    useEffect(() => {
+
+        const displayAlert = async () => {
+            let res = await MySwal.fire({
+                title: <p style={{ fontSize: 22, fontWeight: "bold" }}>{message.text}</p>,
+                allowOutsideClick: false,
+                icon: message.category,
+                backdrop: true
+
+            });
+
+
+            if (res.isConfirmed) {
+                await handleQuestionMessage(null);
+            }
+        }
+        if (message && message.showIn === "list" && !loading) {
+
+            displayAlert();
+        }
+    }, [message, loading])
+
     useEffect(() => {
         if (selectedEditQuestion) {
             setShowForm(!showForm)
@@ -56,7 +80,6 @@ export default function Question() {
             </Box>
         </Modal>
         <Form />
-        {message && message.showIn === "list" && <Alert severity={message.category} variant="filled" style={{ marginTop: 20 }} >{message.text}</Alert>}
 
         <QuestionList />
 

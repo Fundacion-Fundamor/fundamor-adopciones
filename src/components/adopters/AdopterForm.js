@@ -11,7 +11,7 @@ import AdopterContext from '../../context/adopter/adopterContext';
  * @param {*} param0 
  * @returns 
  */
-export default function Form({ handleToggle }) {
+export default function AdopterForm({ handleToggle }) {
 
     const { createAdopter, selectedAdopter, editAdopter, loading, message } = useContext(AdopterContext);
 

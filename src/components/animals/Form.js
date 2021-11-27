@@ -153,7 +153,7 @@ export default function Form() {
 
 
             if (res.isConfirmed) {
-
+                //? corregir, no se debe redirigir si hubo un error
                 await handleAnimalMessage(null);
                 history.push("/gallery");
             }

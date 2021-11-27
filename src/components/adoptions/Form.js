@@ -8,7 +8,6 @@ import {
     TextField,
     IconButton,
     Chip,
-    Checkbox,
     InputLabel,
     Select,
     MenuItem,
@@ -18,7 +17,7 @@ import {
     Step,
     StepLabel,
     Autocomplete,
-
+    Alert
 } from '@mui/material'
 import React, { useState, useEffect, useContext } from 'react'
 import { GrDocumentText } from 'react-icons/gr'
@@ -27,7 +26,7 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
-import ImageUploading from 'react-images-uploading';
+
 import DateAdapter from '@mui/lab/AdapterMoment';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
@@ -42,16 +41,19 @@ import { useHistory } from "react-router-dom";
 
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import QuestionContext from '../../context/question/questionContext';
+import AdoptionContext from '../../context/adoption/adoptionContext';
+import AdopterContext from '../../context/adopter/adopterContext';
 
 const steps = [
     "Selecciona el animal",
     "Selecciona el adoptante",
-    "Registra el formulario",
+    "Llena el formulario",
     "Crea la adopción"
 ]
 
 
-/**Formulario de registro para animales
+/**Formulario de registro de adopciones
  * 
  * Solo los campos requeridos en la bd son validados
  * @returns 
@@ -78,78 +80,174 @@ export default function Form() {
             yy: "%d años"
         }
     });
-    const maxNumber = 8; //max number images
 
     let history = useHistory();
-
     const MySwal = withReactContent(Swal);
     const [currentStep, setCurrentStep] = useState(0);
-    const { createAnimal, message, loading, handleAnimalMessage, animals, getAnimals } = useContext(AnimalContext); // contexto de animales
+    const { animals, getAnimals } = useContext(AnimalContext); // contexto de animales
+    const { questions, getQuestions } = useContext(QuestionContext); // contexto de preguntas
+    const { message, loading, handleAdoptionMessage, createAdoption } = useContext(AdoptionContext);// contexto de adopcion
+    const { getAdopters, adopters } = useContext(AdopterContext);// contexto de adoptante
 
-
-    const [images, setImages] = React.useState([]);
+    const [showAdopterForm, setShowAdopterForm] = useState(false);
 
     const [values, setValues] = useState({
-
-        name: "",
-        specie: "",
-        birthday: null,
-        characteristics: "",
-        rescueSite: "",
-        rescueDate: null,
-        color: "",
-        vaccine: "",
-        sterilized: false,
-        dewormed: false,
-        size: "",
-        animalState: "Sin adoptar",
-        gender: "",
-        images: []
+        adoptionState: "",
+        adoptionFinalDate: null,
+        observations: ""
     });
 
     const [errors, setErrors] = useState({
-        name: null,
-        specie: null,
-        birthday: null,
-        characteristics: null,
-        rescueSite: null,
-        rescueDate: null,
-        color: null,
-        vaccine: null,
-        sterilized: null,
-        dewormed: null,
-        size: null,
-        animalState: null,
-        gender: null
-
+        adoptionFinalDate: null,
+        adoptionState: null,
+        stepError: null,
+        showErrorInStep: null
     });
+
+    const [adopterValues, setAdopterValues] = useState({
+        name: "",
+        email: "",
+        ID: "",
+        profession: "",
+        address: "",
+        housePhone: "",
+        phone: "",
+    });
+
+    const [adopterErrors, setAdopterErrors] = useState({
+        name: null,
+        email: null,
+        ID: null,
+        profession: null,
+        address: null,
+        phone: null
+    });
+
     const [animalSelected, setAnimalSelected] = useState(null);
     const [inputAnimalValue, setInputAnimalValue] = useState('');
     const [adopterSelected, setAdopterSelected] = useState(null);
     const [inputAdopterValue, setInputAdopterValue] = useState('');
+    const [localQuestions, setLocalQuestions] = useState([]);
+
+
+    const resetForm = () => {
+        setValues({
+            adoptionState: "",
+            adoptionFinalDate: null,
+            observations: ""
+        });
+        setAdopterValues(
+            {
+                name: "",
+                email: "",
+                ID: "",
+                profession: "",
+                address: "",
+                housePhone: "",
+                phone: "",
+            }
+        );
+        setShowAdopterForm(false);
+        setAnimalSelected(null);
+        setInputAnimalValue("");
+        setAdopterSelected(null);
+        setInputAdopterValue("");
+        getAnimals({ estado: "Sin adoptar" });
+        // getAdopters();
+        getQuestions();
+        setCurrentStep(0);
+    }
+    const toggleAdopterForm = () => {
+
+        setShowAdopterForm(!showAdopterForm);
+    }
+
+    const validateAdopterForm = () => {
+        const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+        if (adopterValues.name === "") {
+            setAdopterErrors({ ...adopterErrors, name: "Debe ingresar un nombre" });
+        } else if (adopterValues.ID === "") {
+            setAdopterErrors({ ...adopterErrors, ID: "Debe ingresar una identificación" });
+        } else if (adopterValues.email !== "" && re.test(adopterValues.email) === false) {
+            setAdopterErrors({ ...adopterErrors, email: "Debe ingresar un  correo válido" });
+        } else if (adopterValues.profession === "") {
+            setAdopterErrors({ ...adopterErrors, profession: "Debe especificar una profesión" });
+        } else if (adopterValues.address === "") {
+            setAdopterErrors({ ...adopterErrors, address: "Debe ingresar una dirección" });
+        } else if (adopterValues.phone === "") {
+            setAdopterErrors({ ...adopterErrors, phone: "Debe ingresar un número de celular" });
+        } else {
+            return true;
+        }
+        return false;
+    }
+
+    const handleAnswersAdopter = (text, questionId) => {
+
+        let tmp = localQuestions.filter(element => {
+            if (element.id_pregunta === questionId) {
+                element.answer = text.trim();
+            }
+            return element;
+        });
+        setLocalQuestions(tmp);
+    }
+
+    /**Maneja siguiente paso del stepper y valida que se cumpla con todo lo requerido si se quiere continuar
+     * 
+     */
     const next = () => {
+
         if (currentStep !== 4) {
             if (currentStep === 0) {
                 if (animalSelected !== null) {
                     setCurrentStep(currentStep + 1);
+                    if (errors.showErrorInStep === 0) {
+                        setErrors({
+                            ...errors, showErrorInStep: null
+                        });
+                    }
                 } else {
-                    console.log("debe seleccionar un animal");
+
+                    setErrors({
+                        ...errors, ...{ stepError: "Debe seleccionar un animal", showErrorInStep: 0 }
+                    });
                 }
             } else if (currentStep === 1) {
-                if (adopterSelected === null) {//? cambiar cuando haga la correccion
+                if (adopterSelected !== null || (adopterSelected === null && showAdopterForm && validateAdopterForm())) {//? cambiar cuando haga la correccion
                     setCurrentStep(currentStep + 1);
+                    if (errors.showErrorInStep === 1) {
+                        setErrors({
+                            ...errors, showErrorInStep: null
+                        });
+                    }
                 } else {
-                    console.log("debe seleccionar un adoptante");
+                    setErrors({ ...errors, ...{ stepError: "Debe seleccionar o registrar un adoptante", showErrorInStep: 1 } });
+
                 }
             }
             else if (currentStep === 2) {
-                if (adopterSelected === null) {//? cambiar cuando haga la correccion
+                let answered = (localQuestions.filter(element => element.answer !== undefined && element.answer !== ""));
+                if (answered.length === localQuestions.length) {
                     setCurrentStep(currentStep + 1);
+                    if (errors.showErrorInStep === 2) {
+                        setErrors({
+                            ...errors, showErrorInStep: null
+                        });
+                    }
                 } else {
-                    console.log("debe seleccionar un adoptante");
+                    setErrors({ ...errors, ...{ stepError: "Debe responder todas las preguntas", showErrorInStep: 2 } });
+
                 }
             } else if (currentStep === 3) {
-                setCurrentStep(currentStep + 1);
+                if (!loading) {
+                    if (values.adoptionState === "") {
+                        setErrors({ ...errors, ...{ adoptionState: "Debe seleccionar un estado" } });
+                    } else {
+                        createAdoption(values, animalSelected, adopterSelected, adopterValues, localQuestions);
+                    }
+                }
             }
 
         }
@@ -157,36 +255,6 @@ export default function Form() {
     const previous = () => {
         if (currentStep !== 0) {
             setCurrentStep(currentStep - 1);
-        }
-    }
-    /**Captura el cambio al seleccionar una nueva imágen
-     * 
-     * @param {*} imageList 
-     * @param {*} addUpdateIndex 
-     */
-    const onChange = (imageList, addUpdateIndex) => {
-        setImages(imageList);
-    };
-
-    /**Se validan los campos requeridos en la bd
-     * 
-     */
-    const onSubmit = async () => {
-
-        if (values.name === "") {
-            setErrors({ ...errors, name: "Debe ingresar un nombre" });
-        } else if (values.specie === "") {
-            setErrors({ ...errors, specie: "Debe seleccionar una especie" });
-        } else if (values.birthday === null) {
-            setErrors({ ...errors, birthday: "Debe seleccionar una fecha" });
-        } else if (values.color === "") {
-            setErrors({ ...errors, color: "Debe seleccionar un color" });
-        } else if (values.gender === "") {
-            setErrors({ ...errors, gender: "Debe seleccionar una opción" });
-        } else if (values.size === "") {
-            setErrors({ ...errors, size: "Debe seleccionar un tamaño" });
-        } else {
-            createAnimal(values, images);
         }
     }
 
@@ -202,20 +270,46 @@ export default function Form() {
 
             if (res.isConfirmed) {
 
-                await handleAnimalMessage(null);
-                history.push("/gallery");
+                await handleAdoptionMessage(null);
+                // history.push("/adoptions");
             }
         }
         if (message && message.showIn === "form") {
 
-            displayAlert();
+            if (message.category === "success") {
+                setCurrentStep(currentStep + 1);
+            } else {
+                displayAlert();
+            }
         }
 
     }, [message]);
 
     useEffect(() => {
-        getAnimals();
+        getAnimals({ estado: "Sin adoptar" });
+        getQuestions();
+        getAdopters();
     }, [])
+
+    useEffect(() => {
+        setLocalQuestions([...questions]);
+
+    }, [questions])
+
+    useEffect(() => {
+        setAdopterValues(
+            {
+                name: "",
+                email: "",
+                ID: "",
+                profession: "",
+                address: "",
+                housePhone: "",
+                phone: "",
+            }
+        );
+        setAdopterSelected(null);
+    }, [showAdopterForm])
 
     return (
         <Container maxWidth="sm" sx={{ marginBottom: 5, marginTop: 5 }}>
@@ -243,6 +337,9 @@ export default function Form() {
                     ))}
                 </Stepper>
                 <Box component="div" sx={{ margin: 2, display: "flex", flexDirection: "column", alignItems: "center" }}>
+
+                    {(errors.stepError !== null && errors.showErrorInStep !== null && errors.showErrorInStep === currentStep) ? <Alert severity="error" variant="filled" style={{ marginTop: 20, marginBottom: 5, width: "90%" }} >{errors.stepError}</Alert> : null}
+
                     {currentStep === 0 ?
 
                         <Autocomplete
@@ -287,10 +384,10 @@ export default function Form() {
                         : null}
                     {currentStep === 1 ?
                         <>
-                            <Autocomplete
+                            {!showAdopterForm ? <Autocomplete
                                 id=""
                                 sx={{ width: "90%", marginTop: 5 }}
-                                options={[]}
+                                options={adopters}
                                 value={adopterSelected}
                                 disableClearable
                                 onChange={(event, newValue) => {
@@ -301,7 +398,7 @@ export default function Form() {
                                     setInputAdopterValue(newInputValue);
                                 }}
                                 getOptionLabel={(option, props) => option.id_adoptante.toString() + " " + option.nombre.toString()}
-                                inputValue={inputAnimalValue}
+                                inputValue={inputAdopterValue}
                                 lang="Colombia"
                                 renderOption={(props, option) => {
                                     return (
@@ -323,11 +420,149 @@ export default function Form() {
                                         }}
                                     />
                                 )}
-                            />
-                            {/* {showForm && <Form handleToggle={handleToggle} />} */}
+
+                            /> : null}
+                            <Button size="medium" variant="contained" sx={{ marginTop: 5 }} color="info" onClick={() => toggleAdopterForm()} >{showAdopterForm ? "Buscar adoptante" : "Registrar adoptante"}</Button>
+
+                            {showAdopterForm ?
+                                <div style={{ width: "90%", display: "flex", flexDirection: "column" }}>
+                                    <div className="form-group">
+
+                                        <TextField
+                                            fullWidth
+                                            error={adopterErrors.name != null}
+                                            label="Nombre y apellidos"
+                                            helperText={adopterErrors.name}
+                                            variant="standard"
+                                            value={adopterValues.name}
+                                            onChange={(event) => {
+                                                setAdopterValues({ ...adopterValues, name: event.target.value });
+                                                setAdopterErrors({ ...adopterErrors, name: null })
+                                            }}
+                                        />
+                                    </div>
+
+                                    <div className="form-group">
+                                        <TextField
+                                            fullWidth
+                                            error={adopterErrors.ID !== null}
+                                            label="Identificación"
+                                            helperText={adopterErrors.ID}
+                                            variant="standard"
+                                            value={adopterValues.ID}
+                                            onChange={(event) => {
+                                                setAdopterValues({ ...adopterValues, ID: event.target.value });
+                                                setAdopterErrors({ ...adopterErrors, ID: null })
+                                            }}
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <TextField
+                                            fullWidth
+                                            error={adopterErrors.email != null}
+                                            label="Correo electrónico"
+                                            helperText={adopterErrors.email}
+                                            variant="standard"
+                                            value={adopterValues.email}
+                                            onChange={(event) => {
+                                                setAdopterValues({ ...adopterValues, email: event.target.value });
+                                                setAdopterErrors({ ...adopterErrors, email: null })
+                                            }}
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <TextField
+                                            fullWidth
+                                            error={adopterErrors.profession != null}
+                                            label="Profesión"
+                                            helperText={adopterErrors.profession}
+                                            variant="standard"
+                                            value={adopterValues.profession}
+                                            onChange={(event) => {
+                                                setAdopterValues({ ...adopterValues, profession: event.target.value });
+                                                setAdopterErrors({ ...adopterErrors, profession: null })
+                                            }}
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <TextField
+                                            fullWidth
+                                            error={adopterErrors.address != null}
+                                            label="Dirección"
+                                            helperText={adopterErrors.address}
+                                            variant="standard"
+                                            value={adopterValues.address}
+                                            onChange={(event) => {
+                                                setAdopterValues({ ...adopterValues, address: event.target.value });
+                                                setAdopterErrors({ ...adopterErrors, address: null })
+                                            }}
+                                        />
+                                    </div>
+
+                                    <div className="form-group">
+                                        <TextField
+                                            fullWidth
+                                            error={adopterErrors.phone != null}
+                                            label="Celular"
+                                            helperText={adopterErrors.phone}
+                                            variant="standard"
+                                            value={adopterValues.phone}
+                                            onChange={(event) => {
+                                                setAdopterValues({ ...adopterValues, phone: event.target.value });
+                                                setAdopterErrors({ ...adopterErrors, phone: null })
+                                            }}
+                                        />
+                                    </div>
+
+                                    <div className="form-group">
+                                        <TextField
+                                            fullWidth
+                                            label="Teléfono fijo"
+                                            variant="standard"
+                                            value={adopterValues.housePhone}
+                                            onChange={(event) => {
+                                                setAdopterValues({ ...adopterValues, housePhone: event.target.value });
+                                                setAdopterErrors({ ...adopterErrors, housePhone: null })
+                                            }}
+                                        />
+                                    </div>
+                                </div>
+
+                                : null
+
+
+                            }
                         </>
                         : null}
-                    {currentStep === 2 ? <p>paso 3</p> : null}
+                    {currentStep === 2 ?
+                        <div>
+                            {localQuestions.map((element, index) => element.tipo_pregunta === "abierta" ? (
+
+                                <div className="form-group" key={index}>
+                                    <OPTextField onBlur={handleAnswersAdopter} data={element} />
+                                </div>
+                            ) : (
+                                <FormControl component="fieldset" sx={{ marginTop: 2 }} key={index} >
+                                    <FormLabel component="label" sx={{ fontSize: 14 }} >{element.titulo}</FormLabel>
+                                    <RadioGroup
+
+                                        aria-label={element.titulo}
+                                        name="radio-buttons-group"
+                                        onChange={(event) => handleAnswersAdopter(event.target.value, element.id_pregunta)}
+                                    >
+
+                                        {element.questionOptions.map((questionOption, subIndex) => (
+                                            <FormControlLabel value={questionOption.descripcion} checked={questionOption.descripcion === element.answer} key={subIndex} control={<Radio />} label={questionOption.descripcion} />
+                                        ))}
+
+
+                                    </RadioGroup>
+
+
+                                </FormControl>
+                            ))}
+                        </div>
+                        : null}
                     {currentStep === 3 ?
 
                         <Grid container sx={{ padding: 3 }} >
@@ -342,7 +577,7 @@ export default function Form() {
                                 <LocalizationProvider dateAdapter={DateAdapter} >
                                     <DatePicker
                                         label="Fecha de estudio"
-
+                                        onChange={() => { }}
                                         value={new moment()}
                                         disabled
                                         mask={'__/__/____'}
@@ -391,8 +626,9 @@ export default function Form() {
                             >
                                 <TextField label="Adoptante involucrado"
                                     variant="standard"
-                                    // value="el que se seleccione"
+                                    value={adopterSelected ? adopterSelected.nombre : adopterValues.name}
                                     disabled
+                                    fullWidth
 
                                 />
 
@@ -407,29 +643,30 @@ export default function Form() {
                             >
 
 
-                                <FormControl fullWidth variant="standard" error={errors.size !== null} >
+                                <FormControl fullWidth variant="standard" error={errors.adoptionState !== null} >
                                     <InputLabel id="animal-size"  >Estado</InputLabel>
                                     <Select
 
                                         labelId="animal-size"
                                         id="animal-size-select"
-                                        value={values.size}
+                                        value={values.adoptionState}
                                         label="Seleccione el estado"
                                         onChange={(event) => {
                                             setValues({
-                                                ...values, size: event.target.value
+                                                ...values, adoptionState: event.target.value
                                             });
-                                            setErrors({ ...errors, size: null });
+                                            setErrors({ ...errors, adoptionState: null });
                                         }}
-                                        error={errors.size !== null}
+                                        error={errors.adoptionState !== null}
                                     >
+                                        <MenuItem value={"En espera"}>En espera</MenuItem>
                                         <MenuItem value={"En proceso"}>En proceso</MenuItem>
                                         <MenuItem value={"Finalizada"}>Finalizada</MenuItem>
 
                                     </Select>
 
                                 </FormControl>
-                                {errors.size && <FormHelperText error={true}>{errors.size}</FormHelperText>}
+                                {errors.adoptionState && <FormHelperText error={true}>{errors.adoptionState}</FormHelperText>}
                             </Grid>
                             <Grid item md={6}
                                 xs={12}
@@ -442,9 +679,14 @@ export default function Form() {
                                 <LocalizationProvider dateAdapter={DateAdapter} >
                                     <DatePicker
                                         label="Fecha de entrega"
-                                        value={null}
+                                        value={values.adoptionFinalDate}
                                         mask={'__/__/____'}
                                         renderInput={(params) => <TextField {...params} variant="standard" />}
+                                        onChange={(newValue) => {
+
+                                            setValues({ ...values, adoptionFinalDate: newValue });
+
+                                        }}
                                     />
                                 </LocalizationProvider>
                             </Grid>
@@ -470,16 +712,19 @@ export default function Form() {
                             </Grid>
                             <Grid item xs={12} md={12} padding={1}>
                                 <TextField label="Observaciones" fullWidth multiline={true} minRows={4} variant="filled"
-                                    // onBlur={(event) => {
-                                    //     setValues({ ...values, vaccine: event.target.value });
-                                    // }}
+                                    onBlur={(event) => {
+                                        setValues({ ...values, observations: event.target.value });
+                                    }}
                                     inputProps={{ maxLength: 100 }}
                                 />
                             </Grid>
                         </Grid>
 
                         : null}
-                    {currentStep === 4 ? <p>Se ha registrado el proceso con exito</p> : null}
+                    {currentStep === 4 ? <div>
+                        <p>Se ha registrado el proceso con exito</p>
+                        <Button size="medium" variant="contained" sx={{ marginTop: 5 }} color="secondary" onClick={() => { resetForm(); }} >Ir al inicio</Button>
+                    </div> : null}
 
 
 
@@ -491,290 +736,39 @@ export default function Form() {
 
                         {currentStep > 0 && currentStep < 4 && <Button size="medium" variant="contained" sx={{ marginTop: 5 }} color="secondary" onClick={() => previous()} >Atrás</Button>}
 
-                        {currentStep !== 4 && <Button size="medium" variant="contained" color="success" sx={{ marginTop: 5, marginLeft: 5 }} onClick={() => next()} >{currentStep === 3 ? "Finalizar" : "Siguiente"}</Button>}
-                        {/* <Button size="medium" variant="contained" color="success" onClick={() => {
-                        console.log(loading)
-                        if (!loading) {
-                            onSubmit()
-                        }
-                    }}>Guardar registro</Button> */}
+                        {currentStep !== 4 && <Button size="medium" variant="contained" color="success" sx={{ marginTop: 5, marginLeft: 5 }}
+                            onClick={() => next()}>{currentStep === 3 ? "Finalizar" : "Siguiente"}</Button>}
+
                     </Box>
                 </Box>
-                {/* <Grid container sx={{ padding: 3 }} >
-                    <Grid item md={6}
-                        xs={12}
-                        justifyContent="center"
-                        display="flex"
-                        flexDirection="column"
-                        padding={1}
-                    >
 
-                        <TextField
-                            fullWidth
-                            error={errors.name !== null}
-                            inputProps={{ maxLength: 45 }}
-                            label="Nombre"
-                            helperText={errors.name}
-                            variant="standard"
-                            onBlur={(event) => {
-                                setValues({ ...values, name: event.target.value });
-                                if (event.target.value !== "") {
-                                    setErrors({ ...errors, name: null });
-                                }
-                            }}
-                        />
-                    </Grid>
-
-                    <Grid item md={6}
-                        xs={12}
-                        justifyContent="center"
-                        display="flex"
-                        flexDirection="column"
-                        padding={1}
-                    >
-                        <FormControl component="fieldset" sx={{ marginTop: 2 }} error={errors.specie !== null}  >
-                            <FormLabel component="label" sx={{ fontSize: 14 }} >Especie</FormLabel>
-                            <RadioGroup
-
-                                row aria-label="specie"
-                                name="row-radio-buttons-group"
-                                value={values.specie}
-                                onChange={(event) => {
-                                    setValues({ ...values, specie: event.target.value });
-                                    setErrors({ ...errors, specie: null });
-                                }}>
-                                <FormControlLabel value="perro" control={<Radio />} label="Perro" />
-                                <FormControlLabel value="gato" control={<Radio />} label="Gato" />
-                            </RadioGroup>
-
-
-                        </FormControl>
-                        {errors.specie ? <FormHelperText error={true} >{errors.specie}</FormHelperText> : null}
-                    </Grid>
-
-                    <Grid item xs={12} md={6}
-                        justifyContent="flex-end"
-                        flexDirection="column"
-                        display="flex"
-                        padding={1}
-                    >
-                        <LocalizationProvider dateAdapter={DateAdapter} >
-                            <DatePicker
-                                label="Fecha de nacimiento (aprox)"
-                                maxDate={new moment()}
-                                value={values.birthday}
-                                mask={'__/__/____'}
-                                onChange={(newValue) => {
-
-                                    setValues({ ...values, birthday: newValue });
-                                    setErrors({ ...errors, birthday: null });
-                                }}
-
-                                renderInput={(params) => <TextField {...params} variant="standard" helperText={errors.birthday} error={errors.birthday !== null} />}
-                            />
-                        </LocalizationProvider>
-                        {values.birthday !== null ? <FormHelperText sx={{ color: "#0554b5" }} >{moment(values.birthday, "YYYYMMDD").fromNow()} de edad (Aproximadamente)</FormHelperText> : null}
-
-                    </Grid>
-
-
-                    <Grid item xs={12} md={6}
-                        justifyContent="flex-start"
-                        flexDirection="column"
-                        display="flex"
-                        padding={1}
-                    >
-                        <TextField label="Color"
-                            variant="standard"
-                            helperText={errors.color}
-                            onBlur={(event) => {
-                                setValues({ ...values, color: event.target.value });
-                                if (event.target.value !== "") {
-                                    setErrors({ ...errors, color: null });
-                                }
-                            }}
-                            inputProps={{ maxLength: 45 }}
-                            error={errors.color !== null}
-                        />
-
-
-                    </Grid>
-
-                    <Grid item xs={12} md={6}
-                        justifyContent="flex-start"
-                        flexDirection="column"
-                        display="flex"
-                        padding={1}
-                    >
-                        <FormControl component="fieldset" sx={{ marginTop: 2 }} error={errors.gender !== null}>
-                            <FormLabel component="label" sx={{ fontSize: 14 }}>Sexo</FormLabel>
-                            <RadioGroup row aria-label="gender" name="row-radio-buttons-group" value={values.gender}
-                                onChange={(event) => {
-                                    setValues({ ...values, gender: event.target.value });
-                                    setErrors({ ...errors, gender: null });
-                                }}>
-                                <FormControlLabel value="macho" control={<Radio />} label="Macho" />
-                                <FormControlLabel value="hembra" control={<Radio />} label="Hembra" />
-                            </RadioGroup>
-                        </FormControl>
-                        {errors.gender ? <FormHelperText error={true} >{errors.gender}</FormHelperText> : null}
-
-                    </Grid>
-                    <Grid item md={6}
-                        xs={12}
-                        justifyContent="center"
-                        display="flex"
-                        flexDirection="column"
-                        padding={1}
-                    >
-
-                        <FormControl fullWidth variant="standard" error={errors.size !== null} >
-                            <InputLabel id="animal-size"  >Tamaño</InputLabel>
-                            <Select
-
-                                labelId="animal-size"
-                                id="animal-size-select"
-                                value={values.size}
-                                label="Seleccione el tamaño"
-                                onChange={(event) => {
-                                    setValues({
-                                        ...values, size: event.target.value
-                                    });
-                                    setErrors({ ...errors, size: null });
-                                }}
-                                error={errors.size !== null}
-                            >
-                                <MenuItem value={"grande"}>Grande</MenuItem>
-                                <MenuItem value={"mediano"}>Mediano</MenuItem>
-                                <MenuItem value={"pequeño"}>Pequeño</MenuItem>
-
-                            </Select>
-
-                        </FormControl>
-                        {errors.size && <FormHelperText error={true}>{errors.size}</FormHelperText>}
-                    </Grid>
-                    <Grid item xs={12} md={12} padding={1}>
-                        <TextField label="Descripción"
-                            onBlur={(event) => {
-                                setValues({ ...values, characteristics: event.target.value });
-                                setErrors({ ...errors, characteristics: null })
-                            }}
-                            inputProps={{ maxLength: 300 }}
-                            fullWidth multiline={true} minRows={4} variant="filled" />
-
-                    </Grid>
-
-                    <Grid item md={6}
-                        xs={12}
-                        justifyContent="center"
-                        display="flex"
-                        flexDirection="column"
-                        padding={1}
-                    >
-
-                        <TextField
-                            fullWidth
-                            label="Sitio de rescate"
-                            variant="standard"
-                            onBlur={(event) => {
-                                setValues({ ...values, rescueSite: event.target.value });
-                            }}
-                            inputProps={{ maxLength: 190 }}
-                        />
-
-                    </Grid>
-
-
-                    <Grid item xs={12} md={6}
-                        justifyContent="flex-start"
-                        flexDirection="column"
-                        display="flex"
-                        padding={1}
-                    >
-                        <LocalizationProvider dateAdapter={DateAdapter}>
-                            <DatePicker
-                                label="Fecha de rescate (aprox)"
-                                value={values.rescueDate}
-                                maxDate={new moment()}
-                                onChange={(newValue) => {
-                                    setValues({ ...values, rescueDate: newValue });
-                                }}
-                                renderInput={(params) => <TextField {...params} variant="standard" />}
-                            />
-                        </LocalizationProvider>
-                    </Grid>
-                    <Grid item md={6}
-                        xs={12}
-                        justifyContent="center"
-                        alignItems="flex-start"
-                        display="flex"
-                        flexDirection="column"
-                        padding={1}
-                    >
-                        <FormControl component="fieldset" sx={{ marginTop: 2 }}>
-                            <FormLabel component="label" sx={{ fontSize: 14 }}>Estado</FormLabel>
-                            <FormControlLabel value="esterilizado" checked={values.sterilized} onClick={() => { setValues({ ...values, ["sterilized"]: !values.sterilized }) }} control={<Checkbox />} label="Esterilizado" />
-                            <FormControlLabel value="desparasitado" checked={values.dewormed} onClick={() => { setValues({ ...values, ["dewormed"]: !values.dewormed }) }} control={<Checkbox />} label="Desparasitado" />
-
-                        </FormControl>
-                    </Grid>
-                    <Grid item
-                        md={6}
-                        xs={12}
-                        justifyContent="center"
-                        alignItems="flex-start"
-                        display="flex"
-
-                        padding={1}
-                    >
-
-                        <FormControl fullWidth variant="standard" sx={{ marginTop: 2 }}>
-                            <InputLabel id="animal-adoption-state" >Estado de adopción</InputLabel>
-                            <Select
-                                labelId="animal-adoption-state"
-                                id="animal-adoption-state-select"
-                                value={values.animalState}
-                                label="Seleccione el estado actua"
-                                disabled
-                                onChange={(event) => {
-                                    setValues({
-                                        ...values, animalState: event.target.value
-                                    });
-                                    setErrors({ ...errors, animalState: null });
-                                }}
-
-                            >
-                                <MenuItem value={"Sin adoptar"} selected={true} >Sin adoptar</MenuItem>
-
-
-                            </Select>
-
-                        </FormControl>
-
-                    </Grid>
-                    <Grid item xs={12} md={12} padding={1}>
-                        <TextField label="Vacunas" fullWidth multiline={true} minRows={4} variant="filled"
-                            onBlur={(event) => {
-                                setValues({ ...values, vaccine: event.target.value });
-                            }}
-                            inputProps={{ maxLength: 100 }}
-                        />
-                    </Grid>
-
-                </Grid> */}
-
-                <Box sx={{ justifyContent: "center", paddingBottom: 3 }} display="flex">
-
-                    {/* <Button size="medium" variant="contained" color="success" onClick={() => {
-                        console.log(loading)
-                        if (!loading) {
-                            onSubmit()
-                        }
-                    }}>Guardar registro</Button> */}
-                </Box>
             </Paper >
         </Container>
     );
+
+}
+
+
+/**Textfield construido de manera diferente para evitar delay al momento de teclear
+ * 
+ */
+const OPTextField = ({ onBlur, data }) => {
+
+    const [value, setValue] = useState(data.answer !== undefined ? data.answer : "");
+
+    return (
+        <TextField
+            fullWidth
+            label={data.titulo}
+            variant="standard"
+            value={value}
+            onChange={(event) => {
+                setValue(event.target.value);
+            }}
+
+            onBlur={(event) => onBlur(event.target.value, data.id_pregunta)}
+        />
+    )
 
 }
 
