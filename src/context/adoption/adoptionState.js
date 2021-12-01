@@ -314,10 +314,49 @@ const AdoptionState = props => {
 
 
     //TODO: falta que el backend devuelva las preguntas, el adoptante,seguimientos y el empleado y validar la estructura
-    const selectAdoption = (item) => {
+    const getAdoption = async (adoptionId) => {
 
-        console.log("Esta acción a aún no se ha implementado");
-        // dispatch({ type: SELECT_ADOPTION, payload: item });
+        try {
+            dispatch({
+                type: TOGGLE_ADOPTION_LOADING,
+                payload: true
+            });
+            console.log(adoptionId)
+            const res = await axiosClient.get("/api/adoptions/" + adoptionId);
+
+            console.log(res.data)
+            if (res.data.state) {
+                dispatch({
+                    type: SELECT_ADOPTION,
+                    payload: res.data.data
+                });
+            } else {
+                dispatch({
+                    type: SELECT_ADOPTION,
+                    payload: null
+                });
+            }
+
+        } catch (error) {
+            console.log(error)
+            // let errorsDecriptions = error.response?.data.errors;
+
+            // let text = "";
+            // if (errorsDecriptions) {
+            //     text = errorsDecriptions[0];
+            // } else {
+            //     text = error.response.data.message;
+            // }
+
+            // dispatch({
+            //     type: ADOPTION_MESSAGE, payload: {
+            //         category: "error",
+            //         text: text,
+            //         showIn: "detail"
+            //     }
+            // });
+
+        }
     }
     const handleAdoptionMessage = (data) => {
         dispatch({
@@ -332,7 +371,7 @@ const AdoptionState = props => {
             message: state.message,
             getAdoptions,
             createAdoption,
-            selectAdoption,
+            getAdoption,
             removeAdoption,
             editAdoption,
             handleAdoptionMessage

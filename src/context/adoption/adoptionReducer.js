@@ -26,13 +26,25 @@ export default (state, action) => {
             }
         case SELECT_ADOPTION:
             //TODO: falta que el backend devuelva las preguntas, el adoptante,seguimientos y el empleado y validar la estructura
+
+            let tmpData = {
+                estado: action.payload.estado,
+                fecha_entrega: action.payload.fecha_entrega,
+                fecha_estudio: action.payload.fecha_estudio,
+                id_adopcion: action.payload.id_adopcion,
+                observaciones: action.payload.observaciones ?? "",
+                animal: action.payload.animal,
+                adoptante: action.payload.adopter,
+                empleado: action.payload.employee,
+                preguntas: null,
+                seguimientos: action.payload.tracking
+            }
             return {
                 ...state,
-                selectedAdoption: action.payload.adopcion,
-                animal: action.payload.adopcion.animal,
-                adopter: action.payload.adopcion.adoptante,
-                employee: action.payload.adopcion.empleado,
-                trackings: action.payload.adopcion.segumientos
+                loading: false,
+                message: null,
+                selectedAdoption: tmpData,
+
 
             }
         default:

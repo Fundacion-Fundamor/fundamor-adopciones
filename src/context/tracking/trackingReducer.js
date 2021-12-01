@@ -1,6 +1,6 @@
 /* eslint-disable*/
 
-import { TRACKINGS, SELECT_TRACKING, TOGGLE_TRACKINGS_LOADING, TRACKING_MESSAGE } from '../../types';
+import { TRACKINGS, SELECT_TRACKING, TOGGLE_TRACKING_LOADING, TRACKING_MESSAGE } from '../../types';
 
 export default (state, action) => {
 
@@ -12,7 +12,7 @@ export default (state, action) => {
                 loading: false
 
             }
-        case TOGGLE_TRACKINGS_LOADING:
+        case TOGGLE_TRACKING_LOADING:
             return {
                 ...state,
                 loading: action.payload

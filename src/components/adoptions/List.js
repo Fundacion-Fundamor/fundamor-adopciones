@@ -54,7 +54,7 @@ const AdoptionItem = ({ adoption }) => {
             <Chip color="primary" label={adoption.estado} />
 
             <Button size="small" onClick={() => {
-                history.push(`/adoptions/new/-1`);
+                history.push(`/adoptions/detail/${adoption.id_adopcion}`);
 
             }}>Ver más</Button>
         </CardActions>
