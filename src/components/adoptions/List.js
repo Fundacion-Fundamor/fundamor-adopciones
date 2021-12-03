@@ -1,6 +1,6 @@
 import React, { useEffect, useContext } from 'react'
 
-import Utils from '../../Shared/utils'
+import Utils from '../../shared/utils'
 import AdoptionContext from '../../context/adoption/adoptionContext'
 import {
   Card,
