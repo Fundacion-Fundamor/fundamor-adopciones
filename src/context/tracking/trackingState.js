@@ -1,7 +1,7 @@
 import React, { useReducer } from 'react';
 import TrackingContext from './trackingContext';
 import TrackingReducer from './trackingReducer';
-import { TRACKINGS, SELECT_TRACKING, TOGGLE_TRACKINGS_LOADING, TRACKING_MESSAGE } from '../../types';
+import { TRACKINGS, SELECT_TRACKING, TOGGLE_TRACKING_LOADING, TRACKING_MESSAGE } from '../../types';
 import axiosClient from '../../config/axios';
 
 const TrackingState = props => {
@@ -19,14 +19,14 @@ const TrackingState = props => {
 
     //funciones que modifican el state
 
-    const getTrackings = async () => {
+    const getTrackings = async (adoptionId) => {
 
         try {
             dispatch({
-                type: TOGGLE_TRACKINGS_LOADING,
+                type: TOGGLE_TRACKING_LOADING,
                 payload: true
             });
-            const res = await axiosClient.get("/api/trackings");
+            const res = await axiosClient.get("/api/tracking/" + adoptionId);
 
             if (res.data.state) {
                 dispatch({
@@ -66,16 +66,16 @@ const TrackingState = props => {
     const createTracking = async (data) => {
 
         dispatch({
-            type: TOGGLE_TRACKINGS_LOADING,
+            type: TOGGLE_TRACKING_LOADING,
             payload: true
         });
         let formattedData = {
             id_adopcion: data.adoptionID,
             anotaciones: data.annotation,
-       
+
         }
         try {
-            const res = await axiosClient.post("/api/trackings", formattedData);
+            const res = await axiosClient.post("/api/tracking", formattedData);
             dispatch({
                 type: TRACKING_MESSAGE, payload: {
                     category: "success",
@@ -84,7 +84,7 @@ const TrackingState = props => {
 
                 }
             })
-            getTrackings();
+            getTrackings(data.adoptionID);
 
         } catch (error) {
 
@@ -110,11 +110,11 @@ const TrackingState = props => {
     const removeTracking = async (idTracking) => {
 
         dispatch({
-            type: TOGGLE_TRACKINGS_LOADING,
+            type: TOGGLE_TRACKING_LOADING,
             payload: true
         });
         try {
-            let res = await axiosClient.delete("/api/trackings/" + idTracking);
+            let res = await axiosClient.delete("/api/tracking/" + idTracking);
 
             dispatch({
                 type: TRACKING_MESSAGE, payload: {

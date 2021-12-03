@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 import List from '../../components/adoptions/List';
 import Form from '../../components/adoptions/Form';
+import Detail from '../../components/adoptions/Detail';
 export default function Adoption() {
     let history = useHistory();
     let { path } = useRouteMatch();
@@ -29,6 +30,9 @@ export default function Adoption() {
             </Route>
             <Route path={`${path}/new/:animalId`}>
                 <Form />
+            </Route>
+            <Route path={`${path}/detail/:adoptionId`}>
+                <Detail />
             </Route>
         </Switch>
     </div>

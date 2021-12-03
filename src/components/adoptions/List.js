@@ -85,7 +85,7 @@ const AdoptionItem = ({ adoption }) => {
         <Button
           size="small"
           onClick={() => {
-            history.push(`/adoptions/new/-1`)
+            history.push(`/adoptions/detail/${adoption.id_adopcion}`)
           }}
         >
           Ver más
