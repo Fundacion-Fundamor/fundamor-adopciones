@@ -11,6 +11,7 @@ import {
 } from '@mui/material'
 
 import { FaTrashAlt, FaUserEdit } from 'react-icons/fa'
+import Utils from '../../shared/utils'
 
 import './list.scss'
 import EmployeeContext from '../../context/employee/employeeContext'
@@ -126,7 +127,7 @@ const EmployeeItem = ({ item, removeEmployee, selectEmployee }) => {
                 </Typography>
 
                 <Typography variant="h5" component="div">
-                    {item.nombre}
+                    {Utils.toTitleCase(item.nombre)}
                 </Typography>
                 <Typography sx={{ mb: 1.5 }} color="text.secondary">
                     {item.correo}

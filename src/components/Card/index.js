@@ -1,6 +1,7 @@
 import React from 'react'
 import './card.scss'
 import { useRouteMatch, useHistory } from "react-router-dom";
+import Utils from '../../shared/utils'
 /**Los animales pueden tener varias imagenes
  * 
  * @param {*} param0 
@@ -21,7 +22,7 @@ function Card({ animal }) {
           <img src={`${process.env.REACT_APP_URL}/images/sin_imagen.png`} alt="card" />}
       </div>
       <div className="card-body">
-        <h2>{animal.nombre}</h2>
+        <h2>{Utils.toTitleCase(animal.nombre)}</h2>
         <p>
           {animal.caracteristicas}
         </p>
