@@ -44,6 +44,7 @@ import withReactContent from 'sweetalert2-react-content';
 import QuestionContext from '../../context/question/questionContext';
 import AdoptionContext from '../../context/adoption/adoptionContext';
 import AdopterContext from '../../context/adopter/adopterContext';
+import AuthContext from '../../context/auth/authContext';
 
 const steps = [
     "Selecciona el animal",
@@ -84,6 +85,7 @@ export default function Form() {
     let history = useHistory();
     const MySwal = withReactContent(Swal);
     const [currentStep, setCurrentStep] = useState(0);
+    const { user } = useContext(AuthContext);
     const { animals, getAnimals } = useContext(AnimalContext); // contexto de animales
     const { questions, getQuestions } = useContext(QuestionContext); // contexto de preguntas
     const { message, loading, handleAdoptionMessage, createAdoption } = useContext(AdoptionContext);// contexto de adopcion
@@ -535,10 +537,10 @@ export default function Form() {
                         </>
                         : null}
                     {currentStep === 2 ?
-                        <div>
+                        <div style={{ width: "90%" }}>
                             {localQuestions.map((element, index) => element.tipo_pregunta === "abierta" ? (
 
-                                <div className="form-group" key={index}>
+                                <div className="form-group" key={index} >
                                     <OPTextField onBlur={handleAnswersAdopter} data={element} />
                                 </div>
                             ) : (
@@ -597,7 +599,7 @@ export default function Form() {
                             >
                                 <TextField label="Colaborador encargado"
                                     variant="standard"
-                                    value={"colaborador del context"}
+                                    value={user.nombre}
                                     disabled
 
                                 />
@@ -644,7 +646,7 @@ export default function Form() {
 
 
                                 <FormControl fullWidth variant="standard" error={errors.adoptionState !== null} >
-                                    <InputLabel id="animal-size"  >Estado</InputLabel>
+                                    <InputLabel id="animal-size"  >Estado de la adopción</InputLabel>
                                     <Select
 
                                         labelId="animal-size"
@@ -676,7 +678,7 @@ export default function Form() {
                                 padding={1}
                             >
 
-                                <LocalizationProvider dateAdapter={DateAdapter} >
+                                {values.adoptionState === "Finalizada" ? <LocalizationProvider dateAdapter={DateAdapter} >
                                     <DatePicker
                                         label="Fecha de entrega"
                                         value={values.adoptionFinalDate}
@@ -688,28 +690,9 @@ export default function Form() {
 
                                         }}
                                     />
-                                </LocalizationProvider>
+                                </LocalizationProvider> : null}
                             </Grid>
-                            <Grid item xs={12} md={12}
-                                justifyContent="center"
-                                alignItems="center"
-                                flexDirection="row"
-                                display="flex"
-                                padding={1}
-                            >
-
-                                <h4>Revisar respuestas del formulario</h4>
-                                <IconButton aria-label="share" onClick={() => {
-                                    console.log("despliega un modal con la lista de preguntas y respuestas");
-                                }}>
-                                    <GrDocumentText
-                                        size={25}
-
-                                        cursor="pointer"
-                                    />
-                                </IconButton>
-
-                            </Grid>
+                     
                             <Grid item xs={12} md={12} padding={1}>
                                 <TextField label="Observaciones" fullWidth multiline={true} minRows={4} variant="filled"
                                     onBlur={(event) => {

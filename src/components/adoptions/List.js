@@ -1,6 +1,5 @@
 import React, { useEffect, useContext } from 'react'
 
-import Utils from '../../shared/utils'
 import AdoptionContext from '../../context/adoption/adoptionContext'
 import {
   Card,
@@ -59,8 +58,8 @@ const AdoptionItem = ({ adoption }) => {
             {'No registra'}
           </Typography> */}
 
-        <Typography sx={{ mb: 0 }} variant="h5" component="div">
-          {Utils.toTitleCase(adoption.animal.nombre)}
+        <Typography sx={{ mb: 0, textTransform:"capitalize" }} variant="h5" component="div" >
+          {adoption.animal.nombre}
         </Typography>
         <Typography variant="overline" color="text.secondary">
           {adoption.animal.especie}
@@ -75,12 +74,12 @@ const AdoptionItem = ({ adoption }) => {
         <Typography sx={{}} variant="subtitle2" color="text.secondary">
           {'Adoptante:'}
         </Typography>
-        <Typography variant="body2">
-          {Utils.toTitleCase(adoption.adopter.nombre)}
+        <Typography variant="body2" sx={{ textTransform: "capitalize" }} >
+          {adoption.adopter.nombre}
         </Typography>
       </CardContent>
       <CardActions sx={{ justifyContent: 'space-between' }}>
-        <Chip color="primary" label={Utils.toTitleCase(adoption.estado)} />
+        <Chip color="primary" sx={{ textTransform: "capitalize" }} label={adoption.estado} />
 
         <Button
           size="small"

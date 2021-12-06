@@ -11,7 +11,6 @@ import {
 } from '@mui/material'
 
 import { FaTrashAlt, FaUserEdit } from 'react-icons/fa'
-import Utils from '../../shared/utils'
 
 import './list.scss'
 import EmployeeContext from '../../context/employee/employeeContext'
@@ -126,8 +125,8 @@ const EmployeeItem = ({ item, removeEmployee, selectEmployee }) => {
                     {item.rol !== '' ? item.rol : 'No registra'}
                 </Typography>
 
-                <Typography variant="h5" component="div">
-                    {Utils.toTitleCase(item.nombre)}
+                <Typography variant="h5" component="div" sx={{textTransform:"capitalize"}}>
+                    {item.nombre}
                 </Typography>
                 <Typography sx={{ mb: 1.5 }} color="text.secondary">
                     {item.correo}
