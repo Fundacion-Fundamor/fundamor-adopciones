@@ -236,7 +236,7 @@ const AdoptionState = props => {
                 type: ADOPTION_MESSAGE, payload: {
                     category: "success",
                     text: res.data.message,
-                    showIn: "list"
+                    showIn: "detail"
                 }
             })
             getAdoptions();
@@ -256,7 +256,7 @@ const AdoptionState = props => {
                 type: ADOPTION_MESSAGE, payload: {
                     category: "error",
                     text: text,
-                    showIn: "list"
+                    showIn: "detail"
                 }
             })
         }
