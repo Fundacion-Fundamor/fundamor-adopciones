@@ -17,9 +17,10 @@ const NavbarComponent = () => {
               <Nav.Link as={Link} to="/about">
                 Acerca de
               </Nav.Link>
-              <Nav.Link as={Link} to="/gallery">
+
+              {authenticated ? <Nav.Link as={Link} to="/gallery">
                 Galeria
-              </Nav.Link>
+              </Nav.Link> : null}
               {authenticated ? <Nav.Link as={Link} to="/employees">
                 Colaboradores
               </Nav.Link> : null}
