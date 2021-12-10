@@ -51,11 +51,12 @@ const AuthState = props => {
 
     const authenticatedUser = async () => {
         let token = localStorage.getItem("token");
-        if (token) {
-            authToken(token);
-        }
+        authToken(token);
+        
         try {
+         
             const res = await axiosClient.get("/api/auth");
+            console.log(res.data)
             dispatch({ type: USER_IN_SESSION, payload: res.data.data });
 
         } catch (error) {

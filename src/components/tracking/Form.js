@@ -2,8 +2,10 @@ import React, { useState, useEffect, useContext } from 'react'
 import { Alert, Button, CircularProgress, FormControl, InputLabel, MenuItem, TextField, Select, FormHelperText, FormControlLabel, Checkbox } from '@mui/material';
 import { GrClose } from 'react-icons/gr';
 import TrackingContext from '../../context/tracking/trackingContext';
-
-
+import { DatePicker, LocalizationProvider } from '@mui/lab';
+import DateAdapter from '@mui/lab/AdapterMoment';
+import moment from 'moment';
+import 'moment/locale/es';
 
 export default function Form({ handleModal, adoptionID }) {
 
@@ -38,7 +40,21 @@ export default function Form({ handleModal, adoptionID }) {
                     <GrClose size={25} color="#000" onClick={handleModal} cursor="pointer" />
                 </div>
                 <div className="form-group">
+                    <LocalizationProvider dateAdapter={DateAdapter} >
+                        <DatePicker
+                            label="Fecha del seguimiento"
+                            maxDate={new moment()}
+                            value={new moment()}
+                            mask={'__/__/____'}
+                            onChange={(newValue) => {
 
+                            
+                            }}
+                            c
+                            disabled
+                            renderInput={(params) => <TextField  fullWidth={true} {...params}  variant="standard" />}
+                        />
+                    </LocalizationProvider>
                     <div className="form-group">
                         <TextField
                             fullWidth

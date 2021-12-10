@@ -32,7 +32,7 @@ const AnimalState = props => {
         let filtersString = "?";
         if (filters) {
             for (let key in filters) {
-                filtersString += key + "=" + filters[key]
+                filtersString += key + "=" + filters[key]+"&"
 
             }
         }

@@ -82,13 +82,11 @@ const AdoptionState = props => {
             payload: true
         });
 
-        let resAdoption = null;
 
-        let resAdopter = null;
 
         let adoptionFormattedData = {
             id_animal: selectedAnimal.id_animal,
-            estado: data.adoptionState,
+            estado: data.adoptionState.toLowerCase(),
             observaciones: data.observations === "" ? null : data.observations,
             fecha_entrega: data.adoptionFinalDate === "" ? null : data.adoptionFinalDate
         }
@@ -97,6 +95,7 @@ const AdoptionState = props => {
 
         if (selectedAdopter) {
             adopterFormattedData = {
+                selected: true,
                 correo: selectedAdopter.correo !== "" ? data.correo : null,
                 nombre: selectedAdopter.nombre,
                 telefono_casa: selectedAdopter.telefono_casa === "" ? null : data.telefono_casa,
@@ -107,6 +106,7 @@ const AdoptionState = props => {
             };
         } else {
             adopterFormattedData = {
+                selected: false,
                 correo: adopterData.email !== "" ? adopterData.email : null,
                 nombre: adopterData.name,
                 telefono_casa: adopterData.housePhone === "" ? null : adopterData.housePhone,
@@ -116,75 +116,40 @@ const AdoptionState = props => {
                 id_adoptante: adopterData.ID
             }
         }
+        let questionsFormattedData = [];
+        questionsData.forEach(element => {
+            questionsFormattedData.push({
+
+                id_pregunta: element.id_pregunta,
+                respuesta: element.answer
+            })
+
+        });
 
         try {
-            if (selectedAdopter === null) {
-                resAdopter = await axiosClient.post("/api/adopters", adopterFormattedData);
-            }
-            if (selectedAdopter || resAdopter.data.state) {
-                adoptionFormattedData.id_adoptante = selectedAdopter === null ? resAdopter.data.data : selectedAdopter.id_adoptante;
-                resAdoption = await axiosClient.post("/api/adoptions", adoptionFormattedData);
-                if (resAdoption.data.state) {
 
-                    let questionsFormattedData = [];
+            let resAdoption = await axiosClient.post("/api/adoptions", {
+                adoptionData: adoptionFormattedData,
+                adopterData: adopterFormattedData,
+                questionsData: questionsFormattedData
+            });
+            if (resAdoption.data.state) {
 
-                    questionsData.forEach(element => {
-                        questionsFormattedData.push({
-                            id_adopcion: resAdoption.data.data,
-                            id_pregunta: element.id_pregunta,
-                            respuesta: element.answer
-                        })
+                dispatch({
+                    type: ADOPTION_MESSAGE, payload: {
+                        category: "success",
+                        text: "La adopción se ha registrado con exito",
+                        showIn: "form"
 
-                    });
-
-                    const resAnswers = await axiosClient.post("/api/adoptionQuestions", { respuestas: questionsFormattedData });
-
-                    if (resAnswers.data.state) {
-                        dispatch({
-                            type: ADOPTION_MESSAGE, payload: {
-                                category: "success",
-                                text: "La adopción se ha resgistrado con exito",
-                                showIn: "form"
-
-                            }
-                        })
-                    } else {
-                        let resDeleteAdoption = await axiosClient.delete("/api/adoptions/" + resAdoption.data.data);
-
-                        if (resDeleteAdoption.data.state) {
-                            let resDeleteAdopters = await axiosClient.delete("/api/adopters/" + adopterFormattedData.id_adoptante);
-                            if (!resDeleteAdopters) {
-
-                            }
-                        }
-
-                        //?cambiar el estado del animal cuando se inserte la adopcion
-                        dispatch({
-                            type: ADOPTION_MESSAGE, payload: {
-                                category: "error",
-                                text: resAnswers.data.message,
-                                showIn: "form"
-
-                            }
-                        })
                     }
-                } else {
-                    await axiosClient.delete("/api/adopters/" + adopterFormattedData.id_adoptante);
+                })
 
-                    dispatch({
-                        type: ADOPTION_MESSAGE, payload: {
-                            category: "error",
-                            text: resAdoption.data.message,
-                            showIn: "form"
-
-                        }
-                    })
-                }
             } else {
+
                 dispatch({
                     type: ADOPTION_MESSAGE, payload: {
                         category: "error",
-                        text: resAdopter.data.message,
+                        text: resAdoption.data.message,
                         showIn: "form"
 
                     }
@@ -192,23 +157,7 @@ const AdoptionState = props => {
             }
 
 
-            // getAdoptions();
-
         } catch (error) {
-
-            //si ocurre un error ha que eliminar las insersiones
-            if (resAdoption && resAdoption.data.state) {
-                axiosClient.delete("/api/adoptions/" + resAdoption.data.data).then((resDeleteAdoption) => {
-
-                    if (resDeleteAdoption.data.state) {
-                        axiosClient.delete("/api/adopters/" + adopterFormattedData.id_adoptante);
-                    }
-                });
-
-            } else if (resAdopter && resAdopter.data.state) {
-                axiosClient.delete("/api/adopters/" + adopterFormattedData.id_adoptante);
-            }
-
             let errorsDecriptions = error.response?.data.errors;
 
             let text = "";
@@ -235,13 +184,12 @@ const AdoptionState = props => {
             payload: true
         });
         let formattedData = {
-            id_adopcion: data.adoptionID,
+            id_adopcion: data.adoptionId,
             estado: data.adoptionState,
-            id_animal: data.animalID,
-            id_adoptante: data.adopterID,
             observaciones: data.observations === "" ? null : data.observations,
-            fecha_entrega: data.adoptionFinalDate === "" ? null : data.adoptionFinalDate
+            fecha_entrega: data.adoptionState === "finalizada" ? (data.adoptionFinalDate === "" ? null : data.adoptionFinalDate) : null
         }
+
         try {
             let res = await axiosClient.put("/api/adoptions", formattedData);
             dispatch({
@@ -252,6 +200,7 @@ const AdoptionState = props => {
 
                 }
             })
+            getAdoption(data.adoptionId)
             getAdoptions();
 
         } catch (error) {
@@ -287,10 +236,11 @@ const AdoptionState = props => {
                 type: ADOPTION_MESSAGE, payload: {
                     category: "success",
                     text: res.data.message,
-                    showIn: "list"
+                    showIn: "detail"
                 }
             })
             getAdoptions();
+            
 
         } catch (error) {
 
@@ -306,7 +256,7 @@ const AdoptionState = props => {
                 type: ADOPTION_MESSAGE, payload: {
                     category: "error",
                     text: text,
-                    showIn: "list"
+                    showIn: "detail"
                 }
             })
         }

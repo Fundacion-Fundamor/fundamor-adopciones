@@ -14,7 +14,8 @@ export default (state, action) => {
                 ...state,
                 token: null,
                 message: action.payload,
-                loading: false
+                loading: false,
+                authenticated:null
             }
         case SUCCESS_LOGIN:
             localStorage.setItem("token", action.payload);
@@ -39,7 +40,7 @@ export default (state, action) => {
                 ...state,
                 token: null,
                 user: null,
-                authenticated: false,
+                authenticated: null,
                 loading: false,
                 message: null
             }

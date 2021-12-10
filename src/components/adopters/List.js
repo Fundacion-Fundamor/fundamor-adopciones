@@ -34,7 +34,7 @@ export default function List() {
     const selectAdopterRemove = async (idAdopter) => {
         MySwal.fire({
             title: <p style={{ fontSize: 22, fontWeight: "bold" }}>{"Confirmación"}</p>,
-            text: "¿Está seguro que desea eliminar este adoptante?",
+            text: "¿Está seguro que desea eliminar este adoptante?, tenga en cuenta que se eliminarán todas las adopciones asociadas a este adoptante",
             icon: "question",
             confirmButtonText: 'Aceptar',
             showCancelButton: true,

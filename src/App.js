@@ -31,6 +31,8 @@ import Animal from './screens/Animal'
 import Adopter from './screens/Adopter'
 import Adoption from './screens/Adoption'
 import TrackingState from './context/tracking/trackingState'
+import Dashboard from './screens/Dashboard'
+import PublicRoute from './components/PublicRoute'
 
 const token = localStorage.getItem("token");
 if (token) {
@@ -51,16 +53,20 @@ function App() {
                       <NavbarComponent />{' '}
                       <div className="main-content">
                         <Switch>
-                          <Route path="/" exact component={Home} />
-                          <Route path="/about" component={About} />
+                          {/* Rutas publicas */}
+                          <PublicRoute path="/" exact component={Home} />
+                          <PublicRoute path="/about" component={About} />
+                          <PublicRoute path="/login" component={Login} />
+                          <PublicRoute path="/passwordReset" component={PasswordReset} />
+                          
+                          {/* Rutas privadas */}
                           <PrivateRoute path="/gallery" component={Gallery} />
-                          <Route path="/login" component={Login} />
-                          <Route path="/passwordReset" component={PasswordReset} />
                           <PrivateRoute path="/employees" component={Employeee} />
                           <PrivateRoute path="/animals" component={Animal} />
                           <PrivateRoute path="/questions" component={Question} />
                           <PrivateRoute path="/adopters" component={Adopter} />
                           <PrivateRoute path="/adoptions" component={Adoption} />
+                          <PrivateRoute path="/dashboard" component={Dashboard} />
                           <Route path="/csstests" component={Test} />
                         </Switch>
                       </div>
