@@ -395,8 +395,8 @@ export default function Form() {
                     >
                         <FormControl component="fieldset" sx={{ marginTop: 2 }}>
                             <FormLabel component="label" sx={{ fontSize: 14 }}>Estado</FormLabel>
-                            <FormControlLabel value="esterilizado" checked={values.sterilized} onClick={() => { setValues({ ...values, ["sterilized"]: !values.sterilized }) }} control={<Checkbox />} label="Esterilizado" />
-                            <FormControlLabel value="desparasitado" checked={values.dewormed} onClick={() => { setValues({ ...values, ["dewormed"]: !values.dewormed }) }} control={<Checkbox />} label="Desparasitado" />
+                            <FormControlLabel value="esterilizado" checked={values.sterilized} onClick={() => { setValues({ ...values, "sterilized": !values.sterilized }) }} control={<Checkbox />} label="Esterilizado" />
+                            <FormControlLabel value="desparasitado" checked={values.dewormed} onClick={() => { setValues({ ...values, "dewormed": !values.dewormed }) }} control={<Checkbox />} label="Desparasitado" />
 
                         </FormControl>
                     </Grid>
@@ -472,7 +472,7 @@ export default function Form() {
 
                             {imageList.length !== 0 && false ? <Button size="small" onClick={onImageRemoveAll} variant="contained" color="info">Eliminar Todo</Button> : null}
 
-                            <Button onClick={onImageUpload} size="small" sx={{ marginTop: 2 }} variant="contained" color={isDragging ? "info" : "primary"}>Seleccionar imagenes</Button>
+                            <Button onClick={onImageUpload} size="small" sx={{ marginTop: 2 }} variant="contained" color={isDragging ? "info" : "primary"}  variant="outlined" >Seleccionar imagenes</Button>
                             <Chip sx={{ marginTop: 2 }} label={imageList.length + "/8"} />
                             {errors && <div>
                                 {errors.maxNumber && <span>Solo puede adjuntar un máximo de {maxNumber} imagenes por animal</span>}
@@ -518,7 +518,7 @@ export default function Form() {
                 </div>}
                 <Box sx={{ justifyContent: "center", paddingBottom: 3 }} display="flex">
 
-                    <Button size="medium" variant="contained" color="success" onClick={() => {
+                    <Button size="medium" variant="contained"  color="primary" onClick={() => {
                         console.log(loading)
                         if (!loading) {
                             onSubmit()

@@ -57,7 +57,7 @@ export default function Employeee() {
         <Button
           className="employeeBanner__button"
           style={{ maxWidth: 220 }}
-          color="error"
+          color="primary"
           onClick={handleToggle}
           variant="contained"
         >

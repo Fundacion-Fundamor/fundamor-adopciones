@@ -20,6 +20,7 @@ function Home(props) {
     <div className="home-container">
       <section className="heroSection">
         <div className="heroSection__text">
+        
           <h5>Adoptar nos cambia la vida</h5>
           <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Habitasse
@@ -48,7 +49,7 @@ function Home(props) {
       </div>
       {/* <div style={{ background: 'blue', height: '40rem' }}></div> */}
 
-<List/>
+
 
       <Footer/>
     </div>

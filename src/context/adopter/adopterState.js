@@ -6,6 +6,8 @@ import axiosClient from '../../config/axios';
 
 const AdopterState = props => {
 
+
+
     const initialState = {
         adopters: [],
         message: null,

@@ -43,7 +43,6 @@ function MultipleItems(props) {
       },
     ],
   }
-  console.log(settings)
 
   return (
     <div className="slider-container">
