@@ -9,6 +9,7 @@
     "@emotion/styled": "^11.3.0",
     "@mui/lab": "^5.0.0-alpha.53",
     "@mui/material": "^5.0.1",
+    "@mui/styles": "^5.2.3",
     "@testing-library/jest-dom": "^5.11.10",
     "@testing-library/react": "^11.2.6",
     "@testing-library/user-event": "^12.8.3",
