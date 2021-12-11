@@ -12,6 +12,13 @@ export const TOGGLE_EMPLOYEES_LOADING = 'TOGGLE_EMPLOYEES_LOADING';
 export const EMPLOYEE_MESSAGE = 'EMPLOYEE_MESSAGE';
 // export const SHOW_MESSAGE = 'EMPLOYEES';
 
+//post types
+export const POSTS = 'POSTS';
+export const SELECT_POST = 'SELECT_POST';
+export const TOGGLE_POSTS_LOADING = 'TOGGLE_POSTS_LOADING';
+export const POST_MESSAGE = 'POST_MESSAGE';
+// export const SHOW_MESSAGE = 'POSTS';
+
 //adopter types
 export const ADOPTERS = 'ADOPTERS';
 export const SELECT_ADOPTER = 'SELECT_ADOPTER';

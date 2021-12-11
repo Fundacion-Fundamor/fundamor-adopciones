@@ -18,6 +18,9 @@ const NavbarComponent = () => {
                 Acerca de
               </Nav.Link>
 
+              {authenticated ? <Nav.Link as={Link} to="/posts">
+                Posts
+              </Nav.Link> : null}
               {authenticated ? <Nav.Link as={Link} to="/gallery">
                 Galeria
               </Nav.Link> : null}

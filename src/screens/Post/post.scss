@@ -1,0 +1,32 @@
+@import '../../scss/animations';
+@import '../../scss/variables';
+
+.postBanner {
+  padding-top: 2rem;
+  background: #f29f058e;
+}
+
+.postBanner__divider {
+  position: absolute;
+  z-index: -1;
+}
+
+.postBanner__content {
+  display: grid;
+  place-items: center;
+  padding: 2rem;
+}
+
+.postBanner__header {
+  display: grid;
+  place-items: center;
+  padding: 2rem;
+  color: $black;
+}
+
+@media (min-width: 1400px) {
+  .postBanner__divider {
+    position: absolute;
+    z-index: -1;
+  }
+}
