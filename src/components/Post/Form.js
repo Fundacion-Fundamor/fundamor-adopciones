@@ -75,8 +75,7 @@ export default function Form({ handleToggle }) {
   return (
     <div
       style={{
-        width: '50%',
-        maxwidth: 1000,
+        width: 'clamp(400px, 800px, 80%)',
         backgroundColor: '#fff',
         padding: 15,
         borderRadius: 4,
@@ -121,6 +120,7 @@ export default function Form({ handleToggle }) {
             helperText={errors.cuerpo}
             id="filled-multiline-static"
             multiline
+            minRows={5}
             maxRows={20}
             defaultValue="Default Value"
             variant="filled"
