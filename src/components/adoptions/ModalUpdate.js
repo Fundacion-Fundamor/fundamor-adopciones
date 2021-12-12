@@ -113,7 +113,7 @@ export default function ModalUpdate({ handleModal, observations, finalDate, adop
 
                     {
                         loading && <div style={{ marginTop: 15, display: "flex", justifyContent: "center", alignItems: "center" }}>
-                            <CircularProgress color="success" />
+                            <CircularProgress color="primary" />
                             <p style={{ marginLeft: 10 }}>Cargando...</p>
                         </div>
                     }

@@ -135,7 +135,7 @@ const AdopterItem = ({ item, removeAdopter, selectAdopter }) => {
       </CardContent>
       <CardActions disableSpacing>
         <IconButton
-          aria-label="add to favorites"
+          aria-label="edit"
           onClick={() => {
             selectAdopter(item)
           }}
@@ -143,7 +143,7 @@ const AdopterItem = ({ item, removeAdopter, selectAdopter }) => {
           <FaUserEdit size={30} cursor="pointer" />
         </IconButton>
         <IconButton
-          aria-label="share"
+          aria-label="delete"
           onClick={() => {
             removeAdopter(item.id_adoptante)
           }}

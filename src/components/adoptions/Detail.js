@@ -94,9 +94,9 @@ export default function Detail() {
     return <div>
         {selectedAdoption ? <p>{JSON.stringify(selectedAdoption)}</p> : null}
         {loading ? <p>Cargando...</p> : null}
-        <Button size="medium" variant="contained" color="success" sx={{ marginTop: 5 }} onClick={() => toggleModalTracking()}>Nuevo segumiento</Button>
+        <Button size="medium" variant="contained" color="primary" sx={{ marginTop: 5 }} onClick={() => toggleModalTracking()}>Nuevo segumiento</Button>
 
-        <Button size="medium" variant="contained" color="success" sx={{ marginTop: 5 }} onClick={() => toggleModalEdit()}>Editar</Button>
+        <Button size="medium" variant="contained" color="primary" sx={{ marginTop: 5 }} onClick={() => toggleModalEdit()}>Editar</Button>
         <Button size="medium" variant="contained" color="error" sx={{ marginTop: 5 }} onClick={() => onRemoveAdoption()}>Eliminar adopción</Button>
 
         <Modal
