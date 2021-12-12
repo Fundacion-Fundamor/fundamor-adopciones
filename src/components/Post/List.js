@@ -24,6 +24,10 @@ import { FaTrashAlt, FaUserEdit } from 'react-icons/fa'
 import './list.scss'
 import PostContext from '../../context/post/postContext'
 
+//TODO
+// delimitar la cantidad de texto del cuerpo a pocas lineas
+// linkear a detalle de la publicación
+
 const useStyles = makeStyles({
   root: {
     width: '80%',
@@ -36,11 +40,12 @@ const useStyles = makeStyles({
     height: 200,
   },
   customBox: {
-    display: '-webkit-box',
+    // display: '-webkit-box',
     boxOrient: 'vertical',
     lineClamp: 2,
     wordBreak: 'break-all',
     overflow: 'hidden',
+    display: 'block',
   },
 
   bottomAlignItem: {
