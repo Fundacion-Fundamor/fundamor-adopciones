@@ -30,8 +30,8 @@ import PostContext from '../../context/post/postContext'
 
 const useStyles = makeStyles({
   root: {
-    width: '80%',
-    // width: 'clamp(350px, 50%, 1000px);',
+    // width: '80%',
+    width: 'clamp(200px, 800px, 80%)',
     padding: 25,
     borderRadius: '4px',
     margin: '0.8rem',
