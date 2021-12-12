@@ -28,12 +28,12 @@ export default function Form({ handleToggle }) {
   )
 
   const [values, setValues] = useState({
-    ID: selectedPost ? selectedPost.ID : '',
+    id_publicacion: selectedPost ? selectedPost.id_publicacion : '',
     titulo: selectedPost ? selectedPost.titulo : '',
     cuerpo: selectedPost ? selectedPost.cuerpo : '',
   })
   const [errors, setErrors] = useState({
-    ID: null,
+    id_publicacion: null,
     titulo: null,
     cuerpo: null,
   })
@@ -66,6 +66,7 @@ export default function Form({ handleToggle }) {
       selectedPost === null
     ) {
       setValues({
+        id_publicacion: '',
         titulo: '',
         cuerpo: '',
       })

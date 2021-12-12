@@ -5,10 +5,6 @@ import { POSTS, SELECT_POST, TOGGLE_POSTS_LOADING, POST_MESSAGE } from '../../ty
 import axiosClient from '../../config/axios';
 
 
-        //TODO falta el ID para que actualice
-
-
-
 const PostState = props => {
 
 
@@ -119,14 +115,14 @@ const PostState = props => {
         }
     }
 
-    const editPost = async (data, edit = false) => {
+    const editPost = async (data) => {
 
         dispatch({
             type: TOGGLE_POSTS_LOADING,
             payload: true
         });
         const formattedData = {
-            id_publicacion: data.ID,
+            id_publicacion: data.id_publicacion,
             titulo: data.name,
             cuerpo: data.cuerpo
         }

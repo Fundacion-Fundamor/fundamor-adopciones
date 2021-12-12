@@ -63,7 +63,7 @@ export default function Post() {
       <Switch>
             <Route exact path={path}>
                 <div style={{ display: "flex", alignItems: "center", flexDirection: "column" }}>
-                    <Button size="medium" variant="contained"  color="primary" sx={{ marginTop: 5 }} onClick={() => {
+                    <Button size="medium" variant="contained"  color="primary" sx={{ margin: 5 }} onClick={() => {
                         history.push(`/posts/new/-1`);
 
                     }}>Crear una publicación</Button>
