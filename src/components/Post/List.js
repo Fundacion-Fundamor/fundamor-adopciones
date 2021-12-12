@@ -26,7 +26,7 @@ import PostContext from '../../context/post/postContext'
 
 const useStyles = makeStyles({
   root: {
-    width: "80%",
+    width: '80%',
     // width: 'clamp(350px, 50%, 1000px);',
     padding: 25,
     borderRadius: '4px',
@@ -36,11 +36,19 @@ const useStyles = makeStyles({
     height: 200,
   },
   customBox: {
-    // display: '-webkit-box',
-    // boxOrient: 'vertical',
-    // lineClamp: 2,
-    // wordBreak: 'break-all',
-    // overflow: 'hidden',
+    display: '-webkit-box',
+    boxOrient: 'vertical',
+    lineClamp: 2,
+    wordBreak: 'break-all',
+    overflow: 'hidden',
+  },
+
+  bottomAlignItem: {
+    display: 'flex',
+    alignSelf: 'flex-end',
+  },
+  leftAlignItem: {
+    marginRight: 'auto',
   },
 })
 
@@ -141,31 +149,36 @@ const PostItem = ({ item, removePost, selectPost }) => {
           {item.cuerpo}
         </Box>
       </CardContent>
+
       <CardActions disableSpacing>
-        <IconButton
-          aria-label="Editar colaborador"
-          onClick={() => {
-            selectPost(item)
-          }}
+        <div className={classes.leftAlignItem}>
+          <IconButton
+            aria-label="Editar publicación"
+            onClick={() => {
+              selectPost(item)
+            }}
+          >
+            <FaUserEdit size={25} cursor="pointer" />
+          </IconButton>
+          <IconButton
+            aria-label="Eliminar publicación"
+            onClick={() => {
+              removePost(item.id_publicacion)
+            }}
+          >
+            <FaTrashAlt size={25} cursor="pointer" />
+          </IconButton>
+        </div>
+
+        <Typography
+          className={classes.bottomAlignItem}
+          sx={{ fontSize: 14 }}
+          color="text.secondary"
+          gutterBottom
         >
-          <FaUserEdit size={30} cursor="pointer" />
-        </IconButton>
-        <IconButton
-          aria-label="delete"
-          onClick={() => {
-            removePost(item.id_publicacion)
-          }}
-        >
-          <FaTrashAlt size={25} cursor="pointer" />
-        </IconButton>
+          {item.fecha_creacion}
+        </Typography>
       </CardActions>
-      <Typography
-        sx={{ fontSize: 14, textAlign: 'right' }}
-        color="text.secondary"
-        gutterBottom
-      >
-        {item.fecha_creacion}
-      </Typography>
     </Card>
   )
 }
