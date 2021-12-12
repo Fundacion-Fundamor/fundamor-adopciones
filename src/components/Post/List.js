@@ -26,8 +26,8 @@ import PostContext from '../../context/post/postContext'
 
 const useStyles = makeStyles({
   root: {
-    maxWidth: 800,
-    // width: 'clamp(350px, 50%, 1000px);',
+    // maxWidth: 800,
+    width: 'clamp(350px, 50%, 1000px);',
     padding: 25,
     borderRadius: '4px',
     margin: '0.8rem',
@@ -134,16 +134,16 @@ const PostItem = ({ item, removePost, selectPost }) => {
         image="/images/cat_3.jpg"
       />
       <CardContent>
-        {/* <Typography sx={{ fontSize: 'h6.fontSize' }} gutterBottom>
+        <Typography sx={{ fontSize: 'h6.fontSize' }} gutterBottom>
           {item.titulo}
-        </Typography> */}
+        </Typography>
         <Box component="div" classes={{ root: classes.customBox }}>
           {item.cuerpo}
         </Box>
       </CardContent>
       <CardActions disableSpacing>
         <IconButton
-          aria-label="add to favorites"
+          aria-label="Editar colaborador"
           onClick={() => {
             selectPost(item)
           }}
@@ -151,7 +151,7 @@ const PostItem = ({ item, removePost, selectPost }) => {
           <FaUserEdit size={30} cursor="pointer" />
         </IconButton>
         <IconButton
-          aria-label="share"
+          aria-label="delete"
           onClick={() => {
             removePost(item.id_publicacion)
           }}

@@ -4,6 +4,11 @@ import PostReducer from './postReducer';
 import { POSTS, SELECT_POST, TOGGLE_POSTS_LOADING, POST_MESSAGE } from '../../types';
 import axiosClient from '../../config/axios';
 
+
+        //TODO falta el ID para que actualice
+
+
+
 const PostState = props => {
 
 
@@ -71,36 +76,35 @@ const PostState = props => {
     const createPost = async (data) => {
         
 
+
+
         dispatch({
             type: TOGGLE_POSTS_LOADING,
             payload: true
         });
         let formattedData = {
-            correo: data.email,
-            contrasenia: data.password,
-            nombre: data.name,
-            rol: data.role,
-            id_empleado: data.ID
+            titulo: data.titulo,
+            cuerpo: data.cuerpo
         }
         try {
             const res = await axiosClient.post("/api/post", formattedData);
+            console.log(res)
             dispatch({
                 type: POST_MESSAGE, payload: {
                     category: res.data.state ? "success" : "error",
                     text: res.data.message,
                     showIn: "form"
-
                 }
             })
             getPosts();
 
         } catch (error) {
 
-            let errorsDecriptions = error.response?.data.errors;
+            let errorDescriptions = error.response?.data.errors;
 
             let text = "";
-            if (errorsDecriptions) {
-                text = errorsDecriptions[0];
+            if (errorDescriptions) {
+                text = errorDescriptions[0];
             } else {
                 text = error.response.data.message;
             }
@@ -121,26 +125,13 @@ const PostState = props => {
             type: TOGGLE_POSTS_LOADING,
             payload: true
         });
-        let formattedData = {};
-
-        if (!edit || data.enablePassword) {
-            formattedData = {
-                correo: data.email,
-                contrasenia: data.password,
-                nombre: data.name,
-                rol: data.role,
-                id_empleado: data.ID
-            }
-        } else {
-            formattedData = {
-                correo: data.email,
-                nombre: data.name,
-                rol: data.role,
-                id_empleado: data.ID
-            }
+        const formattedData = {
+            id_publicacion: data.ID,
+            titulo: data.name,
+            cuerpo: data.cuerpo
         }
 
-        console.log(formattedData);
+        // console.log(formattedData);
         try {
             let res = await axiosClient.put("/api/post", formattedData);
             dispatch({
@@ -211,7 +202,6 @@ const PostState = props => {
     }
 
     const selectPost = (item) => {
-
         dispatch({ type: SELECT_POST, payload: item });
     }
 

@@ -1,3 +1,4 @@
+//eslint-disable-next-line react-hooks/exhaustive-deps
 import React, { useState, useEffect, useContext } from 'react'
 import './form.scss'
 import {
@@ -14,7 +15,7 @@ import {
   Checkbox,
 } from '@mui/material'
 import { GrClose } from 'react-icons/gr'
-import PostContext from '../../context/employee/employeeContext'
+import PostContext from '../../context/post/postContext'
 
 /**Componente encargado del registro y edición de un colaborador
  *
@@ -27,21 +28,14 @@ export default function Form({ handleToggle }) {
   )
 
   const [values, setValues] = useState({
-    title: selectedPost ? selectedPost.titulo : '',
-    cuerpo: selectedPost ? selectedPost.correo : '',
-    ID: selectedPost ? selectedPost.id_post : '',
-    password: '',
-    passwordConfirm: '',
-    role: selectedPost ? selectedPost.rol : '',
-    enablePassword: selectedPost === null,
+    ID: selectedPost ? selectedPost.ID : '',
+    titulo: selectedPost ? selectedPost.titulo : '',
+    cuerpo: selectedPost ? selectedPost.cuerpo : '',
   })
   const [errors, setErrors] = useState({
-    title: null,
-    cuerpo: null,
     ID: null,
-    password: null,
-    passwordConfirm: null,
-    role: null,
+    titulo: null,
+    cuerpo: null,
   })
 
   const onSubmit = async () => {
@@ -49,24 +43,16 @@ export default function Form({ handleToggle }) {
 
     //se validan los campos del formulario
 
-    if (values.title === '') {
-      setErrors({ ...errors, title: 'Debe ingresar un titulo' })
-    } else if (values.ID === '') {
-      setErrors({
-        ...errors,
-        ID: 'El ID de la publicación no puede estar vacío',
-      })
-    } else if (values.cuerpo === '' || re.test(values.cuerpo) === false) {
-      setErrors({
-        ...errors,
-        cuerpo: 'El cuerpo de la publicación no puede ir vacío',
-      })
+    if (values.titulo === '') {
+      setErrors({ ...errors, titulo: 'Debe ingresar un titulo' })
+    } else if (values.cuerpo === '') {
+      setErrors({ ...errors, cuerpo: 'Debe ingresar un cuerpo' })
     } else {
       if (selectedPost) {
-        //se editan los datos de la publicación
+        //se editan los datos del colaborador
         editPost(values)
       } else {
-        //se guardan los datos de la publicación
+        //se guardan los datos del colaborador
         createPost(values)
       }
     }
@@ -80,20 +66,19 @@ export default function Form({ handleToggle }) {
       selectedPost === null
     ) {
       setValues({
-        title: '',
+        titulo: '',
         cuerpo: '',
-        ID: '',
       })
     }
   }, [message])
   return (
     <div
       style={{
-        minWidth: 340,
-        width: 400,
+        width: '50%',
+        maxwidth: 1000,
         backgroundColor: '#fff',
         padding: 15,
-        borderRadius: 15,
+        borderRadius: 4,
         margin: 30,
         marginBottom: 30,
       }}
@@ -101,9 +86,9 @@ export default function Form({ handleToggle }) {
       <div className="form-container">
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           {selectedPost ? (
-            <h3>Edita los datos de la publicación</h3>
+            <h3>Edita la publicación</h3>
           ) : (
-            <h3>Nueva publicación </h3>
+            <h3>Crear nueva publicación</h3>
           )}
           <GrClose
             size={selectedPost ? 25 : 35}
@@ -115,31 +100,36 @@ export default function Form({ handleToggle }) {
         <div className="form-group">
           <TextField
             fullWidth
-            error={errors.title}
+            error={errors.titulo != null}
             label="Titulo"
-            helperText={errors.title}
+            helperText={errors.titulo}
             variant="standard"
-            value={values.title}
+            value={values.titulo}
             onChange={(event) => {
-              setValues({ ...values, title: event.target.value })
-              setErrors({ ...errors, title: null })
+              setValues({ ...values, titulo: event.target.value })
+              setErrors({ ...errors, titulo: null })
             }}
           />
         </div>
 
-        <TextField
-          id="filled-multiline-static"
-          label="Cuerpo"
-          multiline
-          rows={6}
-          defaultValue="Descripción de la publicación"
-          variant="filled"
-          value={values.cuerpo}
-          onChange={(event) => {
-            setValues({ ...values, cuerpo: event.target.value })
-            setErrors({ ...errors, cuerpo: null })
-          }}
-        />
+        <div className="form-group">
+          <TextField
+            fullWidth
+            error={errors.cuerpo !== null}
+            label="Cuerpo"
+            helperText={errors.cuerpo}
+            id="filled-multiline-static"
+            multiline
+            maxRows={20}
+            defaultValue="Default Value"
+            variant="filled"
+            value={values.cuerpo}
+            onChange={(event) => {
+              setValues({ ...values, cuerpo: event.target.value })
+              setErrors({ ...errors, cuerpo: null })
+            }}
+          />
+        </div>
 
         {loading && (
           <div

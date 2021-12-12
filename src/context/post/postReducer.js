@@ -27,7 +27,7 @@ export default (state, action) => {
         case SELECT_POST:
             return {
                 ...state,
-                selectedEmployee: action.payload
+                selectedPost: action.payload
             }
         default:
             return state;

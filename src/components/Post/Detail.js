@@ -34,7 +34,7 @@ export default function Detail() {
 
         MySwal.fire({
             title: <p style={{ fontSize: 22, fontWeight: "bold" }}>{"Confirmación"}</p>,
-            text: "¿Está seguro que desea eliminar esta adopción?, se eliminarán las respuestas registradas del formulario y solo se eliminará el adoptante si no esta asociado a otros procesos de adopción.",
+            text: "¿Está seguro que desea eliminar esta publicación?",
             icon: "question",
             confirmButtonText: 'Aceptar',
             showCancelButton: true,
@@ -79,9 +79,9 @@ export default function Detail() {
     return <div>
         {selectedPost ? <p>{JSON.stringify(selectedPost)}</p> : null}
         {loading ? <p>Cargando...</p> : null}
-        <Button size="medium" variant="contained" color="success" sx={{ marginTop: 5 }} onClick={() => toggleModalTracking()}>Nuevo segumiento</Button>
+        <Button size="medium" variant="contained"  color="primary" sx={{ marginTop: 5 }} onClick={() => toggleModalTracking()}>Nuevo segumiento</Button>
 
-        <Button size="medium" variant="contained" color="success" sx={{ marginTop: 5 }} onClick={() => toggleModalEdit()}>Editar</Button>
+        <Button size="medium" variant="contained" color="primary" sx={{ marginTop: 5 }} onClick={() => toggleModalEdit()}>Editar</Button>
         <Button size="medium" variant="contained" color="error" sx={{ marginTop: 5 }} onClick={() => onRemovePost()}>Eliminar adopción</Button>
 
         <Modal
