@@ -27,6 +27,8 @@ import PostContext from '../../context/post/postContext'
 //TODO
 // delimitar la cantidad de texto del cuerpo a pocas lineas
 // linkear a detalle de la publicación
+// Poner parte de imagenes
+// Vistas según rol
 
 const useStyles = makeStyles({
   root: {
@@ -181,7 +183,7 @@ const PostItem = ({ item, removePost, selectPost }) => {
           color="text.secondary"
           gutterBottom
         >
-          {item.fecha_creacion}
+          Publicado en: {item.fecha_creacion}
         </Typography>
       </CardActions>
     </Card>
