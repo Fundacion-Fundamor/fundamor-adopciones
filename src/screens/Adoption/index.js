@@ -20,7 +20,7 @@ export default function Adoption() {
         <Switch>
             <Route exact path={path}>
                 <div style={{ display: "flex", alignItems: "center", flexDirection: "column" }}>
-                    <Button size="medium" variant="contained" color="success" sx={{ marginTop: 5 }} onClick={() => {
+                    <Button size="medium" variant="contained"  color="primary" sx={{ marginTop: 5 }} onClick={() => {
                         history.push(`/adoptions/new/-1`);
 
                     }}>Nuevo proceso</Button>

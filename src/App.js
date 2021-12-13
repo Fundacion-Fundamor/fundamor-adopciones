@@ -12,14 +12,15 @@ import './scss/_global.scss'
 // Screens Imports
 import About from './screens/About'
 import Home from './screens/Home'
+import Post from './screens/Post'
 import Gallery from './screens/Gallery'
 import Login from './screens/Login'
 import './scss/_global.scss'
-import Test from './screens/CssTests'
 import PasswordReset from './screens/PasswordReset'
 import Employeee from './screens/Employee'
 
 import AuthState from './context/auth/authState'
+import PostState from './context/post/postState'
 import EmployeeState from './context/employee/employeeState'
 import QuestionState from './context/question/questionState'
 import AnimalState from './context/animal/animalState'
@@ -42,6 +43,7 @@ if (token) {
 function App() {
   return (
     <AuthState>
+    <PostState>
       <AdoptionState>
         <AnimalState>
           <EmployeeState>
@@ -60,6 +62,7 @@ function App() {
                           <PublicRoute path="/passwordReset" component={PasswordReset} />
                           
                           {/* Rutas privadas */}
+                          <PrivateRoute path="/posts" component={Post} />
                           <PrivateRoute path="/gallery" component={Gallery} />
                           <PrivateRoute path="/employees" component={Employeee} />
                           <PrivateRoute path="/animals" component={Animal} />
@@ -67,7 +70,6 @@ function App() {
                           <PrivateRoute path="/adopters" component={Adopter} />
                           <PrivateRoute path="/adoptions" component={Adoption} />
                           <PrivateRoute path="/dashboard" component={Dashboard} />
-                          <Route path="/csstests" component={Test} />
                         </Switch>
                       </div>
                     </Router>
@@ -78,6 +80,7 @@ function App() {
           </EmployeeState>
         </AnimalState>
       </AdoptionState>
+     </PostState>
     </AuthState>
   )
 }

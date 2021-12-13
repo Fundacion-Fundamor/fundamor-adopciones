@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { Alert, Button, CircularProgress, FormControl, InputLabel, MenuItem, TextField, Select, FormHelperText, FormControlLabel, Checkbox } from '@mui/material';
 import { GrClose } from 'react-icons/gr';
-import AdoptionContext from '../../context/adoption/adoptionContext';
+import PostContext from '../../context/post/postContext';
 import { DatePicker, LocalizationProvider } from '@mui/lab';
 import DateAdapter from '@mui/lab/AdapterMoment';
 import moment from 'moment';
 import 'moment/locale/es';
 
-export default function ModalUpdate({ handleModal, observations, finalDate, adoptionState, adoptionId }) {
+export default function ModalUpdate({ handleModal, observations, finalDate, postState, postId }) {
     moment.locale('es');
     moment.updateLocale('es', {
         relativeTime: {
@@ -30,20 +30,20 @@ export default function ModalUpdate({ handleModal, observations, finalDate, adop
         }
     });
 
-    const { loading, message, editAdoption } = useContext(AdoptionContext)
+    const { loading, message, editPost } = useContext(PostContext)
 
     const [values, setValues] = useState({
-        adoptionId: adoptionId,
+        postId: postId,
         observations: observations,
-        adoptionFinalDate: finalDate,
-        adoptionState: adoptionState,
+        postFinalDate: finalDate,
+        postState: postState,
     })
 
 
 
     const onSubmit = () => {
 
-        editAdoption(values);
+        editPost(values);
 
     }
 
@@ -65,11 +65,11 @@ export default function ModalUpdate({ handleModal, observations, finalDate, adop
 
                             labelId="animal-size"
                             id="animal-size-select"
-                            value={values.adoptionState}
+                            value={values.postState}
                             label="Seleccione el estado"
                             onChange={(event) => {
                                 setValues({
-                                    ...values, adoptionState: event.target.value
+                                    ...values, postState: event.target.value
                                 });
 
                             }}
@@ -81,16 +81,16 @@ export default function ModalUpdate({ handleModal, observations, finalDate, adop
                         </Select>
 
                     </FormControl>
-                    {values.adoptionState === "finalizada" ? <LocalizationProvider dateAdapter={DateAdapter} >
+                    {values.postState === "finalizada" ? <LocalizationProvider dateAdapter={DateAdapter} >
                         <DatePicker
 
                             label="Fecha de entrega"
-                            value={values.adoptionFinalDate}
+                            value={values.postFinalDate}
                             mask={'__/__/____'}
                             renderInput={(params) => <TextField sx={{ marginTop: 3 }} {...params} variant="standard" fullWidth={true} />}
                             onChange={(newValue) => {
 
-                                setValues({ ...values, adoptionFinalDate: newValue });
+                                setValues({ ...values, postFinalDate: newValue });
 
                             }}
                         />
@@ -113,7 +113,7 @@ export default function ModalUpdate({ handleModal, observations, finalDate, adop
 
                     {
                         loading && <div style={{ marginTop: 15, display: "flex", justifyContent: "center", alignItems: "center" }}>
-                            <CircularProgress color="primary" />
+                            <CircularProgress color="success" />
                             <p style={{ marginLeft: 10 }}>Cargando...</p>
                         </div>
                     }

@@ -7,7 +7,7 @@ export default function PublicRoute({ component: Component, ...props }) {
 
     const { authenticated, authenticatedUser, loading } = useContext(AuthContext);
 
-    console.log(authenticated,loading)
+    // console.log(authenticated,loading)
     useEffect(() => {
 
         authenticatedUser();

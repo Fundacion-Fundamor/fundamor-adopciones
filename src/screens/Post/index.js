@@ -1,20 +1,24 @@
 import React, { useState, useEffect, useContext } from 'react'
-import List from '../../components/employees/List'
-import './employee.scss'
+import List from '../../components/Post/List'
+import './post.scss'
 
-import Form from '../../components/employees/Form'
+import Form from '../../components/Post/Form'
 import {
   Button,
   Modal,
   Box,
 } from '@mui/material'
-import EmployeeContext from '../../context/employee/employeeContext'
-export default function Employeee() {
+import PostContext from '../../context/post/postContext'
+import { Route, Switch, useHistory, useRouteMatch } from 'react-router-dom'
+import Detail from '../../components/Post/Detail'
+
+
+export default function Post() {
   const {
-    selectedEmployee,
-    selectEmployee,
-    handleEmployeeMessage,
-  } = useContext(EmployeeContext)
+    selectedPost,
+    selectPost,
+    handlePostMessage,
+  } = useContext(PostContext)
 
   const [showForm, setShowForm] = useState(false)
 
@@ -24,25 +28,28 @@ export default function Employeee() {
 
   useEffect(() => {
     if (!showForm) {
-      selectEmployee(null)
-      handleEmployeeMessage(null)
+      selectPost(null)
+      handlePostMessage(null)
     }
   }, [showForm])
 
   useEffect(() => {
-    if (selectedEmployee) {
+    if (selectedPost) {
       setShowForm(!showForm)
     }
-  }, [selectedEmployee])
+  }, [selectedPost])
+
+  let history = useHistory();
+  let { path } = useRouteMatch();
 
   return (
-    <div className="employee-container">
-      <div className="employeeBanner">
-        <div className="employeeBanner__header">
-          <h1>Gestiona el acceso a la plataforma</h1>
+    <div className="post-container">
+      <div className="postBanner">
+        <div className="postBanner__header">
+          <h1>Gestiona las publicaciones</h1>
         </div>
         <svg
-          className="employeeBanner__divider"
+          className="postBanner__divider"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 1440 320"
         >
@@ -53,18 +60,29 @@ export default function Employeee() {
           ></path>
         </svg>
       </div>
-      <div className="employeeBanner__content">
-        <Button
+      <Switch>
+            <Route exact path={path}>
+                <div style={{ display: "flex", alignItems: "center", flexDirection: "column" }}>
+                <Button
           className="employeeBanner__button"
           style={{ maxWidth: 220 }}
           color="primary"
           onClick={handleToggle}
           variant="contained"
         >
-          Agregar colaborador
+         Crear publicación
         </Button>
-      </div>
-  
+                    <List />
+
+                </div>
+            </Route>
+            <Route path={`${path}/new/:postId`}>
+                <Form />
+            </Route>
+            <Route path={`${path}/detail/:postId`}>
+                <Detail />
+            </Route>
+        </Switch>
 
       <Modal
         open={showForm}
@@ -76,8 +94,6 @@ export default function Employeee() {
           {showForm && <Form handleToggle={handleToggle} />}
         </Box>
       </Modal>
-
-      <List />
     </div>
   )
 }

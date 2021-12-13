@@ -24,6 +24,7 @@ function About() {
   return (
     <div>
       <h1>about</h1>
+      
       <ResponsiveContainer width="95%" height={400}>
         <LineChart
           data={data}

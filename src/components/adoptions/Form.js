@@ -706,20 +706,20 @@ export default function Form() {
                         : null}
                     {currentStep === 4 ? <div>
                         <p>Se ha registrado el proceso con exito</p>
-                        <Button size="medium" variant="contained" sx={{ marginTop: 5 }} color="secondary" onClick={() => { resetForm(); }} >Ir al inicio</Button>
+                        <Button size="medium" variant="contained" sx={{ marginTop: 5 }} color="primary" onClick={() => { resetForm(); }} >Ir al inicio</Button>
                     </div> : null}
 
 
 
                     {loading && <div style={{ marginTop: 25, marginBottom: 25, display: "flex", justifyContent: "center", alignItems: "center" }}>
-                        <CircularProgress color="success" />
+                        <CircularProgress color="primary" />
                         <p style={{ marginLeft: 10 }}>Guardando...</p>
                     </div>}
                     <Box sx={{ justifyContent: "center", paddingBottom: 3 }} display="flex">
 
-                        {currentStep > 0 && currentStep < 4 && <Button size="medium" variant="contained" sx={{ marginTop: 5 }} color="secondary" onClick={() => previous()} >Atrás</Button>}
+                        {currentStep > 0 && currentStep < 4 && <Button size="medium" variant="outlined" sx={{ marginTop: 5 }} color="primary" onClick={() => previous()} >Atrás</Button>}
 
-                        {currentStep !== 4 && <Button size="medium" variant="contained" color="success" sx={{ marginTop: 5, marginLeft: 5 }}
+                        {currentStep !== 4 && <Button size="medium" variant="contained" color="primary" sx={{ marginTop: 5, marginLeft: 5 }}
                             onClick={() => next()}>{currentStep === 3 ? "Finalizar" : "Siguiente"}</Button>}
 
                     </Box>

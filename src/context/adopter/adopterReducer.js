@@ -4,6 +4,7 @@ import { ADOPTERS, SELECT_ADOPTER, TOGGLE_ADOPTER_LOADING, ADOPTER_MESSAGE } fro
 
 export default (state, action) => {
 
+
     switch (action.type) {
         case ADOPTERS:
             return {

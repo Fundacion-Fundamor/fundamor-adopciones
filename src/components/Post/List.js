@@ -3,7 +3,6 @@ import {
   Button,
   Backdrop,
   CircularProgress,
-  Snackbar,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -14,45 +13,70 @@ import {
   Typography,
   CardActions,
   IconButton,
-  Pagination,
   CardMedia,
+  Box,
 } from '@mui/material'
 
-import { FaUserCircle, FaTrashAlt, FaUserEdit } from 'react-icons/fa'
+import { makeStyles } from '@mui/styles'
+
+import { FaTrashAlt, FaUserEdit } from 'react-icons/fa'
 
 import './list.scss'
-import EmployeeContext from '../../context/employee/employeeContext'
-import { yellow } from '@mui/material/colors'
-import { grid } from '@mui/system'
+import PostContext from '../../context/post/postContext'
+
+//TODO
+// delimitar la cantidad de texto del cuerpo a pocas lineas
+// linkear a detalle de la publicación
+// Poner parte de imagenes
+// Vistas según rol
+
+const useStyles = makeStyles({
+  root: {
+    // width: '80%',
+    width: 'clamp(200px, 800px, 80%)',
+    padding: 25,
+    borderRadius: '4px',
+    margin: '0.8rem',
+  },
+  media: {
+    height: 200,
+  },
+  customBox: {
+    // display: '-webkit-box',
+    boxOrient: 'vertical',
+    lineClamp: 2,
+    wordBreak: 'break-all',
+    overflow: 'hidden',
+    display: 'block',
+  },
+
+  bottomAlignItem: {
+    display: 'flex',
+    alignSelf: 'flex-end',
+  },
+  leftAlignItem: {
+    marginRight: 'auto',
+  },
+})
 
 export default function List() {
-  const {
-    employees,
-    getEmployees,
-    removeEmployee,
-    selectEmployee,
-    loading,
-  } = useContext(EmployeeContext)
+  const { posts, getPosts, removePost, selectPost, loading } = useContext(
+    PostContext,
+  )
+  console.log(posts)
   const [itemRemove, setItemRemove] = useState(null)
-  const selectEmployeeRemove = (idEmployee) => {
-    setItemRemove(idEmployee)
-  }
+  const selectPostRemove = (idPost) => setItemRemove(idPost)
+
   useEffect(() => {
-    getEmployees()
+    getPosts()
   }, [])
 
   useEffect(() => {
     setItemRemove(null)
-  }, [employees])
+  }, [posts])
 
   return (
     <>
-      {/* <Snackbar open={errors} autoHideDuration={6000} onClose={() => { console.log("%%%%") }} >
-                <Alert severity="success" sx={{ width: '100%' }}>
-                    This is a success message!
-                </Alert>
-            </Snackbar> */}
-
       <div className="container">
         <Dialog
           open={itemRemove !== null}
@@ -65,7 +89,7 @@ export default function List() {
           <DialogTitle id="alert-dialog-title">Confirmación</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              ¿Estás seguro que deseas eliminar el empleado?
+              ¿Estás seguro que deseas eliminar esta publicación?
             </DialogContentText>
           </DialogContent>
           <DialogActions>
@@ -76,7 +100,7 @@ export default function List() {
             >
               Cancelar
             </Button>
-            <Button onClick={() => removeEmployee(itemRemove)} autoFocus>
+            <Button onClick={() => removePost(itemRemove)} autoFocus>
               SÍ
             </Button>
           </DialogActions>
@@ -97,18 +121,17 @@ export default function List() {
       </Backdrop>
       <div
         style={{
-          background:'#343434',
-          display:'flex',
-          flexDirection:'column',
-          alignItems:"center"
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
         }}
       >
-        {employees.map((element, index) => (
-          <EmployeeItem
+        {posts.map((element, index) => (
+          <PostItem
             item={element}
             key={index}
-            removeEmployee={selectEmployeeRemove}
-            selectEmployee={selectEmployee}
+            removePost={selectPostRemove}
+            selectPost={selectPost}
           />
         ))}
       </div>
@@ -116,45 +139,52 @@ export default function List() {
   )
 }
 
-const EmployeeItem = ({ item, removeEmployee, selectEmployee }) => {
+const PostItem = ({ item, removePost, selectPost }) => {
+  const classes = useStyles()
   return (
-    <Card
-      sx={{ width: "clamp(350px, 50%, 1000px);", padding: 2, borderRadius: '4px', margin: '0.8rem' }}
-    >
-            <CardMedia
-        component="img"
-        height="194"
+    <Card className={classes.root}>
+      <CardMedia
+        className={classes.media}
+        // image="https://via.placeholder.com/300x100"
         image="/images/cat_3.jpg"
-        alt="Imagen"
       />
       <CardContent>
-        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          {item.rol}
+        <Typography sx={{ fontSize: 'h6.fontSize' }} gutterBottom>
+          {item.titulo}
         </Typography>
-
-        <Typography variant="body2">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin tincidunt tempus pulvinar. Praesent consectetur pharetra massa, ac suscipit magna efficitur sit amet. Nulla eget congue elit, ut scelerisque ante. Nulla viverra vulputate magna sed cursus. Nam rutrum ipsum arcu, non posuere est maximus sit amet. Pellentesque hendrerit posuere nisi, in.
-        </Typography>
+        <Box component="div" classes={{ root: classes.customBox }}>
+          {item.cuerpo}
+        </Box>
       </CardContent>
+
       <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites" onClick={() => {
-          selectEmployee(item)
-        }}>
-          <FaUserEdit
-            size={30}
-            cursor="pointer"
-           
-          />
-        </IconButton>
-        <IconButton aria-label="share" onClick={() => {
-          removeEmployee(item.id_empleado)
-        }}>
-          <FaTrashAlt
-            size={25}
-        
-            cursor="pointer"
-          />
-        </IconButton>
+        <div className={classes.leftAlignItem}>
+          <IconButton
+            aria-label="Editar publicación"
+            onClick={() => {
+              selectPost(item)
+            }}
+          >
+            <FaUserEdit size={25} cursor="pointer" />
+          </IconButton>
+          <IconButton
+            aria-label="Eliminar publicación"
+            onClick={() => {
+              removePost(item.id_publicacion)
+            }}
+          >
+            <FaTrashAlt size={25} cursor="pointer" />
+          </IconButton>
+        </div>
+
+        <Typography
+          className={classes.bottomAlignItem}
+          sx={{ fontSize: 14 }}
+          color="text.secondary"
+          gutterBottom
+        >
+          Publicado en: {item.fecha_creacion}
+        </Typography>
       </CardActions>
     </Card>
   )

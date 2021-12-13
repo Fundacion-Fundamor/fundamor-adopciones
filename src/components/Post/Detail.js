@@ -1,6 +1,6 @@
 import React, { useEffect, useContext, useState } from 'react'
 import { useParams, useHistory } from 'react-router';
-import AdoptionContext from '../../context/adoption/adoptionContext';
+import PostContext from '../../context/post/postContext';
 import Form from '../tracking/Form';
 import { Button, Modal, Box } from '@mui/material';
 import ModalUpdate from './ModalUpdate';
@@ -12,15 +12,15 @@ import withReactContent from 'sweetalert2-react-content';
 export default function Detail() {
 
 
-    const { message, loading, selectedAdoption, handleAdoptionMessage, getAdoption,removeAdoption } = useContext(AdoptionContext);// contexto de adopcion
+    const { message, loading, selectedPost, handlePostMessage, getPost,removePost } = useContext(PostContext);// contexto de adopcion
     const [showFormTracking, setshowFormTracking] = useState(false)
     const [showFormEdit, setShowFormEdit] = useState(false)
-    let { adoptionId } = useParams();
+    let { postId } = useParams();
     const MySwal = withReactContent(Swal);
 
     let history = useHistory();
     useEffect(() => {
-        getAdoption(adoptionId);
+        getPost(postId);
     }, [])
 
     const toggleModalTracking = () => {
@@ -29,12 +29,12 @@ export default function Detail() {
     const toggleModalEdit = () => {
         setShowFormEdit(!showFormEdit);
     }
-    const onRemoveAdoption = async () => {
+    const onRemovePost = async () => {
 
 
         MySwal.fire({
             title: <p style={{ fontSize: 22, fontWeight: "bold" }}>{"Confirmación"}</p>,
-            text: "¿Está seguro que desea eliminar esta adopción?, se eliminarán las respuestas registradas del formulario y solo se eliminará el adoptante si no esta asociado a otros procesos de adopción.",
+            text: "¿Está seguro que desea eliminar esta publicación?",
             icon: "question",
             confirmButtonText: 'Aceptar',
             showCancelButton: true,
@@ -42,27 +42,12 @@ export default function Detail() {
             backdrop: true,
             preConfirm: async (response) => {
 
-                await removeAdoption(adoptionId);
+                await removePost(postId);
                 return true;
             },
 
             allowOutsideClick: () => !MySwal.isLoading()
         })
-        // let res = await MySwal.fire({
-        //     title: <p style={{ fontSize: 22, fontWeight: "bold" }}>{"Confirmación"}</p>,
-        //     text: "¿Está seguro que desea eliminar el animal?",
-        //     icon: "question",
-        //     confirmButtonText: 'Aceptar',
-        //     showCancelButton: true,
-
-        // });
-
-
-        // if (res.isConfirmed) {
-        //     // MySwal.close();
-        //     await removeAnimal(animalId);
-        // }
-
     }
 
     useEffect(() => {
@@ -78,9 +63,9 @@ export default function Detail() {
 
             if (res.isConfirmed) {
 
-                await handleAdoptionMessage(null);
+                await handlePostMessage(null);
                 if (message.category === "success") {
-                    history.push("/adoptions");
+                    history.push("/posts");
                 }
             }
         }
@@ -92,12 +77,12 @@ export default function Detail() {
     }, [message, loading]);
 
     return <div>
-        {selectedAdoption ? <p>{JSON.stringify(selectedAdoption)}</p> : null}
+        {selectedPost ? <p>{JSON.stringify(selectedPost)}</p> : null}
         {loading ? <p>Cargando...</p> : null}
-        <Button size="medium" variant="contained" color="primary" sx={{ marginTop: 5 }} onClick={() => toggleModalTracking()}>Nuevo segumiento</Button>
+        <Button size="medium" variant="contained"  color="primary" sx={{ marginTop: 5 }} onClick={() => toggleModalTracking()}>Nuevo segumiento</Button>
 
         <Button size="medium" variant="contained" color="primary" sx={{ marginTop: 5 }} onClick={() => toggleModalEdit()}>Editar</Button>
-        <Button size="medium" variant="contained" color="error" sx={{ marginTop: 5 }} onClick={() => onRemoveAdoption()}>Eliminar adopción</Button>
+        <Button size="medium" variant="contained" color="error" sx={{ marginTop: 5 }} onClick={() => onRemovePost()}>Eliminar adopción</Button>
 
         <Modal
             open={showFormTracking}
@@ -106,7 +91,7 @@ export default function Detail() {
             style={{ overflowY: 'scroll' }}
         >
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                {showFormTracking && <Form handleModal={toggleModalTracking} adoptionID={adoptionId} />}
+                {showFormTracking && <Form handleModal={toggleModalTracking} postID={postId} />}
             </Box>
 
 
@@ -120,7 +105,7 @@ export default function Detail() {
         >
 
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                {showFormEdit && <ModalUpdate handleModal={toggleModalEdit} adoptionId={selectedAdoption.id_adopcion} adoptionState={selectedAdoption.estado} observations={selectedAdoption.observaciones} finalDate={selectedAdoption.fecha_entrega} />}
+                {showFormEdit && <ModalUpdate handleModal={toggleModalEdit} postId={selectedPost.id_adopcion} postState={selectedPost.estado} observations={selectedPost.observaciones} finalDate={selectedPost.fecha_entrega} />}
             </Box>
 
         </Modal>

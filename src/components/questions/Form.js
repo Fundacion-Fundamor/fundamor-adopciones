@@ -71,7 +71,7 @@ export default function Form() {
                     value={question}
                     onChange={(e) => { setQuestion(e.target.value) }}
                 />
-                <Button size="small" variant="contained" disabled={question.length === 0} color="success" onClick={saveQuestion}>Guardar</Button>
+                <Button size="small" variant="contained" disabled={question.length === 0}  color="primary" onClick={saveQuestion}>Guardar</Button>
             </CardContent>
             <CardActions sx={{ flexDirection: "column", padding: 3 }}>
         
