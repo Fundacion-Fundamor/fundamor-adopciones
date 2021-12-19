@@ -12,7 +12,7 @@ export default function Topbar({ drawerOpen, handleDrawer }) {
 
     const theme = useTheme();
 
-    const { logout } = useContext(AuthContext);
+    const { logout,user } = useContext(AuthContext);
     const [selectedIndex, setSelectedIndex] = useState(-1);
 
 
@@ -176,10 +176,10 @@ export default function Topbar({ drawerOpen, handleDrawer }) {
                                                     <Stack direction="row" spacing={0.5} alignItems="center">
                                                         <Typography fontWeight={"600"} variant="t3">Hola,</Typography>
                                                         <Typography component="span" variant="t3" sx={{ fontWeight: 400 }}>
-                                                            Beatriz elena
+                                                            {user.nombre}
                                                         </Typography>
                                                     </Stack>
-                                                    <Typography variant="subtitle2" fontWeight={100} >Administrador</Typography>
+                                                    <Typography variant="subtitle2" fontWeight={100}  sx={{textTransform:"capitalize"}} >{user.rol}</Typography>
                                                 </Stack>
                                                 <Divider />
                                             </Box>

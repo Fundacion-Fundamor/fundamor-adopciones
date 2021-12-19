@@ -48,7 +48,13 @@ if (token) {
 }
 
 
-/**TODO: Mover todo el enrutamiento hacia otro archivo
+/**TODO: 
+ * Mover todo el enrutamiento hacia otro archivo
+ * Ajustar todo el border radius para que consuma del theme provider
+ * 
+ * realizar el breadcumb que indica donde está parado el usuario
+ * ajustar todos los reponsives de los cruds para que se adapten a la nueva navegacion
+ * problema al abrir el modal de agregar posts
  * 
  * @returns 
  */
