@@ -6,7 +6,8 @@ import {
     USER_IN_SESSION,
     LOGOUT,
     SUCCESS_LOGIN,
-    ERROR_LOGIN
+    ERROR_LOGIN,
+    LOADING
 } from '../../types';
 import authToken from '../../config/authToken';
 import axiosClient from '../../config/axios';
@@ -27,6 +28,7 @@ const AuthState = props => {
 
     //funciones que modifican el state
     const login = async (email, password) => {
+        dispatch({ type: LOADING, payload: true });
 
         const formattedData = {
             correo: email,
@@ -46,15 +48,15 @@ const AuthState = props => {
     }
 
     const logout = () => {
-        dispatch({ type: LOGOUT});
+        dispatch({ type: LOGOUT });
     }
 
     const authenticatedUser = async () => {
         let token = localStorage.getItem("token");
         authToken(token);
-        
+
         try {
-         
+
             const res = await axiosClient.get("/api/auth");
             console.log(res.data)
             dispatch({ type: USER_IN_SESSION, payload: res.data.data });

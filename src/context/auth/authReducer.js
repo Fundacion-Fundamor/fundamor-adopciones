@@ -3,7 +3,8 @@ import {
     USER_IN_SESSION,
     LOGOUT,
     SUCCESS_LOGIN,
-    ERROR_LOGIN
+    ERROR_LOGIN,
+    LOADING
 } from '../../types';
 
 export default (state, action) => {
@@ -15,7 +16,7 @@ export default (state, action) => {
                 token: null,
                 message: action.payload,
                 loading: false,
-                authenticated:null
+                authenticated: null
             }
         case SUCCESS_LOGIN:
             localStorage.setItem("token", action.payload);
@@ -44,6 +45,14 @@ export default (state, action) => {
                 loading: false,
                 message: null
             }
+        case LOADING: {
+            return {
+                ...state,
+
+                loading: action.payload,
+
+            }
+        }
         default:
             return state;
     }

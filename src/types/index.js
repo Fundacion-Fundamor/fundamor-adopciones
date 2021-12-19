@@ -3,7 +3,7 @@ export const USER_IN_SESSION = 'GET_EMPLOYEE_IN_SESSION';
 export const SUCCESS_LOGIN = 'SUCCESS_LOGIN';
 export const ERROR_LOGIN = 'ERROR_LOGIN';
 export const LOGOUT = 'LOGOUT';
-
+export const LOADING = 'LOADING';
 
 //employee types
 export const EMPLOYEES = 'EMPLOYEES';
