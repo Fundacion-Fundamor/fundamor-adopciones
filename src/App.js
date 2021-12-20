@@ -76,6 +76,7 @@ function App() {
       },
       white: "white",
       danger: orange[500],
+      borderRadius: 4
     },
     typography: { //customiza fuentes
       t1: {
@@ -218,6 +219,7 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({
   borderRadius: "12px",
   marginLeft: "10px",
   marginRight: "10px",
+  padding: 20,
   ...(!open && {
 
 

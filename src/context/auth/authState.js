@@ -36,10 +36,19 @@ const AuthState = props => {
         }
         try {
             const res = await axiosClient.post("/api/auth/token", formattedData);
-            dispatch({ type: SUCCESS_LOGIN, payload: res.data.token });
-            authenticatedUser();
+
+            if (res.data.state) {
+                dispatch({ type: SUCCESS_LOGIN, payload: res.data.token });
+                authenticatedUser();
+            } else {
+
+                dispatch({ type: ERROR_LOGIN, payload: res.data.message });
+
+            }
 
         } catch (error) {
+
+            console.log(error)
             if (error.response) {
                 dispatch({ type: ERROR_LOGIN, payload: error.response?.data.message });
             }
