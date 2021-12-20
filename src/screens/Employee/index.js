@@ -12,10 +12,13 @@ import {
   CardActions,
   Typography,
   Divider,
-  useTheme
+  useTheme,
+  Tooltip,
+  IconButton
 } from '@mui/material'
 import EmployeeContext from '../../context/employee/employeeContext'
 import { grey } from '@mui/material/colors'
+import { BiHelpCircle } from 'react-icons/bi'
 export default function Employeee() {
   const {
     selectedEmployee,
@@ -47,10 +50,16 @@ export default function Employeee() {
     <>
       <Card variant="outlined" sx={{ padding: 3, borderRadius: theme.custom.borderRadius }} >
         <CardActions sx={{ justifyContent: "space-between", mb: 2 }}>
-          <Typography variant="t2" sx={{ fontWeight: "600", color: grey[600] }} >
-            Gestiona el acceso a la plataforma
-          </Typography>
-
+          <Box alignItems={"center"} display={"flex"}>
+            <Tooltip title="Agrega, edita y elimina los colaboradores con acceso a la plataforma de adopción">
+              <IconButton>
+                <BiHelpCircle />
+              </IconButton>
+            </Tooltip>
+            <Typography variant="t2" sx={{ fontWeight: "600", color: grey[600] }} >
+              Gestiona el acceso a la plataforma
+            </Typography>
+          </Box>
           <Button
             className="employeeBanner__button"
             color="primary"
