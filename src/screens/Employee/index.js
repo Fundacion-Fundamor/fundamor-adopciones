@@ -14,7 +14,8 @@ import {
   Divider,
   useTheme,
   Tooltip,
-  IconButton
+  IconButton,
+  useMediaQuery
 } from '@mui/material'
 import EmployeeContext from '../../context/employee/employeeContext'
 import { grey } from '@mui/material/colors'
@@ -27,7 +28,7 @@ export default function Employeee() {
   } = useContext(EmployeeContext)
   const theme = useTheme();
   const [showForm, setShowForm] = useState(false)
-
+  const matchDownSm = useMediaQuery(theme.breakpoints.down('sm'));
   const handleToggle = () => {
     setShowForm(!showForm)
   }
@@ -49,7 +50,7 @@ export default function Employeee() {
 
     <>
       <Card variant="outlined" sx={{ padding: 3, borderRadius: theme.custom.borderRadius }} >
-        <CardActions sx={{ justifyContent: "space-between", mb: 2 }}>
+        <CardActions sx={{ justifyContent: "space-between", mb: 2, flexDirection: matchDownSm ? "column" : "row" }}>
           <Box alignItems={"center"} display={"flex"}>
             <Tooltip title="Agrega, edita y elimina los colaboradores con acceso a la plataforma de adopción">
               <IconButton>
@@ -57,7 +58,7 @@ export default function Employeee() {
               </IconButton>
             </Tooltip>
             <Typography variant="t2" sx={{ fontWeight: "600", color: grey[600] }} >
-              Gestiona el acceso a la plataforma
+              Gestiona el acceso a la plataforma 
             </Typography>
           </Box>
           <Button
@@ -65,6 +66,7 @@ export default function Employeee() {
             color="primary"
             onClick={handleToggle}
             variant="contained"
+            sx={{ marginTop: matchDownSm ? 2 : 0 }}
           >
             Agregar colaborador
           </Button>
@@ -79,9 +81,9 @@ export default function Employeee() {
         open={showForm}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
-        style={{ overflowY: 'scroll' }}
+        style={{ overflowY: 'scroll', }}
       >
-        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+        <Box sx={{ display: 'flex', justifyContent: 'center', borderRadius: theme.custom.borderRadius }}>
           {showForm && <Form handleToggle={handleToggle} />}
         </Box>
       </Modal>

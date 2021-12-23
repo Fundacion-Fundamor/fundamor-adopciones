@@ -48,6 +48,7 @@ export default function List() {
             confirmButtonText: 'Aceptar',
             showCancelButton: true,
             showLoaderOnConfirm: true,
+            cancelButtonText:"Cancelar",
             backdrop: true,
             preConfirm: async (response) => {
 
