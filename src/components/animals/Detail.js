@@ -12,7 +12,7 @@ import {
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 
-export default function Animal() {
+export default function Detail() {
     const { selectedAnimal, message, loading, getAnimal, removeAnimal, handleAnimalMessage } = useContext(AnimalContext); // contexto de animales
 
 

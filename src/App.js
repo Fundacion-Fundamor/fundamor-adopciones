@@ -35,13 +35,12 @@ import Adoption from './screens/Adoption'
 import TrackingState from './context/tracking/trackingState'
 import Dashboard from './screens/Dashboard'
 import PublicRoute from './components/PublicRoute'
-import { green, grey, orange, purple, red } from '@mui/material/colors';
+import { blue, green, grey, orange, purple, red } from '@mui/material/colors';
 import SideBar from './components/Sidebar';
-import { useTheme } from '@emotion/react';
 import { Box, CssBaseline, useMediaQuery } from '@mui/material';
 import Topbar from './components/Navbar/TopBar.js';
 import AuthContext from './context/auth/authContext';
-
+import {  esES } from '@mui/x-data-grid';
 const token = localStorage.getItem("token");
 if (token) {
   authToken(token);
@@ -110,7 +109,7 @@ function App() {
     primary: {
       main: purple[500],
     },
-  });
+  }, esES);
 
 
 
@@ -229,7 +228,7 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({
     }),
 
 
-    backgroundColor: green[50],
+    backgroundColor: blue[50],
 
     [theme.breakpoints.up('lg')]: {
 

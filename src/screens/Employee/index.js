@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useContext } from 'react'
 import List from '../../components/employees/List'
 import './employee.scss'
@@ -11,7 +12,6 @@ import {
   Card,
   CardActions,
   Typography,
-  Divider,
   useTheme,
   Tooltip,
   IconButton,
@@ -20,6 +20,8 @@ import {
 import EmployeeContext from '../../context/employee/employeeContext'
 import { grey } from '@mui/material/colors'
 import { BiHelpCircle } from 'react-icons/bi'
+
+import { AiOutlinePlus } from "react-icons/ai";
 export default function Employeee() {
   const {
     selectedEmployee,
@@ -49,8 +51,8 @@ export default function Employeee() {
   return (
 
     <>
-      <Card variant="outlined" sx={{ padding: 3, borderRadius: theme.custom.borderRadius }} >
-        <CardActions sx={{ justifyContent: "space-between", mb: 2, flexDirection: matchDownSm ? "column" : "row" }}>
+      <Card variant="outlined" sx={{ padding: 1, borderRadius: theme.custom.borderRadius, mb: 2,  }} >
+        <CardActions sx={{ justifyContent: "space-between", flexDirection: matchDownSm ? "column" : "row" }}>
           <Box alignItems={"center"} display={"flex"}>
             <Tooltip title="Agrega, edita y elimina los colaboradores con acceso a la plataforma de adopción">
               <IconButton>
@@ -58,7 +60,7 @@ export default function Employeee() {
               </IconButton>
             </Tooltip>
             <Typography variant="t2" sx={{ fontWeight: "600", color: grey[600] }} >
-              Gestiona el acceso a la plataforma 
+              Gestiona el acceso a la plataforma
             </Typography>
           </Box>
           <Button
@@ -66,12 +68,14 @@ export default function Employeee() {
             color="primary"
             onClick={handleToggle}
             variant="contained"
-            sx={{ marginTop: matchDownSm ? 2 : 0 }}
+            startIcon={<AiOutlinePlus />}
+            sx={{ marginTop: matchDownSm ? 2 : 0, borderRadius: theme.custom.borderRadius }}
           >
             Agregar colaborador
           </Button>
         </CardActions>
-        <Divider />
+      </Card>
+      <Card variant="outlined" sx={{ padding: 3, borderRadius: theme.custom.borderRadius }} >
         <CardContent>
           <List />
         </CardContent>

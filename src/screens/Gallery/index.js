@@ -4,7 +4,7 @@ import Card from '../../components/Card'
 import AuthContext from '../../context/auth/authContext'
 import AnimalContext from '../../context/animal/animalContext'
 import { useRouteMatch, Switch, Route } from "react-router-dom";
-import Animal from '../../components/animals/Animal'
+import Detail from '../../components/animals/Detail'
 
 
 function Gallery(props) {
@@ -23,8 +23,7 @@ function Gallery(props) {
 
   return (
 
-    <div>
-      <Switch>
+  
         <Route exact path={path}>
           <div className="gallery-container">
             <div className="card-gallery-container">
@@ -42,11 +41,9 @@ function Gallery(props) {
             </div>
           </div>
         </Route>
-        <Route path={`${path}/:animalId`}>
-          <Animal />
-        </Route>
-      </Switch>
-    </div>
+     
+      
+
 
   )
 }

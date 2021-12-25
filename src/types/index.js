@@ -37,6 +37,8 @@ export const ANIMALS = 'ANIMAL';
 export const SELECT_ANIMAL = 'SELECT_ANIMAL';
 export const TOGGLE_ANIMAL_LOADING = 'TOGGLE_ANIMAL_LOADING';
 export const ANIMAL_MESSAGE = 'ANIMAL_MESSAGE';
+export const FILTER = 'FILTER';
+
 
 //question types
 export const QUESTIONS = 'QUESTION';
