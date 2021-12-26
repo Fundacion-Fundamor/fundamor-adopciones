@@ -1,16 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useContext, useState } from 'react'
-import { Box, Button, Card, CardActions, CardContent, CircularProgress, Divider, FormControl, FormControlLabel, FormLabel, IconButton, InputAdornment, Menu, MenuItem, Pagination, Popover, Radio, RadioGroup, Stack, TextField, Tooltip, Typography, useMediaQuery, useTheme, } from '@mui/material'
+import { Box, Button, Card, CardActions, CardContent, CircularProgress,  IconButton, InputAdornment, Menu, MenuItem, Pagination, Stack, TextField, Tooltip, Typography, useMediaQuery, useTheme, } from '@mui/material'
 
 import { FaChevronDown, FaTrashAlt, FaUserEdit } from 'react-icons/fa'
 import './list.scss'
 import AdopterContext from '../../context/adopter/adopterContext'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
-import { AiOutlinePlus, AiOutlineSearch } from 'react-icons/ai'
+import { AiOutlineSearch } from 'react-icons/ai'
 import { BiHelpCircle } from 'react-icons/bi'
-import { grey, red } from '@mui/material/colors'
-import { useHistory } from 'react-router-dom'
+import { grey } from '@mui/material/colors'
+
 
 export default function List() {
   const {
@@ -36,9 +36,6 @@ export default function List() {
       search: "",
     }
   })
-
-  //navegación
-  let history = useHistory();
 
 
   //layout y theming
@@ -161,7 +158,7 @@ export default function List() {
               Listado de adoptantes
             </Typography>
 
-            {matchDownSm ? <Button
+            {/* {matchDownSm ? <Button
               className="employeeBanner__button"
               color="primary"
               onClick={() => { history.push("/adopters/new/-1"); }}
@@ -170,13 +167,13 @@ export default function List() {
               sx={{ borderRadius: "8px", fontSize: 12, ml: 2 }}
             >
               Agregar
-            </Button> : null}
+            </Button> : null} */}
 
           </Box>
           <Box alignItems={"center"} display={"flex"} flexDirection={"row"} sx={{ marginTop: matchDownSm ? 2 : 0 }}>
 
 
-            {!matchDownSm ? <Button
+            {/* {!matchDownSm ? <Button
               color="primary"
               // onClick={() => { history.push("/adopters/new/-1"); }}  
               variant="contained"
@@ -184,7 +181,7 @@ export default function List() {
               sx={{ borderRadius: "8px", fontSize: 12, ml: 2 }}
             >
               Agregar
-            </Button> : null}
+            </Button> : null} */}
 
 
             <TextField
