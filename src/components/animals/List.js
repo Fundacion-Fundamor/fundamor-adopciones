@@ -3,7 +3,7 @@ import './animal.scss'
 import React, { useEffect, useContext, useState } from 'react'
 import AnimalCard from '../../components/Card'
 import AnimalContext from '../../context/animal/animalContext'
-import { Box, Button, Card, CardActions, CardContent, IconButton, Tooltip, Typography, useMediaQuery, useTheme, } from '@mui/material'
+import { Box, Button, Card, CardActions, CardContent, Divider, FormControl, FormControlLabel, FormLabel, IconButton, Menu, MenuItem, Pagination, Popover, Radio, RadioGroup, Stack, Tooltip, Typography, useMediaQuery, useTheme, } from '@mui/material'
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
 import { grey } from '@mui/material/colors'
@@ -11,7 +11,8 @@ import { AiOutlinePlus, AiOutlineSearch } from 'react-icons/ai'
 import { BiHelpCircle } from 'react-icons/bi'
 import { useHistory } from 'react-router-dom'
 import { HiOutlineFilter } from 'react-icons/hi'
-import { FaChevronDown, FaChevronLeft, FaChevronRight } from 'react-icons/fa'
+import { FaChevronDown } from 'react-icons/fa'
+import CircularProgress from '@mui/material/CircularProgress';
 
 function List() {
 
@@ -37,7 +38,6 @@ function List() {
     //layout y theming
     const theme = useTheme();
     const matchDownSm = useMediaQuery(theme.breakpoints.down('sm'));
-
 
 
     useEffect(() => {
@@ -80,7 +80,7 @@ function List() {
         let totalPages = Math.ceil(result.length / localData.animalsPerPage);
         setLocalData({ ...localData, currentPage: 1, list: result, totalPages: totalPages })
         // setLocalData({ ...localData,  });
-    }, [animals, localData.filters])
+    }, [animals, localData.filters, localData.animalsPerPage])
 
 
 
@@ -94,37 +94,49 @@ function List() {
                             <IconButton>
                                 <BiHelpCircle />
                             </IconButton>
+
                         </Tooltip>
                         <Typography variant="t2" sx={{ fontWeight: "600", color: grey[600] }} >
                             Listado de animales
                         </Typography>
-                    </Box>
-                    <Box alignItems={"center"} display={"flex"} flexDirection={"row"}>
 
-                        <Button
+                        {matchDownSm ? <Button
                             className="employeeBanner__button"
                             color="primary"
                             onClick={() => { history.push("/animals/new/-1"); }}
                             variant="contained"
                             startIcon={<AiOutlinePlus />}
-                            sx={{ marginTop: matchDownSm ? 2 : 0, borderRadius: theme.custom.borderRadius }}
+                            sx={{ borderRadius: theme.custom.borderRadius, fontSize: 12, ml: 2 }}
                         >
                             Agregar
-                        </Button>
+                        </Button> : null}
+
+                    </Box>
+                    <Box alignItems={"center"} display={"flex"} flexDirection={"row"} sx={{ marginTop: matchDownSm ? 2 : 0 }}>
 
 
-                        <IconButton
-                            aria-label="edit"
-                            sx={{
-                                backgroundColor: "#ffa726", ml: 4,
-                            }}
-                            onClick={() => {
-                                // console.log(params)
-                                // selectAdopter(item)
-                            }}
+                        {!matchDownSm ? <Button
+                            color="primary"
+                            onClick={() => { history.push("/animals/new/-1"); }}
+                            variant="contained"
+                            startIcon={<AiOutlinePlus />}
+                            sx={{ borderRadius: theme.custom.borderRadius, fontSize: 12, ml: 2 }}
                         >
-                            <HiOutlineFilter size={16} cursor="pointer" color={"white"} />
-                        </IconButton>
+                            Agregar
+                        </Button> : null}
+
+                        <FilterManager handleFilters={(specie = null, state = null) => {
+
+                            setLocalData({
+                                ...localData, filters: {
+                                    ...localData.filters,
+                                    specie: specie ?? "",
+                                    state: state ?? "",
+                                }
+                            })
+
+
+                        }} />
                         <TextField
                             sx={{
                                 ml: 3, "& .MuiOutlinedInput-root": {
@@ -163,8 +175,6 @@ function List() {
                             <TextField id="outlined" className={customClass.root} label="Outlined" variant="outlined" />
                         </FormControl> */}
                     </Box>
-
-
                 </CardActions>
             </Card>
             <Card variant="outlined" sx={{ padding: 3, borderRadius: theme.custom.borderRadius }} >
@@ -186,74 +196,203 @@ function List() {
                     }
                     )}
 
-                    {localData.list.length === 0 && !loading ? <h3>No hay animales registrados</h3> : null}
+                    {loading ?
+                        <Stack direction="row" mt={8} alignItems="center"><CircularProgress />
+                            <Typography sx={{ fontWeight: "500",ml:2 }}>Cargando...</Typography>
+                        </Stack> : null}
+                    {animals.length === 0 && !loading ?
+                        <Typography sx={{ fontWeight: "600", mt: 8 }}>No hay animales registrados</Typography> : null}
+
+                    {localData.list.length === 0 && !loading && animals.length !== 0 ?
+                        <Typography sx={{ fontWeight: "600", mt: 8 }}>No hay coincidencias</Typography> : null}
                 </CardContent>
 
                 <CardActions sx={{ justifyContent: "space-between", flexDirection: matchDownSm ? "column" : "row", mt: 4 }}>
 
-                    <Box flexDirection="row">
-                        <IconButton
-                            aria-label="edit"
-                            sx={{
-                                backgroundColor: "#ffa726", mr: 4,
-                            }}
-                            onClick={() => {
-                                if (localData.currentPage > 1) {
-                                    setLocalData({ ...localData, currentPage: localData.currentPage - 1 })
-                                }
-                            }}
-                        >
-                            <FaChevronLeft size={16} cursor="pointer" color={"white"} />
-                        </IconButton>
 
-                        {[...Array(localData.totalPages)].map((x, i) =>
-                            <IconButton
-                                key={i}
-                                aria-label="edit"
-                                sx={{
-                                    backgroundColor: (i + 1) === localData.currentPage ? "red" : "transparent", marginX: 1, paddingX: 2
-                                }}
-                                onClick={() => {
-                                    // console.log(params)
-                                    setLocalData({ ...localData, currentPage: i + 1 })
+                    <Pagination color="primary" count={localData.totalPages}
+                        page={localData.currentPage}
+                        onChange={(event, value) => { setLocalData({ ...localData, currentPage: value }) }} />
 
-                                }}
-                            >
-                                <Typography>
-                                    {i + 1}
-                                </Typography>
-                            </IconButton>
-                        )}
+                    <RowsManager numRows={localData.animalsPerPage} handleRows={(val) => {
+
+                        setLocalData({ ...localData, animalsPerPage: val })
+                    }} />
 
 
-                        <IconButton
-                            aria-label="edit"
-                            sx={{
-                                backgroundColor: "#ffa726", ml: 4,
-                            }}
-                            onClick={() => {
-                                if (localData.currentPage < localData.totalPages) {
-                                    setLocalData({ ...localData, currentPage: localData.currentPage + 1 })
-                                }
-                            }}
-                        >
-                            <FaChevronRight size={16} cursor="pointer" color={"white"} />
-                        </IconButton>
-                    </Box>
-
-
-
-                    <Button
-                        color="primary"
-                        onClick={() => { history.push("/animals/new/-1"); }}
-                        variant="text"
-                        endIcon={<FaChevronDown />}
-                        sx={{ borderRadius: theme.custom.borderRadius }}
-                    >{localData.animalsPerPage} por página</Button>
                 </CardActions>
             </Card>
         </Box>
 
     )
+}
+
+
+const FilterManager = ({ handleFilters }) => {
+
+    const [anchorEl, setAnchorEl] = React.useState(null);
+
+    const [specie, setSpecie] = useState(null);
+    const [animalState, setAnimalState] = useState(null)
+
+    const theme = useTheme();
+    const matchDownSm = useMediaQuery(theme.breakpoints.down('sm'));
+    const open = Boolean(anchorEl);
+    const id = open ? 'simple-popover' : undefined;
+
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+    return (
+        <>
+
+            <IconButton
+                aria-describedby={id} variant="contained"
+                sx={{
+                    backgroundColor: "#ffa726", ml: !matchDownSm ? 4 : 0,
+                }}
+                onClick={handleClick}
+            >
+                <HiOutlineFilter size={16} cursor="pointer" color={"white"} />
+            </IconButton>
+
+            <Popover
+                id={id}
+                open={open}
+                anchorEl={anchorEl}
+                onClose={handleClose}
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                }}
+                PaperProps={{
+                    style: { borderRadius: 12 }
+                }}
+            >
+                <Box sx={{ padding: 2 }}>
+                    <Typography sx={{ fontWeight: "600" }}>Filtros</Typography>
+                    <FormControl component="fieldset" sx={{ marginTop: 2 }}>
+                        <FormLabel component="legend" sx={{ fontSize: 12, }}>Especie</FormLabel>
+                        <RadioGroup
+                            aria-label="specie"
+                            defaultValue=""
+                            name="radio-buttons-group-1"
+                            row
+                            value={specie}
+                            onChange={(e) => { setSpecie(e.target.value) }}
+                        >
+                            <FormControlLabel value="gato" control={<Radio />} label="Gato" />
+                            <FormControlLabel value="perro" control={<Radio />} label="Perro" />
+
+                        </RadioGroup>
+                    </FormControl>
+                    <Divider />
+
+
+
+                    <FormControl component="fieldset" sx={{ marginTop: 2 }}>
+                        <FormLabel component="legend" sx={{ fontSize: 12 }}>Estado</FormLabel>
+                        <RadioGroup
+                            aria-label="state"
+                            defaultValue=""
+                            name="radio-buttons-group-2"
+                            value={animalState}
+                            onChange={(e) => { setAnimalState(e.target.value) }}
+                        >
+                            <FormControlLabel value="Adoptado" control={<Radio />} label="Adoptado" />
+                            <FormControlLabel value="En proceso de adopción" control={<Radio />} label="En proceso" />
+                            <FormControlLabel value="Sin adoptar" control={<Radio />} label="Sin adoptar" />
+                        </RadioGroup>
+                    </FormControl>
+
+                    <Stack direction="row" justifyContent={"space-between"} sx={{ marginTop: 2 }}>
+                        <Button
+
+                            sx={{ color: "text.secondary" }}
+                            onClick={() => {
+                                handleClose()
+                                setSpecie(null);
+                                setAnimalState(null);
+                                handleFilters();
+                            }}
+                            variant="text"
+
+                        >Limpiar</Button>
+                        <Button
+
+                            color="primary"
+                            onClick={() => {
+                                handleClose()
+                                handleFilters(specie, animalState)
+                            }}
+                            variant="contained"
+
+                        >Aplicar</Button>
+                    </Stack>
+                </Box>
+            </Popover></>
+    )
+}
+
+const RowsManager = ({ numRows, handleRows }) => {
+
+
+    const [anchorEl, setAnchorEl] = React.useState(null);
+
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = (value) => {
+        if (value) {
+            handleRows(value);
+        }
+        setAnchorEl(null);
+    };
+
+    const open = Boolean(anchorEl);
+
+
+    return (<>
+
+        <Button
+            aria-describedby={"menu-rows"}
+            color="primary"
+            onClick={(ev) => handleClick(ev)}
+            variant="text"
+            endIcon={<FaChevronDown />}
+
+        >{numRows} por página</Button>
+
+
+        <Menu
+            id={"menu-rows"}
+            anchorEl={anchorEl}
+            open={open}
+            onClose={() => handleClose(null)}
+            MenuListProps={{
+                'aria-labelledby': 'basic-button',
+            }}
+            anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'center',
+            }}
+            transformOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center',
+            }}
+            PaperProps={{
+                style: { borderRadius: 12 }
+            }}
+        >
+            <MenuItem onClick={() => handleClose(10)}>10 animales</MenuItem>
+            <MenuItem onClick={() => handleClose(30)}>30 animales</MenuItem>
+            <MenuItem onClick={() => handleClose(50)}>50 animales</MenuItem>
+        </Menu>
+    </>)
 }
 export default List

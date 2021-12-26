@@ -5,9 +5,8 @@ import FormEdit from '../../components/animals/FormEdit';
 import Detail from '../../components/animals/Detail';
 import List from '../../components/animals/List';
 export default function Animal() {
-
+    
     let { path } = useRouteMatch();
-    console.log("la path",path)
     return <div style={{ display: "flex", justifyContent: "center",flexDirection:"column" }}>
         <Switch>
             <Route exact path={path}>
