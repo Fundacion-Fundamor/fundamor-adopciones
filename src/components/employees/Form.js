@@ -1,8 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 //eslint-disable-next-line react-hooks/exhaustive-deps
 import React, { useState, useEffect, useContext } from 'react'
 import './form.scss';
 import { Alert, Button, CircularProgress, FormControl, InputLabel, MenuItem, TextField, Select, FormHelperText, FormControlLabel, Checkbox, Typography } from '@mui/material';
-import { GrClose } from 'react-icons/gr';
 import EmployeeContext from '../../context/employee/employeeContext';
 import { grey } from '@mui/material/colors';
 import { IoClose } from 'react-icons/io5';
@@ -36,6 +36,7 @@ export default function Form({ handleToggle }) {
     });
 
     const onSubmit = async () => {
+        // eslint-disable-next-line no-useless-escape
         const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
         //se validan los campos del formulario

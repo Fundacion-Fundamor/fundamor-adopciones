@@ -17,10 +17,10 @@ export default function AdopterForm({ handleToggle }) {
 
     const [values, setValues] = useState({
         name: selectedAdopter ? selectedAdopter.nombre : "",
-        email: selectedAdopter ? selectedAdopter.correo : "",
+        email: selectedAdopter ? selectedAdopter.correo ?? "" : "",
         ID: selectedAdopter ? selectedAdopter.id_adoptante : "",
-        profession: selectedAdopter ? selectedAdopter.ocupacion : "",
-        address: selectedAdopter ? selectedAdopter.ciudad : "",
+        profession: selectedAdopter ? selectedAdopter.ocupacion ?? "" : "",
+        address: selectedAdopter ? selectedAdopter.ciudad ?? "" : "",
         housePhone: selectedAdopter ? (selectedAdopter.telefono_casa ?? "") : "",
         phone: selectedAdopter ? (selectedAdopter.telefono_celular ?? "") : "",
     });
@@ -44,7 +44,7 @@ export default function AdopterForm({ handleToggle }) {
             setErrors({ ...errors, ID: "Debe ingresar una identificación" });
         } else if (values.email !== "" && re.test(values.email) === false) {
             setErrors({ ...errors, email: "Debe ingresar un  correo válido" });
-        }else if (values.profession === "") {
+        } else if (values.profession === "") {
             setErrors({ ...errors, profession: "Debe especificar una profesión" });
         } else if (values.address === "") {
             setErrors({ ...errors, address: "Debe ingresar una dirección" });

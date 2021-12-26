@@ -13,7 +13,8 @@ import { useHistory } from 'react-router-dom'
 import { HiOutlineFilter } from 'react-icons/hi'
 import { FaChevronDown } from 'react-icons/fa'
 import CircularProgress from '@mui/material/CircularProgress';
-
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 function List() {
 
 
@@ -39,6 +40,29 @@ function List() {
     const theme = useTheme();
     const matchDownSm = useMediaQuery(theme.breakpoints.down('sm'));
 
+    const MySwal = withReactContent(Swal);
+
+    useEffect(() => {
+
+        const displayAlert = async () => {
+            let res = await MySwal.fire({
+                title: <p style={{ fontSize: 22, fontWeight: "bold" }}>{message.text}</p>,
+                allowOutsideClick: false,
+                icon: message.category,
+                backdrop: true
+
+            });
+
+
+            if (res.isConfirmed) {
+                await handleAnimalMessage(null);
+            }
+        }
+        if (message && message.showIn === "list" && !loading) {
+
+            displayAlert();
+        }
+    }, [message, loading])
 
     useEffect(() => {
         getAnimals();
@@ -79,7 +103,6 @@ function List() {
         console.log(result.length)
         let totalPages = Math.ceil(result.length / localData.animalsPerPage);
         setLocalData({ ...localData, currentPage: 1, list: result, totalPages: totalPages })
-        // setLocalData({ ...localData,  });
     }, [animals, localData.filters, localData.animalsPerPage])
 
 
@@ -106,7 +129,7 @@ function List() {
                             onClick={() => { history.push("/animals/new/-1"); }}
                             variant="contained"
                             startIcon={<AiOutlinePlus />}
-                            sx={{ borderRadius: theme.custom.borderRadius, fontSize: 12, ml: 2 }}
+                            sx={{ borderRadius:"8px", fontSize: 12, ml: 2 }}
                         >
                             Agregar
                         </Button> : null}
@@ -120,33 +143,21 @@ function List() {
                             onClick={() => { history.push("/animals/new/-1"); }}
                             variant="contained"
                             startIcon={<AiOutlinePlus />}
-                            sx={{ borderRadius: theme.custom.borderRadius, fontSize: 12, ml: 2 }}
+                            sx={{ borderRadius:"8px", fontSize: 12, ml: 2 }}
                         >
                             Agregar
                         </Button> : null}
 
-                        <FilterManager handleFilters={(specie = null, state = null) => {
-
-                            setLocalData({
-                                ...localData, filters: {
-                                    ...localData.filters,
-                                    specie: specie ?? "",
-                                    state: state ?? "",
-                                }
-                            })
-
-
-                        }} />
+                     
                         <TextField
                             sx={{
                                 ml: 3, "& .MuiOutlinedInput-root": {
 
-                                    borderRadius: "18px!important"
+                                    borderRadius: "10px!important"
 
                                 }
                             }}
                             id="input-with-icon-textfield"
-                            // label="TextField"
                             onChange={(event) => {
                                 setLocalData({
                                     ...localData,
@@ -166,14 +177,25 @@ function List() {
                                         <AiOutlineSearch />
                                     </InputAdornment>
                                 ),
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <FilterManager handleFilters={(specie = null, state = null) => {
+
+                                            setLocalData({
+                                                ...localData, filters: {
+                                                    ...localData.filters,
+                                                    specie: specie ?? "",
+                                                    state: state ?? "",
+                                                }
+                                            })
+
+
+                                        }} />
+                                    </InputAdornment>
+                                ),
                             }}
                             variant="outlined"
                         />
-
-
-                        {/* <FormControl sx={{borderRadius:12}}>
-                            <TextField id="outlined" className={customClass.root} label="Outlined" variant="outlined" />
-                        </FormControl> */}
                     </Box>
                 </CardActions>
             </Card>
@@ -236,7 +258,7 @@ const FilterManager = ({ handleFilters }) => {
     const [animalState, setAnimalState] = useState(null)
 
     const theme = useTheme();
-    const matchDownSm = useMediaQuery(theme.breakpoints.down('sm'));
+
     const open = Boolean(anchorEl);
     const id = open ? 'simple-popover' : undefined;
 
@@ -253,11 +275,13 @@ const FilterManager = ({ handleFilters }) => {
             <IconButton
                 aria-describedby={id} variant="contained"
                 sx={{
-                    backgroundColor: "#ffa726", ml: !matchDownSm ? 4 : 0,
+                    backgroundColor: theme.custom.primary.light,
+                    color: theme.custom.primary.dark,
+                    borderRadius:2
                 }}
                 onClick={handleClick}
             >
-                <HiOutlineFilter size={16} cursor="pointer" color={"white"} />
+                <HiOutlineFilter size={16} cursor="pointer"  />
             </IconButton>
 
             <Popover
