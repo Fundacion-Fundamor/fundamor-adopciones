@@ -220,7 +220,7 @@ const AnimalState = props => {
                 }
             );
 
-            return res.data;
+            return res;
         } catch (error) {
 
             return error.response.data;
@@ -243,7 +243,7 @@ const AnimalState = props => {
                     },
                 }
             );
-            return res.data;
+            return res;
 
         } catch (error) {
             console.log(error);

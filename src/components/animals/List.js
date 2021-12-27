@@ -124,7 +124,6 @@ function List() {
                         </Typography>
 
                         {matchDownSm ? <Button
-                            className="employeeBanner__button"
                             color="primary"
                             onClick={() => { history.push("/animals/new/-1"); }}
                             variant="contained"

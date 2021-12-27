@@ -69,9 +69,9 @@ export default function Employeee() {
             onClick={handleToggle}
             variant="contained"
             startIcon={<AiOutlinePlus />}
-            sx={{ marginTop: matchDownSm ? 2 : 0, borderRadius: theme.custom.borderRadius }}
+            sx={{ marginTop: matchDownSm ? 2 : 0, borderRadius: "8px", fontSize: 12, }}
           >
-            Agregar colaborador
+            Agregar
           </Button>
         </CardActions>
       </Card>
