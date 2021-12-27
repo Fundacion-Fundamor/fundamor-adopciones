@@ -128,7 +128,7 @@ function List() {
                             onClick={() => { history.push("/animals/new/-1"); }}
                             variant="contained"
                             startIcon={<AiOutlinePlus />}
-                            sx={{ borderRadius:"8px", fontSize: 12, ml: 2 }}
+                            sx={{ borderRadius: "8px", fontSize: 12, ml: 2 }}
                         >
                             Agregar
                         </Button> : null}
@@ -142,12 +142,12 @@ function List() {
                             onClick={() => { history.push("/animals/new/-1"); }}
                             variant="contained"
                             startIcon={<AiOutlinePlus />}
-                            sx={{ borderRadius:"8px", fontSize: 12, ml: 2 }}
+                            sx={{ borderRadius: "8px", fontSize: 12, ml: 2 }}
                         >
                             Agregar
                         </Button> : null}
 
-                     
+
                         <TextField
                             sx={{
                                 ml: 3, "& .MuiOutlinedInput-root": {
@@ -217,9 +217,9 @@ function List() {
                     }
                     )}
 
-                    {loading ?
+                    {loading && animals.length === 0 ?
                         <Stack direction="row" mt={8} alignItems="center"><CircularProgress />
-                            <Typography sx={{ fontWeight: "500",ml:2 }}>Cargando...</Typography>
+                            <Typography sx={{ fontWeight: "500", ml: 2 }}>Cargando...</Typography>
                         </Stack> : null}
                     {animals.length === 0 && !loading ?
                         <Typography sx={{ fontWeight: "600", mt: 8 }}>No hay animales registrados</Typography> : null}
@@ -276,11 +276,11 @@ const FilterManager = ({ handleFilters }) => {
                 sx={{
                     backgroundColor: theme.custom.primary.light,
                     color: theme.custom.primary.dark,
-                    borderRadius:2
+                    borderRadius: 2
                 }}
                 onClick={handleClick}
             >
-                <HiOutlineFilter size={16} cursor="pointer"  />
+                <HiOutlineFilter size={16} cursor="pointer" />
             </IconButton>
 
             <Popover

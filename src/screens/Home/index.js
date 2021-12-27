@@ -13,7 +13,8 @@ function Home(props) {
   const { animals, message, loading, getAnimals, handleAnimalMessage } = useContext(AnimalContext); // contexto de animales
 
   useEffect(() => {
-    getAnimals()
+    // esto aun no se puede hacer por que el endpoint está protegido
+    // getAnimals()
   }, [])
 
   return (
