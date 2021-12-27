@@ -364,7 +364,8 @@ const FilterManager = ({ handleFilters }) => {
 
 const RowsManager = ({ numRows, handleRows }) => {
 
-
+    const theme = useTheme();
+    const matchDownSm = useMediaQuery(theme.breakpoints.down('sm'));
     const [anchorEl, setAnchorEl] = React.useState(null);
 
     const handleClick = (event) => {
@@ -389,7 +390,7 @@ const RowsManager = ({ numRows, handleRows }) => {
             onClick={(ev) => handleClick(ev)}
             variant="text"
             endIcon={<FaChevronDown />}
-
+            sx={{ mt: matchDownSm ? 3 : 0 }}
         >{numRows} por página</Button>
 
 

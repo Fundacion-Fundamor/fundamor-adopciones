@@ -1,7 +1,7 @@
-import { AppBar, Avatar, Box, Button, ButtonBase, Card, Chip, ClickAwayListener, Divider,  List, ListItemButton, ListItemIcon, ListItemText, Paper, Popper, Stack, Toolbar, Typography, useMediaQuery } from '@mui/material'
+import { AppBar, Avatar, Box, Button, ButtonBase, Card, Chip, ClickAwayListener, Divider, List, ListItemButton, ListItemIcon, ListItemText, Paper, Popper, Stack, Toolbar, Typography, useMediaQuery } from '@mui/material'
 import React, { useState, useEffect, useRef, useContext } from 'react'
-import {  useTheme } from '@mui/material/styles';
-import { grey,  } from '@mui/material/colors';
+import { useTheme } from '@mui/material/styles';
+import { grey, } from '@mui/material/colors';
 import { AiOutlineLogout, AiOutlineMenu, AiOutlineSetting, AiOutlineUser } from 'react-icons/ai';
 import Transitions from './Transitions';
 
@@ -115,7 +115,7 @@ export default function Topbar({ drawerOpen, handleDrawer }) {
                             '&[aria-controls="menu-list-grow"], &:hover': {
                                 borderColor: theme.custom.primary.dark,
                                 background: `${theme.custom.primary.light}!important`,
-                              
+
                                 '& svg': {
                                     stroke: theme.custom.primary.light,
                                 }
@@ -130,9 +130,9 @@ export default function Topbar({ drawerOpen, handleDrawer }) {
 
                                 sx={{
                                     backgroundColor: theme.custom.secondary.dark,
-                                    color:"white",
+                                    color: "white",
                                     margin: '8px 0 8px 8px !important',
-                                    textTransform:"uppercase",
+                                    textTransform: "uppercase",
                                     width: 36, height: 36
                                 }}
 
@@ -140,7 +140,7 @@ export default function Topbar({ drawerOpen, handleDrawer }) {
                                 aria-controls={open ? 'menu-list-grow' : undefined}
                                 aria-haspopup="true"
                                 color="inherit"
-                            >{user.nombre.charAt(0)}</Avatar>
+                            >{user ? user.nombre.charAt(0) : ""}</Avatar>
                         }
                         label={<AiOutlineSetting color={theme.custom.primary.dark} size="1.5rem" />}
                         variant="outlined"
@@ -171,19 +171,19 @@ export default function Topbar({ drawerOpen, handleDrawer }) {
                     >
                         {({ TransitionProps }) => (
                             <Transitions in={open} {...TransitionProps}>
-                                <Paper sx={{ borderRadius: '12px'}}>
+                                <Paper sx={{ borderRadius: '12px' }}>
                                     <ClickAwayListener onClickAway={handleClose}>
                                         <Card sx={{ borderRadius: '12px', width: 260 }}>
                                             <Box sx={{ p: 2 }}>
                                                 <Stack marginBottom={"10px"}>
                                                     <Stack direction="row" spacing={0.5} alignItems="center">
                                                         <Typography fontWeight={"600"} variant="t3">Hola,{" "}
-                                                        
+
                                                             <Typography component="span" variant="t3" sx={{ fontWeight: 400 }}>
-                                                                {user.nombre}
+                                                                {user ? user.nombre : ""}
                                                             </Typography>
-                                                            </Typography>
-                                                        
+                                                        </Typography>
+
                                                     </Stack>
                                                     <Typography variant="subtitle2" fontWeight={100} sx={{ textTransform: "capitalize" }} >{user.rol}</Typography>
                                                 </Stack>
@@ -205,9 +205,9 @@ export default function Topbar({ drawerOpen, handleDrawer }) {
                                                         '& .MuiListItemButton-root': {
                                                             mt: 0.5
                                                         },
-                                                        '& .Mui-selected':{
+                                                        '& .Mui-selected': {
                                                             backgroundColor: theme.custom.primary.light,
-                                                            color:theme.custom.primary.dark
+                                                            color: theme.custom.primary.dark
                                                         }
                                                     }}
                                                 >
@@ -245,7 +245,7 @@ export default function Topbar({ drawerOpen, handleDrawer }) {
                                                                 background: theme.custom.primary.light,
 
                                                             },
-                                                             '&:active': {
+                                                            '&:active': {
                                                                 background: theme.custom.primary.light,
 
                                                             }

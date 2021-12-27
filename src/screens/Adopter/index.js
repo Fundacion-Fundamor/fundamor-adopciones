@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useContext } from 'react'
-import List from '../../components/adopters/List'
+import AdopterList from '../../components/adopters/AdopterList'
 import './adopter.scss'
 import AdopterForm from '../../components/adopters/AdopterForm'
 import {
@@ -39,7 +39,7 @@ export default function Adopter() {
 
   return (
     <>
-      <List />
+      <AdopterList />
       <Modal
         open={showForm}
         aria-labelledby="modal-modal-title"
