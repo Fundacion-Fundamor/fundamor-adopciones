@@ -40,7 +40,7 @@ import SideBar from './components/Sidebar';
 import { Box, CssBaseline, useMediaQuery } from '@mui/material';
 import Topbar from './components/Navbar/TopBar.js';
 import AuthContext from './context/auth/authContext';
-import {  esES } from '@mui/x-data-grid';
+
 const token = localStorage.getItem("token");
 if (token) {
   authToken(token);
@@ -109,7 +109,7 @@ function App() {
     primary: {
       main: purple[500],
     },
-  }, esES);
+  });
 
 
 

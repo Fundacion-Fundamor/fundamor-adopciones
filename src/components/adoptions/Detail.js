@@ -2,7 +2,7 @@ import React, { useEffect, useContext, useState } from 'react'
 import { useParams, useHistory } from 'react-router';
 import AdoptionContext from '../../context/adoption/adoptionContext';
 import Form from '../tracking/Form';
-import { Button, Modal, Box, CardActions, Card, Tooltip, IconButton, Typography, useTheme, useMediaQuery, CardContent, Tabs, Tab, Divider, Chip, Stack } from '@mui/material';
+import { Button, Modal, Box, CardActions, Card, Tooltip, IconButton, Typography, useTheme, useMediaQuery, CardContent, Tabs, Tab, Divider, Chip, Stack, Grid } from '@mui/material';
 import ModalUpdate from './ModalUpdate';
 
 
@@ -13,6 +13,7 @@ import { IoDocumentTextOutline, IoNewspaperOutline, IoTimerOutline } from "react
 import { grey } from '@mui/material/colors';
 import { GrDocumentUser } from 'react-icons/gr';
 import { AiOutlineCheckCircle, AiOutlinePauseCircle, AiOutlineReload } from 'react-icons/ai';
+import { FaRegEdit } from 'react-icons/fa';
 
 
 export default function Detail() {
@@ -119,6 +120,29 @@ export default function Detail() {
                         <Typography variant="t2" sx={{ fontWeight: "600", color: grey[600] }} >
                             Detalles del proceso
                         </Typography>
+                        {matchDownSm ? <Button
+                            color="primary"
+                            onClick={toggleModalEdit}
+                            variant="contained"
+                            startIcon={<FaRegEdit />}
+                            sx={{ borderRadius: "8px", fontSize: 12, ml: 2 }}
+                        >
+                            Editar
+                        </Button> : null}
+                    </Box>
+
+                    <Box alignItems={"center"} display={"flex"} flexDirection={"row"} sx={{ marginTop: matchDownSm ? 2 : 0 }}>
+
+
+                        {!matchDownSm ? <Button
+                            color="primary"
+                            onClick={toggleModalEdit}
+                            variant="contained"
+                            startIcon={<FaRegEdit />}
+                            sx={{ borderRadius: "8px", fontSize: 12, ml: 2 }}
+                        >
+                            Editar
+                        </Button> : null}
                     </Box>
                 </CardActions>
             </Card>
@@ -127,6 +151,19 @@ export default function Detail() {
                     {selectedAdoption ? <AdoptionTabs adoption={selectedAdoption} /> : null}
                 </CardContent>
             </Card>
+
+            <Modal
+                open={showFormEdit}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+                style={{ overflowY: 'scroll' }}
+            >
+
+                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                    {showFormEdit && <ModalUpdate handleModal={toggleModalEdit} adoptionId={selectedAdoption.id_adopcion} adoptionState={selectedAdoption.estado} observations={selectedAdoption.observaciones} finalDate={selectedAdoption.fecha_entrega} />}
+                </Box>
+
+            </Modal>
         </Box>
     )
 
@@ -181,7 +218,7 @@ const AdoptionTabs = ({ adoption }) => {
         setValue(newValue);
     };
     const theme = useTheme();
-
+    const matchDownSm = useMediaQuery(theme.breakpoints.down('sm'));
     return (
         <Box sx={{ width: '100%' }}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -233,8 +270,106 @@ const AdoptionTabs = ({ adoption }) => {
                     </Stack>
                 </Box>
                 <Divider sx={{ background: grey[600] }} />
-                <CardContent sx={{ display: "flex", flexDirection: "row", flexWrap: "wrap", padding: 0, justifyContent: "center", alignItems: "center" }}>
+                <CardContent sx={{ display: "flex", flexDirection: "column", flexWrap: "wrap", padding: 0, justifyContent: "center", alignItems: "center" }}>
+                    <Grid container spacing={2} mt={0}>
+                        <Grid item md={4} xs={12} >
+                            <Stack p={2}>
+                                <Typography sx={{ fontSize: 15, fontWeight: 600 }} color="text.secondary">
+                                    Empleado encargado
+                                </Typography>
+                                <Typography sx={{ fontSize: 14, fontWeight: 600, mt: 2, display: "flex" }} color="text.secondary">
+                                    Nombre: <Typography sx={{ fontSize: 13, fontWeight: 100, ml: 1 }} color="text.secondary">{adoption.empleado.nombre}</Typography></Typography>
+                                <Typography sx={{ fontSize: 14, fontWeight: 600, display: "flex", mt: 1 }} color="text.secondary">
+                                    C.C <Typography sx={{ fontSize: 13, fontWeight: 100, ml: 1 }} color="text.secondary">{adoption.empleado.id_empleado}
+                                    </Typography>
 
+                                </Typography>
+                            </Stack>
+                        </Grid>
+                        <Grid item md={8} xs={12} >
+                            <Stack p={2}>
+                                <Typography sx={{ fontSize: 15, fontWeight: 600 }} color="text.secondary">
+                                    Observaciones
+                                </Typography>
+
+                                <Box sx={{ background: grey[100], mt: 2, p: 1, borderRadius: 2, display: "flex" }}>
+                                    <Typography sx={{ fontSize: 14, fontWeight: 100, }} color="text.secondary">
+                                        {adoption.observaciones ?? "No registra"}
+                                    </Typography>
+                                </Box>
+
+                            </Stack>
+                        </Grid>
+                    </Grid>
+                    <Divider sx={{ background: "#000", width: "100%", P: 2 }} />
+                    <Grid container spacing={2} mt={0}>
+                        <Grid item md={4} xs={12} >
+                            <Stack p={2}>
+                                <Typography sx={{ fontSize: 15, fontWeight: 600 }} color="text.secondary">
+                                    Adoptante involucrado
+                                </Typography>
+                                <Typography sx={{ fontSize: 14, fontWeight: 600, mt: 2, display: "flex" }} color="text.secondary">
+                                    Nombre: <Typography sx={{ fontSize: 13, fontWeight: 100, ml: 1 }} color="text.secondary">{adoption.adoptante.nombre}</Typography></Typography>
+
+                                <Typography sx={{ fontSize: 14, fontWeight: 600, display: "flex", mt: 1 }} color="text.secondary">
+                                    CC: <Typography sx={{ fontSize: 13, fontWeight: 100, ml: 1 }} color="text.secondary">{adoption.adoptante.id_adoptante ?? "No registra"}</Typography></Typography>
+
+
+                                <Typography sx={{ fontSize: 14, fontWeight: 600, display: "flex", mt: 1 }} color="text.secondary">
+                                    Correo: <Typography sx={{ fontSize: 13, fontWeight: 100, ml: 1 }} color="text.secondary">{adoption.adoptante.correo ?? "No registra"}</Typography></Typography>
+
+                                <Typography sx={{ fontSize: 14, fontWeight: 600, display: "flex", mt: 1 }} color="text.secondary">
+                                    Teléfono celular: <Typography sx={{ fontSize: 13, fontWeight: 100, ml: 1 }} color="text.secondary">{adoption.adoptante.telefono_celular ?? "No registra"}</Typography></Typography>
+
+
+                                <Typography sx={{ fontSize: 14, fontWeight: 600, display: "flex", mt: 1 }} color="text.secondary">
+                                    Teléfono fijo: <Typography sx={{ fontSize: 13, fontWeight: 100, ml: 1 }} color="text.secondary">{adoption.adoptante.telefono_casa ?? "No registra"}</Typography></Typography>
+
+                                <Typography sx={{ fontSize: 14, fontWeight: 600, display: "flex", mt: 1 }} color="text.secondary">
+                                    Ocupación: <Typography sx={{ fontSize: 13, fontWeight: 100, ml: 1 }} color="text.secondary">{adoption.adoptante.ocupacion ?? "No registra"}</Typography></Typography>
+
+
+                                <Typography sx={{ fontSize: 14, fontWeight: 600, display: "flex", mt: 1 }} color="text.secondary">
+                                    Dirección: <Typography sx={{ fontSize: 13, fontWeight: 100, ml: 1 }} color="text.secondary">{adoption.adoptante.ciudad ?? "No registra"}</Typography></Typography>
+
+
+
+                            </Stack>
+                        </Grid>
+                        <Grid item md={8} xs={12} >
+                            <Stack p={2}>
+                                <Typography sx={{ fontSize: 15, fontWeight: 600 }} color="text.secondary">
+                                    Animal vinculado
+                                </Typography>
+
+                                <Stack direction={matchDownSm ? "column" : "row"} sx={{ background: grey[100], mt: 2, p: 1, borderRadius: 2 }}>
+                                    {/* {adoption.animal.animalImage.length !== 0 ? <img src={`${process.env.REACT_APP_API_URL}/${adoption.animal.animalImage[0].ruta}`} alt="card" /> : */}
+                                    <Stack direction={"column"} alignItems={"center"} sx={{ background: "#fff", borderRadius: theme.custom.borderRadius, pb: 1 }}>
+                                        <img style={{ objectFit: "cover", borderTopLeftRadius: "12px", borderTopRightRadius: "12px" }} width={150} height={150} src={`${process.env.REACT_APP_URL}/images/sin_imagen.png`} alt="card" />
+                                        <Typography sx={{ fontSize: 14, fontWeight: 600, display: "flex", mt: 1 }} color="text.secondary">
+                                            {adoption.animal.nombre}</Typography>
+                                    </Stack>
+                                    <Stack direction={"column"} ml={2}>
+                                        <Typography sx={{ fontSize: 14, fontWeight: 600, display: "flex", mt: 1 }} color="text.secondary">
+                                            Especie: <Typography sx={{ fontSize: 13, fontWeight: 100, ml: 1 }} color="text.secondary">{adoption.animal.especie ?? "No registra"}</Typography></Typography>
+
+                                        <Typography sx={{ fontSize: 14, fontWeight: 600, display: "flex", mt: 1 }} color="text.secondary">
+                                            Edad : <Typography sx={{ fontSize: 13, fontWeight: 100, ml: 1 }} color="text.secondary">2 meses</Typography></Typography>
+
+                                        <Typography sx={{ fontSize: 14, fontWeight: 600, display: "flex", mt: 1 }} color="text.secondary">
+                                            Esterilizado: <Typography sx={{ fontSize: 13, fontWeight: 100, ml: 1 }} color="text.secondary">{adoption.animal.esterilizado ? "SI" : "NO"}</Typography></Typography>
+                                        <Typography sx={{ fontSize: 14, fontWeight: 600, display: "flex", mt: 1 }} color="text.secondary">
+                                            Desparasitado: <Typography sx={{ fontSize: 13, fontWeight: 100, ml: 1 }} color="text.secondary">{adoption.animal.desparasitado ? "SI" : "NO"}</Typography></Typography>
+
+                                        <Typography sx={{ fontSize: 14, fontWeight: 600, display: "flex", mt: 1 }} color="text.secondary">
+                                            Entregado: <Typography sx={{ fontSize: 13, fontWeight: 100, ml: 1 }} color="text.secondary">{adoption.animal.fecha_entrega ? "El animal fue entregado en" + adoption.animal.fecha_entrega : "El animal no ha sido entregado"}</Typography></Typography>
+
+                                    </Stack>
+                                </Stack>
+
+                            </Stack>
+                        </Grid>
+                    </Grid>
                 </CardContent>
             </Card> :
                 (value === 1 ?
