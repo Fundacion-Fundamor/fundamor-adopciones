@@ -36,7 +36,7 @@ export default (state, action) => {
                 animal: action.payload.animal,
                 adoptante: action.payload.adopter,
                 empleado: action.payload.employee,
-                preguntas: null,
+                preguntas: action.payload.questions,
                 seguimientos: action.payload.tracking
             }
             return {

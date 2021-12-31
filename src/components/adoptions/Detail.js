@@ -12,8 +12,8 @@ import { BiHelpCircle } from 'react-icons/bi';
 import { IoDocumentTextOutline, IoNewspaperOutline, IoTimerOutline } from "react-icons/io5"
 import { grey } from '@mui/material/colors';
 import { GrDocumentUser } from 'react-icons/gr';
-import { AiOutlineCheckCircle, AiOutlinePauseCircle, AiOutlineReload } from 'react-icons/ai';
-import { FaRegEdit } from 'react-icons/fa';
+import { AiOutlineCheckCircle, AiOutlinePauseCircle, AiOutlinePlus, AiOutlineReload } from 'react-icons/ai';
+import { FaRegEdit, FaWpforms } from 'react-icons/fa';
 
 
 export default function Detail() {
@@ -120,21 +120,14 @@ export default function Detail() {
                         <Typography variant="t2" sx={{ fontWeight: "600", color: grey[600] }} >
                             Detalles del proceso
                         </Typography>
-                        {matchDownSm ? <Button
-                            color="primary"
-                            onClick={toggleModalEdit}
-                            variant="contained"
-                            startIcon={<FaRegEdit />}
-                            sx={{ borderRadius: "8px", fontSize: 12, ml: 2 }}
-                        >
-                            Editar
-                        </Button> : null}
+
+
                     </Box>
 
                     <Box alignItems={"center"} display={"flex"} flexDirection={"row"} sx={{ marginTop: matchDownSm ? 2 : 0 }}>
 
 
-                        {!matchDownSm ? <Button
+                        <Button
                             color="primary"
                             onClick={toggleModalEdit}
                             variant="contained"
@@ -142,13 +135,13 @@ export default function Detail() {
                             sx={{ borderRadius: "8px", fontSize: 12, ml: 2 }}
                         >
                             Editar
-                        </Button> : null}
+                        </Button>
                     </Box>
                 </CardActions>
             </Card>
             <Card variant="outlined" sx={{ padding: 3, borderRadius: theme.custom.borderRadius }} >
                 <CardContent sx={{ display: "flex", flexDirection: "row", flexWrap: "wrap", padding: 0, justifyContent: "center", alignItems: "center" }}>
-                    {selectedAdoption ? <AdoptionTabs adoption={selectedAdoption} /> : null}
+                    {selectedAdoption ? <AdoptionTabs adoption={selectedAdoption} toggleModalTracking={toggleModalTracking} /> : null}
                 </CardContent>
             </Card>
 
@@ -164,6 +157,19 @@ export default function Detail() {
                 </Box>
 
             </Modal>
+            <Modal
+                open={showFormTracking}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+                style={{ overflowY: 'scroll' }}
+            >
+                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                    {showFormTracking && <Form handleModal={toggleModalTracking} adoptionID={adoptionId} />}
+                </Box>
+
+            </Modal>
+
+
         </Box>
     )
 
@@ -174,16 +180,6 @@ export default function Detail() {
 
     //     <Button size="medium" variant="contained" color="primary" sx={{ marginTop: 5 }} onClick={() => toggleModalEdit()}>Editar</Button>
     //     <Button size="medium" variant="contained" color="error" sx={{ marginTop: 5 }} onClick={() => onRemoveAdoption()}>Eliminar adopción</Button>
-
-    //     <Modal
-    //         open={showFormTracking}
-    //         aria-labelledby="modal-modal-title"
-    //         aria-describedby="modal-modal-description"
-    //         style={{ overflowY: 'scroll' }}
-    //     >
-    //         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-    //             {showFormTracking && <Form handleModal={toggleModalTracking} adoptionID={adoptionId} />}
-    //         </Box>
 
 
     //     </Modal>
@@ -209,7 +205,7 @@ function a11yProps(index) {
     };
 }
 
-const AdoptionTabs = ({ adoption }) => {
+const AdoptionTabs = ({ adoption, toggleModalTracking }) => {
 
     console.log(adoption)
     const [value, setValue] = React.useState(0);
@@ -235,8 +231,15 @@ const AdoptionTabs = ({ adoption }) => {
 
             {value === 0 ? <Card variant="outlined" sx={{ borderRadius: 3, mb: 2, mt: 2 }} >
 
-                <Box sx={{ p: 2, flexDirection: "row", justifyContent: "space-between", display: "flex" }}>
+                <Box sx={{ p: 2, flexDirection: matchDownSm ? "column" : "row", justifyContent: "space-between", display: "flex" }}>
+
                     <Stack direction="row" alignItems={"center"}>
+
+                        <Typography sx={{ fontSize: 14, fontWeight: 600 }} color="text.secondary">
+                            Inició el  {new Date(adoption.fecha_estudio + "T00:00:00").toLocaleDateString()}
+                        </Typography>
+                    </Stack>
+                    <Stack direction="row" alignItems={"center"} mt={matchDownSm ? 2 : 0}>
                         <Typography sx={{ fontSize: 14, fontWeight: 600, mr: 1 }} color="text.secondary">
                             Estado
                         </Typography>
@@ -262,12 +265,7 @@ const AdoptionTabs = ({ adoption }) => {
                             }
                             label={adoption.estado} />
                     </Stack>
-                    <Stack direction="row" alignItems={"center"}>
 
-                        <Typography sx={{ fontSize: 14, fontWeight: 600 }} color="text.secondary">
-                            Inició el {adoption.fecha_estudio}
-                        </Typography>
-                    </Stack>
                 </Box>
                 <Divider sx={{ background: grey[600] }} />
                 <CardContent sx={{ display: "flex", flexDirection: "column", flexWrap: "wrap", padding: 0, justifyContent: "center", alignItems: "center" }}>
@@ -301,7 +299,8 @@ const AdoptionTabs = ({ adoption }) => {
                             </Stack>
                         </Grid>
                     </Grid>
-                    <Divider sx={{ background: "#000", width: "100%", P: 2 }} />
+
+                    <Divider sx={{ background: grey[600], width: "100%", P: 2 }} />
                     <Grid container spacing={2} mt={0}>
                         <Grid item md={4} xs={12} >
                             <Stack p={2}>
@@ -362,7 +361,7 @@ const AdoptionTabs = ({ adoption }) => {
                                             Desparasitado: <Typography sx={{ fontSize: 13, fontWeight: 100, ml: 1 }} color="text.secondary">{adoption.animal.desparasitado ? "SI" : "NO"}</Typography></Typography>
 
                                         <Typography sx={{ fontSize: 14, fontWeight: 600, display: "flex", mt: 1 }} color="text.secondary">
-                                            Entregado: <Typography sx={{ fontSize: 13, fontWeight: 100, ml: 1 }} color="text.secondary">{adoption.animal.fecha_entrega ? "El animal fue entregado en" + adoption.animal.fecha_entrega : "El animal no ha sido entregado"}</Typography></Typography>
+                                            Entregado: <Typography sx={{ fontSize: 13, fontWeight: 100, ml: 1 }} color="text.secondary">{adoption.fecha_entrega ? "El animal fue entregado en " + (new Date(adoption.fecha_entrega + "T00:00:00").toLocaleDateString()) : "El animal no ha sido entregado"}</Typography></Typography>
 
                                     </Stack>
                                 </Stack>
@@ -373,8 +372,96 @@ const AdoptionTabs = ({ adoption }) => {
                 </CardContent>
             </Card> :
                 (value === 1 ?
-                    <Box></Box>
-                    : <Box></Box>)
+                    <Card variant="outlined" sx={{ borderRadius: 3, mb: 2, mt: 2 }} >
+
+
+
+                        <Stack p={2} alignItems={"center"} justifyContent={"center"} flexDirection={"row"} marginY={3}>
+
+                            <FaWpforms color={grey[600]} size={32} />
+                            <Typography sx={{ fontSize: 15, fontWeight: 600, textAlign: "center", marginLeft: 2 }} color="text.secondary">
+                                Questionario respondido por el adoptante durante la creación de la adpoción
+                            </Typography>
+
+
+                        </Stack>
+                        <Divider sx={{ background: grey[600], marginY: 2 }} />
+
+                        <Stack marginX={5} padding={1} marginY={3} borderRadius={2} sx={{background:grey[50]}}>
+
+                            {adoption.preguntas.map((element, index) => (
+                                <Stack key={index} p={1} sx={{mb:2 }} >
+                                    <Typography sx={{ fontSize: 14, fontWeight: 600 }} color="text.secondary">
+                                        {element.question.titulo}
+                                    </Typography>
+                                    <Stack mt={2}>
+                                        <Typography sx={{ fontSize: 14, pl:2 }} color="text.secondary">
+                                            {element.respuesta} 
+                                        </Typography>
+                                    </Stack>
+                                </Stack>
+
+                            ))}
+                        </Stack>
+                    </Card>
+                    : <Card variant="outlined" sx={{ borderRadius: 3, mb: 2, mt: 2 }} >
+
+
+
+                        <Stack p={2} alignItems={"center"} justifyContent={"center"}>
+                            {adoption.estado !== "finalizada" ? <Tooltip title="Solo puede registrar observaciones de seguimiento cuando la adopción haya finalizado">
+                                <Button
+                                    color={"inherit"}
+                                    variant="contained"
+                                    startIcon={<AiOutlinePlus />}
+                                    sx={{ borderRadius: "8px", fontSize: 12, }}
+                                >
+                                    Nueva observación
+                                </Button>
+                            </Tooltip> :
+                                <Button
+                                    color={"warning"}
+                                    onClick={toggleModalTracking}
+
+                                    variant="contained"
+                                    startIcon={<AiOutlinePlus />}
+                                    sx={{ borderRadius: "8px", fontSize: 12, }}
+                                >
+                                    Nueva observación
+                                </Button>
+                            }
+                        </Stack>
+
+
+
+
+                        <Stack p={2} sx={{ background: grey[50] }} >
+                            {/* <Typography sx={{ fontSize: 15, fontWeight: 600, textAlign: "center",mb:4 }} color="text.secondary">
+                                {adoption.seguimientos ? "Listado de segumientos" : "Aún no hay seguimientos"}
+                            </Typography> */}
+
+                            {adoption.seguimientos.map((element, index) => (<>
+                                <Stack key={index} p={1} sx={{ borderBottomWidth: 1, }} >
+                                    <Typography sx={{ fontSize: 14, fontWeight: 600 }} color="text.secondary">
+                                        Registrado el {(new Date(element.fecha + "T00:00:00").toLocaleDateString())}
+                                    </Typography>
+                                    <Stack mt={2}>
+                                        <Typography sx={{ fontSize: 14, }} color="text.secondary">
+                                            {element.anotaciones}
+                                        </Typography>
+                                    </Stack>
+                                </Stack>
+                                <Divider sx={{ background: grey[600], marginY: 2 }} />
+                            </>
+                            ))}
+
+                            {adoption.seguimientos.length === 0 ?
+                                <Typography sx={{ fontSize: 14, fontWeight: 500, textAlign: "center" }} color="text.secondary">
+                                    Esta adopción aún no tiene segimientos registrados
+                                </Typography>
+                                : null}
+                        </Stack>
+                    </Card>)
             }
 
         </Box>
