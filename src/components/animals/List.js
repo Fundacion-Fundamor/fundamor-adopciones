@@ -2,11 +2,11 @@
 import './animal.scss'
 import React, { useEffect, useContext, useState } from 'react'
 import AnimalContext from '../../context/animal/animalContext'
-import { Box, Button, Card, CardActions, CardContent, CardMedia, Chip, Divider, FormControl, FormControlLabel, FormLabel, IconButton, Menu, MenuItem, Pagination, Popover, Radio, RadioGroup, Stack, Tooltip, Typography, useMediaQuery, useTheme, } from '@mui/material'
+import { Box, Button, Card, CardActions, CardContent, CardMedia, Chip, Divider, FormControl, FormControlLabel, FormLabel, IconButton, Menu, MenuItem, Pagination, Popover, Radio, RadioGroup, Skeleton, Stack, Tooltip, Typography, useMediaQuery, useTheme, } from '@mui/material'
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
 import { grey } from '@mui/material/colors'
-import {  AiOutlinePlus, AiOutlineReload, AiOutlineSearch } from 'react-icons/ai'
+import { AiOutlinePlus, AiOutlineReload, AiOutlineSearch } from 'react-icons/ai'
 import { BiErrorAlt, BiHelpCircle } from 'react-icons/bi'
 import { useHistory, useRouteMatch } from 'react-router-dom'
 import { HiOutlineFilter } from 'react-icons/hi'
@@ -238,18 +238,7 @@ function List() {
 
                                     >
 
-                                        <CardMedia
-                                            component="img"
-                                            height="230"
-                                            style={{
-                                                background: "linear-gradient(to top, #f9a9a9 -11%, #00ffff00 30%)",
-
-                                            }}
-                                            sx={{ borderRadius: "8px" }}
-                                            image="https://estaticos.muyinteresante.es/media/cache/1140x_thumb/uploads/images/gallery/6124cf315cafe8c3101f8bab/perro-slide_0.jpg"
-                                            alt="green iguana"
-                                        />
-
+                                        <AnimalImage />
                                     </Box>
                                     <CardContent sx={{ flexDirection: "row", justifyContent: "space-between", position: "relative", display: "flex", marginTop: "-91px" }}>
                                         <Stack>
@@ -498,5 +487,27 @@ const RowsManager = ({ numRows, handleRows }) => {
             <MenuItem onClick={() => handleClose(50)}>50 animales</MenuItem>
         </Menu>
     </>)
+}
+
+
+const AnimalImage = () => {
+
+
+    const [isLoaded, setIsLoaded] = useState(false)
+
+    return <>
+
+        {!isLoaded ? <Skeleton variant="rectangular"  height={230} sx={{ borderRadius: "8px" }} /> : null}
+        <CardMedia
+            onLoad={() => { setIsLoaded(true) }}
+            component="img"
+            height="230"
+            sx={{ borderRadius: "8px" }}
+            image="https://estaticos.muyinteresante.es/media/cache/1140x_thumb/uploads/images/gallery/6124cf315cafe8c3101f8bab/perro-slide_0.jpg"
+            alt="green iguana"
+        />
+
+    </>
+
 }
 export default List
