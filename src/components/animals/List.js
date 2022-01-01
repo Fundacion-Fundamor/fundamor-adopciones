@@ -1,20 +1,21 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import './animal.scss'
 import React, { useEffect, useContext, useState } from 'react'
-import AnimalCard from '../../components/Card'
 import AnimalContext from '../../context/animal/animalContext'
-import { Box, Button, Card, CardActions, CardContent, Divider, FormControl, FormControlLabel, FormLabel, IconButton, Menu, MenuItem, Pagination, Popover, Radio, RadioGroup, Stack, Tooltip, Typography, useMediaQuery, useTheme, } from '@mui/material'
+import { Box, Button, Card, CardActions, CardContent, CardMedia, Chip, Divider, FormControl, FormControlLabel, FormLabel, IconButton, Menu, MenuItem, Pagination, Popover, Radio, RadioGroup, Stack, Tooltip, Typography, useMediaQuery, useTheme, } from '@mui/material'
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
 import { grey } from '@mui/material/colors'
-import { AiOutlinePlus, AiOutlineSearch } from 'react-icons/ai'
-import { BiHelpCircle } from 'react-icons/bi'
-import { useHistory } from 'react-router-dom'
+import {  AiOutlinePlus, AiOutlineReload, AiOutlineSearch } from 'react-icons/ai'
+import { BiErrorAlt, BiHelpCircle } from 'react-icons/bi'
+import { useHistory, useRouteMatch } from 'react-router-dom'
 import { HiOutlineFilter } from 'react-icons/hi'
 import { FaChevronDown } from 'react-icons/fa'
 import CircularProgress from '@mui/material/CircularProgress';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+
+import { BiBadgeCheck } from "react-icons/bi"
 function List() {
 
 
@@ -34,7 +35,7 @@ function List() {
 
     //navegación
     let history = useHistory();
-
+    let { path, url } = useRouteMatch();
 
     //layout y theming
     const theme = useTheme();
@@ -206,10 +207,89 @@ function List() {
                         let end = (localData.currentPage * localData.animalsPerPage);
                         if ((index + 1) > start && (index + 1) <= end) {
                             return (
-                                <AnimalCard
-                                    key={index}
-                                    animal={element}
-                                />
+
+                                <Card key={index} sx={{
+                                    margin: 2, borderRadius: 4,
+                                    transition: "all .2s ease-in-out",
+                                    ':hover': {
+                                        transform: "scale(1.1)",
+
+                                    },
+
+                                }}
+                                    onClick={() => {
+
+                                        history.push(`${url}/${element.id_animal}`);
+
+                                    }}
+                                >
+
+                                    <div
+                                        style={{
+
+                                            paddingBottom: "133px",
+                                            background: theme.custom.primary.light
+                                        }}
+
+                                    ></div>
+                                    <Box maxWidth={280} maxHeight={300}
+
+                                        sx={{ top: "-114px", position: "relative", marginX: 2 }}
+
+                                    >
+
+                                        <CardMedia
+                                            component="img"
+                                            height="230"
+                                            style={{
+                                                background: "linear-gradient(to top, #f9a9a9 -11%, #00ffff00 30%)",
+
+                                            }}
+                                            sx={{ borderRadius: "8px" }}
+                                            image="https://estaticos.muyinteresante.es/media/cache/1140x_thumb/uploads/images/gallery/6124cf315cafe8c3101f8bab/perro-slide_0.jpg"
+                                            alt="green iguana"
+                                        />
+
+                                    </Box>
+                                    <CardContent sx={{ flexDirection: "row", justifyContent: "space-between", position: "relative", display: "flex", marginTop: "-91px" }}>
+                                        <Stack>
+                                            <Typography sx={{ fontWeight: "600", fontSize: 14, textTransform: "uppercase", color: grey[600] }}>{element.nombre}</Typography>
+                                            <Typography sx={{ fontWeight: "100", fontSize: 13, textTransform: "capitalize", color: grey[500] }}>{element.especie} {element.sexo}</Typography>
+                                        </Stack>
+                                        <Stack>
+                                            <Chip color={
+                                                element.estado === "Adoptado" ? "success" :
+                                                    element.estado === "Sin adoptar" ? "warning" : "primary"
+                                            }
+
+
+                                                sx={{
+                                                    textTransform: "capitalize",
+                                                    borderRadius: "8px",
+                                                    display: "flex",
+
+
+                                                }}
+
+
+
+                                                icon={
+
+                                                    element.estado === "Adoptado" ? <BiBadgeCheck size={24} /> :
+                                                        element.estado === "Sin adoptar" ? <BiErrorAlt size={24} /> : <AiOutlineReload size={24} />
+
+
+                                                }
+                                                label={element.estado === "Adoptado" || element.estado === "Sin adoptar" ? element.estado : "En proceso"}
+                                            />
+                                        </Stack>
+                                    </CardContent>
+
+                                </Card>
+                                // <AnimalCard
+                                //     key={index}
+                                //     animal={element}
+                                // />
                             )
                         } else {
                             return null;
