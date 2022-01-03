@@ -1,4 +1,4 @@
-import { AppBar, Avatar, Box, Button, ButtonBase, Card, CardContent, Chip, ClickAwayListener, CssBaseline, Divider, Grid, List, ListItemButton, ListItemIcon, ListItemText, Paper, Popper, Stack, Toolbar, Typography, useMediaQuery } from '@mui/material'
+import { AppBar, Avatar, Box, Button, ButtonBase, Card, CardContent, Chip, ClickAwayListener, CssBaseline, Divider, FormControl, Grid, InputLabel, List, ListItemButton, ListItemIcon, ListItemText, MenuItem, Paper, Popper, Select, Stack, Toolbar, Typography, useMediaQuery } from '@mui/material'
 import React, { useState, useEffect, useRef } from 'react'
 import { styled, useTheme } from '@mui/material/styles';
 import { green, grey, pink, red } from '@mui/material/colors';
@@ -7,9 +7,32 @@ import { MdPets } from "react-icons/md"
 import { minWidth } from '@mui/system';
 import { FaHandsHelping, FaRegClock } from 'react-icons/fa';
 import { IoMedkitOutline } from 'react-icons/io5';
+import Chart from "react-apexcharts";
 export default function Dashboard() {
 
+    const [chartData, setChartData] = useState({
 
+
+        options: {
+            chart: {
+                id: "basic-bar"
+            },
+            xaxis: {
+                categories: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]
+            }
+        },
+        series: [
+            {
+                name: "Perros",
+                data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            },
+            {
+                name: "Gatos",
+                data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            }
+        ]
+    })
+    const [year, setYear] = useState(new Date().getFullYear());
     useEffect(() => {
         let mounted = true;
 
@@ -49,12 +72,66 @@ export default function Dashboard() {
         }
     }, [])
 
+    useEffect(() => {
+        let mounted = true;
 
 
+        const getNumberOfAnimals = async () => {
+            try {
+                let tmpSeries = chartData.series;
+                setChartData({ ...chartData, series: [] })
+                const res = await axiosClient.get("/api/analytics/rescuedAnimals?year=" + year);
+                console.log("animales", res.data)
+                if (res.data.state) {
+
+                    // series: [
+                    //     {
+                    //         name: "Perros",
+                    //         data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+                    //     },
+                    //     {
+                    //         name: "Gatos",
+                    //         data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+                    //     }
+                    // ]
+                    let tmpSeries = chartData.series;
+
+                    let dogsArray = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+                    res.data.data.forEach((element, index) => {
+
+                        dogsArray[element.rescue_month - 1] = element.rescued_animals
+
+                    })
+                    console.log("newData", dogsArray)
+                    tmpSeries[0].data = dogsArray;
+
+                    setChartData({
+                        options: chartData.options,
+                        series: tmpSeries
+
+
+                    }
+                    )
+                }
+
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
+        getNumberOfAnimals()
+        return () => {
+        }
+    }, [year])
+
+    useEffect(() => {
+        console.log("asadasd", chartData)
+    }, [chartData.series])
     return (
 
 
-        <Box sx={{ display: 'flex', justifyContent: "center" }}>
+        <Box sx={{ display: 'flex', justifyContent: "center", flexDirection: "column" }}>
             <CssBaseline />
             <Stack direction={"row"} display={"flex"} alignItems={"center"} justifyContent={"center"} gap={2} flexWrap={"wrap"}>
                 <Card sx={{
@@ -83,7 +160,7 @@ export default function Dashboard() {
                                 color='white'
                                 opacity={0.35}
                             />
-                    
+
                         </div>
                     </CardContent>
 
@@ -110,11 +187,11 @@ export default function Dashboard() {
                             }}
                         >
                             <IoMedkitOutline
-                              size={88}
-                              color='white'
-                              opacity={0.35}
+                                size={88}
+                                color='white'
+                                opacity={0.35}
                             />
-                       
+
                         </div>
                     </CardContent>
 
@@ -141,18 +218,44 @@ export default function Dashboard() {
                             }}
                         >
                             <FaRegClock
-                            
-                            size={88}
-                            color='white'
-                            opacity={0.35}
+
+                                size={88}
+                                color='white'
+                                opacity={0.35}
                             />
-                        
+
                         </div>
                     </CardContent>
 
 
                 </Card>
+
+
             </Stack>
+
+            <Card>
+                <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">Año</InputLabel>
+                    <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={year}
+                        label="Age"
+                        onChange={(val) => { setYear(val.target.value) }}
+                    >
+                        <MenuItem value={2021}>2021</MenuItem>
+                        <MenuItem value={2022}>2022</MenuItem>
+                    </Select>
+                </FormControl>
+                <Chart
+                    options={chartData.options}
+                    series={chartData.series}
+                    type="bar"
+                    width="500"
+
+                />
+
+            </Card>
         </Box >
     )
 }
