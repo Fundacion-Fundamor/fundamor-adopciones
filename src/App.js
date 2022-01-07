@@ -40,6 +40,7 @@ import SideBar from './components/Sidebar';
 import { Box, CssBaseline, useMediaQuery } from '@mui/material';
 import Topbar from './components/Navbar/TopBar.js';
 import AuthContext from './context/auth/authContext';
+import Profile from './screens/Profile';
 
 const token = localStorage.getItem("token");
 if (token) {
@@ -173,6 +174,7 @@ function App() {
                                 <PrivateRoute path="/adopters" component={Adopter} />
                                 <PrivateRoute path="/adoptions" component={Adoption} />
                                 <PrivateRoute path="/dashboard" component={Dashboard} />
+                                <PrivateRoute path="/profile" component={Profile} />
                               </Switch>
 
                             </Main>

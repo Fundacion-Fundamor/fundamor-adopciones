@@ -54,10 +54,12 @@ export default function Dashboard() {
             <CssBaseline />
             <Stack direction={"row"} display={"flex"} alignItems={"center"} justifyContent={"center"} gap={2} flexWrap={"wrap"}>
 
+
                 <CardAnimalsAdopted />
                 <CardAnimalsRescued />
                 <CardAnimalsWaiting />
 
+                <SterilizedAnimals />
                 <RescuedAnimalsChart />
                 <RescuedAnimalsChartPerGender />
                 <AdoptedAnimalsChart />
@@ -876,6 +878,189 @@ const AdoptedAnimalsChartPerGender = () => {
             series={chartData.series}
             type="line"
             width="500"
+
+        />
+    </Card>
+
+
+    )
+}
+
+
+
+const SterilizedAnimals = () => {
+
+    const [chartData, setChartData] = useState({
+
+
+        options: {
+            chart: {
+                id: "basic-bar",
+                locales: [{
+                    "name": "en",
+                    "options": {
+                        "months": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+                        "shortMonths": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                        "days": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+                        "shortDays": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+                        "toolbar": {
+                            "exportToSVG": "Descargar SVG",
+                            "exportToPNG": "Descargar PNG",
+                            "exportToCSV": "Descargar CSV",
+                            "menu": "Menu",
+                            "selection": "Selección",
+                            "selectionZoom": "Selection Zoom",
+                            "zoomIn": "Zoom In",
+                            "zoomOut": "Zoom Out",
+                            "pan": "Panning",
+                            "reset": "Reset Zoom"
+                        }
+                    }
+                }],
+            },
+            xaxis: {
+                categories: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]
+            },
+            colors: ['#9C27B0', '#E91E63',],
+            labels: ["Perros esterilizados", "Perros sin esterilizar"]
+
+
+        },
+        series: [
+            99, 1
+        ],
+    })
+
+
+
+    
+    const [chartDataCats, setChartDataCats] = useState({
+
+
+        options: {
+            chart: {
+                id: "basic-bar",
+                locales: [{
+                    "name": "en",
+                    "options": {
+                        "months": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+                        "shortMonths": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                        "days": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+                        "shortDays": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+                        "toolbar": {
+                            "exportToSVG": "Descargar SVG",
+                            "exportToPNG": "Descargar PNG",
+                            "exportToCSV": "Descargar CSV",
+                            "menu": "Menu",
+                            "selection": "Selección",
+                            "selectionZoom": "Selection Zoom",
+                            "zoomIn": "Zoom In",
+                            "zoomOut": "Zoom Out",
+                            "pan": "Panning",
+                            "reset": "Reset Zoom"
+                        }
+                    }
+                }],
+            },
+            xaxis: {
+                categories: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]
+            },
+            colors: ['#9C27B0', '#E91E63',],
+            labels: ["Gatos esterilizados", "Gatos sin esterilizar"]
+
+
+        },
+        series: [
+            99, 1
+        ],
+    })
+
+    useEffect(() => {
+        let mounted = true;
+
+
+        const getSterilizedAnimals = async () => {
+            try {
+                let tmpSeries = chartData.series;
+
+                const res = await axiosClient.get("/api/analytics/sterilized");
+                console.log("Esterilizados", res.data)
+                if (res.data.state) {
+
+                    let dogs = (res.data.data.dogs * 100) / res.data.data.totalDogs;
+                    let cats = (res.data.data.cats * 100) / res.data.data.totalCats;
+                 
+                    setChartData({ ...chartData, series: [dogs, 100 - dogs] })
+                    // let female = res.data.data.female;
+
+                    // let tmpSeries = []
+
+                    // let maleArray = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+                    // let femaleArray = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+                    // male.forEach((element, index) => {
+
+                    //     maleArray[element.month - 1] = element.adopted_animals
+
+                    // })
+
+
+                    // female.forEach((element, index) => {
+
+                    //     femaleArray[element.month - 1] = element.adopted_animals
+
+                    // })
+
+                    // tmpSeries[0] = { name: "Machos", data: maleArray };
+                    // tmpSeries[1] = { name: "Hembras", data: maleArray };
+                    // if (mounted) {
+                    //     setChartData({
+                    //         options: chartData.options,
+                    //         series: tmpSeries
+
+
+                    //     })
+                    // }
+
+                }
+
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
+        getSterilizedAnimals()
+        return () => {
+            mounted=false;
+        }
+    }, [])
+
+
+
+
+    return (<Card variant='outlined' sx={{ borderRadius: 4, p: 4 }} >
+
+        <Stack direction={"row"} justifyContent={"space-between"} mb={2}>
+            <Stack direction={"row"} alignItems={"center"}>
+
+                <Tooltip title="Visualiza el porcenate de perros esterilizados con los que cuenta actualmente la fundación">
+                    <IconButton>
+                        <BiHelpCircle />
+                    </IconButton>
+
+                </Tooltip>
+                <Typography variant="t2" sx={{ fontWeight: "600", color: grey[600] }} >
+                    Esterilización de perros
+                </Typography>
+            </Stack>
+        </Stack>
+
+        <Chart
+            options={chartData.options}
+            series={chartData.series}
+            type="donut"
+            width="300"
+
 
         />
     </Card>

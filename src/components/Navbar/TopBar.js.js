@@ -6,6 +6,7 @@ import { AiOutlineLogout, AiOutlineMenu, AiOutlineSetting, AiOutlineUser } from 
 import Transitions from './Transitions';
 
 import AuthContext from '../../context/auth/authContext';
+import { useHistory } from 'react-router-dom';
 
 
 export default function Topbar({ drawerOpen, handleDrawer }) {
@@ -15,7 +16,7 @@ export default function Topbar({ drawerOpen, handleDrawer }) {
     const { logout, user } = useContext(AuthContext);
     const [selectedIndex, setSelectedIndex] = useState(-1);
 
-
+    const history = useHistory()
 
     const [open, setOpen] = useState(false);
     const anchorRef = useRef(null);
@@ -28,9 +29,7 @@ export default function Topbar({ drawerOpen, handleDrawer }) {
         setSelectedIndex(index);
         handleClose(event);
 
-        // if (route && route !== '') {
-        //     navigate(route);
-        // }
+        history.push("/profile")
     };
     const handleClose = (event) => {
         if (anchorRef.current && anchorRef.current.contains(event.target)) {
@@ -251,7 +250,7 @@ export default function Topbar({ drawerOpen, handleDrawer }) {
                                                             }
                                                         }}
                                                         selected={selectedIndex === 1}
-                                                        onClick={(event) => handleListItemClick(event, 1, '/user/social-profile/posts')}
+                                                        onClick={(event) => handleListItemClick(event, 1, '/profile')}
                                                     >
                                                         <ListItemIcon sx={{
                                                             minWidth: "40px",
