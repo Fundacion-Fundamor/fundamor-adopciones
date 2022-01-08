@@ -7,7 +7,9 @@ import {
     LOGOUT,
     SUCCESS_LOGIN,
     ERROR_LOGIN,
-    LOADING
+    LOADING,
+    SUCCESS_PROFILE_UPDATE,
+    MESSAGE
 } from '../../types';
 import authToken from '../../config/authToken';
 import axiosClient from '../../config/axios';
@@ -77,7 +79,35 @@ const AuthState = props => {
         }
 
     }
+    const updateUserData = async (data) => {
+        try {
 
+            const res = await axiosClient.put("/api/employees/profile", data);
+            if (res.data.state) {
+                console.log(res.data.message)
+                dispatch({ type: SUCCESS_PROFILE_UPDATE, payload: { text:res.data.message,
+                    showIn:"profile",
+                    category:"success"
+                
+                } });
+                authenticatedUser();
+            } else {
+                //muestra error
+            }
+
+        } catch (error) {
+
+            localStorage.removeItem("token");
+            dispatch({ type: ERROR_LOGIN, });
+        }
+    }
+
+
+    const handleAuthMessage = async (data) => {
+
+        dispatch({ type: MESSAGE, payload: data });
+
+    }
     return (
         <AuthContext.Provider value={{
             token: state.token,
@@ -87,7 +117,9 @@ const AuthState = props => {
             loading: state.loading,
             login,
             logout,
-            authenticatedUser
+            authenticatedUser,
+            updateUserData,
+            handleAuthMessage
         }}>
             {props.children}
         </AuthContext.Provider>

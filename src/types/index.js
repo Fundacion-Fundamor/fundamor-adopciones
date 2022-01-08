@@ -4,12 +4,15 @@ export const SUCCESS_LOGIN = 'SUCCESS_LOGIN';
 export const ERROR_LOGIN = 'ERROR_LOGIN';
 export const LOGOUT = 'LOGOUT';
 export const LOADING = 'LOADING';
+export const MESSAGE = 'MESSAGE';
 
 //employee types
 export const EMPLOYEES = 'EMPLOYEES';
 export const SELECT_EMPLOYEE = 'SELECT_EMPLOYEE';
 export const TOGGLE_EMPLOYEES_LOADING = 'TOGGLE_EMPLOYEES_LOADING';
 export const EMPLOYEE_MESSAGE = 'EMPLOYEE_MESSAGE';
+export const SUCCESS_PROFILE_UPDATE = 'SUCCESS_PROFILE_UPDATE';
+
 // export const SHOW_MESSAGE = 'EMPLOYEES';
 
 //post types

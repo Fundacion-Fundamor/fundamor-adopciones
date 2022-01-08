@@ -4,7 +4,9 @@ import {
     LOGOUT,
     SUCCESS_LOGIN,
     ERROR_LOGIN,
-    LOADING
+    LOADING,
+    MESSAGE,
+    SUCCESS_PROFILE_UPDATE
 } from '../../types';
 
 export default (state, action) => {
@@ -50,6 +52,23 @@ export default (state, action) => {
                 ...state,
 
                 loading: action.payload,
+
+            }
+        }
+        case SUCCESS_PROFILE_UPDATE: {
+            return {
+                ...state,
+
+                loading: false,
+                message:action.payload
+
+            }
+        }
+        
+        case MESSAGE: {
+            return {
+                ...state,
+                message:action.payload
 
             }
         }

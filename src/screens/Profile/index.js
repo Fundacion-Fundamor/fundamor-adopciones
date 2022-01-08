@@ -1,12 +1,14 @@
-import { Avatar, Box, Card, CardActions, CardContent, CardHeader, Divider, Grid, IconButton, ListItemButton, ListItemIcon, ListItemText, Stack, TextField, Tooltip, Typography, useMediaQuery, useTheme } from '@mui/material'
+import { Avatar, Box, Button, Card, CardActions, CardContent, CardHeader, Divider, FormHelperText, Grid, IconButton, ListItemButton, ListItemIcon, ListItemText, Stack, TextField, Tooltip, Typography, useMediaQuery, useTheme } from '@mui/material'
 import { grey } from '@mui/material/colors';
-import React, { useContext, useState } from 'react'
-import { AiOutlineUser } from 'react-icons/ai';
-import { BiHelpCircle } from 'react-icons/bi';
+import React, { useContext, useEffect, useState } from 'react'
+import { AiOutlineSave, AiOutlineUser } from 'react-icons/ai';
+import { BiCheckCircle, BiHelpCircle } from 'react-icons/bi';
 import { FaUserTie } from 'react-icons/fa';
 import { IoKeypad } from 'react-icons/io5';
 import AuthContext from '../../context/auth/authContext';
-
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+const regexEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 
 export default function Profile() {
@@ -36,7 +38,7 @@ export default function Profile() {
                 </CardActions>
 
             </Card>
-            <Card variant="outlined" sx={{ borderRadius: theme.custom.borderRadius }} >
+            {user ? <Card variant="outlined" sx={{ borderRadius: theme.custom.borderRadius }} >
                 <Stack p={3}>
                     <Typography variant="t2" sx={{ fontWeight: "600", fontSize: 18, color: grey[600] }} >
                         Configuración de la cuenta
@@ -47,7 +49,7 @@ export default function Profile() {
 
                 <CardContent sx={{ flexDirection: "row", display: "flex", padding: 0 }}>
 
-                    <Stack direction={"column"} minWidth={300} display={"flex"} p={2}>
+                    <Stack direction={"column"} minWidth={300} display={"flex"} p={2} maxHeight={30}>
 
                         <ListItemButton
                             sx={{
@@ -63,8 +65,8 @@ export default function Profile() {
 
                                 // }
                             }}
-                        // selected={selectedIndex === 1}
-                        // onClick={(event) => handleListItemClick(event, 1, '/profile')}
+                            selected={indexTab === 0}
+                            onClick={(event) => setIndexTab(0)}
                         >
                             <ListItemIcon sx={{
                                 minWidth: "40px",
@@ -87,17 +89,20 @@ export default function Profile() {
                                 borderRadius: `8px`,
 
                                 color: grey[600],
-                                // '&:hover': {
-                                //     background: theme.custom.primary.light,
 
-                                // },
-                                // '&:active': {
-                                //     background: theme.custom.primary.light,
+                                '& .css-ns70o-MuiButtonBase-root-MuiListItemButton-root.Mui-selected ': {
+                                    backgroundColor: "red!important",
 
-                                // }
+
+                                },
+                                '&:active': {
+                                    background: theme.custom.primary.light,
+                                }
+
                             }}
-                        // selected={selectedIndex === 1}
-                        // onClick={(event) => handleListItemClick(event, 1, '/profile')}
+                            selected={indexTab === 1}
+                            onClick={(event) => setIndexTab(1)}
+
                         >
                             <ListItemIcon sx={{
                                 minWidth: "40px",
@@ -105,8 +110,10 @@ export default function Profile() {
                                 '&:hover': {
                                     color: theme.custom.primary.dark,
 
-                                }
-                            }}>
+                                },
+
+                            }}
+                            >
                                 <IoKeypad style={{ fontWeight: "bold" }} />
                             </ListItemIcon>
                             <Stack alignItems={"flex-start"} justifyContent={"flex-start"}>
@@ -117,74 +124,343 @@ export default function Profile() {
 
                     </Stack>
 
-                    {indexTab === 0 ? <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", width: "100%", borderLeftWidth: 1, borderLeftStyle: "solid", borderColor: grey[300] }} p={2} >
+                    {indexTab === 0 ?
+
+                        <UserProfileSection />
+                        : <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", width: "100%", borderLeftWidth: 1, borderLeftStyle: "solid", borderColor: grey[300] }} p={3} >
 
 
-                        <Stack direction={"row"} alignItems={"center"} >
-                            <Avatar
 
-                                sx={{
-                                    backgroundColor: theme.custom.secondary.dark,
-                                    color: "white",
-
-                                    textTransform: "uppercase",
-                                    width: 56, height: 56
-                                }}
-
-                                // ref={anchorRef}
-
-                                aria-haspopup="true"
-                                color="inherit"
-                            >{user ? user.nombre.charAt(0) : ""}</Avatar>
-                            <Typography sx={{ fontSize: 13, textTransform: "capitalize", ml: 1 }} variant="subtitle2">{user.rol}</Typography>
-                        </Stack>
-
-                        <Grid container spacing={2} mt={0}>
-                            <Grid item md={6} xs={12} >
-
-                                <TextField
-                                    sx={{
-                                        height:"90px",
-                                        "& .MuiOutlinedInput-root": {
-
-                                            borderRadius: "10px!important"
-
-                                        }
-                                    }}
-
-                                    label="Nombre"
-                                    InputLabelProps={{ style: { background: "white",paddingLeft:"5px",paddingRight:"5px" } }}
-
-                                    fullWidth={true}
-                                    id="input-with-icon-textfield"
-                                    // onChange={(event) => {
-                                    //     setLocalData({
-                                    //         ...localData,
-                                    //         filters: {
-                                    //             ...localData.filters,
-                                    //             search: event.target.value,
-                                    //         }
-
-                                    //     })
-
-                                    // }}
-                                    size='small'
+                            <Grid container spacing={3} mt={0}>
 
 
-                                    variant="outlined"
-                                />
+                                <Grid item md={12} xs={12} >
 
+                                    <TextField
+                                        sx={{
+                                            // height: "90px",
+
+                                            "& .MuiOutlinedInput-root": {
+
+                                                borderRadius: "10px!important"
+
+                                            },
+                                        }}
+                                        defaultValue={"1005094664"}
+                                        // value={"kasdjasjkh"}
+                                        label="Contraseña actual"
+                                        InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px" } }}
+                                        inputProps={{ height: "10px", }}
+                                        fullWidth={true}
+
+
+                                        variant="outlined"
+                                    />
+
+                                </Grid>
+                                <Grid item md={6} xs={12} >
+
+                                    <TextField
+                                        sx={{
+                                            // height: "90px",
+
+                                            "& .MuiOutlinedInput-root": {
+
+                                                borderRadius: "10px!important"
+
+                                            },
+                                        }}
+
+                                        label="Nueva contraseña"
+                                        InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px" } }}
+                                        inputProps={{ height: "20px", padding: "15px" }}
+                                        fullWidth={true}
+
+                                        // onChange={(event) => {
+                                        //     setLocalData({
+                                        //         ...localData,
+                                        //         filters: {
+                                        //             ...localData.filters,
+                                        //             search: event.target.value,
+                                        //         }
+
+                                        //     })
+
+                                        // }}
+
+
+
+                                        variant="outlined"
+                                    />
+
+                                </Grid>
+                                <Grid item md={6} xs={12} >
+
+                                    <TextField
+                                        sx={{
+                                            // height: "90px",
+
+                                            "& .MuiOutlinedInput-root": {
+
+                                                borderRadius: "10px!important"
+
+                                            },
+                                        }}
+                                        defaultValue={"1005094664"}
+                                        // value={"kasdjasjkh"}
+                                        label="Confirmación de contraseña"
+                                        InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px" } }}
+                                        inputProps={{ height: "20px", padding: "15px" }}
+                                        fullWidth={true}
+                                        // disabled={true}
+
+                                        // onChange={(event) => {
+                                        //     setLocalData({
+                                        //         ...localData,
+                                        //         filters: {
+                                        //             ...localData.filters,
+                                        //             search: event.target.value,
+                                        //         }
+
+                                        //     })
+
+                                        // }}
+
+
+
+                                        variant="outlined"
+                                    />
+
+                                </Grid>
+
+
+
+
+                                <Grid item md={12} xs={12} >
+
+                                    <Button size="medium" variant="outlined" color="primary" sx={{ mt: 3, fontSize: 12, height: 40, alignItems: "center", borderRadius: "8px", fontWeight: "bold" }}
+                                        onClick={() => {
+                                            // selectAdopter(item)
+                                        }}
+                                        startIcon={<AiOutlineSave />}
+                                    >Establecer nueva contraseña</Button>
+
+                                </Grid>
                             </Grid>
-                        </Grid>
 
 
-                    </Box> : <Stack>
-
-                    </Stack>}
+                        </Box>}
 
                 </CardContent>
-            </Card>
+            </Card> : null}
+
 
         </Box>
     )
+}
+
+
+const UserProfileSection = () => {
+
+
+    const MySwal = withReactContent(Swal)
+
+    //layout y theming
+    const theme = useTheme();
+    const matchDownSm = useMediaQuery(theme.breakpoints.down('sm'));
+    const { updateUserData, user, loading, message,handleAuthMessage} = useContext(AuthContext);
+
+    const [userInSession, setUserInSession] = useState(user)
+    const [errors, setErrors] = useState({
+
+        name: null, email: null
+    })
+
+
+    const onSaveChanges = async () => {
+
+        if (userInSession.nombre.trim() === "") {
+
+            setErrors({ ...errors, nombre: "Debe ingresar un nombre" })
+        } else if (regexEmail.test(userInSession.correo) === false) {
+
+            setErrors({ ...errors, email: "Debe ingresar un email válido" })
+        } else {
+
+            updateUserData({
+                correo: userInSession.correo,
+                id_empleado: userInSession.id_empleado,
+                nombre: userInSession.nombre
+            });
+        }
+
+    }
+
+    useEffect(() => {
+
+        const displayAlert = async () => {
+            let res = await MySwal.fire({
+                title: <p style={{ fontSize: 22, fontWeight: "bold" }}>{message.text}</p>,
+                allowOutsideClick: false,
+                icon: message.category,
+                backdrop: true
+
+            });
+
+
+            if (res.isConfirmed) {
+                await handleAuthMessage(null);
+            }
+        }
+        if (message && message.showIn === "profile" && !loading) {
+
+            displayAlert();
+        }
+    }, [message, loading])
+    return (<Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", width: "100%", borderLeftWidth: 1, borderLeftStyle: "solid", borderColor: grey[300] }} p={3} >
+
+
+        <Stack direction={"row"} alignItems={"center"} >
+            <Avatar
+
+                sx={{
+                    backgroundColor: theme.custom.secondary.dark,
+                    color: "white",
+
+                    textTransform: "uppercase",
+                    width: 66, height: 66,
+                    "& img": {
+                        width: "70%",
+                        height: "70%"
+                    }
+
+                }}
+
+                // ref={anchorRef}
+                src='/images/human.png'
+
+                aria-haspopup="true"
+                color="inherit"
+            />
+
+            <Typography sx={{ fontSize: 16, textTransform: "capitalize", ml: 1 }} variant="subtitle2">{user.rol}</Typography>
+            <BiCheckCircle style={{ marginLeft: 5 }} color='#3bbceb' size={24} />
+        </Stack>
+
+        <Grid container spacing={3} mt={0}>
+            <Grid item md={6} xs={12} >
+                <>
+                    <TextField
+                        sx={{
+                            "& .MuiOutlinedInput-root": {
+
+                                borderRadius: "10px!important"
+
+                            },
+                        }}
+                        value={userInSession.nombre}
+                        label="Nombre"
+                        InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px" } }}
+                        inputProps={{ height: "20px", padding: "15px" }}
+                        fullWidth={true}
+                        variant="outlined"
+                        onChange={(event) => {
+                            setUserInSession({ ...userInSession, nombre: event.target.value })
+                        }}
+                        onBlur={() => {
+
+                            console.log(userInSession.correo)
+                            if (userInSession.nombre.trim() === "") {
+
+                                setErrors({ ...errors, nombre: "Debe ingresar un nombre" })
+                            } else {
+                                setErrors({ ...errors, nombre: null })
+
+                            }
+
+                        }}
+                    />
+
+                    {errors.nombre && <FormHelperText error={true}>{errors.nombre}</FormHelperText>}
+                </>
+
+
+            </Grid>
+            <Grid item md={6} xs={12} >
+
+                <TextField
+                    sx={{
+                        "& .MuiOutlinedInput-root": {
+
+                            borderRadius: "10px!important"
+
+                        },
+                    }}
+                    value={userInSession.id_empleado}
+                    label="Identificación"
+                    InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px" } }}
+                    inputProps={{ height: "20px", padding: "15px" }}
+                    fullWidth={true}
+                    disabled={true}
+
+                    variant="outlined"
+                />
+
+            </Grid>
+
+            <Grid item md={12} xs={12} >
+                <>
+                    <TextField
+                        sx={{
+                            "& .MuiOutlinedInput-root": {
+
+                                borderRadius: "10px!important"
+
+                            },
+                        }}
+
+                        value={userInSession.correo}
+                        label="Correo electrónico"
+                        InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px" } }}
+                        inputProps={{ height: "10px", }}
+                        fullWidth={true}
+                        variant="outlined"
+                        onChange={(event) => {
+                            setUserInSession({ ...userInSession, correo: event.target.value })
+                        }}
+
+                        onBlur={() => {
+
+
+                            if (regexEmail.test(userInSession.correo) === false) {
+
+                                setErrors({ ...errors, email: "Debe ingresar un email válido" })
+                            } else {
+                                setErrors({ ...errors, email: null })
+
+                            }
+
+                        }}
+                    />
+
+
+                    {errors.email && <FormHelperText error={true}>{errors.email}</FormHelperText>}
+                </>
+
+            </Grid>
+
+
+
+            <Grid item md={12} xs={12} >
+
+                <Button size="medium" variant="outlined" color="primary" sx={{ mt: 3, fontSize: 12, height: 40, alignItems: "center", borderRadius: "8px", fontWeight: "bold" }}
+                    onClick={() => onSaveChanges()}
+                    startIcon={<AiOutlineSave />}
+                >Guardar cambios</Button>
+
+            </Grid>
+        </Grid>
+
+
+    </Box>)
 }
