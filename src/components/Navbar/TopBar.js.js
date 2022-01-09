@@ -29,7 +29,7 @@ export default function Topbar({ drawerOpen, handleDrawer }) {
         setSelectedIndex(index);
         handleClose(event);
 
-        history.push("/profile")
+        history.push(route)
     };
     const handleClose = (event) => {
         if (anchorRef.current && anchorRef.current.contains(event.target)) {
@@ -221,7 +221,7 @@ export default function Topbar({ drawerOpen, handleDrawer }) {
                                                             }
                                                         }}
                                                         selected={selectedIndex === 0}
-                                                        onClick={(event) => handleListItemClick(event, 0, '/user/account-profile/profile1')}
+                                                        onClick={(event) => handleListItemClick(event, 1, '/siteConfig')}
                                                     >
                                                         <ListItemIcon sx={{
                                                             minWidth: "40px",

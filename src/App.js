@@ -41,6 +41,7 @@ import { Box, CssBaseline, useMediaQuery } from '@mui/material';
 import Topbar from './components/Navbar/TopBar.js';
 import AuthContext from './context/auth/authContext';
 import Profile from './screens/Profile';
+import Config from './screens/Site/Config';
 
 const token = localStorage.getItem("token");
 if (token) {
@@ -175,6 +176,7 @@ function App() {
                                 <PrivateRoute path="/adoptions" component={Adoption} />
                                 <PrivateRoute path="/dashboard" component={Dashboard} />
                                 <PrivateRoute path="/profile" component={Profile} />
+                                <PrivateRoute path="/siteConfig" component={Config} />
                               </Switch>
 
                             </Main>

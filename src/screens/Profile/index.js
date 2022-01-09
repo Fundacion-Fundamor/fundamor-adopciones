@@ -1,7 +1,7 @@
 import { Avatar, Box, Button, Card, CardActions, CardContent, CardHeader, Divider, FormHelperText, Grid, IconButton, ListItemButton, ListItemIcon, ListItemText, Stack, TextField, Tooltip, Typography, useMediaQuery, useTheme } from '@mui/material'
 import { grey } from '@mui/material/colors';
 import React, { useContext, useEffect, useState } from 'react'
-import { AiOutlineSave, AiOutlineUser } from 'react-icons/ai';
+import { AiOutlineInfoCircle, AiOutlineSave, AiOutlineUser } from 'react-icons/ai';
 import { BiCheckCircle, BiHelpCircle } from 'react-icons/bi';
 import { FaUserTie } from 'react-icons/fa';
 import { IoKeypad } from 'react-icons/io5';
@@ -154,7 +154,7 @@ export default function Profile() {
                         : <PasswordSection />}
 
                 </CardContent>
-                <Divider style={{marginBottom:37}}/>
+                <Divider style={{ marginBottom: 37 }} />
             </Card> : null}
 
 
@@ -388,7 +388,11 @@ const PasswordSection = () => {
 
             <Grid container spacing={3} mt={0}>
 
+                <Grid item md={12} xs={12} flexDirection={"row"} alignItems={"center"} display={"flex"}>
+                    <AiOutlineInfoCircle  color='#1976d2' size={24}/>
+                    <Typography sx={{ fontSize: 12, ml: 1,color:"#1976d2"}} variant="subtitle2">Si desea actualizar su contraseña, debe ingresar su contraseña actual y posteriormente la nueva contraseña </Typography>
 
+                </Grid>
                 <Grid item md={12} xs={12} >
 
                     <TextField
