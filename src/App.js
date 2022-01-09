@@ -42,6 +42,7 @@ import Topbar from './components/Navbar/TopBar.js';
 import AuthContext from './context/auth/authContext';
 import Profile from './screens/Profile';
 import Config from './screens/Site/Config';
+import FoundationState from './context/foundation/foundationState';
 
 const token = localStorage.getItem("token");
 if (token) {
@@ -139,70 +140,70 @@ function App() {
   }, [authenticated]);
   return (
     <ThemeProvider theme={theme}>
+      <FoundationState>
+        <PostState>
+          <AdoptionState>
+            <AnimalState>
+              <EmployeeState>
+                <AdopterState>
+                  <QuestionState>
+                    <TrackingState>
+                      <div className="App">
+                        <Router>
+                          {authenticated ? <div style={{ marginTop: "58px" }}></div> : <NavbarComponent />}
 
-      <PostState>
-        <AdoptionState>
-          <AnimalState>
-            <EmployeeState>
-              <AdopterState>
-                <QuestionState>
-                  <TrackingState>
-                    <div className="App">
-                      <Router>
-                        {authenticated ? <div style={{ marginTop: "58px" }}></div> : <NavbarComponent />}
+                          <div className="main-content">
+                            <Box sx={{ display: authenticated ? 'flex' : "none" }}>
+                              <CssBaseline />
 
-                        <div className="main-content">
-                          <Box sx={{ display: authenticated ? 'flex' : "none" }}>
-                            <CssBaseline />
+                              {/* header */}
+                              {authenticated ? <Topbar drawerOpen={leftDrawerOpened} handleDrawer={handleLeftDrawerToggle} /> : null}
 
-                            {/* header */}
-                            {authenticated ? <Topbar drawerOpen={leftDrawerOpened} handleDrawer={handleLeftDrawerToggle} /> : null}
+                              {/* drawer */}
+                              {authenticated ? <SideBar open={leftDrawerOpened} handleDrawer={handleLeftDrawerToggle} /> : null}
 
-                            {/* drawer */}
-                            {authenticated ? <SideBar open={leftDrawerOpened} handleDrawer={handleLeftDrawerToggle} /> : null}
-
-                            {/* main content */}
-                            <Main theme={theme} open={leftDrawerOpened}>
-
-
-                              <Switch>
-                                {/* Rutas privadas */}
-                                <PrivateRoute path="/posts" component={Post} />
-                                <PrivateRoute path="/gallery" component={Gallery} />
-                                <PrivateRoute path="/employees" component={Employeee} />
-                                <PrivateRoute path="/animals" component={Animal} />
-                                <PrivateRoute path="/questions" component={Question} />
-                                <PrivateRoute path="/adopters" component={Adopter} />
-                                <PrivateRoute path="/adoptions" component={Adoption} />
-                                <PrivateRoute path="/dashboard" component={Dashboard} />
-                                <PrivateRoute path="/profile" component={Profile} />
-                                <PrivateRoute path="/siteConfig" component={Config} />
-                              </Switch>
-
-                            </Main>
-
-                          </Box >
-                        </div>
-                        <Switch>
-                          {/* Rutas publicas */}
-                          <PublicRoute path="/" exact component={Home} />
-                          <PublicRoute path="/about" component={About} />
-                          <PublicRoute path="/login" component={Login} />
-                          <PublicRoute path="/passwordReset" component={PasswordReset} />
-                          <PublicRoute path="*" component={() => <div>Esta página no existe 😒😒😒</div>} />
-                        </Switch>
+                              {/* main content */}
+                              <Main theme={theme} open={leftDrawerOpened}>
 
 
-                      </Router>
-                    </div>
-                  </TrackingState>
-                </QuestionState>
-              </AdopterState>
-            </EmployeeState>
-          </AnimalState>
-        </AdoptionState>
-      </PostState>
+                                <Switch>
+                                  {/* Rutas privadas */}
+                                  <PrivateRoute path="/posts" component={Post} />
+                                  <PrivateRoute path="/gallery" component={Gallery} />
+                                  <PrivateRoute path="/employees" component={Employeee} />
+                                  <PrivateRoute path="/animals" component={Animal} />
+                                  <PrivateRoute path="/questions" component={Question} />
+                                  <PrivateRoute path="/adopters" component={Adopter} />
+                                  <PrivateRoute path="/adoptions" component={Adoption} />
+                                  <PrivateRoute path="/dashboard" component={Dashboard} />
+                                  <PrivateRoute path="/profile" component={Profile} />
+                                  <PrivateRoute path="/siteConfig" component={Config} />
+                                </Switch>
 
+                              </Main>
+
+                            </Box >
+                          </div>
+                          <Switch>
+                            {/* Rutas publicas */}
+                            <PublicRoute path="/" exact component={Home} />
+                            <PublicRoute path="/about" component={About} />
+                            <PublicRoute path="/login" component={Login} />
+                            <PublicRoute path="/passwordReset" component={PasswordReset} />
+                            <PublicRoute path="*" component={() => <div>Esta página no existe 😒😒😒</div>} />
+                          </Switch>
+
+
+                        </Router>
+                      </div>
+                    </TrackingState>
+                  </QuestionState>
+                </AdopterState>
+              </EmployeeState>
+            </AnimalState>
+          </AdoptionState>
+        </PostState>
+      </FoundationState>
     </ThemeProvider>
   )
 }

@@ -6,6 +6,12 @@ export const LOGOUT = 'LOGOUT';
 export const LOADING = 'LOADING';
 export const MESSAGE = 'MESSAGE';
 
+//foundation types
+export const GET_FOUNDATION = 'GET_FOUNDATION';
+export const UPDATE_FOUNDATION_DATA = 'UPDATE_FOUNDATION_DATA';
+export const TOGGLE_FOUNDATION_LOADING = 'TOGGLE_FOUNDATION_LOADING';
+export const FOUNDATION_MESSAGE = 'FOUNDATION_MESSAGE';
+
 //employee types
 export const EMPLOYEES = 'EMPLOYEES';
 export const SELECT_EMPLOYEE = 'SELECT_EMPLOYEE';
