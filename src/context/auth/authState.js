@@ -85,11 +85,14 @@ const AuthState = props => {
             const res = await axiosClient.put("/api/employees/profile", data);
             if (res.data.state) {
                 console.log(res.data.message)
-                dispatch({ type: SUCCESS_PROFILE_UPDATE, payload: { text:res.data.message,
-                    showIn:"profile",
-                    category:"success"
-                
-                } });
+                dispatch({
+                    type: SUCCESS_PROFILE_UPDATE, payload: {
+                        text: res.data.message,
+                        showIn: "profile",
+                        category: "success"
+
+                    }
+                });
                 authenticatedUser();
             } else {
                 //muestra error
@@ -102,7 +105,30 @@ const AuthState = props => {
         }
     }
 
+    const updateUserPassword = async (actualPassword, newPassword) => {
+        try {
 
+            const res = await axiosClient.put("/api/employees/password", { actualPassword, newPassword });
+            if (res.data.state) {
+                console.log(res.data.message)
+                dispatch({
+                    type: SUCCESS_PROFILE_UPDATE, payload: {
+                        text: res.data.message,
+                        showIn: "profile",
+                        category: "success"
+
+                    }
+                });
+            } else {
+                //muestra error
+            }
+
+        } catch (error) {
+
+            localStorage.removeItem("token");
+            dispatch({ type: ERROR_LOGIN, });
+        }
+    }
     const handleAuthMessage = async (data) => {
 
         dispatch({ type: MESSAGE, payload: data });
@@ -119,7 +145,8 @@ const AuthState = props => {
             logout,
             authenticatedUser,
             updateUserData,
-            handleAuthMessage
+            handleAuthMessage,
+            updateUserPassword
         }}>
             {props.children}
         </AuthContext.Provider>

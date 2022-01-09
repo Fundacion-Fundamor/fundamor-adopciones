@@ -17,16 +17,40 @@ export default function Profile() {
     //layout y theming
     const theme = useTheme();
     const matchDownSm = useMediaQuery(theme.breakpoints.down('sm'));
-    const { logout, user } = useContext(AuthContext);
+    const { logout, user, message, handleAuthMessage, loading, } = useContext(AuthContext);
 
-    const [indexTab, setIndexTab] = useState(0)
+    const [indexTab, setIndexTab] = useState(0);
+
+    const MySwal = withReactContent(Swal)
+
+    useEffect(() => {
+
+        const displayAlert = async () => {
+            let res = await MySwal.fire({
+                title: <p style={{ fontSize: 22, fontWeight: "bold" }}>{message.text}</p>,
+                allowOutsideClick: false,
+                icon: message.category,
+                backdrop: true
+
+            });
+
+
+            if (res.isConfirmed) {
+                await handleAuthMessage(null);
+            }
+        }
+        if (message && message.showIn === "profile" && !loading) {
+
+            displayAlert();
+        }
+    }, [message, loading])
     return (
 
         <Box sx={{ display: "flex", flexDirection: "column" }}>
             <Card variant="outlined" sx={{ padding: 1, borderRadius: theme.custom.borderRadius, mb: 2, }} >
-                <CardActions sx={{ justifyContent: "flex-start", flexDirection: matchDownSm ? "column" : "row" }}>
+                <CardActions sx={{ justifyContent: "flex-start", flexDirection: "row" }}>
 
-                    <Tooltip title="Actualiza tu información de perfil">
+                    <Tooltip title="Actualice su información de perfil">
                         <IconButton>
                             <BiHelpCircle />
                         </IconButton>
@@ -47,9 +71,9 @@ export default function Profile() {
                 </Stack>
                 <Divider />
 
-                <CardContent sx={{ flexDirection: "row", display: "flex", padding: 0 }}>
+                <CardContent sx={{ flexDirection: matchDownSm ? "column" : "row", display: "flex", padding: 0 }}>
 
-                    <Stack direction={"column"} minWidth={300} display={"flex"} p={2} maxHeight={30}>
+                    <Stack direction={"column"} minWidth={300} display={"flex"} p={2} maxHeight={matchDownSm ? "100%" : 30}>
 
                         <ListItemButton
                             sx={{
@@ -80,7 +104,7 @@ export default function Profile() {
                             </ListItemIcon>
                             <Stack alignItems={"flex-start"} justifyContent={"flex-start"}>
                                 <ListItemText primary={<Typography sx={{ fontSize: 13 }} variant="subtitle2">Perfil del usuario</Typography>} />
-                                <ListItemText sx={{ margin: 0, padding: 0, mt: -1 }} primary={<Typography variant="caption">Actualiza tu información</Typography>} />
+                                <ListItemText sx={{ margin: 0, padding: 0, mt: -1 }} primary={<Typography variant="caption">Actualice su información</Typography>} />
                             </Stack>
                         </ListItemButton>
 
@@ -118,7 +142,7 @@ export default function Profile() {
                             </ListItemIcon>
                             <Stack alignItems={"flex-start"} justifyContent={"flex-start"}>
                                 <ListItemText primary={<Typography sx={{ fontSize: 13 }} variant="subtitle2">Cambiar contraseña</Typography>} />
-                                <ListItemText sx={{ margin: 0, padding: 0, mt: -1 }} primary={<Typography variant="caption">Actualiza tu contraseña</Typography>} />
+                                <ListItemText sx={{ margin: 0, padding: 0, mt: -1 }} primary={<Typography variant="caption">Actualice su contraseña</Typography>} />
                             </Stack>
                         </ListItemButton>
 
@@ -127,131 +151,10 @@ export default function Profile() {
                     {indexTab === 0 ?
 
                         <UserProfileSection />
-                        : <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", width: "100%", borderLeftWidth: 1, borderLeftStyle: "solid", borderColor: grey[300] }} p={3} >
-
-
-
-                            <Grid container spacing={3} mt={0}>
-
-
-                                <Grid item md={12} xs={12} >
-
-                                    <TextField
-                                        sx={{
-                                            // height: "90px",
-
-                                            "& .MuiOutlinedInput-root": {
-
-                                                borderRadius: "10px!important"
-
-                                            },
-                                        }}
-                                        defaultValue={"1005094664"}
-                                        // value={"kasdjasjkh"}
-                                        label="Contraseña actual"
-                                        InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px" } }}
-                                        inputProps={{ height: "10px", }}
-                                        fullWidth={true}
-
-
-                                        variant="outlined"
-                                    />
-
-                                </Grid>
-                                <Grid item md={6} xs={12} >
-
-                                    <TextField
-                                        sx={{
-                                            // height: "90px",
-
-                                            "& .MuiOutlinedInput-root": {
-
-                                                borderRadius: "10px!important"
-
-                                            },
-                                        }}
-
-                                        label="Nueva contraseña"
-                                        InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px" } }}
-                                        inputProps={{ height: "20px", padding: "15px" }}
-                                        fullWidth={true}
-
-                                        // onChange={(event) => {
-                                        //     setLocalData({
-                                        //         ...localData,
-                                        //         filters: {
-                                        //             ...localData.filters,
-                                        //             search: event.target.value,
-                                        //         }
-
-                                        //     })
-
-                                        // }}
-
-
-
-                                        variant="outlined"
-                                    />
-
-                                </Grid>
-                                <Grid item md={6} xs={12} >
-
-                                    <TextField
-                                        sx={{
-                                            // height: "90px",
-
-                                            "& .MuiOutlinedInput-root": {
-
-                                                borderRadius: "10px!important"
-
-                                            },
-                                        }}
-                                        defaultValue={"1005094664"}
-                                        // value={"kasdjasjkh"}
-                                        label="Confirmación de contraseña"
-                                        InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px" } }}
-                                        inputProps={{ height: "20px", padding: "15px" }}
-                                        fullWidth={true}
-                                        // disabled={true}
-
-                                        // onChange={(event) => {
-                                        //     setLocalData({
-                                        //         ...localData,
-                                        //         filters: {
-                                        //             ...localData.filters,
-                                        //             search: event.target.value,
-                                        //         }
-
-                                        //     })
-
-                                        // }}
-
-
-
-                                        variant="outlined"
-                                    />
-
-                                </Grid>
-
-
-
-
-                                <Grid item md={12} xs={12} >
-
-                                    <Button size="medium" variant="outlined" color="primary" sx={{ mt: 3, fontSize: 12, height: 40, alignItems: "center", borderRadius: "8px", fontWeight: "bold" }}
-                                        onClick={() => {
-                                            // selectAdopter(item)
-                                        }}
-                                        startIcon={<AiOutlineSave />}
-                                    >Establecer nueva contraseña</Button>
-
-                                </Grid>
-                            </Grid>
-
-
-                        </Box>}
+                        : <PasswordSection />}
 
                 </CardContent>
+                <Divider style={{marginBottom:37}}/>
             </Card> : null}
 
 
@@ -262,13 +165,10 @@ export default function Profile() {
 
 const UserProfileSection = () => {
 
-
-    const MySwal = withReactContent(Swal)
-
     //layout y theming
     const theme = useTheme();
     const matchDownSm = useMediaQuery(theme.breakpoints.down('sm'));
-    const { updateUserData, user, loading, message,handleAuthMessage} = useContext(AuthContext);
+    const { updateUserData, user, loading, } = useContext(AuthContext);
 
     const [userInSession, setUserInSession] = useState(user)
     const [errors, setErrors] = useState({
@@ -296,28 +196,9 @@ const UserProfileSection = () => {
 
     }
 
-    useEffect(() => {
-
-        const displayAlert = async () => {
-            let res = await MySwal.fire({
-                title: <p style={{ fontSize: 22, fontWeight: "bold" }}>{message.text}</p>,
-                allowOutsideClick: false,
-                icon: message.category,
-                backdrop: true
-
-            });
 
 
-            if (res.isConfirmed) {
-                await handleAuthMessage(null);
-            }
-        }
-        if (message && message.showIn === "profile" && !loading) {
-
-            displayAlert();
-        }
-    }, [message, loading])
-    return (<Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", width: "100%", borderLeftWidth: 1, borderLeftStyle: "solid", borderColor: grey[300] }} p={3} >
+    return (<Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", width: "100%", borderTopWidth: matchDownSm ? 1 : 0, borderLeftWidth: matchDownSm ? 0 : 1, borderTopStyle: !matchDownSm ? "none" : "solid", borderLeftStyle: matchDownSm ? "none" : "solid", borderColor: grey[300] }} p={3} >
 
 
         <Stack direction={"row"} alignItems={"center"} >
@@ -335,10 +216,7 @@ const UserProfileSection = () => {
                     }
 
                 }}
-
-                // ref={anchorRef}
                 src='/images/human.png'
-
                 aria-haspopup="true"
                 color="inherit"
             />
@@ -463,4 +341,186 @@ const UserProfileSection = () => {
 
 
     </Box>)
+}
+
+const PasswordSection = () => {
+
+
+    const { updateUserPassword, loading } = useContext(AuthContext);
+    const [values, setValues] = useState({
+
+        actualPassword: "",
+        newPassword: "",
+        passwordConfirm: ""
+    })
+
+    const [errors, setErrors] = useState({
+
+        actualPassword: null,
+        newPassword: null,
+        passwordConfirm: null
+
+
+    })
+
+
+    const onSubmit = () => {
+
+
+
+        if (values.actualPassword.trim() === "") {
+            setErrors({ ...errors, actualPassword: "Debe ingresar su contraseña actual" })
+        } else if (values.newPassword.length < 6) {
+            setErrors({ ...errors, newPassword: "La contraseña debe tener al menos 6 caracteres" })
+
+        } else if (values.newPassword.trim() !== "" && values.passwordConfirm !== values.newPassword) {
+            setErrors({ ...errors, passwordConfirm: "La contraseñas no coinciden" })
+
+        } else {
+            updateUserPassword(values.actualPassword, values.passwordConfirm)
+        }
+    }
+
+    return (
+        <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", width: "100%", borderLeftWidth: 1, borderLeftStyle: "solid", borderColor: grey[300] }} p={3} >
+
+
+
+            <Grid container spacing={3} mt={0}>
+
+
+                <Grid item md={12} xs={12} >
+
+                    <TextField
+                        sx={{
+                            "& .MuiOutlinedInput-root": {
+
+                                borderRadius: "10px!important"
+
+                            },
+                        }}
+
+                        value={values.actualPassword}
+                        label="Contraseña actual"
+                        InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px" } }}
+                        inputProps={{ height: "10px", }}
+                        fullWidth={true}
+                        variant="outlined"
+                        onChange={(event) => {
+                            setValues({ ...values, actualPassword: event.target.value })
+                        }}
+
+                        onBlur={() => {
+                            if (errors.actualPassword) {
+                                setErrors({ ...errors, actualPassword: null })
+
+                            }
+                        }}
+                    />
+                    {errors.actualPassword && <FormHelperText error={true}>{errors.actualPassword}</FormHelperText>}
+
+                </Grid>
+                <Grid item md={6} xs={12} >
+
+                    <TextField
+                        sx={{
+                            "& .MuiOutlinedInput-root": {
+                                borderRadius: "10px!important"
+                            },
+                        }}
+
+                        label="Nueva contraseña"
+                        InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px" } }}
+                        inputProps={{ height: "20px", padding: "15px" }}
+                        fullWidth={true}
+                        variant="outlined"
+                        value={values.newPassword}
+                        onChange={(event) => {
+                            setValues({ ...values, newPassword: event.target.value })
+                        }}
+
+                        onBlur={() => {
+
+
+                            if (values.newPassword.trim() !== "") {
+
+                                if (values.newPassword.length < 6) {
+                                    setErrors({ ...errors, newPassword: "La contraseña debe tener al menos 6 caracteres" })
+                                } else if (errors.newPassword) {
+
+                                    setErrors({ ...errors, newPassword: null })
+
+                                }
+                            } else {
+                                if (errors.newPassword) {
+
+                                    setErrors({ ...errors, newPassword: null })
+
+                                }
+                            }
+
+
+                        }}
+                    />
+                    {errors.newPassword && <FormHelperText error={true}>{errors.newPassword}</FormHelperText>}
+
+                </Grid>
+                <Grid item md={6} xs={12} >
+
+                    <TextField
+                        sx={{
+                            // height: "90px",
+
+                            "& .MuiOutlinedInput-root": {
+
+                                borderRadius: "10px!important"
+
+                            },
+                        }}
+                        value={values.passwordConfirm}
+                        label="Confirmación de contraseña"
+                        InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px" } }}
+                        inputProps={{ height: "20px", padding: "15px" }}
+                        fullWidth={true}
+                        variant="outlined"
+                        onChange={(event) => {
+                            setValues({ ...values, passwordConfirm: event.target.value })
+                        }}
+
+                        onBlur={() => {
+
+                            if (values.newPassword.trim() !== "" && values.newPassword !== values.passwordConfirm) {
+
+                                setErrors({ ...errors, passwordConfirm: "La contraseñas no coinciden" })
+
+                            } else if (errors.passwordConfirm) {
+
+                                setErrors({ ...errors, passwordConfirm: null });
+
+                            }
+
+                        }}
+
+                    />
+                    {errors.passwordConfirm && <FormHelperText error={true}>{errors.passwordConfirm}</FormHelperText>}
+
+
+                </Grid>
+
+
+
+
+                <Grid item md={12} xs={12} >
+
+                    <Button size="medium" variant="outlined" color="primary" sx={{ mt: 3, fontSize: 12, height: 40, alignItems: "center", borderRadius: "8px", fontWeight: "bold" }}
+                        onClick={() => onSubmit()}
+                        startIcon={<AiOutlineSave />}
+                    >Establecer nueva contraseña</Button>
+
+                </Grid>
+            </Grid>
+
+
+        </Box>
+    )
 }
