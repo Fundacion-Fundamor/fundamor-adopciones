@@ -151,8 +151,8 @@ const AnimalState = props => {
                     let resultImagesInsert = await insertImages(images, res.data.data);
                     dispatch({
                         type: ANIMAL_MESSAGE, payload: {
-                            category: resultImagesInsert.state ? "success" : "error",
-                            text: resultImagesInsert.state ? res.data.message : "El animal se ha registrado exitosamente, pero ha ocurrido un error al subir las imagenes",
+                            category: resultImagesInsert.data.state ? "success" : "error",
+                            text: resultImagesInsert.data.state ? res.data.message : "El animal se ha registrado exitosamente, pero ha ocurrido un error al subir las imagenes",
                             showIn: "form"
 
                         }

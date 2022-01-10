@@ -65,6 +65,26 @@ function App() {
 
   const { authenticated } = useContext(AuthContext);
   const theme = createTheme({
+    components: {
+      "MuiOutlinedInput": {
+        styleOverrides: {
+          // Name of the slot
+          root: {
+            // Some CSS
+            borderRadius: "10px!important",
+            // '& fieldset': {
+            //   borderColor: 'red',
+            // },
+            // '&:hover fieldset': {
+            //   borderColor: '#F25287 !important',
+            // },
+            // '&.Mui-focused fieldset': {
+            //   borderColor: 'yellow !important',
+            // },
+          },
+        },
+      }
+    },
     custom: { //customiza colores
       bg: "#FFFFFF",
       fc1: grey[900],

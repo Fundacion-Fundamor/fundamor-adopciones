@@ -35,7 +35,7 @@ function List() {
 
     //navegación
     let history = useHistory();
-    let {url } = useRouteMatch();
+    let { url } = useRouteMatch();
 
     //layout y theming
     const theme = useTheme();
@@ -104,9 +104,13 @@ function List() {
         console.log(result.length)
         let totalPages = Math.ceil(result.length / localData.animalsPerPage);
         setLocalData({ ...localData, currentPage: 1, list: result, totalPages: totalPages })
+
     }, [animals, localData.filters, localData.animalsPerPage])
 
 
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [localData.currentPage])
 
 
     return (
@@ -233,12 +237,12 @@ function List() {
 
                                     ></div>
                                     <Box maxWidth={280} maxHeight={300}
-
+                                        minWidth={matchDownSm ? 90 : 280}
                                         sx={{ top: "-114px", position: "relative", marginX: 2 }}
 
                                     >
 
-                                        <AnimalImage />
+                                        <AnimalImage images={element.animalImage} />
                                     </Box>
                                     <CardContent sx={{ flexDirection: "row", justifyContent: "space-between", position: "relative", display: "flex", marginTop: "-91px" }}>
                                         <Stack>
@@ -490,24 +494,31 @@ const RowsManager = ({ numRows, handleRows }) => {
 }
 
 
-const AnimalImage = () => {
+const AnimalImage = ({ images }) => {
 
-
+    console.log(images)
     const [isLoaded, setIsLoaded] = useState(false)
 
-    return <>
+    return images.length > 0 ? <>
 
-        {!isLoaded ? <Skeleton variant="rectangular"  height={230} sx={{ borderRadius: "8px" }} /> : null}
+        {!isLoaded ? <Skeleton variant="rectangular" height={230} sx={{ borderRadius: "8px" }} /> : null}
         <CardMedia
             onLoad={() => { setIsLoaded(true) }}
             component="img"
             height="230"
-            sx={{ borderRadius: "8px" }}
-            image="https://estaticos.muyinteresante.es/media/cache/1140x_thumb/uploads/images/gallery/6124cf315cafe8c3101f8bab/perro-slide_0.jpg"
-            alt="green iguana"
+            sx={{ borderRadius: "8px", objectFit:"cover" }}
+            image={`${process.env.REACT_APP_API_URL}/${images[0].ruta}`}
+            alt="imagen de la mascota"
         />
 
-    </>
+    </> : <CardMedia
+        onLoad={() => { setIsLoaded(true) }}
+        component="img"
+        height="230"
+        sx={{ borderRadius: "8px", objectFit:"contain" }}
+        image={`/images/no_image.png`}
+        alt="imagen de la mascota"
+    />
 
 }
 export default List
