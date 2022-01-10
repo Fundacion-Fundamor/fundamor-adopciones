@@ -1,22 +1,29 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { BiTrashAlt } from 'react-icons/bi';
 import { v4 as uuidv4 } from 'uuid';
-import { CardActions, CardContent, Container, Typography, Button, Paper, TextField, IconButton, CircularProgress, Alert } from '@mui/material';
+import { CardActions, CardContent, Typography, Button, TextField, IconButton, Box } from '@mui/material';
 import QuestionContext from '../../context/question/questionContext';
+import { AiOutlineSave } from 'react-icons/ai';
+import LoadingButton from '@mui/lab/LoadingButton';
 
-
+/**Formulario de registro de preguntas de adopción
+ * 
+ * @returns 
+ */
 export default function Form() {
 
 
     const [questionOptions, setQuestionOptions] = useState([]);
     const [question, setQuestion] = useState("");
     const { createQuestion, message, loading } = useContext(QuestionContext);
+
     const addQuestionOption = () => {
 
         let tmp = [...questionOptions];
         tmp.push({ text: "", key: uuidv4() });
         setQuestionOptions(tmp);
     }
+
     const saveQuestionOption = (option) => {
 
         let tmp = questionOptions.filter((element, index) => {
@@ -29,6 +36,7 @@ export default function Form() {
         setQuestionOptions(tmp);
 
     }
+
     const saveQuestion = () => {
 
         let formattedQuestionOptions = []
@@ -51,6 +59,7 @@ export default function Form() {
         setQuestionOptions(tmp)
     }
 
+
     useEffect(() => {
         if (message && message.category === "success") {
             setQuestion("");
@@ -58,35 +67,58 @@ export default function Form() {
         }
     }, [message])
 
-    return <Container maxWidth="sm">
-        <Paper elevation={3} sx={{ marginTop: 5 }} >
-            <CardContent sx={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center" }} >
-                <TextField
-                    multiline={true}
-                    id="question-field"
-                    sx={{ width: "100%", marginRight: 3 }}
-                    variant="filled"
-                    label="Ingresa aquí tu pregunta"
-                    placeholder="Ejemplo: ¿Por que está interesado en adoptar?"
-                    value={question}
-                    onChange={(e) => { setQuestion(e.target.value) }}
-                />
-                <Button size="small" variant="contained" disabled={question.length === 0}  color="primary" onClick={saveQuestion}>Guardar</Button>
-            </CardContent>
-            <CardActions sx={{ flexDirection: "column", padding: 3 }}>
-        
-                {message && message.showIn === "form" && <Alert severity={message.category} variant="filled" style={{ marginTop: 20, marginBottom: 5 }} >{message.text}</Alert>}
-                {questionOptions.length !== 0 ? <Typography variant="body2" color="text.secondary" sx={{ marginBottom: 3 }}>
-                    Las opciones de respuesta se mostrarán en el orden en sean registradas
-                </Typography> : null}
-                {questionOptions.map((element, index) => (
-                    <QuestionOption key={index} index={index} option={element} saveQuestionOption={saveQuestionOption} removeQuestionOption={removeQuestionOption} />
-                ))}
-                <Button size="small" onClick={addQuestionOption}>Añadir opción de respuesta</Button>
-            </CardActions>
+    return (<Box sx={{ margin: 3 }} >
+        <CardContent sx={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center" }} >
+            <TextField
+                multiline={true}
+                id="question-field"
+                sx={{
+                    width: "100%", marginRight: 3, "& .MuiOutlinedInput-root": {
 
-        </Paper>
-    </Container>
+                        borderRadius: "10px!important"
+
+                    },
+                }}
+                variant="outlined"
+                InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px" } }}
+                rows={3}
+                label="Nueva pregunta"
+                placeholder="Ejemplo: ¿Por que está interesado en adoptar?"
+                value={question}
+                onChange={(e) => { setQuestion(e.target.value) }}
+            />
+            <LoadingButton loading={loading && question.length !== 0}
+                size="small" variant="contained" color="primary" sx={{ fontSize: 12, height: 40,px:2, alignItems: "center", borderRadius: "8px", fontWeight: "bold" }}
+               
+                disabled={question.length === 0}
+                onClick={() => {
+
+                    if (!loading) {
+                        saveQuestion()
+
+                    }
+                }}
+                startIcon={<AiOutlineSave />}
+
+            >
+                Guardar
+            </LoadingButton>
+        </CardContent>
+        <CardActions sx={{ flexDirection: "column", padding: 3 }}>
+
+            {questionOptions.length !== 0 ? <Typography variant="body2" color="text.secondary" sx={{ marginBottom: 3 }}>
+                Las opciones de respuesta se mostrarán en el orden en que sean registradas
+            </Typography> : null}
+
+            {questionOptions.map((element, index) => (
+                <QuestionOption key={index} index={index} option={element} saveQuestionOption={saveQuestionOption} removeQuestionOption={removeQuestionOption} />
+            ))}
+
+            <Button size="small" sx={{ borderRadius: "8px", fontSize: 12 }} onClick={addQuestionOption}>Añadir opción de respuesta</Button>
+        </CardActions>
+
+    </Box>)
+
 
 
 }
@@ -103,10 +135,18 @@ const QuestionOption = ({ index, option, saveQuestionOption, removeQuestionOptio
 
         <TextField
             multiline={true}
-            sx={{ marginLeft: 0, width: "100%" }}
+
             id={"question-field" + index}
             fullWidth
-            variant="standard"
+            sx={{
+                width: "100%", marginRight: 3, "& .MuiOutlinedInput-root": {
+
+                    borderRadius: "10px!important"
+
+                },
+            }}
+            variant="outlined"
+            InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px" } }}
             label={"Opción de respuesta " + (index + 1)}
             value={text}
             onChange={(e) => { setText(e.target.value) }}

@@ -35,7 +35,7 @@ function List() {
 
     //navegación
     let history = useHistory();
-    let { path, url } = useRouteMatch();
+    let {url } = useRouteMatch();
 
     //layout y theming
     const theme = useTheme();

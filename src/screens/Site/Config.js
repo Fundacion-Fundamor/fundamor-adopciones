@@ -1,4 +1,5 @@
-import { Box, Button, Card, CardActions, CardContent, Divider, FormHelperText, Grid, IconButton, Stack, TextField, Tooltip, Typography, useMediaQuery, useTheme } from '@mui/material'
+/* eslint-disable react-hooks/exhaustive-deps */
+import { Box, Card, CardActions, CardContent, Divider, FormHelperText, Grid, IconButton, Stack, TextField, Tooltip, Typography, useMediaQuery, useTheme } from '@mui/material'
 import { grey } from '@mui/material/colors';
 import React, { useContext, useEffect, useState } from 'react'
 import { AiOutlineSave } from 'react-icons/ai';
@@ -264,7 +265,7 @@ export default function Config() {
 
                             <Grid item md={12} xs={12} >
                                 <LoadingButton loading={loading} variant="outlined"
-                                    size="medium" variant="outlined" color="primary" sx={{ mt: 3, fontSize: 12, height: 40, alignItems: "center", borderRadius: "8px", fontWeight: "bold" }}
+                                    size="medium" color="primary" sx={{ mt: 3, fontSize: 12, height: 40, alignItems: "center", borderRadius: "8px", fontWeight: "bold" }}
                                     onClick={() => {
 
                                         if (!loading) {

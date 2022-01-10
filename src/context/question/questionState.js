@@ -93,7 +93,7 @@ const QuestionState = props => {
                     showIn: "form"
                 }
             })
-            getQuestions();
+           
 
         } catch (error) {
 

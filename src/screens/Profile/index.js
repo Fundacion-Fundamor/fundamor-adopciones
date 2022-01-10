@@ -1,7 +1,8 @@
-import { Avatar, Box, Button, Card, CardActions, CardContent, CardHeader, Divider, FormHelperText, Grid, IconButton, ListItemButton, ListItemIcon, ListItemText, Stack, TextField, Tooltip, Typography, useMediaQuery, useTheme } from '@mui/material'
+/* eslint-disable react-hooks/exhaustive-deps */
+import { Avatar, Box, Button, Card, CardActions, CardContent, Divider, FormHelperText, Grid, IconButton, ListItemButton, ListItemIcon, ListItemText, Stack, TextField, Tooltip, Typography, useMediaQuery, useTheme } from '@mui/material'
 import { grey } from '@mui/material/colors';
 import React, { useContext, useEffect, useState } from 'react'
-import { AiOutlineInfoCircle, AiOutlineSave, AiOutlineUser } from 'react-icons/ai';
+import { AiOutlineInfoCircle, AiOutlineSave } from 'react-icons/ai';
 import { BiCheckCircle, BiHelpCircle } from 'react-icons/bi';
 import { FaUserTie } from 'react-icons/fa';
 import { IoKeypad } from 'react-icons/io5';
@@ -17,7 +18,7 @@ export default function Profile() {
     //layout y theming
     const theme = useTheme();
     const matchDownSm = useMediaQuery(theme.breakpoints.down('sm'));
-    const { logout, user, message, handleAuthMessage, loading, } = useContext(AuthContext);
+    const { user, message, handleAuthMessage, loading, } = useContext(AuthContext);
 
     const [indexTab, setIndexTab] = useState(0);
 
@@ -44,6 +45,7 @@ export default function Profile() {
             displayAlert();
         }
     }, [message, loading])
+    
     return (
 
         <Box sx={{ display: "flex", flexDirection: "column" }}>

@@ -1,4 +1,5 @@
-import { Alert, Backdrop, CircularProgress, Container, Typography, Modal, Box } from '@mui/material';
+/* eslint-disable react-hooks/exhaustive-deps */
+import { Alert, CircularProgress, Typography, Modal, Box, Card, useTheme, useMediaQuery, CardActions, Tooltip, IconButton, Button, Stack, Divider } from '@mui/material';
 
 import React, { useContext, useState, useEffect } from 'react';
 import EditModal from '../../components/questions/EditModal';
@@ -7,9 +8,24 @@ import QuestionList from '../../components/questions/List';
 import QuestionContext from '../../context/question/questionContext';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import { BiHelpCircle } from 'react-icons/bi';
+import { grey } from '@mui/material/colors';
+
+
+/**Gestion de preguntas involucradas al momento de crear una adopción
+ * 
+ * @returns 
+ */
 export default function Question() {
-    const { loading, message, selectQuestionEdit, selectedEditQuestion, handleQuestionMessage } = useContext(QuestionContext);
+
+    const { loading, message, selectQuestionEdit, selectedEditQuestion, handleQuestionMessage, getQuestions } = useContext(QuestionContext);
     const [showForm, setShowForm] = useState(false);
+
+    //layout y theming
+    const theme = useTheme();
+    const matchDownSm = useMediaQuery(theme.breakpoints.down('sm'));
+
+
     const MySwal = withReactContent(Swal);
     const handleToggle = () => {
         setShowForm(!showForm);
@@ -36,10 +52,14 @@ export default function Question() {
 
 
             if (res.isConfirmed) {
+
                 await handleQuestionMessage(null);
+                if (message.category === "success") {
+                    getQuestions();
+                }
             }
         }
-        if (message && message.showIn === "list" && !loading) {
+        if (message && !loading) {
 
             displayAlert();
         }
@@ -51,39 +71,64 @@ export default function Question() {
         }
     }, [selectedEditQuestion]);
 
-    return <Container maxWidth="lg" sx={{ display: "flex", flexDirection: "column", alignItems: "center", backgroundColor: "#FFF", height: "100%" }}>
-        <Typography variant="h5" component="div" marginTop={5}>
-            Gestiona las preguntas para evaluar a tus adoptantes
-        </Typography>
-        <Backdrop
-            sx={{
-                color: '#fff',
-                flex: 1,
-                justifyContent: 'center',
-                flexDirection: 'column',
-                zIndex: (theme) => theme.zIndex.drawer + 1,
-            }}
-            open={loading}
-        >
-            <CircularProgress color="inherit" />
-            <p style={{ marginLeft: 5 }}>Cargando ...</p>
-        </Backdrop>
+    return (
 
-        <Modal
-            open={showForm}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-            style={{ overflowY: 'scroll' }}
-        >
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                {showForm && <EditModal handleToggle={handleToggle} />}
-            </Box>
-        </Modal>
-        <Form />
+        <Box sx={{ display: "flex", flexDirection: "column" }}>
+            <Card variant="outlined" sx={{ padding: 1, borderRadius: theme.custom.borderRadius, mb: 2, }} >
+                <CardActions sx={{ justifyContent: "space-between", flexDirection: matchDownSm ? "column" : "row" }}>
+                    <Box alignItems={"center"} display={"flex"}>
+                        <Tooltip title="Gestiona las preguntas para evaluar a tus adoptantes, estas preguntas deberán ser contestadas al momento de crear una nueva adopción">
+                            <IconButton>
+                                <BiHelpCircle />
+                            </IconButton>
 
-        <QuestionList />
+                        </Tooltip>
+                        <Typography variant="t2" sx={{ fontWeight: "600", color: grey[600] }} >
+                            Preguntas de adopción
+                        </Typography>
 
-    </Container>
+
+                    </Box>
+
+                </CardActions>
+            </Card>
+            <Card variant="outlined" sx={{ borderRadius: theme.custom.borderRadius }} >
+
+                {/* <Stack direction={"row"} padding={3}>
+                    <Typography variant="t2" sx={{ fontWeight: "600", color: grey[600], fontSize: 16 }} >
+                        Nueva pregunta
+                    </Typography>
+                </Stack>
+                <Divider /> */}
+
+
+                <Form />
+
+                {/* <Stack padding={3}>
+                    <Typography variant="t2" sx={{ fontWeight: "600", fontSize: 16, color: grey[600] }} >
+                        Preguntas registradas
+                    </Typography>
+                </Stack>
+                <Divider style={{ marginTop: 2, marginBottom: 2 }} /> */}
+
+                <Divider />
+                <QuestionList />
+            </Card>
+
+
+            <Modal
+                open={showForm}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+                style={{ overflowY: 'scroll' }}
+            >
+                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                    {showForm && <EditModal handleToggle={handleToggle} />}
+                </Box>
+            </Modal>
+        </Box>
+
+    )
 
 }
 
