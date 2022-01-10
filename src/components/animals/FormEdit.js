@@ -1,6 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
-    Paper,
-    Container,
     Button,
     Grid,
     Box,
@@ -12,7 +11,14 @@ import {
     Select,
     MenuItem,
     FormHelperText,
-    CircularProgress
+    Card,
+    CardActions,
+    Tooltip,
+    Typography,
+    useTheme,
+    useMediaQuery,
+    Stack,
+    Divider
 } from '@mui/material'
 import React, { useState, useEffect, useContext } from 'react'
 import Radio from '@mui/material/Radio';
@@ -27,7 +33,7 @@ import DatePicker from '@mui/lab/DatePicker';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
-import { BiTrashAlt } from 'react-icons/bi';
+import { BiHelpCircle, BiTrashAlt } from 'react-icons/bi';
 import moment from 'moment';
 import 'moment/locale/es';
 import AnimalContext from '../../context/animal/animalContext';
@@ -35,10 +41,13 @@ import { useHistory, useParams } from "react-router-dom";
 
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import { grey } from '@mui/material/colors';
+import { AiOutlineInfoCircle, AiOutlineSave } from 'react-icons/ai';
+import LoadingButton from '@mui/lab/LoadingButton';
 
 
 
-/**Formulario de registro para animales
+/**Formulario de edición de  registro para animales
  * 
  * Solo los campos requeridos en la bd son validados
  * @returns 
@@ -68,6 +77,11 @@ export default function FormEdit() {
     const maxNumber = 8; //max number images
 
     let history = useHistory();
+
+
+    //layout y theming
+    const theme = useTheme();
+    const matchDownSm = useMediaQuery(theme.breakpoints.down('sm'));
 
     const MySwal = withReactContent(Swal);
     const { editAnimal, getAnimal, selectedAnimal, message, loading, handleAnimalMessage } = useContext(AnimalContext); // contexto de animales
@@ -139,7 +153,7 @@ export default function FormEdit() {
             setErrors({ ...errors, size: "Debe seleccionar un tamaño" });
         } else {
 
-            let tmp = []; //imagenes nuevas
+            let tmp = []; //imágenes nuevas
 
             images.forEach(element => {
                 if (element.ruta === undefined) {
@@ -165,11 +179,11 @@ export default function FormEdit() {
                     name: selectedAnimal.nombre,
                     specie: selectedAnimal.especie,
                     birthday: selectedAnimal.fecha_nacimiento,
-                    characteristics: selectedAnimal.caracteristicas,
-                    rescueSite: selectedAnimal.sitio_rescate,
+                    characteristics: selectedAnimal.caracteristicas !== null ? selectedAnimal.caracteristicas : "",
+                    rescueSite: selectedAnimal.sitio_rescate !== null ? selectedAnimal.sitio_rescate : "",
                     rescueDate: selectedAnimal.fecha_rescate,
                     color: selectedAnimal.color,
-                    vaccine: selectedAnimal.vacunas,
+                    vaccine: selectedAnimal.vacunas !== null ? selectedAnimal.vacunas : "",
                     sterilized: selectedAnimal.esterilizado,
                     dewormed: selectedAnimal.desparasitado,
                     size: selectedAnimal.tamanio,
@@ -195,7 +209,10 @@ export default function FormEdit() {
             if (res.isConfirmed) {
 
                 await handleAnimalMessage(null);
-                history.push("/gallery");
+
+                if (message.category === "success") {
+                    history.push("/animals");
+                }
             }
         }
         if (message && message.showIn === "form") {
@@ -207,22 +224,23 @@ export default function FormEdit() {
 
 
     return (
-        <Container maxWidth="sm" sx={{ marginBottom: 5, marginTop: 5 }}>
-            <Paper elevation={3}>
-                <div style={{
-                    width: "100%",
-                    height: 40,
-                    backgroundColor: "#2E2E2E",
-                    borderTopLeftRadius: 5,
-                    borderTopRightRadius: 5,
-                    borderBottomLeftRadius: 20,
-                    borderBottomRightRadius: 20,
-                    alignItems: "center",
-                    justifyContent: "center",
-                    display: "flex"
-                }}>
-                    <h3 style={{ color: "#FFF" }}>Edición de registro</h3>
-                </div>
+        <Box>
+            <Card variant="outlined" sx={{ padding: 1, borderRadius: theme.custom.borderRadius, mb: 2, }} >
+                <CardActions sx={{ justifyContent: "flex-start", flexDirection: "row" }}>
+
+                    <Tooltip title="Actualiza los datos del animal seleccionado">
+                        <IconButton>
+                            <BiHelpCircle />
+                        </IconButton>
+
+                    </Tooltip>
+                    <Typography variant="t2" sx={{ fontWeight: "600", color: grey[600] }} >
+                        Edición de registro
+                    </Typography>
+                </CardActions>
+            </Card>
+
+            <Card variant="outlined" sx={{ padding: 1, borderRadius: theme.custom.borderRadius, mb: 2, }} >
 
                 <ImageUploading
                     multiple
@@ -244,36 +262,40 @@ export default function FormEdit() {
                         errors
                     }) => (
                         // write your building UI
-                        <div style={{ display: "flex", alignItems: "center", flexDirection: "column", backgroundColor: "#ededed", padding: 5, borderRadius: 3, margin: 22 }}>
-                            {imageList.length > 0 ? null : <h4>No cuenta con imagenes </h4>}
-                            <Button onClick={onImageUpload} size="small" sx={{ marginTop: 2 }} variant="contained" color={isDragging ? "info" : "primary"}>Seleccionar imagenes</Button>
+                        <div style={{ display: "flex", alignItems: "center", flexDirection: "column", backgroundColor: "#ededed", padding: 12, borderRadius: 12, margin: 22 }}>
+                            {imageList.length > 0 ? null : <h4>No cuenta con imágenes </h4>}
+                            <Button onClick={onImageUpload} size="small" sx={{ marginTop: 2 }} variant="contained" color={isDragging ? "info" : "primary"}>Seleccionar imágenes</Button>
 
                             <Chip sx={{ marginTop: 2 }} label={imageList.length + "/8"} />
                             {errors && <div>
-                                {errors.maxNumber && <span>Solo puede adjuntar un máximo de {maxNumber} imagenes por animal</span>}
+                                {errors.maxNumber && <span>Solo puede adjuntar un máximo de {maxNumber} imágenes por animal</span>}
                                 {errors.acceptType && <span>Este tipo de archivo no está soportado</span>}
                                 {errors.maxFileSize && <span>Cada imágen debe pesar máximo 5Mb</span>}
 
                             </div>}
                             <div style={{ marginTop: imageList.length > 0 ? 15 : 0, display: "flex" }}>
 
-                                <ImageList sx={{ width: "100%", maxHeight: 250 }}>
+                                <ImageList sx={{ width: "100%" }} cols={matchDownSm ? 1 : imageList.length > 4 ? 4 : imageList.length}>
                                     {imageList.map((image, index) => (
                                         <ImageListItem key={index}>
                                             {image['data_url'] !== undefined ? <img
                                                 src={image['data_url']}
-
+                                                alt="imagen del animal"
                                                 loading="lazy"
+                                                style={{ maxWidth: 200, borderRadius: 8, minHeight: 160, objectFit: "cover" }}
+
                                             /> :
                                                 <img
-                                                    src={`${process.env.REACT_APP_API_URL}/${image.ruta}`}
+                                                    style={{ maxWidth: 200, borderRadius: 8, minHeight: 160, objectFit: "cover" }}
 
+                                                    src={`${process.env.REACT_APP_API_URL}/${image.ruta}`}
+                                                    alt="imagen del animal"
                                                     loading="lazy" />
 
                                             }
                                             <ImageListItemBar
-
-                                                subtitle={image["file"] !== undefined ? image["file"].name : " "}
+                                                subtitle={index === 0 ? "Principal" : "Secundaria"}
+                                                sx={{ backgroundColor: index === 0 ? theme.custom.primary.dark : "rgba(0, 0, 0, 0.5)", borderBottomLeftRadius: 8, borderBottomRightRadius: 8 }}
                                                 actionIcon={
                                                     <IconButton
                                                         sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
@@ -293,10 +315,15 @@ export default function FormEdit() {
                                     ))}
                                 </ImageList>
                             </div>
+                            <Stack flexDirection={"row"} alignItems={"center"} display={"flex"}>
+                                <AiOutlineInfoCircle color='#1976d2' size={24} />
+                                <Typography sx={{ fontSize: 12, ml: 1, color: "#1976d2" }} variant="subtitle2">La imagen principal del animal corresponderá a la primera que sea seleccionada </Typography>
+
+                            </Stack>
                         </div>
                     )}
                 </ImageUploading>
-                <Grid container sx={{ padding: 3 }} >
+                <Grid container sx={{ padding: 3 }} spacing={3} >
                     <Grid item md={6}
                         xs={12}
                         justifyContent="center"
@@ -312,7 +339,8 @@ export default function FormEdit() {
                             label="Nombre"
                             value={values.name}
                             helperText={errors.name}
-                            variant="standard"
+                            variant="outlined"
+                            InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px" } }}
                             onChange={(event) => { setValues({ ...values, name: event.target.value }); }}
                             onBlur={(event) => {
                                 if (event.target.value !== "") {
@@ -370,7 +398,9 @@ export default function FormEdit() {
 
                                 renderInput={(params) => <TextField {...params}
 
-                                    variant="standard" helperText={errors.birthday} error={errors.birthday !== null} />}
+                                    variant="outlined"
+                                    InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px" } }}
+                                    helperText={errors.birthday} error={errors.birthday !== null} />}
                             />
                         </LocalizationProvider>
                         {values.birthday !== null ? <FormHelperText sx={{ color: "#0554b5" }} >{moment(values.birthday, "YYYYMMDD").fromNow()} de edad (Aproximadamente)</FormHelperText> : null}
@@ -385,7 +415,8 @@ export default function FormEdit() {
                         padding={1}
                     >
                         <TextField label="Color"
-                            variant="standard"
+                            variant="outlined"
+                            InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px" } }}
                             helperText={errors.color}
                             value={values.color}
                             onChange={(event) => { setValues({ ...values, color: event.target.value }) }}
@@ -435,10 +466,23 @@ export default function FormEdit() {
                         flexDirection="column"
                         padding={1}
                     >
-                        <FormControl fullWidth variant="standard" error={errors.size !== null} >
-                            <InputLabel id="animal-size"  >Tamaño</InputLabel>
-                            <Select
+                        <FormControl fullWidth variant="outlined" error={errors.size !== null}
 
+                            sx={{
+                                mt: 2
+
+                            }}
+                        >
+                            <InputLabel id="animal-size"
+                                sx={{
+                                    background: "white",
+                                    paddingX: "4px",
+                                }}
+
+
+                            >Tamaño</InputLabel>
+                            <Select
+                                variant='outlined'
                                 labelId="animal-size"
                                 id="animal-size-select"
                                 value={values.size}
@@ -467,8 +511,12 @@ export default function FormEdit() {
                             onChange={(event) => { setValues({ ...values, characteristics: event.target.value }) }}
                             value={values.characteristics}
                             inputProps={{ maxLength: 300 }}
-                            fullWidth multiline={true} minRows={4} variant="filled" />
-
+                            fullWidth multiline={true} minRows={4}
+                            sx={{ background: "#fafafa", }}
+                            variant="outlined"
+                            InputLabelProps={{ style: { background: "#fafafa", paddingLeft: "5px", paddingRight: "5px" } }}
+                        />
+                        <FormHelperText >Máximo 300 caracteres</FormHelperText>
                     </Grid>
 
                     <Grid item md={6}
@@ -482,7 +530,8 @@ export default function FormEdit() {
                         <TextField
                             fullWidth
                             label="Sitio de rescate"
-                            variant="standard"
+                            variant="outlined"
+                            InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px" } }}
                             value={values.rescueSite}
                             onChange={(event) => { setValues({ ...values, rescueSite: event.target.value }); }}
                             inputProps={{ maxLength: 190 }}
@@ -505,7 +554,10 @@ export default function FormEdit() {
                                 onChange={(newValue) => {
                                     setValues({ ...values, rescueDate: newValue });
                                 }}
-                                renderInput={(params) => <TextField {...params} variant="standard" />}
+                                renderInput={(params) => <TextField {...params} variant="outlined"
+                                    InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px" } }} />}
+
+
                             />
                         </LocalizationProvider>
                     </Grid>
@@ -534,59 +586,94 @@ export default function FormEdit() {
                         padding={1}
                     >
 
-                        <FormControl fullWidth variant="standard" sx={{ marginTop: 2 }}>
-                            <InputLabel id="animal-adoption-state" >Estado de adopción</InputLabel>
-                            <Select
-                                labelId="animal-adoption-state"
-                                id="animal-adoption-state-select"
-                                value={values.animalState}
-                                label="Seleccione el estado actua"
+                        <Tooltip title="El estado del animal no se puede cambiar manualmente ya que debe depender unicamente del proceso de adopción, ademas un cambio manual puede afectar la consistencia de los datos estadisticos">
+                            <FormControl fullWidth variant="outlined" sx={{
+                                mt: 2
+                            }}>
+                                <InputLabel id="animal-adoption-state"
+                                    sx={{
+                                        background: "white",
+                                        paddingX: "4px",
+                                    }}
 
-                                onChange={(event) => {
-                                    setValues({
-                                        ...values, animalState: event.target.value
-                                    });
-                                    setErrors({ ...errors, animalState: null });
-                                }}
+                                >Estado de adopción</InputLabel>
+                                <Select
+                                    variant='outlined'
+                                    labelId="animal-adoption-state"
+                                    id="animal-adoption-state-select"
+                                    value={values.animalState}
+                                    label="Seleccione el estado actual"
+                                    disabled
+                                    onChange={(event) => {
+                                        setValues({
+                                            ...values, animalState: event.target.value
+                                        });
+                                        setErrors({ ...errors, animalState: null });
+                                    }}
 
-                            >
-                                <MenuItem value={"Sin adoptar"} >Sin adoptar</MenuItem>
-                                <MenuItem value={"Adoptado"} >Adoptado</MenuItem>
-                                <MenuItem value={"En proceso"} >En proceso</MenuItem>
+                                >
+                                    <MenuItem value={"Sin adoptar"} >Sin adoptar</MenuItem>
+                                    <MenuItem value={"Adoptado"} >Adoptado</MenuItem>
+                                    <MenuItem value={"En proceso"} >En proceso</MenuItem>
 
-                            </Select>
+                                </Select>
 
-                        </FormControl>
-
+                            </FormControl>
+                        </Tooltip>
                     </Grid>
                     <Grid item xs={12} md={12} padding={1}>
-                        <TextField label="Vacunas" fullWidth multiline={true} minRows={4} variant="filled"
+                        <TextField label="Vacunas" fullWidth multiline={true} minRows={4}
+                            variant="outlined"
+                            sx={{ backgroundColor: "#fafafa" }}
+
+                            InputLabelProps={{ style: { background: "#fafafa", paddingLeft: "5px", paddingRight: "5px" } }}
                             value={values.vaccine}
                             onChange={(event) => {
                                 setValues({ ...values, vaccine: event.target.value });
                             }}
                             inputProps={{ maxLength: 100 }}
                         />
+                        <FormHelperText >Máximo 100 caracteres</FormHelperText>
                     </Grid>
 
                 </Grid>
 
 
 
-                {loading && <div style={{ marginTop: 25, marginBottom: 25, display: "flex", justifyContent: "center", alignItems: "center" }}>
-                    <CircularProgress color="success" />
-                    <p style={{ marginLeft: 10 }}>Guardando...</p>
-                </div>}
-                <Box sx={{ justifyContent: "center", paddingBottom: 3 }} display="flex">
+                <Divider sx={{ mt: 5 }} />
+                <Box sx={{ justifyContent: "space-between", padding: 3, }} display="flex">
 
-                    <Button size="medium" variant="contained" color="success" onClick={() => {
-                        if (!loading) {
-                            onSubmit()
-                        }
-                    }}>Guardar cambios</Button>
+                    <Button size="medium" variant="contained" color='inherit'
+
+                        sx={{
+
+                            color: grey[600],
+                            fontSize: 12, height: 40, px: 5, mr: 4, alignItems: "center", borderRadius: "8px", fontWeight: "bold"
+                        }}
+                        onClick={() => {
+
+                            history.goBack()
+                        }}>Cancelar</Button>
+
+                    <LoadingButton loading={loading}
+                        size="medium" variant="contained" color="success" sx={{ fontSize: 12, height: 40, px: 5, alignItems: "center", borderRadius: "8px", fontWeight: "bold" }}
+
+                        onClick={() => {
+
+                            if (!loading) {
+                                onSubmit()
+
+                            }
+                        }}
+                        startIcon={<AiOutlineSave size={20} />}
+
+                    >
+                        Guardar
+                    </LoadingButton>
                 </Box>
-            </Paper >
-        </Container>
+
+            </Card>
+        </Box>
     );
 
 }

@@ -153,7 +153,7 @@ const AnimalState = props => {
                     dispatch({
                         type: ANIMAL_MESSAGE, payload: {
                             category: resultImagesInsert.data.state ? "success" : "error",
-                            text: resultImagesInsert.data.state ? res.data.message : "El animal se ha registrado exitosamente, pero ha ocurrido un error al subir las imagenes",
+                            text: resultImagesInsert.data.state ? res.data.message : "El animal se ha registrado exitosamente, pero ha ocurrido un error al subir las imágenes",
                             showIn: "form"
 
                         }
@@ -301,7 +301,7 @@ const AnimalState = props => {
                     dispatch({
                         type: ANIMAL_MESSAGE, payload: {
                             category: "error",
-                            text: "Los datos del animal se han actualizado satisfactoriamente, pero en las imagenes se ha presentado un error, intente actualizarlas de nuevo",
+                            text: "Los datos del animal se han actualizado satisfactoriamente, pero en las imágenes se ha presentado un error, intente actualizarlas de nuevo",
                             showIn: "form"
 
                         }

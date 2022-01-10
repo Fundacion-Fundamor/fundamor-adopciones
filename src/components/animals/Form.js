@@ -217,7 +217,6 @@ export default function Form() {
                             label="Nombre"
                             helperText={errors.name}
                             variant="outlined"
-
                             InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px" } }}
                             onBlur={(event) => {
                                 setValues({ ...values, name: event.target.value });
@@ -337,33 +336,17 @@ export default function Form() {
 
 
 
-                        <FormControl fullWidth variant="standard" error={errors.size !== null}
+                        <FormControl fullWidth variant="outlined" error={errors.size !== null}
 
                             sx={{
-                                "& .MuiInputLabel-root": {
-                                    top: "-7px",
-                                    background: "white",
-                                    zIndex: "1",
-                                    paddingX: "4px",
-                                },
-                                "& .MuiInputLabel-root.Mui-focused": {
-                                    top: "-7px",
-                                    background: "white",
-                                    zIndex: "1",
-                                    paddingX: "4px",
-                                },
-
-
+                                mt: 2
                             }}
                         >
                             <InputLabel id="animal-size" sx={{
-                                ml: 2,
-                                top: "-5px",
                                 background: "white",
                                 paddingX: "4px",
-                                zIndex: "1",
-
-                            }} >Tamaño</InputLabel>
+                            }}
+                            >Tamaño</InputLabel>
                             <Select
 
                                 labelId="animal-size"
@@ -403,7 +386,7 @@ export default function Form() {
                             }}
                             inputProps={{ maxLength: 300 }}
                             fullWidth multiline={true} minRows={4} />
-
+                        <FormHelperText >Máximo 300 caracteres</FormHelperText>
                     </Grid>
 
                     <Grid item md={6}
@@ -472,33 +455,16 @@ export default function Form() {
                         padding={1}
                     >
 
-                        <FormControl fullWidth variant="standard" sx={{
+                        <FormControl fullWidth variant="outlined" sx={{
                             marginTop: 2,
-
-
-                            "& .MuiInputLabel-root": {
-                                top: "-7px",
-                                background: "white",
-                                zIndex: "1",
-                                paddingX: "4px",
-                            },
-                            "& .MuiInputLabel-root.Mui-focused": {
-                                top: "-7px",
-                                background: "white",
-                                zIndex: "1",
-                                paddingX: "4px",
-                            },
                         }}>
                             <InputLabel id="animal-adoption-state"
 
                                 sx={{
-                                    ml: 2,
-                                    top: "-5px",
                                     background: "white",
                                     paddingX: "4px",
-                                    zIndex: "1",
-
                                 }}
+
 
                             >Estado de adopción</InputLabel>
                             <Select
@@ -535,6 +501,7 @@ export default function Form() {
                             }}
                             inputProps={{ maxLength: 100 }}
                         />
+                          <FormHelperText >Máximo 100 caracteres</FormHelperText>
                     </Grid>
 
                 </Grid>
@@ -566,10 +533,10 @@ export default function Form() {
 
                             {imageList.length !== 0 && false ? <Button size="small" onClick={onImageRemoveAll} variant="contained" color="info">Eliminar Todo</Button> : null}
 
-                            <Button onClick={onImageUpload} size="small" sx={{ marginTop: 2 }} color={isDragging ? "info" : "primary"} variant="outlined" >Seleccionar imagenes</Button>
+                            <Button onClick={onImageUpload} size="small" sx={{ marginTop: 2, borderRadius: "8px" }} color={isDragging ? "info" : "primary"} variant="contained" >Seleccionar imágenes</Button>
                             <Chip sx={{ marginTop: 2 }} label={imageList.length + "/8"} />
                             {errors && <div>
-                                {errors.maxNumber && <span>Solo puede adjuntar un máximo de {maxNumber} imagenes por animal</span>}
+                                {errors.maxNumber && <span>Solo puede adjuntar un máximo de {maxNumber} imágenes por animal</span>}
                                 {errors.acceptType && <span>Este tipo de archivo no está soportado</span>}
                                 {errors.maxFileSize && <span>Cada imágen debe pesar máximo 5Mb</span>}
 
@@ -611,25 +578,24 @@ export default function Form() {
                     )}
                 </ImageUploading>
 
-                <Divider sx={{mt:5}}/>
-                <Box sx={{ justifyContent: "space-between", padding: 3,  }} display="flex">
+                <Divider sx={{ mt: 5 }} />
+                <Box sx={{ justifyContent: "space-between", padding: 3, }} display="flex">
 
                     <Button size="medium" variant="contained" color='inherit'
 
                         sx={{
 
-                            color:grey[600],
+                            color: grey[600],
                             fontSize: 12, height: 40, px: 5, mr: 4, alignItems: "center", borderRadius: "8px", fontWeight: "bold"
                         }}
                         onClick={() => {
-                           
-                            if (!loading) {
-                                onSubmit()
-                            }
+
+                            history.goBack()
+
                         }}>Cancelar</Button>
 
                     <LoadingButton loading={loading}
-                        size="medium" variant="contained" color="primary" sx={{ fontSize: 12, height: 40, px: 5, alignItems: "center", borderRadius: "8px", fontWeight: "bold" }}
+                        size="medium" variant="contained" color="success" sx={{ fontSize: 12, height: 40, px: 5, alignItems: "center", borderRadius: "8px", fontWeight: "bold" }}
 
                         onClick={() => {
 

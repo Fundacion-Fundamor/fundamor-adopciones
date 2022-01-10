@@ -27,7 +27,7 @@ import PostContext from '../../context/post/postContext'
 //TODO
 // delimitar la cantidad de texto del cuerpo a pocas lineas
 // linkear a detalle de la publicación
-// Poner parte de imagenes
+// Poner parte de imágenes
 // Vistas según rol
 
 const useStyles = makeStyles({

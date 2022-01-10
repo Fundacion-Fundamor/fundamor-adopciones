@@ -2,7 +2,7 @@ import React from 'react'
 import './card.scss'
 import { useRouteMatch, useHistory } from "react-router-dom";
 
-/**Los animales pueden tener varias imagenes
+/**Los animales pueden tener varias imágenes
  * 
  * @param {*} param0 
  * @returns 

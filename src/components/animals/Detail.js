@@ -300,7 +300,7 @@ export default function Detail() {
 
                         <Stack flexDirection={"row"} alignItems={"flex-start"} display={"flex"}>
                             <AiOutlineInfoCircle color='#1976d2' size={24} />
-                            <Typography sx={{ fontSize: 12, ml: 1, color: "#1976d2" }} variant="subtitle2">El animal no cuenta con imagenes, puede subirlas editando los datos del animal</Typography>
+                            <Typography sx={{ fontSize: 12, ml: 1, color: "#1976d2" }} variant="subtitle2">El animal no cuenta con imágenes, puede subirlas editando los datos del animal</Typography>
 
                         </Stack>
                     </Stack>

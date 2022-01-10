@@ -231,7 +231,7 @@ function List() {
                                         style={{
 
                                             paddingBottom: "133px",
-                                            background: theme.custom.primary.light
+                                            background: "linear-gradient(180deg, rgba(247,158,158,1) 0%, rgba(255,201,219,1) 35%, rgba(255,255,255,1) 100%)"
                                         }}
 
                                     ></div>
@@ -399,7 +399,7 @@ const FilterManager = ({ handleFilters }) => {
                             onChange={(e) => { setAnimalState(e.target.value) }}
                         >
                             <FormControlLabel value="Adoptado" control={<Radio />} label="Adoptado" />
-                            <FormControlLabel value="En proceso de adopción" control={<Radio />} label="En proceso" />
+                            <FormControlLabel value="En proceso" control={<Radio />} label="En proceso" />
                             <FormControlLabel value="Sin adoptar" control={<Radio />} label="Sin adoptar" />
                         </RadioGroup>
                     </FormControl>
