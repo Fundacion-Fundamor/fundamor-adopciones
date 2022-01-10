@@ -124,7 +124,7 @@ export default function Detail() {
 
         MySwal.fire({
             title: <p style={{ fontSize: 22, fontWeight: "bold" }}>{"Confirmación"}</p>,
-            text: "¿Está seguro que desea eliminar el animal?",
+            text: "¿Está seguro que desea eliminar el animal?, se eliminarán todos los datos asociados a este, imágenes, adopciones, seguimientos y questionarios",
             icon: "question",
             confirmButtonText: 'Aceptar',
             cancelButtonText: "Cancelar",
@@ -196,7 +196,7 @@ export default function Detail() {
                             onClick={() => { history.push("/adoptions/new/" + animalId); }}
                             variant="contained"
                             startIcon={<BiBookAdd />}
-                            sx={{ borderRadius: "8px", fontSize: 12, ml: 2,width:"100%" }}
+                            sx={{ borderRadius: "8px", fontSize: 12, ml: 2, width: "100%" }}
                         >
                             Iniciar proceso
                         </Button>
@@ -268,7 +268,7 @@ export default function Detail() {
 
 
                         <Slider {...slickSettings}
-                         
+
                             ref={slider1}
                             asNavFor={slider2.current}
 
