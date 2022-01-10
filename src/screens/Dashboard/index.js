@@ -12,58 +12,37 @@ import { BiHelpCircle } from 'react-icons/bi';
 export default function Dashboard() {
 
 
-    useEffect(() => {
-        let mounted = true;
-        const getNumberOfAnimals = async () => {
-
-            try {
-
-                const res = await axiosClient.get("/api/analytics/rescuedAnimals");
-                console.log("animales", res.data)
-
-            } catch (error) {
-                console.log(error)
-            }
-        }
-        // const getNumberOfAnimals = async () => {
-
-
-
-
-        //     try {
-
-        //         const res = await axiosClient.get("/api/analytics/countAnimals");
-        //         console.log("animales", res.data)
-
-        //     } catch (error) {
-        //         console.log(error)
-        //     }
-        // }
-        // getNumberOfAnimals()
-        return () => {
-
-            mounted = false;
-        }
-    }, [])
+    const matchDownSm = useMediaQuery('(max-width:1280px)');
 
 
     return (
 
 
-        <Box sx={{ display: 'flex', justifyContent: "center", flexDirection: "column" }}>
+        <Box sx={{ display: 'flex', justifyContent: "center", flexDirection: "column", maxWidth: "1466px" }}>
             <CssBaseline />
-            <Stack direction={"row"} display={"flex"} alignItems={"center"} justifyContent={"center"} gap={2} flexWrap={"wrap"}>
+            <Stack direction={"row"} display={"flex"} alignItems={"flex-start"} justifyContent={"center"} gap={2} flexWrap={"wrap"}>
 
 
-                <CardAnimalsAdopted />
-                <CardAnimalsRescued />
-                <CardAnimalsWaiting />
+                <Stack direction={matchDownSm ? "column" : "row"} justifyContent={"space-evenly"} display={"flex"} sx={{ width: "100%" }}>
+               
+                        <CardAnimalsAdopted />
+                        <CardAnimalsRescued />
+                        <CardAnimalsWaiting />
+                  
 
+                </Stack>
+                <Stack direction={matchDownSm ? "column" : "row"} justifyContent={"space-evenly"} display={"flex"} width={"100%"}>
                 <SterilizedAnimals />
-                <RescuedAnimalsChart />
-                <RescuedAnimalsChartPerGender />
-                <AdoptedAnimalsChart />
-                <AdoptedAnimalsChartPerGender />
+                    <DewormedAnimals />
+                </Stack>
+                <Stack direction={matchDownSm ? "column" : "row"} justifyContent={"space-evenly"} display={"flex"} width={"100%"}>
+                    <AdoptedAnimalsChart />
+                    <RescuedAnimalsChart />
+                </Stack>
+                <Stack direction={matchDownSm ? "column" : "row"} justifyContent={"space-evenly"} display="flex" width={"100%"}>
+                    <AdoptedAnimalsChartPerGender />
+                    <RescuedAnimalsChartPerGender />
+                </Stack>
 
             </Stack>
 
@@ -105,7 +84,8 @@ const CardAnimalsWaiting = () => {
     return (
         <Card sx={{
             borderRadius: 3, bgcolor: "#512da8", position: "relative", paddingX: 5, minWidth: 275,
-            borderColor: "#512da8"
+            borderColor: "#512da8",
+            marginY: 1
         }} variant='outlined'>
             <CardContent sx={{ display: "flex", flexDirection: "column", alignItems: "center", width: "calc(100% + 8px)" }}>
                 <Typography variant="t2" sx={{ fontWeight: "600", color: "white" }} >
@@ -172,7 +152,8 @@ const CardAnimalsRescued = () => {
     return (
         <Card sx={{
             borderRadius: 3, bgcolor: "#d32f2f", position: "relative", paddingX: 5, minWidth: 275,
-            borderColor: "#d32f2f"
+            borderColor: "#d32f2f",
+            marginY: 1
         }} variant='outlined'>
             <CardContent sx={{ display: "flex", flexDirection: "column", alignItems: "center", width: "calc(100% + 8px)" }}>
                 <Typography variant="t2" sx={{ fontWeight: "600", color: "white" }} >
@@ -238,7 +219,8 @@ const CardAnimalsAdopted = () => {
     return (
         <Card sx={{
             borderRadius: 3, bgcolor: "#1e88e5", position: "relative", paddingX: 5, minWidth: 275,
-            borderColor: "#1e88e5"
+            borderColor: "#1e88e5",
+            marginY: 1
         }} variant='outlined'>
             <CardContent sx={{ display: "flex", flexDirection: "column", alignItems: "center", width: "calc(100% + 8px)" }}>
                 <Typography variant="t2" sx={{ fontWeight: "600", color: "white" }} >
@@ -275,6 +257,8 @@ const CardAnimalsAdopted = () => {
 
 const RescuedAnimalsChart = () => {
 
+
+    const matchDownSm = useMediaQuery('(max-width:1280px)');
     const [year, setYear] = useState(new Date().getFullYear());
     const [chartData, setChartData] = useState({
 
@@ -390,7 +374,7 @@ const RescuedAnimalsChart = () => {
     }, [chartData.series])
 
 
-    return (<Card variant='outlined' sx={{ borderRadius: 4, p: 4 }} >
+    return (<Card variant='outlined' sx={{ borderRadius: 4, p: 4, width: "100%", marginX: matchDownSm ? 0 : 2 }} >
 
         <Stack direction={"row"} justifyContent={"space-between"} mb={2}>
             <Stack direction={"row"} alignItems={"center"}>
@@ -405,8 +389,7 @@ const RescuedAnimalsChart = () => {
                     Animales rescatados
                 </Typography>
             </Stack>
-            <FormControl >
-                {/* <InputLabel id="demo-simple-select-label">Año</InputLabel> */}
+            <FormControl sx={{ minWidth: 90 }} >
                 <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
@@ -426,10 +409,10 @@ const RescuedAnimalsChart = () => {
             options={chartData.options}
             series={chartData.series}
             type="bar"
-            width="500"
+        // width="500"
 
         />
-    </Card>
+    </Card >
 
 
     )
@@ -437,6 +420,7 @@ const RescuedAnimalsChart = () => {
 
 const RescuedAnimalsChartPerGender = () => {
 
+    const matchDownSm = useMediaQuery('(max-width:1280px)');
     const [year, setYear] = useState(new Date().getFullYear());
     const [chartData, setChartData] = useState({
 
@@ -538,7 +522,7 @@ const RescuedAnimalsChartPerGender = () => {
     }, [year])
 
 
-    return (<Card variant='outlined' sx={{ borderRadius: 4, p: 4 }} >
+    return (<Card variant='outlined' sx={{ borderRadius: 4, p: 4, width: "100%", marginX: matchDownSm ? 0 : 2 }} >
 
         <Stack direction={"row"} justifyContent={"space-between"} mb={2}>
             <Stack direction={"row"} alignItems={"center"}>
@@ -553,8 +537,8 @@ const RescuedAnimalsChartPerGender = () => {
                     Animales rescatados (por sexo)
                 </Typography>
             </Stack>
-            <FormControl >
-                {/* <InputLabel id="demo-simple-select-label">Año</InputLabel> */}
+            <FormControl sx={{ minWidth: 90 }} >
+
                 <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
@@ -574,7 +558,7 @@ const RescuedAnimalsChartPerGender = () => {
             options={chartData.options}
             series={chartData.series}
             type="bar"
-            width="500"
+        // width="500"
 
         />
     </Card>
@@ -585,6 +569,8 @@ const RescuedAnimalsChartPerGender = () => {
 const AdoptedAnimalsChart = () => {
 
     const [year, setYear] = useState(new Date().getFullYear());
+    const matchDownSm = useMediaQuery('(max-width:1280px)');
+
     const [chartData, setChartData] = useState({
 
 
@@ -612,7 +598,10 @@ const AdoptedAnimalsChart = () => {
                         }
                     }
                 }],
+
             },
+
+
             xaxis: {
                 categories: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]
             },
@@ -689,7 +678,7 @@ const AdoptedAnimalsChart = () => {
 
 
 
-    return (<Card variant='outlined' sx={{ borderRadius: 4, p: 4 }} >
+    return (<Card variant='outlined' sx={{ borderRadius: 4, p: 4, display: "flex", flexDirection: "column", width: "100%", marginX: matchDownSm ? 0 : 2, marginBottom: matchDownSm ? 2 : 0 }} >
 
         <Stack direction={"row"} justifyContent={"space-between"} mb={2}>
             <Stack direction={"row"} alignItems={"center"}>
@@ -704,7 +693,7 @@ const AdoptedAnimalsChart = () => {
                     Animales adoptados
                 </Typography>
             </Stack>
-            <FormControl >
+            <FormControl sx={{ minWidth: 90 }}>
                 <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
@@ -724,7 +713,7 @@ const AdoptedAnimalsChart = () => {
             options={chartData.options}
             series={chartData.series}
             type="line"
-            width="500"
+        // width="500"
 
         />
     </Card>
@@ -738,6 +727,10 @@ const AdoptedAnimalsChart = () => {
 const AdoptedAnimalsChartPerGender = () => {
 
     const [year, setYear] = useState(new Date().getFullYear());
+
+    const matchDownSm = useMediaQuery('(max-width:1280px)');
+
+
     const [chartData, setChartData] = useState({
 
 
@@ -789,7 +782,6 @@ const AdoptedAnimalsChartPerGender = () => {
 
         const getRescuedAnimals = async () => {
             try {
-                let tmpSeries = chartData.series;
                 setChartData({ ...chartData, series: [] })
                 const res = await axiosClient.get("/api/analytics/adoptedAnimalsPerGender?year=" + year);
                 console.log("animalesAdoptados", res.data)
@@ -842,7 +834,7 @@ const AdoptedAnimalsChartPerGender = () => {
 
 
 
-    return (<Card variant='outlined' sx={{ borderRadius: 4, p: 4 }} >
+    return (<Card variant='outlined' sx={{ borderRadius: 4, p: 4, width: "100%", marginX: matchDownSm ? 0 : 2, marginBottom: matchDownSm ? 2 : 0 }} >
 
         <Stack direction={"row"} justifyContent={"space-between"} mb={2}>
             <Stack direction={"row"} alignItems={"center"}>
@@ -857,13 +849,13 @@ const AdoptedAnimalsChartPerGender = () => {
                     Animales adoptados (por sexo)
                 </Typography>
             </Stack>
-            <FormControl >
+            <FormControl sx={{ minWidth: 90 }} >
                 <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     value={year}
                     label="Age"
-                    sx={{ borderRadius: 3, maxHeight: 42 }}
+                    sx={{ borderRadius: 3, maxHeight: 42, }}
                     onChange={(val) => { setYear(val.target.value) }}
                 >
                     <MenuItem value={2021}>2021</MenuItem>
@@ -877,7 +869,8 @@ const AdoptedAnimalsChartPerGender = () => {
             options={chartData.options}
             series={chartData.series}
             type="line"
-            width="500"
+        // width="500"
+
 
         />
     </Card>
@@ -890,6 +883,11 @@ const AdoptedAnimalsChartPerGender = () => {
 
 const SterilizedAnimals = () => {
 
+
+    const matchDownSm = useMediaQuery('(max-width:1280px)');
+    const theme = useTheme();
+    const matchDownDefaultSm = useMediaQuery(theme.breakpoints.down('sm'));
+    const matchUpSm = useMediaQuery('(max-width:1280px)');
     const [chartData, setChartData] = useState({
 
 
@@ -933,7 +931,7 @@ const SterilizedAnimals = () => {
 
 
 
-    
+
     const [chartDataCats, setChartDataCats] = useState({
 
 
@@ -965,7 +963,7 @@ const SterilizedAnimals = () => {
             xaxis: {
                 categories: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]
             },
-            colors: ['#9C27B0', '#E91E63',],
+            colors: ['#43a047', '#ffeb3b',],
             labels: ["Gatos esterilizados", "Gatos sin esterilizar"]
 
 
@@ -976,51 +974,22 @@ const SterilizedAnimals = () => {
     })
 
     useEffect(() => {
-        let mounted = true;
 
+        let mounted = true;
 
         const getSterilizedAnimals = async () => {
             try {
-                let tmpSeries = chartData.series;
-
                 const res = await axiosClient.get("/api/analytics/sterilized");
                 console.log("Esterilizados", res.data)
                 if (res.data.state) {
 
                     let dogs = (res.data.data.dogs * 100) / res.data.data.totalDogs;
                     let cats = (res.data.data.cats * 100) / res.data.data.totalCats;
-                 
-                    setChartData({ ...chartData, series: [dogs, 100 - dogs] })
-                    // let female = res.data.data.female;
 
-                    // let tmpSeries = []
-
-                    // let maleArray = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-                    // let femaleArray = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-
-                    // male.forEach((element, index) => {
-
-                    //     maleArray[element.month - 1] = element.adopted_animals
-
-                    // })
-
-
-                    // female.forEach((element, index) => {
-
-                    //     femaleArray[element.month - 1] = element.adopted_animals
-
-                    // })
-
-                    // tmpSeries[0] = { name: "Machos", data: maleArray };
-                    // tmpSeries[1] = { name: "Hembras", data: maleArray };
-                    // if (mounted) {
-                    //     setChartData({
-                    //         options: chartData.options,
-                    //         series: tmpSeries
-
-
-                    //     })
-                    // }
+                    if (mounted) {
+                        setChartData({ ...chartData, series: [res.data.data.dogs, res.data.data.totalDogs - res.data.data.dogs] })
+                        setChartDataCats({ ...chartDataCats, series: [res.data.data.cats, res.data.data.totalCats - res.data.data.cats] })
+                    }
 
                 }
 
@@ -1031,38 +1000,211 @@ const SterilizedAnimals = () => {
 
         getSterilizedAnimals()
         return () => {
-            mounted=false;
+            mounted = false;
         }
     }, [])
 
 
 
 
-    return (<Card variant='outlined' sx={{ borderRadius: 4, p: 4 }} >
+    return (<Card variant='outlined' sx={{ borderRadius: 4, p: 4,  mt: 1, width: "100%",height:"100%", marginX: matchDownSm ? 0 : 2, marginBottom: matchDownSm ? 2 : 0  }} >
 
         <Stack direction={"row"} justifyContent={"space-between"} mb={2}>
             <Stack direction={"row"} alignItems={"center"}>
 
-                <Tooltip title="Visualiza el porcenate de perros esterilizados con los que cuenta actualmente la fundación">
+                <Tooltip title="Visualiza el porcenate de perros y gatos esterilizados con los que cuenta actualmente la fundación">
                     <IconButton>
                         <BiHelpCircle />
                     </IconButton>
 
                 </Tooltip>
                 <Typography variant="t2" sx={{ fontWeight: "600", color: grey[600] }} >
-                    Esterilización de perros
+                    Esterilización de animales
                 </Typography>
             </Stack>
         </Stack>
 
-        <Chart
-            options={chartData.options}
-            series={chartData.series}
-            type="donut"
-            width="300"
+        <Stack direction={"column"} justifyContent={"space-around"} alignItems={"center"}>
+            <Chart
+                options={chartData.options}
+                series={chartData.series}
+                type="donut"
+            // width="300"
+
+            />
+            <Chart
+                options={chartDataCats.options}
+                series={chartDataCats.series}
+                type="donut"
+            // width="300"
+            />
+
+        </Stack>
+    </Card>
 
 
-        />
+    )
+}
+
+
+
+const DewormedAnimals = () => {
+
+    const matchDownSm = useMediaQuery('(max-width:1280px)');
+    const theme = useTheme();
+    const matchDownDefaultSm = useMediaQuery(theme.breakpoints.down('sm'));
+
+    const [chartData, setChartData] = useState({
+
+
+        options: {
+            chart: {
+                id: "basic-bar",
+                locales: [{
+                    "name": "en",
+                    "options": {
+                        "months": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+                        "shortMonths": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                        "days": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+                        "shortDays": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+                        "toolbar": {
+                            "exportToSVG": "Descargar SVG",
+                            "exportToPNG": "Descargar PNG",
+                            "exportToCSV": "Descargar CSV",
+                            "menu": "Menu",
+                            "selection": "Selección",
+                            "selectionZoom": "Selection Zoom",
+                            "zoomIn": "Zoom In",
+                            "zoomOut": "Zoom Out",
+                            "pan": "Panning",
+                            "reset": "Reset Zoom"
+                        }
+                    }
+                }],
+            },
+            xaxis: {
+                categories: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]
+            },
+            colors: ['#9C27B0', '#E91E63',],
+            labels: ["Perros desparasitados", "Perros sin desparasitar"]
+
+
+        },
+        series: [
+            99, 1
+        ],
+    })
+
+
+
+
+    const [chartDataCats, setChartDataCats] = useState({
+
+
+        options: {
+            chart: {
+                id: "basic-bar",
+                locales: [{
+                    "name": "en",
+                    "options": {
+                        "months": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+                        "shortMonths": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                        "days": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+                        "shortDays": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+                        "toolbar": {
+                            "exportToSVG": "Descargar SVG",
+                            "exportToPNG": "Descargar PNG",
+                            "exportToCSV": "Descargar CSV",
+                            "menu": "Menu",
+                            "selection": "Selección",
+                            "selectionZoom": "Selection Zoom",
+                            "zoomIn": "Zoom In",
+                            "zoomOut": "Zoom Out",
+                            "pan": "Panning",
+                            "reset": "Reset Zoom"
+                        }
+                    }
+                }],
+            },
+
+            xaxis: {
+                categories: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]
+            },
+            colors: ['#43a047', '#ffeb3b',],
+            labels: ["Gatos desparasitados", "Gatos sin desparasitar"]
+
+
+        },
+        series: [
+            99, 1
+        ],
+    })
+
+    useEffect(() => {
+
+        let mounted = true;
+
+        const getSterilizedAnimals = async () => {
+            try {
+                const res = await axiosClient.get("/api/analytics/dewormed");
+                console.log("Esterilizados", res.data)
+                if (res.data.state) {
+
+                    let dogs = (res.data.data.dogs * 100) / res.data.data.totalDogs;
+                    let cats = (res.data.data.cats * 100) / res.data.data.totalCats;
+
+                    if (mounted) {
+                        setChartData({ ...chartData, series: [res.data.data.dogs, res.data.data.totalDogs - res.data.data.dogs] })
+                        setChartDataCats({ ...chartDataCats, series: [res.data.data.cats, res.data.data.totalCats - res.data.data.cats] })
+                    }
+
+                }
+
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
+        getSterilizedAnimals()
+        return () => {
+            mounted = false;
+        }
+    }, [])
+
+
+
+
+    return (<Card variant='outlined' sx={{ borderRadius: 4, p: 4,pb:8, mt: 1, width: "100%", height:"100%", marginX: matchDownSm ? 0 : 2, marginBottom: matchDownSm ? 2 : 0 }} >
+
+        <Stack direction={"row"} justifyContent={"space-between"} mb={2}>
+            <Stack direction={"row"} alignItems={"center"}>
+
+                <Tooltip title="Visualiza el porcenate de perros y gatos desparasitados con los que cuenta actualmente la fundación">
+                    <IconButton>
+                        <BiHelpCircle />
+                    </IconButton>
+
+                </Tooltip>
+                <Typography variant="t2" sx={{ fontWeight: "600", color: grey[600] }} >
+                    Desparasitación de animales
+                </Typography>
+            </Stack>
+        </Stack>
+
+        <Stack direction={"column" } justifyContent={"space-around"} alignItems={"center"}>
+
+            <Chart
+                options={chartData.options}
+                series={chartData.series}
+                type="donut"
+            />
+            <Chart
+                options={chartDataCats.options}
+                series={chartDataCats.series}
+                type="donut"
+            />
+        </Stack>
+
     </Card>
 
 
