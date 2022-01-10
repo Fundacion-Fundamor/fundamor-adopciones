@@ -101,7 +101,6 @@ function List() {
 
         })
 
-        console.log(result.length)
         let totalPages = Math.ceil(result.length / localData.animalsPerPage);
         setLocalData({ ...localData, currentPage: 1, list: result, totalPages: totalPages })
 
@@ -496,7 +495,6 @@ const RowsManager = ({ numRows, handleRows }) => {
 
 const AnimalImage = ({ images }) => {
 
-    console.log(images)
     const [isLoaded, setIsLoaded] = useState(false)
 
     return images.length > 0 ? <>
@@ -505,8 +503,8 @@ const AnimalImage = ({ images }) => {
         <CardMedia
             onLoad={() => { setIsLoaded(true) }}
             component="img"
-            height="230"
-            sx={{ borderRadius: "8px", objectFit:"cover" }}
+            height={isLoaded ? "230" : "0"}
+            sx={{ borderRadius: "8px", objectFit: "cover" }}
             image={`${process.env.REACT_APP_API_URL}/${images[0].ruta}`}
             alt="imagen de la mascota"
         />
@@ -515,10 +513,13 @@ const AnimalImage = ({ images }) => {
         onLoad={() => { setIsLoaded(true) }}
         component="img"
         height="230"
-        sx={{ borderRadius: "8px", objectFit:"contain" }}
+        sx={{ borderRadius: "8px", objectFit: "contain" }}
         image={`/images/no_image.png`}
         alt="imagen de la mascota"
     />
 
 }
+
+
+
 export default List

@@ -3,6 +3,7 @@ import AnimalContext from './animalContext';
 import AnimalReducer from './animalReducer';
 import { ANIMALS, SELECT_ANIMAL, TOGGLE_ANIMAL_LOADING, ANIMAL_MESSAGE } from '../../types';
 import axiosClient from '../../config/axios';
+import { handleResponseError } from '../../Shared/utils';
 
 /**gestionar codigos de errores y timeout
  * 
@@ -32,7 +33,7 @@ const AnimalState = props => {
         let filtersString = "?";
         if (filters) {
             for (let key in filters) {
-                filtersString += key + "=" + filters[key]+"&"
+                filtersString += key + "=" + filters[key] + "&"
 
             }
         }
@@ -131,11 +132,11 @@ const AnimalState = props => {
             nombre: data.name,
             fecha_nacimiento: data.birthday,
             sexo: data.gender,
-            caracteristicas: data.characteristics,
-            sitio_rescate: data.rescueSite,
-            fecha_rescate: data.rescueDate,
+            caracteristicas: data.characteristics.trim() !== "" ? data.characteristics : null,
+            sitio_rescate: data.rescueSite.trim() !== "" ? data.rescueSite : null,
+            fecha_rescate: data.rescueDate !== "" ? data.rescueDate : null,
             color: data.color,
-            vacunas: data.vaccine,
+            vacunas: data.vaccine !== "" ? data.vaccine : null,
             esterilizado: data.sterilized,
             desparasitado: data.dewormed,
             tamanio: data.size,
@@ -182,15 +183,7 @@ const AnimalState = props => {
 
         } catch (error) {
 
-            console.log(error.response)
-            let errorsDecriptions = error.response?.data.errors;
-
-            let text = "";
-            if (errorsDecriptions) {
-                text = errorsDecriptions[0];
-            } else {
-                text = error.response.data.message;
-            }
+            const text = handleResponseError(error)
 
             dispatch({
                 type: ANIMAL_MESSAGE, payload: {
@@ -366,14 +359,7 @@ const AnimalState = props => {
             getAnimals();
         } catch (error) {
 
-            let errorsDecriptions = error.response?.data.errors;
-            let text = "";
-            if (errorsDecriptions) {
-                text = errorsDecriptions[0];
-            } else {
-                text = error.response.data.message;
-            }
-
+            const text = handleResponseError(error)
             dispatch({
                 type: ANIMAL_MESSAGE, payload: {
                     category: "error",
@@ -388,7 +374,7 @@ const AnimalState = props => {
 
         dispatch({ type: SELECT_ANIMAL, payload: item });
     }
-    const handleAnimalMessage = (data) => {
+    const handleAnimalMessage = (data = null) => {
         dispatch({
             type: ANIMAL_MESSAGE, payload: data
         })

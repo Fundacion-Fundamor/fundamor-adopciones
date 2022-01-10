@@ -11,7 +11,6 @@ import {
     Button,
     Card,
     CardActions,
-    CardMedia,
     Chip,
     Grid,
     IconButton,
@@ -20,31 +19,37 @@ import {
     Typography,
     useMediaQuery,
     useTheme,
-    Divider
+    Divider,
+    CardMedia
 } from '@mui/material';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-import { AiOutlinePlus, AiOutlineReload } from 'react-icons/ai';
-import { BiBadgeCheck, BiErrorAlt, BiHelpCircle } from 'react-icons/bi';
+import { AiOutlineInfoCircle, AiOutlinePlus, AiOutlineReload } from 'react-icons/ai';
+import { BiBadgeCheck, BiBookAdd, BiErrorAlt, BiHelpCircle } from 'react-icons/bi';
 import { green, grey } from '@mui/material/colors';
 import Slider from "react-slick";
 import moment from 'moment';
 import { FiTrash2 } from 'react-icons/fi';
 
-
-
-
 const slickSettings2 = {
     dots: false,
     infinite: true,
-
     slidesToShow: 1,
     slidesToScroll: 1,
     // centerMode: true,
     centerPadding: '60px',
 
 };
+
+/**Vista de detalles del animal para el personal de la fundación
+ * 
+ * 
+ * @returns 
+ */
 export default function Detail() {
+
+
+    let { animalId } = useParams();
 
     moment.locale('es');
     moment.updateLocale('es', {
@@ -67,14 +72,15 @@ export default function Detail() {
             yy: "%d años"
         }
     });
+
+
     const { selectedAnimal, message, loading, getAnimal, removeAnimal, handleAnimalMessage } = useContext(AnimalContext); // contexto de animales
 
     const [slickSettings, setslickSettings] = useState(
 
         {
-
             dots: false,
-            infinite: true,
+            infinite: false,
             speed: 500,
             slidesToShow: 3,
             slidesToScroll: 1,
@@ -86,8 +92,7 @@ export default function Detail() {
     )
     const slider1 = useRef(null)
     const slider2 = useRef(null)
-    console.log(selectedAnimal)
-    let { animalId } = useParams();
+
     const MySwal = withReactContent(Swal);
     let history = useHistory();
 
@@ -106,6 +111,14 @@ export default function Detail() {
 
         }
     }, [matchDownSm])
+
+    useEffect(() => {
+        if (selectedAnimal) {
+            window.scrollTo(0, 0);
+            setslickSettings({ ...slickSettings, infinite: selectedAnimal.animalImage.length > 3 })
+        }
+    }, [selectedAnimal])
+
     const onRemoveAnimal = async () => {
 
 
@@ -114,6 +127,7 @@ export default function Detail() {
             text: "¿Está seguro que desea eliminar el animal?",
             icon: "question",
             confirmButtonText: 'Aceptar',
+            cancelButtonText: "Cancelar",
             showCancelButton: true,
             showLoaderOnConfirm: true,
             backdrop: true,
@@ -125,21 +139,6 @@ export default function Detail() {
 
             allowOutsideClick: () => !MySwal.isLoading()
         })
-        // let res = await MySwal.fire({
-        //     title: <p style={{ fontSize: 22, fontWeight: "bold" }}>{"Confirmación"}</p>,
-        //     text: "¿Está seguro que desea eliminar el animal?",
-        //     icon: "question",
-        //     confirmButtonText: 'Aceptar',
-        //     showCancelButton: true,
-
-        // });
-
-
-        // if (res.isConfirmed) {
-        //     // MySwal.close();
-        //     await removeAnimal(animalId);
-        // }
-
     }
 
     useEffect(() => {
@@ -161,7 +160,7 @@ export default function Detail() {
 
                 await handleAnimalMessage(null);
                 if (message.category === "success") {
-                    history.push("/gallery");
+                    history.push("/animals");
                 }
             }
         }
@@ -190,27 +189,37 @@ export default function Detail() {
                         </Typography>
 
                     </Box>
-                    <Box alignItems={"center"} display={"flex"} flexDirection={"row"} sx={{ marginTop: matchDownSm ? 2 : 0 }}>
-
+                    <Box alignItems={"center"} display={"flex"} flexDirection={matchDownSm ? "column" : "row"} sx={{ marginTop: matchDownSm ? 2 : 0 }}>
 
                         <Button
-                            color="primary"
-                            onClick={() => { history.push("/adoptions/new/-1"); }}
+                            color="secondary"
+                            onClick={() => { history.push("/adoptions/new/" + animalId); }}
                             variant="contained"
-                            startIcon={<AiOutlinePlus />}
-                            sx={{ borderRadius: "8px", fontSize: 12, ml: 2 }}
+                            startIcon={<BiBookAdd />}
+                            sx={{ borderRadius: "8px", fontSize: 12, ml: 2,width:"100%" }}
                         >
-                            Editar
+                            Iniciar proceso
                         </Button>
-                        <Button
-                            color="error"
-                            onClick={() => { history.push("/adoptions/new/-1"); }}
-                            variant="contained"
-                            startIcon={<FiTrash2 />}
-                            sx={{ borderRadius: "8px", fontSize: 12, ml: 2 }}
-                        >
-                            Eliminar
-                        </Button>
+                        <Stack direction={"row"} mt={matchDownSm ? 2 : "0"}>
+                            <Button
+                                color="primary"
+                                onClick={() => { history.push("/animals/edit/" + animalId); }}
+                                variant="outlined"
+                                startIcon={<AiOutlinePlus />}
+                                sx={{ borderRadius: "8px", fontSize: 12, ml: 2 }}
+                            >
+                                Editar
+                            </Button>
+                            <Button
+                                color="error"
+                                onClick={() => onRemoveAnimal()}
+                                variant="outlined"
+                                startIcon={<FiTrash2 />}
+                                sx={{ borderRadius: "8px", fontSize: 12, ml: 2 }}
+                            >
+                                Eliminar
+                            </Button>
+                        </Stack>
 
                     </Box>
                 </CardActions>
@@ -223,12 +232,12 @@ export default function Detail() {
             }} >
 
 
-                <Box alignItems={"flex-start"}
-                    justifyContent={"center"} alignItems="center" display={"flex"} flexDirection={"column"} >
+                {selectedAnimal.animalImage.length > 0 ? <Box alignItems={"center"}
+                    justifyContent={"center"} display={"flex"} flexDirection={"column"} >
 
 
 
-                    <Box p={1} maxWidth={!matchDownSm ? "430px" : "100%"}  minWidth={"20px"} >
+                    <Box p={1} maxWidth={!matchDownSm ? "430px" : "100%"} minWidth={"20px"} alignItems={"center"} >
                         <Slider {...slickSettings2}
 
                             arrows={false}
@@ -248,21 +257,18 @@ export default function Detail() {
                                         src={`${process.env.REACT_APP_API_URL}/${element.ruta}`} alt="card" />
                                 </div>
 
-                      
+
 
                             ))}
 
                         </Slider>
                     </Box>
 
-                    <Box paddingX={"30px"} pt={1} maxWidth={matchDownSm ? "289px" : "445px"} sx={{ background: theme.custom.primary.light, borderRadius:2 }}>
+                    <Box paddingX={"30px"} pt={1} width={matchDownSm ? "289px" : "445px"} sx={{ background: theme.custom.primary.light, borderRadius: 2 }}>
 
 
                         <Slider {...slickSettings}
-                            afterChange={(index) => {
-                                console.log(index)
-
-                            }}
+                         
                             ref={slider1}
                             asNavFor={slider2.current}
 
@@ -272,15 +278,33 @@ export default function Detail() {
                                 <div key={index} style={{ background: "red" }}>
                                     <img
                                         style={{ objectFit: "cover", borderRadius: 8 }}
-                                        width={matchDownSm ?60 :90}
-                                        height={matchDownSm ?60 :90}
+                                        width={matchDownSm ? 60 : 90}
+                                        height={matchDownSm ? 60 : 90}
                                         src={`${process.env.REACT_APP_API_URL}/${element.ruta}`} alt="card" />
                                 </div>
                             ))}
 
                         </Slider>
                     </Box>
-                </Box>
+                </Box> :
+
+                    <Stack direction={"column"} alignItems={"center"}>
+                        <CardMedia
+
+                            component="img"
+                            height="230"
+                            sx={{ borderRadius: "8px", objectFit: "contain" }}
+                            image={`/images/no_image.png`}
+                            alt="imagen de la mascota"
+                        />
+
+                        <Stack flexDirection={"row"} alignItems={"flex-start"} display={"flex"}>
+                            <AiOutlineInfoCircle color='#1976d2' size={24} />
+                            <Typography sx={{ fontSize: 12, ml: 1, color: "#1976d2" }} variant="subtitle2">El animal no cuenta con imagenes, puede subirlas editando los datos del animal</Typography>
+
+                        </Stack>
+                    </Stack>
+                }
                 <Box width={"100%"} mt={!matches ? 3 : "0"} marginLeft={!matches ? 0 : 4} >
 
                     <Stack direction={"row"} alignItems={"flex-start"} justifyContent={"space-between"}>
@@ -368,7 +392,7 @@ export default function Detail() {
                         Información adicional
                     </Typography>
 
-                    <Grid container mt={3}>
+                    <Grid container mt={3} spacing={1}>
                         <Grid item md={2} xs={12} display={"flex"} alignItems={"center"}>
 
                             <Typography sx={{ fontSize: 12, fontWeight: "bold" }} color="text.secondary">
@@ -485,25 +509,6 @@ export default function Detail() {
             </Card> : null
             }
         </Box >
-        // <div>
-        //     <h1>SUPER VISTA DE PERFIL DE MASCOTA PARA EMPLEADO O PARA EL PUBLICO</h1>
 
-        //     <p>datos del animal</p>
-        //     {loading ? <p>cargando..</p> : 
-        //         <p>{JSON.stringify(selectedAnimal)}</p>
-        //     }
-
-        //     <Button size="medium" variant="contained" color="success" onClick={() => {
-        //         history.push(`/animals/edit/${animalId}`);
-
-        //     }}>Editar</Button>
-        //     {/*Validar que solo se pueda iniciar un proceso si no se está en alguno actualmente */}
-        //     <Button size="medium" variant="contained" color="primary" onClick={() => {
-        //         history.push(`/adoptions/new/${animalId}`);
-
-        //     }}>Nuevo proceso de adopción</Button>
-        //     <Button size="medium" variant="contained" color="error" onClick={() => onRemoveAnimal()}>Eliminar</Button>
-
-        // </div>
     );
 }
