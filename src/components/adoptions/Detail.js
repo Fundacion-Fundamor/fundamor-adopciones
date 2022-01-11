@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useContext, useState } from 'react'
 import { useParams, useHistory } from 'react-router';
 import AdoptionContext from '../../context/adoption/adoptionContext';
@@ -11,7 +12,6 @@ import withReactContent from 'sweetalert2-react-content';
 import { BiHelpCircle } from 'react-icons/bi';
 import { IoDocumentTextOutline, IoNewspaperOutline, IoTimerOutline } from "react-icons/io5"
 import { grey } from '@mui/material/colors';
-import { GrDocumentUser } from 'react-icons/gr';
 import { AiOutlineCheckCircle, AiOutlinePauseCircle, AiOutlinePlus, AiOutlineReload } from 'react-icons/ai';
 import { FaRegEdit, FaWpforms } from 'react-icons/fa';
 
@@ -30,6 +30,7 @@ export default function Detail() {
     //layout y theming
     const theme = useTheme();
     const matchDownSm = useMediaQuery(theme.breakpoints.down('sm'));
+
     useEffect(() => {
         getAdoption(adoptionId);
     }, [])
@@ -37,6 +38,9 @@ export default function Detail() {
 
 
     const toggleModalTracking = () => {
+        if (showFormTracking) {
+            getAdoption(adoptionId)
+        }
         setshowFormTracking(!showFormTracking);
     }
     const toggleModalEdit = () => {
@@ -61,20 +65,7 @@ export default function Detail() {
 
             allowOutsideClick: () => !MySwal.isLoading()
         })
-        // let res = await MySwal.fire({
-        //     title: <p style={{ fontSize: 22, fontWeight: "bold" }}>{"Confirmación"}</p>,
-        //     text: "¿Está seguro que desea eliminar el animal?",
-        //     icon: "question",
-        //     confirmButtonText: 'Aceptar',
-        //     showCancelButton: true,
 
-        // });
-
-
-        // if (res.isConfirmed) {
-        //     // MySwal.close();
-        //     await removeAnimal(animalId);
-        // }
 
     }
 
@@ -163,9 +154,9 @@ export default function Detail() {
                 aria-describedby="modal-modal-description"
                 style={{ overflowY: 'scroll' }}
             >
-                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                <div tabIndex={""} style={{ display: 'flex', justifyContent: 'center' }}>
                     {showFormTracking && <Form handleModal={toggleModalTracking} adoptionID={adoptionId} />}
-                </Box>
+                </div>
 
             </Modal>
 
@@ -344,7 +335,9 @@ const AdoptionTabs = ({ adoption, toggleModalTracking }) => {
                                 <Stack direction={matchDownSm ? "column" : "row"} sx={{ background: grey[100], mt: 2, p: 1, borderRadius: 2 }}>
                                     {/* {adoption.animal.animalImage.length !== 0 ? <img src={`${process.env.REACT_APP_API_URL}/${adoption.animal.animalImage[0].ruta}`} alt="card" /> : */}
                                     <Stack direction={"column"} alignItems={"center"} sx={{ background: "#fff", borderRadius: theme.custom.borderRadius, pb: 1 }}>
-                                        <img style={{ objectFit: "cover", borderTopLeftRadius: "12px", borderTopRightRadius: "12px" }} width={150} height={150} src={`${process.env.REACT_APP_URL}/images/sin_imagen.png`} alt="card" />
+
+                                        {adoption.animal.animalImage.length !== 0 ? <img style={{ objectFit: "cover", borderTopLeftRadius: "12px", borderTopRightRadius: "12px" }} width={150} height={150} src={`${process.env.REACT_APP_API_URL}/${adoption.animal.animalImage[0].ruta}`} alt="card" /> :
+                                            <img style={{ objectFit: "cover", borderTopLeftRadius: "12px", borderTopRightRadius: "12px" }} width={150} height={150} src={`${process.env.REACT_APP_URL}/images/no_image.png`} alt="card" />}
                                         <Typography sx={{ fontSize: 14, fontWeight: 600, display: "flex", mt: 1 }} color="text.secondary">
                                             {adoption.animal.nombre}</Typography>
                                     </Stack>
@@ -387,16 +380,16 @@ const AdoptionTabs = ({ adoption, toggleModalTracking }) => {
                         </Stack>
                         <Divider sx={{ background: grey[600], marginY: 2 }} />
 
-                        <Stack marginX={5} padding={1} marginY={3} borderRadius={2} sx={{background:grey[50]}}>
+                        <Stack marginX={5} padding={1} marginY={3} borderRadius={2} sx={{ background: grey[50] }}>
 
                             {adoption.preguntas.map((element, index) => (
-                                <Stack key={index} p={1} sx={{mb:2 }} >
+                                <Stack key={index} p={1} sx={{ mb: 2 }} >
                                     <Typography sx={{ fontSize: 14, fontWeight: 600 }} color="text.secondary">
-                                        {element.question.titulo}
+                                        {index + 1}. {element.question.titulo}
                                     </Typography>
                                     <Stack mt={2}>
-                                        <Typography sx={{ fontSize: 14, pl:2 }} color="text.secondary">
-                                            {element.respuesta} 
+                                        <Typography sx={{ fontSize: 14, pl: 2 }} color="text.secondary">
+                                            R: {element.respuesta}
                                         </Typography>
                                     </Stack>
                                 </Stack>
