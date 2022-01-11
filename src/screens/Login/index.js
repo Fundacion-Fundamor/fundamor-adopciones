@@ -9,8 +9,8 @@ function Login(props) {
   const { login, authenticated, message, loading } = useContext(AuthContext);
 
   const [credentials, setCredentials] = useState({
-    email: "aurelio@gmail.com",
-    password: "hola1234"
+    email: "luzmari0987@gmail.com",
+    password: "12345678"
   });
 
   const [errors, setErrors] = useState({
