@@ -191,7 +191,7 @@ export default function Detail() {
                     </Box>
                     <Box alignItems={"center"} display={"flex"} flexDirection={matchDownSm ? "column" : "row"} sx={{ marginTop: matchDownSm ? 2 : 0 }}>
 
-                        <Button
+                        {selectedAnimal && selectedAnimal.estado !== "Adoptado" ? <Button
                             color="secondary"
                             onClick={() => { history.push("/adoptions/new/" + animalId); }}
                             variant="contained"
@@ -199,7 +199,7 @@ export default function Detail() {
                             sx={{ borderRadius: "8px", fontSize: 12, ml: 2, width: "100%" }}
                         >
                             Iniciar proceso
-                        </Button>
+                        </Button> : null}
                         <Stack direction={"row"} mt={matchDownSm ? 2 : "0"}>
                             <Button
                                 color="primary"

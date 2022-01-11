@@ -230,7 +230,7 @@ const AdoptionTabs = ({ adoption, toggleModalTracking }) => {
                     </Stack>
                     <Stack direction="row" alignItems={"center"} mt={matchDownSm ? 2 : 0}>
                         <Typography sx={{ fontSize: 14, fontWeight: 600, mr: 1 }} color="text.secondary">
-                            Estado
+                            Estado adopción
                         </Typography>
                         <Chip color={adoption.estado === "finalizada" ?
                             "success"
