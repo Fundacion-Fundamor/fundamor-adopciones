@@ -1,13 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 
 import {
-    Paper,
-    Container,
     Button,
     Grid,
     Box,
     TextField,
     IconButton,
-    Chip,
     InputLabel,
     Select,
     MenuItem,
@@ -17,10 +15,18 @@ import {
     Step,
     StepLabel,
     Autocomplete,
-    Alert
+    Alert,
+    Card,
+    CardActions,
+    Tooltip,
+    useTheme,
+    useMediaQuery,
+    Typography,
+    Divider,
+    Stack
 } from '@mui/material'
 import React, { useState, useEffect, useContext } from 'react'
-import { GrDocumentText } from 'react-icons/gr'
+
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -30,21 +36,18 @@ import FormLabel from '@mui/material/FormLabel';
 import DateAdapter from '@mui/lab/AdapterMoment';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
-import ImageList from '@mui/material/ImageList';
-import ImageListItem from '@mui/material/ImageListItem';
-import ImageListItemBar from '@mui/material/ImageListItemBar';
-import { BiTrashAlt } from 'react-icons/bi';
+import { BiHelpCircle} from 'react-icons/bi';
 import moment from 'moment';
 import 'moment/locale/es';
 import AnimalContext from '../../context/animal/animalContext';
-import { useHistory } from "react-router-dom";
-
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import QuestionContext from '../../context/question/questionContext';
 import AdoptionContext from '../../context/adoption/adoptionContext';
 import AdopterContext from '../../context/adopter/adopterContext';
 import AuthContext from '../../context/auth/authContext';
+import { green, grey } from '@mui/material/colors';
+import { AiOutlineArrowLeft, AiOutlineArrowRight } from 'react-icons/ai';
 
 const steps = [
     "Selecciona el animal",
@@ -82,7 +85,6 @@ export default function Form() {
         }
     });
 
-    let history = useHistory();
     const MySwal = withReactContent(Swal);
     const [currentStep, setCurrentStep] = useState(0);
     const { user } = useContext(AuthContext);
@@ -131,6 +133,10 @@ export default function Form() {
     const [inputAdopterValue, setInputAdopterValue] = useState('');
     const [localQuestions, setLocalQuestions] = useState([]);
 
+    //layout y theming
+    const theme = useTheme();
+    const matchDownSm = useMediaQuery(theme.breakpoints.down('sm'));
+
 
     const resetForm = () => {
         setValues({
@@ -155,7 +161,7 @@ export default function Form() {
         setAdopterSelected(null);
         setInputAdopterValue("");
         getAnimals({ estado: "Sin adoptar" });
-        // getAdopters();
+        getAdopters();
         getQuestions();
         setCurrentStep(0);
     }
@@ -165,6 +171,7 @@ export default function Form() {
     }
 
     const validateAdopterForm = () => {
+        // eslint-disable-next-line no-useless-escape
         const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
         if (adopterValues.name === "") {
@@ -246,8 +253,11 @@ export default function Form() {
                 if (!loading) {
                     if (values.adoptionState === "") {
                         setErrors({ ...errors, ...{ adoptionState: "Debe seleccionar un estado" } });
+                    } else if (values.adoptionState === "Finalizada" && values.adoptionFinalDate === null) {
+                        setErrors({ ...errors, adoptionFinalDate: "Debe seleccionar una fecha de entrega" });
                     } else {
                         createAdoption(values, animalSelected, adopterSelected, adopterValues, localQuestions);
+
                     }
                 }
             }
@@ -288,9 +298,10 @@ export default function Form() {
     }, [message]);
 
     useEffect(() => {
+        resetForm();
         getAnimals({ estado: "Sin adoptar" });
-        getQuestions();
-        getAdopters();
+        // getQuestions();
+        // getAdopters();
     }, [])
 
     useEffect(() => {
@@ -314,22 +325,27 @@ export default function Form() {
     }, [showAdopterForm])
 
     return (
-        <Container maxWidth="sm" sx={{ marginBottom: 5, marginTop: 5 }}>
-            <Paper elevation={3}>
-                <div style={{
-                    width: "100%",
-                    height: 40,
-                    backgroundColor: "#2E2E2E",
-                    borderTopLeftRadius: 5,
-                    borderTopRightRadius: 5,
-                    borderBottomLeftRadius: 20,
-                    borderBottomRightRadius: 20,
-                    alignItems: "center",
-                    justifyContent: "center",
-                    display: "flex"
-                }}>
-                    <h3 style={{ color: "#FFF" }}>Nueva adopción</h3>
-                </div>
+        <Box sx={{ display: "flex", flexDirection: "column" }}>
+            <Card variant="outlined" sx={{ padding: 1, borderRadius: theme.custom.borderRadius, mb: 2, }} >
+                <CardActions sx={{ justifyContent: "space-between", flexDirection: matchDownSm ? "column" : "row" }}>
+                    <Box alignItems={"center"} display={"flex"}>
+                        <Tooltip title="Crea un nuevo proceso de adopcón">
+                            <IconButton>
+                                <BiHelpCircle />
+                            </IconButton>
+
+                        </Tooltip>
+                        <Typography variant="t2" sx={{ fontWeight: "600", color: grey[600] }} >
+                            Nueva adopción
+                        </Typography>
+
+
+                    </Box>
+
+
+                </CardActions>
+            </Card>
+            <Card variant="outlined" sx={{ padding: 3, borderRadius: theme.custom.borderRadius }} >
 
                 <Stepper activeStep={currentStep} alternativeLabel sx={{ marginTop: 5 }}>
                     {steps.map((label) => (
@@ -340,7 +356,7 @@ export default function Form() {
                 </Stepper>
                 <Box component="div" sx={{ margin: 2, display: "flex", flexDirection: "column", alignItems: "center" }}>
 
-                    {(errors.stepError !== null && errors.showErrorInStep !== null && errors.showErrorInStep === currentStep) ? <Alert severity="error" variant="filled" style={{ marginTop: 20, marginBottom: 5, width: "90%" }} >{errors.stepError}</Alert> : null}
+                    {(errors.stepError !== null && errors.showErrorInStep !== null && errors.showErrorInStep === currentStep) ? <Alert severity="error" variant="standard" style={{ marginTop: 20, marginBottom: 5, width: "90%", borderRadius: "8px", borderWidth: 1, borderStyle: "solid", borderColor: "#e53935" }} >{errors.stepError}</Alert> : null}
 
                     {currentStep === 0 ?
 
@@ -360,6 +376,7 @@ export default function Form() {
                             getOptionLabel={(option, props) => option.id_animal.toString() + " " + option.nombre.toString()}
                             inputValue={inputAnimalValue}
                             lang="Colombia"
+
                             renderOption={(props, option) => {
                                 return (
                                     <Box key={option.id_animal.toString()} component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
@@ -373,7 +390,9 @@ export default function Form() {
                             renderInput={(params) => (
                                 <TextField
                                     {...params}
-                                    label="Ingresa el nombre"
+                                    label="Seleccione el animal"
+                                    InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px", borderRadius: "12px" } }}
+
                                     inputProps={{
                                         ...params.inputProps,
                                         autoComplete: 'new-password', // disable autocomplete and autofill
@@ -401,7 +420,8 @@ export default function Form() {
                                 }}
                                 getOptionLabel={(option, props) => option.id_adoptante.toString() + " " + option.nombre.toString()}
                                 inputValue={inputAdopterValue}
-                                lang="Colombia"
+                                lang="es"
+                                noOptionsText="No hay adoptantes registrados"
                                 renderOption={(props, option) => {
                                     return (
                                         <Box key={option.id_adoptante.toString()} component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
@@ -420,115 +440,179 @@ export default function Form() {
                                             ...params.inputProps,
                                             autoComplete: 'new-password', // disable autocomplete and autofill
                                         }}
+                                        InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px", borderRadius: "12px" } }}
+
                                     />
                                 )}
 
                             /> : null}
-                            <Button size="medium" variant="contained" sx={{ marginTop: 5 }} color="info" onClick={() => toggleAdopterForm()} >{showAdopterForm ? "Buscar adoptante" : "Registrar adoptante"}</Button>
 
+                            <Stack direction={matchDownSm ? "column" : "row"} alignItems={"center"} mt={5}>
+                                <Typography sx={{ fontSize: 13, ml: 1, color: grey[800] }} variant="subtitle1">Si el adoptante es nuevo o no está en los registros debe registrarlo.</Typography>
+
+                                <Button size="medium" variant="text" sx={{
+                                    textTransform: "capitalize",
+                                }} color="info" onClick={() => toggleAdopterForm()} >{showAdopterForm ? "Volver a buscar" : "Registrar adoptante"}</Button>
+                            </Stack>
                             {showAdopterForm ?
-                                <div style={{ width: "90%", display: "flex", flexDirection: "column" }}>
-                                    <div className="form-group">
+                                <Grid container sx={{ padding: 3 }} spacing={2} >
+                                    <Grid item md={6}
+                                        xs={12}
+                                        justifyContent="center"
+                                        display="flex"
+                                        flexDirection="column"
+
+                                    >
 
                                         <TextField
                                             fullWidth
                                             error={adopterErrors.name != null}
                                             label="Nombre y apellidos"
                                             helperText={adopterErrors.name}
-                                            variant="standard"
+                                            variant="outlined"
+                                            sx={{ my: 2 }}
+                                            InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px", borderRadius: "12px" } }}
                                             value={adopterValues.name}
                                             onChange={(event) => {
                                                 setAdopterValues({ ...adopterValues, name: event.target.value });
                                                 setAdopterErrors({ ...adopterErrors, name: null })
                                             }}
                                         />
-                                    </div>
+                                    </Grid>
+                                    <Grid item md={6}
+                                        xs={12}
+                                        justifyContent="center"
+                                        display="flex"
+                                        flexDirection="column"
 
-                                    <div className="form-group">
+                                    >
                                         <TextField
                                             fullWidth
                                             error={adopterErrors.ID !== null}
                                             label="Identificación"
                                             helperText={adopterErrors.ID}
-                                            variant="standard"
+                                            variant="outlined"
+                                            sx={{ my: 2 }}
+                                            InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px", borderRadius: "12px" } }}
                                             value={adopterValues.ID}
                                             onChange={(event) => {
                                                 setAdopterValues({ ...adopterValues, ID: event.target.value });
                                                 setAdopterErrors({ ...adopterErrors, ID: null })
                                             }}
                                         />
-                                    </div>
-                                    <div className="form-group">
+                                    </Grid>
+                                    <Grid item md={6}
+                                        xs={12}
+                                        justifyContent="center"
+                                        display="flex"
+                                        flexDirection="column"
+
+                                    >
                                         <TextField
                                             fullWidth
                                             error={adopterErrors.email != null}
                                             label="Correo electrónico"
                                             helperText={adopterErrors.email}
-                                            variant="standard"
+                                            variant="outlined"
+                                            sx={{ my: 2 }}
+                                            InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px", borderRadius: "12px" } }}
                                             value={adopterValues.email}
                                             onChange={(event) => {
                                                 setAdopterValues({ ...adopterValues, email: event.target.value });
                                                 setAdopterErrors({ ...adopterErrors, email: null })
                                             }}
                                         />
-                                    </div>
-                                    <div className="form-group">
+                                    </Grid>
+                                    <Grid item md={6}
+                                        xs={12}
+                                        justifyContent="center"
+                                        display="flex"
+                                        flexDirection="column"
+
+                                    >
                                         <TextField
                                             fullWidth
                                             error={adopterErrors.profession != null}
                                             label="Profesión"
                                             helperText={adopterErrors.profession}
-                                            variant="standard"
+                                            variant="outlined"
+                                            sx={{ my: 2 }}
+                                            InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px", borderRadius: "12px" } }}
                                             value={adopterValues.profession}
                                             onChange={(event) => {
                                                 setAdopterValues({ ...adopterValues, profession: event.target.value });
                                                 setAdopterErrors({ ...adopterErrors, profession: null })
                                             }}
                                         />
-                                    </div>
-                                    <div className="form-group">
+                                    </Grid>
+                                    <Grid item md={6}
+                                        xs={12}
+                                        justifyContent="center"
+                                        display="flex"
+                                        flexDirection="column"
+
+                                    >
                                         <TextField
                                             fullWidth
                                             error={adopterErrors.address != null}
                                             label="Dirección"
                                             helperText={adopterErrors.address}
-                                            variant="standard"
+                                            variant="outlined"
+                                            sx={{ my: 2 }}
+                                            InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px", borderRadius: "12px" } }}
                                             value={adopterValues.address}
                                             onChange={(event) => {
                                                 setAdopterValues({ ...adopterValues, address: event.target.value });
                                                 setAdopterErrors({ ...adopterErrors, address: null })
                                             }}
                                         />
-                                    </div>
 
-                                    <div className="form-group">
+                                    </Grid>
+
+                                    <Grid item md={6}
+                                        xs={12}
+                                        justifyContent="center"
+                                        display="flex"
+                                        flexDirection="column"
+
+                                    >
                                         <TextField
                                             fullWidth
                                             error={adopterErrors.phone != null}
                                             label="Celular"
                                             helperText={adopterErrors.phone}
-                                            variant="standard"
+                                            variant="outlined"
+                                            sx={{ my: 2 }}
+                                            InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px", borderRadius: "12px" } }}
                                             value={adopterValues.phone}
                                             onChange={(event) => {
                                                 setAdopterValues({ ...adopterValues, phone: event.target.value });
                                                 setAdopterErrors({ ...adopterErrors, phone: null })
                                             }}
                                         />
-                                    </div>
+                                    </Grid>
 
-                                    <div className="form-group">
+                                    <Grid item md={6}
+                                        xs={12}
+                                        justifyContent="center"
+                                        display="flex"
+                                        flexDirection="column"
+
+                                    >
                                         <TextField
                                             fullWidth
                                             label="Teléfono fijo"
-                                            variant="standard"
+                                            variant="outlined"
+                                            sx={{ my: 2 }}
+                                            InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px", borderRadius: "12px" } }}
                                             value={adopterValues.housePhone}
                                             onChange={(event) => {
                                                 setAdopterValues({ ...adopterValues, housePhone: event.target.value });
                                                 setAdopterErrors({ ...adopterErrors, housePhone: null })
                                             }}
                                         />
-                                    </div>
-                                </div>
+                                    </Grid>
+                                </Grid>
 
                                 : null
 
@@ -537,15 +621,19 @@ export default function Form() {
                         </>
                         : null}
                     {currentStep === 2 ?
-                        <div style={{ width: "90%" }}>
+                        <div style={{ width: "90%", flexDirection: "column" }}>
+
+
                             {localQuestions.map((element, index) => element.tipo_pregunta === "abierta" ? (
 
-                                <div className="form-group" key={index} >
-                                    <OPTextField onBlur={handleAnswersAdopter} data={element} />
-                                </div>
+
+                                <OPTextField key={index} onBlur={handleAnswersAdopter} index={index + 1} data={element} />
+
                             ) : (
-                                <FormControl component="fieldset" sx={{ marginTop: 2 }} key={index} >
-                                    <FormLabel component="label" sx={{ fontSize: 14 }} >{element.titulo}</FormLabel>
+                                <FormControl component="fieldset" sx={{ marginY: 2, width: "100%" }} key={index} >
+
+
+                                    <FormLabel component="label" sx={{ fontSize: 16 }} >{index + 1}. {element.titulo}</FormLabel>
                                     <RadioGroup
 
                                         aria-label={element.titulo}
@@ -567,12 +655,13 @@ export default function Form() {
                         : null}
                     {currentStep === 3 ?
 
-                        <Grid container sx={{ padding: 3 }} >
+                        <Grid container sx={{ padding: 3 }} spacing={2}>
                             <Grid item md={6}
                                 xs={12}
                                 justifyContent="center"
                                 display="flex"
                                 flexDirection="column"
+
                                 padding={1}
                             >
 
@@ -585,7 +674,7 @@ export default function Form() {
                                         mask={'__/__/____'}
 
 
-                                        renderInput={(params) => <TextField {...params} variant="standard" />}
+                                        renderInput={(params) => <TextField {...params} variant="outlined" InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px", borderRadius: "12px" } }} />}
                                     />
                                 </LocalizationProvider>
                             </Grid>
@@ -598,10 +687,10 @@ export default function Form() {
                                 padding={1}
                             >
                                 <TextField label="Colaborador encargado"
-                                    variant="standard"
+                                    variant="outlined"
                                     value={user.nombre}
                                     disabled
-
+                                    InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px", borderRadius: "12px" } }}
                                 />
                             </Grid>
 
@@ -612,9 +701,10 @@ export default function Form() {
                                 padding={1}
                             >
                                 <TextField label="Animal involucrado"
-                                    variant="standard"
+                                    variant="outlined"
                                     value={animalSelected.nombre}
                                     disabled
+                                    InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px", borderRadius: "12px" } }}
 
                                 />
                             </Grid>
@@ -627,10 +717,11 @@ export default function Form() {
                                 padding={1}
                             >
                                 <TextField label="Adoptante involucrado"
-                                    variant="standard"
+                                    variant="outlined"
                                     value={adopterSelected ? adopterSelected.nombre : adopterValues.name}
                                     disabled
                                     fullWidth
+                                    InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px", borderRadius: "12px" } }}
 
                                 />
 
@@ -645,8 +736,11 @@ export default function Form() {
                             >
 
 
-                                <FormControl fullWidth variant="standard" error={errors.adoptionState !== null} >
-                                    <InputLabel id="animal-size"  >Estado de la adopción</InputLabel>
+                                <FormControl fullWidth variant="outlined" error={errors.adoptionState !== null} >
+                                    <InputLabel id="animal-size" sx={{
+                                        background: "white",
+                                        paddingX: "4px",
+                                    }} >Estado de la adopción</InputLabel>
                                     <Select
 
                                         labelId="animal-size"
@@ -683,7 +777,11 @@ export default function Form() {
                                         label="Fecha de entrega"
                                         value={values.adoptionFinalDate}
                                         mask={'__/__/____'}
-                                        renderInput={(params) => <TextField {...params} variant="standard" />}
+                                        renderInput={(params) => <TextField
+
+                                            helperText={"Debe ingresar una fecha de entrega"} error={errors.adoptionFinalDate !== null}
+                                            {...params} variant="outlined" InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px", borderRadius: "12px" } }}
+                                        />}
                                         onChange={(newValue) => {
 
                                             setValues({ ...values, adoptionFinalDate: newValue });
@@ -692,9 +790,13 @@ export default function Form() {
                                     />
                                 </LocalizationProvider> : null}
                             </Grid>
-                     
+
                             <Grid item xs={12} md={12} padding={1}>
-                                <TextField label="Observaciones" fullWidth multiline={true} minRows={4} variant="filled"
+                                <TextField label="Observaciones" fullWidth multiline={true} minRows={4} variant="outlined"
+                                    sx={{ backgroundColor: "#fafafa" }}
+
+                                    InputLabelProps={{ style: { backgroundColor: "#fafafa", paddingLeft: "5px", paddingRight: "5px", borderRadius: "12px" } }}
+
                                     onBlur={(event) => {
                                         setValues({ ...values, observations: event.target.value });
                                     }}
@@ -704,10 +806,17 @@ export default function Form() {
                         </Grid>
 
                         : null}
-                    {currentStep === 4 ? <div>
-                        <p>Se ha registrado el proceso con exito</p>
-                        <Button size="medium" variant="contained" sx={{ marginTop: 5 }} color="primary" onClick={() => { resetForm(); }} >Ir al inicio</Button>
-                    </div> : null}
+
+
+
+                    {currentStep === 4 ? <Box alignItems={"center"} display={"flex"} flexDirection={"column"} my={2}>
+
+                        <img src='/images/success.png' style={{ width: 90, height: 90 }} alt="Porceso terminado exitosamente" />
+                        <Typography sx={{ fontSize: 18, textAlign:"center", color: green[800], mt: 2 }} variant="subtitle2">Se ha registrado el proceso con éxito</Typography>
+
+
+                        <Button size="medium" variant="contained" sx={{ marginTop: 5, borderRadius: "8px" }} color="primary" onClick={() => { resetForm(); }} >Ir al inicio</Button>
+                    </Box> : null}
 
 
 
@@ -715,18 +824,27 @@ export default function Form() {
                         <CircularProgress color="primary" />
                         <p style={{ marginLeft: 10 }}>Guardando...</p>
                     </div>}
-                    <Box sx={{ justifyContent: "center", paddingBottom: 3 }} display="flex">
 
-                        {currentStep > 0 && currentStep < 4 && <Button size="medium" variant="outlined" sx={{ marginTop: 5 }} color="primary" onClick={() => previous()} >Atrás</Button>}
-
-                        {currentStep !== 4 && <Button size="medium" variant="contained" color="primary" sx={{ marginTop: 5, marginLeft: 5 }}
-                            onClick={() => next()}>{currentStep === 3 ? "Finalizar" : "Siguiente"}</Button>}
-
-                    </Box>
                 </Box>
 
-            </Paper >
-        </Container>
+                <Divider sx={{ mt: 8 }} />
+
+                <Box sx={{ justifyContent: "center", p: 4, mt: 2 }} display="flex">
+
+                    {currentStep > 0 && currentStep < 4 && <Button size="medium"
+                        startIcon={<AiOutlineArrowLeft size={20} color='#000' />}
+                        sx={{ borderRadius: "8px", mr: 3 }} variant="contained" color="inherit" onClick={() => previous()} >Atrás</Button>}
+
+                    {currentStep !== 4 && <Button size="medium" variant="contained"
+
+                        endIcon={<AiOutlineArrowRight size={20} color='white' />}
+                        color="primary" sx={{ borderRadius: "8px" }}
+                        onClick={() => next()}>{currentStep === 3 ? "Finalizar" : "Siguiente"}</Button>}
+
+                </Box>
+            </Card>
+        </Box>
+
     );
 
 }
@@ -735,22 +853,32 @@ export default function Form() {
 /**Textfield construido de manera diferente para evitar delay al momento de teclear
  * 
  */
-const OPTextField = ({ onBlur, data }) => {
+const OPTextField = ({ onBlur, data, index }) => {
 
     const [value, setValue] = useState(data.answer !== undefined ? data.answer : "");
 
     return (
-        <TextField
-            fullWidth
-            label={data.titulo}
-            variant="standard"
-            value={value}
-            onChange={(event) => {
-                setValue(event.target.value);
-            }}
+        <Stack sx={{ my: 3 }}>
 
-            onBlur={(event) => onBlur(event.target.value, data.id_pregunta)}
-        />
+            <InputLabel
+                sx={{ mb: 2 }}
+            >{index}. {data.titulo}</InputLabel>
+            <TextField
+                fullWidth
+                // label={data.titulo}
+                variant="outlined"
+
+                inputProps={{ maxLength: 300 }}
+                InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px", borderRadius: "12px" } }}
+                value={value}
+                onChange={(event) => {
+                    setValue(event.target.value);
+                }}
+
+                onBlur={(event) => onBlur(event.target.value, data.id_pregunta)}
+            />
+
+        </Stack>
     )
 
 }

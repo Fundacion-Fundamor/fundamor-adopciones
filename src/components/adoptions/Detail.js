@@ -14,6 +14,7 @@ import { IoDocumentTextOutline, IoNewspaperOutline, IoTimerOutline } from "react
 import { grey } from '@mui/material/colors';
 import { AiOutlineCheckCircle, AiOutlinePauseCircle, AiOutlinePlus, AiOutlineReload } from 'react-icons/ai';
 import { FaRegEdit, FaWpforms } from 'react-icons/fa';
+import { FiTrash2 } from 'react-icons/fi';
 
 
 export default function Detail() {
@@ -64,6 +65,7 @@ export default function Detail() {
             showCancelButton: true,
             showLoaderOnConfirm: true,
             backdrop: true,
+            cancelButtonText:"Cancelar",
             preConfirm: async (response) => {
 
                 await removeAdoption(adoptionId);
@@ -128,11 +130,23 @@ export default function Detail() {
                         <Button
                             color="primary"
                             onClick={toggleModalEdit}
-                            variant="contained"
+                            variant="outlined"
                             startIcon={<FaRegEdit />}
                             sx={{ borderRadius: "8px", fontSize: 12, ml: 2 }}
                         >
                             Editar
+                        </Button>
+
+
+
+                        <Button
+                            color="error"
+                            onClick={onRemoveAdoption}
+                            variant="outlined"
+                            startIcon={<FiTrash2 />}
+                            sx={{ borderRadius: "8px", fontSize: 12, ml: 2 }}
+                        >
+                            Eliminar
                         </Button>
                     </Box>
                 </CardActions>
@@ -171,30 +185,7 @@ export default function Detail() {
         </Box>
     )
 
-    // <div>
-    //     {selectedAdoption ? <p>{JSON.stringify(selectedAdoption)}</p> : null}
-    //     {loading ? <p>Cargando...</p> : null}
-    //     <Button size="medium" variant="contained" color="primary" sx={{ marginTop: 5 }} onClick={() => toggleModalTracking()}>Nuevo segumiento</Button>
 
-    //     <Button size="medium" variant="contained" color="primary" sx={{ marginTop: 5 }} onClick={() => toggleModalEdit()}>Editar</Button>
-    //     <Button size="medium" variant="contained" color="error" sx={{ marginTop: 5 }} onClick={() => onRemoveAdoption()}>Eliminar adopción</Button>
-
-
-    //     </Modal>
-
-    //     <Modal
-    //         open={showFormEdit}
-    //         aria-labelledby="modal-modal-title"
-    //         aria-describedby="modal-modal-description"
-    //         style={{ overflowY: 'scroll' }}
-    //     >
-
-    //         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-    //             {showFormEdit && <ModalUpdate handleModal={toggleModalEdit} adoptionId={selectedAdoption.id_adopcion} adoptionState={selectedAdoption.estado} observations={selectedAdoption.observaciones} finalDate={selectedAdoption.fecha_entrega} />}
-    //         </Box>
-
-    //     </Modal>
-    // </div>
 }
 function a11yProps(index) {
     return {
@@ -284,7 +275,7 @@ const AdoptionTabs = ({ adoption, toggleModalTracking }) => {
                                 </> :
 
                                     <Tooltip title="El empleado asignado será el próximo que cambie el estado del proceso de adopción">
-                                        <Typography sx={{ fontSize: 13, fontWeight: 100,textDecorationLine: "underline", textDecorationStyle:"solid",mt:2,cursor:"pointer" }} color="text.secondary">Sin definir
+                                        <Typography sx={{ fontSize: 13, fontWeight: 100, textDecorationLine: "underline", textDecorationStyle: "solid", mt: 2, cursor: "pointer" }} color="text.secondary">Sin definir
                                         </Typography></Tooltip>}
                             </Stack>
                         </Grid>
