@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useContext } from 'react'
-import { Alert, Button, CircularProgress, FormControl, InputLabel, MenuItem, TextField, Select, FormHelperText, FormControlLabel, Checkbox, useTheme, useMediaQuery, Card, Stack, Typography, CardContent } from '@mui/material';
+import React, { useState, useContext } from 'react'
+import { Alert, TextField, useTheme, useMediaQuery, Card, Stack, Typography, CardContent, FormHelperText } from '@mui/material';
 import { GrClose } from 'react-icons/gr';
 import TrackingContext from '../../context/tracking/trackingContext';
 import { DatePicker, LoadingButton, LocalizationProvider } from '@mui/lab';
@@ -8,8 +8,13 @@ import moment from 'moment';
 import 'moment/locale/es';
 import { grey } from '@mui/material/colors';
 import { AiOutlineSave } from 'react-icons/ai';
-import { borderRadius } from '@mui/system';
 
+
+/**Formulario de registro de anotaciones sobre un proceso de adopción
+ * 
+ * @param {*} param0 
+ * @returns 
+ */
 export default function Form({ handleModal, adoptionID }) {
 
 
@@ -88,11 +93,12 @@ export default function Form({ handleModal, adoptionID }) {
                     }}
                 />
 
+                <FormHelperText sx={{ textAlign: "left", width: "100%" }} >Máximo 500 caracteres</FormHelperText>
 
 
 
 
-                {message && message.showIn === "form" && <Alert severity={message.category} variant="standard" style={{ marginTop: 20, borderRadius: 12, marginBottom: 5, borderWidth: 1, borderStyle: "solid", borderColor: "#66bb6a" }} >{message.text}</Alert>}
+                {message && message.showIn === "form" && <Alert severity={message.category} variant="standard" style={{ marginTop: 20, borderRadius: 12, marginBottom: 5, borderWidth: 1, borderStyle: "solid", borderColor: message.category === "success" ? "#66bb6a" : "#e53935" }} >{message.text}</Alert>}
 
 
 

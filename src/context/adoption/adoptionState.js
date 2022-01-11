@@ -200,8 +200,7 @@ const AdoptionState = props => {
 
                 }
             })
-            getAdoption(data.adoptionId)
-            getAdoptions();
+           
 
         } catch (error) {
             let errorsDecriptions = error.response?.data.errors;

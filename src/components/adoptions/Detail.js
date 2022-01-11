@@ -19,7 +19,7 @@ import { FaRegEdit, FaWpforms } from 'react-icons/fa';
 export default function Detail() {
 
 
-    const { message, loading, selectedAdoption, handleAdoptionMessage, getAdoption, removeAdoption } = useContext(AdoptionContext);// contexto de adopcion
+    const { message, loading, selectedAdoption, handleAdoptionMessage, getAdoption, getAdoptions, removeAdoption } = useContext(AdoptionContext);// contexto de adopcion
     const [showFormTracking, setshowFormTracking] = useState(false)
     const [showFormEdit, setShowFormEdit] = useState(false)
     let { adoptionId } = useParams();
@@ -44,6 +44,13 @@ export default function Detail() {
         setshowFormTracking(!showFormTracking);
     }
     const toggleModalEdit = () => {
+
+        if (showFormEdit) {
+            if (message && message.showIn === "form" && message.category === "success") {
+                getAdoption(adoptionId)
+                getAdoptions();
+            }
+        }
         setShowFormEdit(!showFormEdit);
     }
     const onRemoveAdoption = async () => {
@@ -266,13 +273,19 @@ const AdoptionTabs = ({ adoption, toggleModalTracking }) => {
                                 <Typography sx={{ fontSize: 15, fontWeight: 600 }} color="text.secondary">
                                     Empleado encargado
                                 </Typography>
-                                <Typography sx={{ fontSize: 14, fontWeight: 600, mt: 2, display: "flex" }} color="text.secondary">
-                                    Nombre: <Typography sx={{ fontSize: 13, fontWeight: 100, ml: 1 }} color="text.secondary">{adoption.empleado.nombre}</Typography></Typography>
-                                <Typography sx={{ fontSize: 14, fontWeight: 600, display: "flex", mt: 1 }} color="text.secondary">
-                                    C.C <Typography sx={{ fontSize: 13, fontWeight: 100, ml: 1 }} color="text.secondary">{adoption.empleado.id_empleado}
-                                    </Typography>
+                                {adoption.empleado ? <>
+                                    <Typography sx={{ fontSize: 14, fontWeight: 600, mt: 2, display: "flex" }} color="text.secondary">
+                                        Nombre: <Typography sx={{ fontSize: 13, fontWeight: 100, ml: 1 }} color="text.secondary">{adoption.empleado.nombre}</Typography></Typography>
+                                    <Typography sx={{ fontSize: 14, fontWeight: 600, display: "flex", mt: 1 }} color="text.secondary">
+                                        C.C <Typography sx={{ fontSize: 13, fontWeight: 100, ml: 1 }} color="text.secondary">{adoption.empleado.id_empleado}
+                                        </Typography>
 
-                                </Typography>
+                                    </Typography>
+                                </> :
+
+                                    <Tooltip title="El empleado asignado será el próximo que cambie el estado del proceso de adopción">
+                                        <Typography sx={{ fontSize: 13, fontWeight: 100,textDecorationLine: "underline", textDecorationStyle:"solid",mt:2,cursor:"pointer" }} color="text.secondary">Sin definir
+                                        </Typography></Tooltip>}
                             </Stack>
                         </Grid>
                         <Grid item md={8} xs={12} >
