@@ -200,8 +200,7 @@ const AdoptionState = props => {
 
                 }
             })
-            getAdoption(data.adoptionId)
-            getAdoptions();
+           
 
         } catch (error) {
             let errorsDecriptions = error.response?.data.errors;
@@ -240,7 +239,7 @@ const AdoptionState = props => {
                 }
             })
             getAdoptions();
-            
+
 
         } catch (error) {
 
@@ -271,15 +270,20 @@ const AdoptionState = props => {
                 type: TOGGLE_ADOPTION_LOADING,
                 payload: true
             });
-            console.log(adoptionId)
+         
             const res = await axiosClient.get("/api/adoptions/" + adoptionId);
+            const resQuestions = await axiosClient.get("/api/adoptionQuestions/" + adoptionId);
 
-            console.log(res.data)
             if (res.data.state) {
-                dispatch({
-                    type: SELECT_ADOPTION,
-                    payload: res.data.data
-                });
+                if (resQuestions.data.state) {
+                    res.data.data.questions=resQuestions.data.data
+                    dispatch({
+                        type: SELECT_ADOPTION,
+                        payload: res.data.data
+                    });
+                } else {
+
+                }
             } else {
                 dispatch({
                     type: SELECT_ADOPTION,

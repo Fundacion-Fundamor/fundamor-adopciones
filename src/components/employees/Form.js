@@ -1,9 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 //eslint-disable-next-line react-hooks/exhaustive-deps
 import React, { useState, useEffect, useContext } from 'react'
 import './form.scss';
-import { Alert, Button, CircularProgress, FormControl, InputLabel, MenuItem, TextField, Select, FormHelperText, FormControlLabel, Checkbox } from '@mui/material';
-import { GrClose } from 'react-icons/gr';
+import { Alert, Button, CircularProgress, FormControl, InputLabel, MenuItem, TextField, Select, FormHelperText, FormControlLabel, Checkbox, Typography } from '@mui/material';
 import EmployeeContext from '../../context/employee/employeeContext';
+import { grey } from '@mui/material/colors';
+import { IoClose } from 'react-icons/io5';
 
 
 /**Componente encargado del registro y edición de un colaborador
@@ -34,6 +36,7 @@ export default function Form({ handleToggle }) {
     });
 
     const onSubmit = async () => {
+        // eslint-disable-next-line no-useless-escape
         const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
         //se validan los campos del formulario
@@ -81,16 +84,18 @@ export default function Form({ handleToggle }) {
         }
     }, [message]);
     return (
-        <div style={{ minWidth: 340, width: 400, backgroundColor: "#fff", padding: 15, borderRadius: 4, margin: 30, marginBottom: 30 }}>
+        <div style={{ minWidth: 340, width: 400, backgroundColor: "#fff", padding: 15, borderRadius: "16px", margin: 30, marginBottom: 30 }}>
 
 
             <div className="form-container">
-                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: selectedEmployee?"flex-start":"center" }}>
                     {selectedEmployee ?
-                        <h3>Edita los datos del colaborador </h3>
+                        <Typography variant="t2" sx={{ fontWeight: "600", color: grey[600] }} >Edita los datos del colaborador </Typography>
                         :
-                        <h3>Registra los colaboradores que tendrán acceso a la plataforma de adopción </h3>}
-                    <GrClose size={selectedEmployee ? 25 : 35} color="#000" onClick={handleToggle} cursor="pointer" />
+                        <Typography variant="t2" sx={{ fontWeight: "600", color: grey[600] }} >
+                            Nuevo colaborador
+                        </Typography> }
+                    <IoClose size={ 35} color={grey[600]} onClick={handleToggle} cursor="pointer" />
                 </div>
                 <div className="form-group">
 

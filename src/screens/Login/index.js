@@ -6,13 +6,13 @@ import AuthContext from '../../context/auth/authContext';
 
 function Login(props) {
 
-  const { login, authenticated, message } = useContext(AuthContext);
+  const { login, authenticated, message, loading } = useContext(AuthContext);
 
   const [credentials, setCredentials] = useState({
-    email: "aurelio@gmail.com",
-    password: "hola1234"
+    email: "luzmari0987@gmail.com",
+    password: "12345678"
   });
-  const [loadingRequest, setLoadingRequest] = useState(false);
+
   const [errors, setErrors] = useState({
     password: null,
     email: null
@@ -28,9 +28,9 @@ function Login(props) {
       setErrors({ ...errors, ["password"]: true })
     } else {
 
-      setLoadingRequest(true);
-      await login(credentials.email, credentials.password);
-      setLoadingRequest(false);
+
+      login(credentials.email, credentials.password);
+
     }
   }
 
@@ -91,14 +91,14 @@ function Login(props) {
           </p>
         </main>
 
-        {loadingRequest && <div style={{ marginTop: 15, display: "flex", justifyContent: "center", alignItems: "center" }}>
+        {loading && <div style={{ marginTop: 15, display: "flex", justifyContent: "center", alignItems: "center" }}>
           <CircularProgress color="success" />
           <p style={{ marginLeft: 10 }}>Cargando...</p>
         </div>}
         {message && <Alert severity="error" variant="filled" style={{ marginTop: 20, marginBottom: 5, marginLeft: 35, marginRight: 35 }} >{message}</Alert>}
 
         <footer className="login__footer">
-          <Button variant="contained" style={{ width: "100%" }} onClick={() => { if (!loadingRequest) { onSubmit() } }}>Iniciar sesión</Button>
+          <Button variant="contained" style={{ width: "100%" }} onClick={() => { if (!loading) { onSubmit() } }}>Iniciar sesión</Button>
         </footer>
       </form>
       {/* Photo by <a href="https://unsplash.com/@charlesdeluvio?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Charles Deluvio</a> on <a href="https://unsplash.com/?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a> */}

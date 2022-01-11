@@ -19,3 +19,12 @@ body {
   background-color: $secondaryLight1Color;
   box-sizing: border-box;
 }
+.swal2-container {
+
+  z-index: 1200 !important;
+}
+
+.css-1d3z3hw-MuiOutlinedInput-notchedOutline{
+
+  top:-1px !important
+}

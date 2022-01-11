@@ -1,10 +1,14 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useContext } from 'react';
-import { BiMessageAltEdit, BiTrashAlt } from 'react-icons/bi';
+import { BiTrashAlt } from 'react-icons/bi';
 import { v4 as uuidv4 } from 'uuid';
-import { CardActions, CardContent, Container, Typography, Button, Paper, TextField, IconButton, CircularProgress, Alert } from '@mui/material';
+import { CardActions, CardContent, Typography, Button, TextField, IconButton, Card, Stack } from '@mui/material';
 import QuestionContext from '../../context/question/questionContext';
+import LoadingButton from '@mui/lab/LoadingButton';
 
 import { GrClose } from 'react-icons/gr';
+import { grey } from '@mui/material/colors';
+import { AiOutlineSave } from 'react-icons/ai';
 
 export default function EditModal({ handleToggle }) {
     const { editQuestion, message, loading, selectedEditQuestion } = useContext(QuestionContext);
@@ -72,46 +76,73 @@ export default function EditModal({ handleToggle }) {
 
     }, [message]);
 
-    return <div style={{ minWidth: 340, width: 400, backgroundColor: "#fff", padding: 15, borderRadius: 15, margin: 30, marginBottom: 30 }}>
+    return (
+
+        <Card style={{ minWidth: 300, backgroundColor: "#fff", padding: 24, borderRadius: 15, margin: 30, marginBottom: 30 }}>
 
 
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
 
-            <h3>Edita la pregunta</h3>
-
-
-            <GrClose size={35} color="#000" onClick={handleToggle} cursor="pointer" />
-        </div>
-        <CardContent sx={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center" }} >
-            <TextField
-                multiline={true}
-                id="question-field"
-                sx={{ width: "100%", marginRight: 3 }}
-                variant="filled"
-                label="Ingresa aquí tu pregunta"
-                placeholder="Ejemplo: ¿Por que está interesado en adoptar?"
-                value={question.titulo}
-                onChange={(e) => { setQuestion({ ...question, titulo: e.target.value }) }}
-            />
-        </CardContent>
-        <CardActions sx={{ flexDirection: "column", padding: 3 }}>
-
-            {questionOptions.length !== 0 ? <Typography variant="body2" color="text.secondary" sx={{ marginBottom: 3 }}>
-                Las opciones de respuesta se mostrarán en el orden en sean registradas
-            </Typography> : null}
-            {questionOptions.map((element, index) => (
-                <QuestionOption key={index} index={index} option={element} saveQuestionOption={saveQuestionOption} removeQuestionOption={removeQuestionOption} />
-            ))}
+            <Stack direction="row" alignItems={"flex-start"} justifyContent={"space-between"}>
+                <Typography sx={{ fontSize: 18, ml: 1, color: grey[600] }} variant="subtitle2">Edita la pregunta</Typography>
 
 
-            <Button size="small" onClick={() => addQuestionOption()}>Añadir opción de respuesta</Button>
-            {message && message.showIn === "detail" && <Alert severity={message.category} variant="filled" style={{ marginTop: 20, marginBottom: 5 }} >{message.text}</Alert>}
+                <GrClose size={25} onClick={handleToggle} cursor="pointer" />
+            </Stack>
+            <CardContent sx={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", mt: 3 }} >
+                <TextField
+                    multiline={true}
+                    rows={2}
+                    id="question-field"
+                    variant="outlined"
+                    sx={{
+                        width: "100%", marginRight: 3, "& .MuiOutlinedInput-root": {
 
-            <Button size="medium" sx={{ marginTop: 3 }} variant="contained" disabled={question.length === 0} color="primary" onClick={saveQuestion}>Guardar cambios</Button>
+                            borderRadius: "10px!important"
 
-        </CardActions>
+                        },
+                    }}
+                    InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px" } }}
+                    fullWidth={true}
+                    label="Pregunta"
+                    placeholder="Ejemplo: ¿Por que está interesado en adoptar?"
+                    value={question.titulo}
+                    onChange={(e) => { setQuestion({ ...question, titulo: e.target.value }) }}
+                />
+            </CardContent>
+            <CardActions sx={{ flexDirection: "column", padding: 3 }}>
 
-    </div>
+                {questionOptions.length !== 0 ? <Typography variant="body2" color="text.secondary" sx={{ marginBottom: 3 }}>
+                    Las opciones de respuesta se mostrarán en el orden en que sean registradas
+                </Typography> : null}
+                {questionOptions.map((element, index) => (
+                    <QuestionOption key={index} index={index} option={element} saveQuestionOption={saveQuestionOption} removeQuestionOption={removeQuestionOption} />
+                ))}
+
+
+                <Button size="small" onClick={() => addQuestionOption()}>Añadir opción de respuesta</Button>
+
+                {/* <Button size="medium" sx={{ marginTop: 3 }} variant="contained" disabled={question.length === 0} color="primary" onClick={saveQuestion}>Guardar cambios</Button> */}
+
+                <LoadingButton loading={loading && question.length !== 0}
+                    size="medium" variant="contained" color="primary" sx={{ fontSize: 12, height: 40, px: 2, marginTop: 3, alignItems: "center", borderRadius: "8px", fontWeight: "bold" }}
+
+                    disabled={question.length === 0}
+                    onClick={() => {
+
+                        if (!loading) {
+                            saveQuestion()
+
+                        }
+                    }}
+                    startIcon={<AiOutlineSave />}
+
+                >
+                    Guardar
+                </LoadingButton>
+            </CardActions>
+
+
+        </Card>)
 
 
 }
@@ -128,10 +159,18 @@ const QuestionOption = ({ index, option, saveQuestionOption, removeQuestionOptio
 
         <TextField
             multiline={true}
-            sx={{ marginLeft: 0, width: "100%" }}
+
             id={"question-field" + index}
             fullWidth
-            variant="standard"
+            sx={{
+                width: "100%", marginRight: 3, "& .MuiOutlinedInput-root": {
+
+                    borderRadius: "10px!important"
+
+                },
+            }}
+            variant="outlined"
+            InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px" } }}
             label={"Opción de respuesta " + (index + 1)}
             value={text}
             onChange={(e) => { setText(e.target.value) }}

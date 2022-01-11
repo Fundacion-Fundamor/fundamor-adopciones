@@ -1,7 +1,7 @@
 //eslint-disable-next-line react-hooks/exhaustive-deps
 import React, { useState, useEffect, useContext } from 'react'
 import './form.scss';
-import { Alert, Button, CircularProgress, FormControl, InputLabel, MenuItem, TextField, Select, FormHelperText, FormControlLabel, Checkbox } from '@mui/material';
+import { Alert, Button, CircularProgress, TextField, } from '@mui/material';
 import { GrClose } from 'react-icons/gr';
 import AdopterContext from '../../context/adopter/adopterContext';
 
@@ -17,10 +17,10 @@ export default function AdopterForm({ handleToggle }) {
 
     const [values, setValues] = useState({
         name: selectedAdopter ? selectedAdopter.nombre : "",
-        email: selectedAdopter ? selectedAdopter.correo : "",
+        email: selectedAdopter ? selectedAdopter.correo ?? "" : "",
         ID: selectedAdopter ? selectedAdopter.id_adoptante : "",
-        profession: selectedAdopter ? selectedAdopter.ocupacion : "",
-        address: selectedAdopter ? selectedAdopter.ciudad : "",
+        profession: selectedAdopter ? selectedAdopter.ocupacion ?? "" : "",
+        address: selectedAdopter ? selectedAdopter.ciudad ?? "" : "",
         housePhone: selectedAdopter ? (selectedAdopter.telefono_casa ?? "") : "",
         phone: selectedAdopter ? (selectedAdopter.telefono_celular ?? "") : "",
     });
@@ -34,6 +34,7 @@ export default function AdopterForm({ handleToggle }) {
     });
 
     const onSubmit = async () => {
+        // eslint-disable-next-line no-useless-escape
         const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
         //se validan los campos del formulario
@@ -44,7 +45,7 @@ export default function AdopterForm({ handleToggle }) {
             setErrors({ ...errors, ID: "Debe ingresar una identificación" });
         } else if (values.email !== "" && re.test(values.email) === false) {
             setErrors({ ...errors, email: "Debe ingresar un  correo válido" });
-        }else if (values.profession === "") {
+        } else if (values.profession === "") {
             setErrors({ ...errors, profession: "Debe especificar una profesión" });
         } else if (values.address === "") {
             setErrors({ ...errors, address: "Debe ingresar una dirección" });
@@ -78,6 +79,7 @@ export default function AdopterForm({ handleToggle }) {
 
             });
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [message]);
 
 

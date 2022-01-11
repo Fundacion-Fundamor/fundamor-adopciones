@@ -1,22 +1,17 @@
-class Utils {
-        /**
-     *  Converts "juana garcía" into "Juana García".
-     *  @param {Array} An array containing the items.
-     */
-         static toTitleCase(phrase) {
-            if (phrase && phrase.length > 0) {
-                return phrase
-                    .toLowerCase()
-                    .split(' ')
-                    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-                    .join(' ');
-            }
-    
-            return phrase;
-        };
-    }
+export const handleResponseError = (error) => {
 
-    /**
- * @type {Utils}
- */
-export default Utils;
+    console.log(error.response.status);
+    if (error.response) {
+        if (error.response.status !== 500) {
+
+            if (error.response.status === 400) {
+                return "Ha ocurrido un error realizando la petición, por favor contacte al desarrollador"
+            }else if(error.response.status === 401){
+                return error.response.data.message
+
+            }
+        }
+
+    }
+    return "Ha ocurrido un error contactando al servidor, por favor intente mas tarde"
+}

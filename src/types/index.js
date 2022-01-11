@@ -3,13 +3,22 @@ export const USER_IN_SESSION = 'GET_EMPLOYEE_IN_SESSION';
 export const SUCCESS_LOGIN = 'SUCCESS_LOGIN';
 export const ERROR_LOGIN = 'ERROR_LOGIN';
 export const LOGOUT = 'LOGOUT';
+export const LOADING = 'LOADING';
+export const MESSAGE = 'MESSAGE';
 
+//foundation types
+export const GET_FOUNDATION = 'GET_FOUNDATION';
+export const UPDATE_FOUNDATION_DATA = 'UPDATE_FOUNDATION_DATA';
+export const TOGGLE_FOUNDATION_LOADING = 'TOGGLE_FOUNDATION_LOADING';
+export const FOUNDATION_MESSAGE = 'FOUNDATION_MESSAGE';
 
 //employee types
 export const EMPLOYEES = 'EMPLOYEES';
 export const SELECT_EMPLOYEE = 'SELECT_EMPLOYEE';
 export const TOGGLE_EMPLOYEES_LOADING = 'TOGGLE_EMPLOYEES_LOADING';
 export const EMPLOYEE_MESSAGE = 'EMPLOYEE_MESSAGE';
+export const SUCCESS_PROFILE_UPDATE = 'SUCCESS_PROFILE_UPDATE';
+
 // export const SHOW_MESSAGE = 'EMPLOYEES';
 
 //post types
@@ -37,6 +46,8 @@ export const ANIMALS = 'ANIMAL';
 export const SELECT_ANIMAL = 'SELECT_ANIMAL';
 export const TOGGLE_ANIMAL_LOADING = 'TOGGLE_ANIMAL_LOADING';
 export const ANIMAL_MESSAGE = 'ANIMAL_MESSAGE';
+export const FILTER = 'FILTER';
+
 
 //question types
 export const QUESTIONS = 'QUESTION';
