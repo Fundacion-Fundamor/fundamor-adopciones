@@ -1,191 +1,386 @@
-import React, { useEffect, useState, useContext } from 'react'
-import {
-  Button,
-  Backdrop,
-  CircularProgress,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  DialogContentText,
-  Card,
-  CardContent,
-  Typography,
-  CardActions,
-  IconButton,
-  CardMedia,
-  Box,
-} from '@mui/material'
-
-import { makeStyles } from '@mui/styles'
-
-import { FaTrashAlt, FaUserEdit } from 'react-icons/fa'
-
+/* eslint-disable react-hooks/exhaustive-deps */
 import './list.scss'
+import React, { useEffect, useContext, useState } from 'react'
 import PostContext from '../../context/post/postContext'
+import { Box, Button, Card, CardActions, CardContent, CardMedia, IconButton, Menu, MenuItem, Pagination, Skeleton, Stack, Tooltip, Typography, useMediaQuery, useTheme, } from '@mui/material'
+import TextField from '@mui/material/TextField';
+import InputAdornment from '@mui/material/InputAdornment';
+import { grey } from '@mui/material/colors'
+import { AiOutlinePlus, AiOutlineSearch } from 'react-icons/ai'
+import { BiHelpCircle } from 'react-icons/bi'
+import { useHistory, useRouteMatch } from 'react-router-dom'
 
-//TODO
-// delimitar la cantidad de texto del cuerpo a pocas lineas
-// linkear a detalle de la publicación
-// Poner parte de imágenes
-// Vistas según rol
+import { FaChevronDown } from 'react-icons/fa'
+import CircularProgress from '@mui/material/CircularProgress';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+import moment from 'moment';
+import 'moment/locale/es';
 
-const useStyles = makeStyles({
-  root: {
-    // width: '80%',
-    width: 'clamp(200px, 800px, 80%)',
-    padding: 25,
-    borderRadius: '4px',
-    margin: '0.8rem',
-  },
-  media: {
-    height: 200,
-  },
-  customBox: {
-    // display: '-webkit-box',
-    boxOrient: 'vertical',
-    lineClamp: 2,
-    wordBreak: 'break-all',
-    overflow: 'hidden',
-    display: 'block',
-  },
+function List() {
 
-  bottomAlignItem: {
-    display: 'flex',
-    alignSelf: 'flex-end',
-  },
-  leftAlignItem: {
-    marginRight: 'auto',
-  },
-})
+	moment.locale('es');
+	moment.updateLocale('es', {
+		relativeTime: {
+			future: "en %s",
+			past: "%s ",
+			s: 'unos segundos',
+			ss: '%d segundos',
+			m: "un minuto",
+			mm: "%d minutos",
+			h: "una hora",
+			hh: "%d horas",
+			d: "un día",
+			dd: "%d dias",
+			w: "una semana",
+			ww: "%d semanas",
+			M: "un mes",
+			MM: "%d meses",
+			y: "un año",
+			yy: "%d años"
+		}
+	});
+	//datos globales y locales
+	const { posts, message, loading, getPosts, handlePostMessage } = useContext(PostContext); // contexto de posts
+	const [localData, setLocalData] = useState({
+		list: [],
+		postsPerPage: 10,
+		totalPages: 0,
+		currentPage: 1,
+		filters: {
+			search: "",
+			specie: "",
+			state: ""
+		}
+	})
 
-export default function List() {
-  const { posts, getPosts, removePost, selectPost, loading } = useContext(
-    PostContext,
-  )
-  console.log(posts)
-  const [itemRemove, setItemRemove] = useState(null)
-  const selectPostRemove = (idPost) => setItemRemove(idPost)
+	//navegación
+	let history = useHistory();
+	let { url } = useRouteMatch();
 
-  useEffect(() => {
-    getPosts()
-  }, [])
+	//layout y theming
+	const theme = useTheme();
+	const matchDownSm = useMediaQuery(theme.breakpoints.down('sm'));
 
-  useEffect(() => {
-    setItemRemove(null)
-  }, [posts])
+	const MySwal = withReactContent(Swal);
 
-  return (
-    <>
-      <div className="container">
-        <Dialog
-          open={itemRemove !== null}
-          onClose={() => {
-            setItemRemove(null)
-          }}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-          <DialogTitle id="alert-dialog-title">Confirmación</DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-description">
-              ¿Estás seguro que deseas eliminar esta publicación?
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button
-              onClick={() => {
-                setItemRemove(null)
-              }}
-            >
-              Cancelar
-            </Button>
-            <Button onClick={() => removePost(itemRemove)} autoFocus>
-              SÍ
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </div>
-      <Backdrop
-        sx={{
-          color: '#fff',
-          flex: 1,
-          justifyContent: 'center',
-          flexDirection: 'column',
-          zIndex: (theme) => theme.zIndex.drawer + 1,
-        }}
-        open={loading}
-      >
-        <CircularProgress color="inherit" />
-        <p style={{ marginLeft: 5 }}>Cargando ...</p>
-      </Backdrop>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
-      >
-        {posts.map((element, index) => (
-          <PostItem
-            item={element}
-            key={index}
-            removePost={selectPostRemove}
-            selectPost={selectPost}
-          />
-        ))}
-      </div>
-    </>
-  )
+	useEffect(() => {
+
+		const displayAlert = async () => {
+			let res = await MySwal.fire({
+				title: <p style={{ fontSize: 22, fontWeight: "bold" }}>{message.text}</p>,
+				allowOutsideClick: false,
+				icon: message.category,
+				backdrop: true
+
+			});
+
+
+			if (res.isConfirmed) {
+				await handlePostMessage(null);
+			}
+		}
+		if (message && message.showIn === "list" && !loading) {
+
+			displayAlert();
+		}
+	}, [message, loading])
+
+	useEffect(() => {
+		getPosts();
+	}, []);
+
+	useEffect(() => {
+
+		let result = posts.filter(element => {
+
+			let condition = true;
+
+
+			if (localData.filters.search !== "") {
+
+
+				if (!(element.nombre.toLowerCase().includes(localData.filters.search.toLowerCase().trim()))) {
+					condition = false;
+				}
+
+			}
+
+			if (localData.filters.state !== "") {
+				if (element.estado !== localData.filters.state) {
+					condition = false;
+				}
+			}
+
+			if (localData.filters.specie !== "") {
+				if (element.especie !== localData.filters.specie) {
+					condition = false;
+				}
+			}
+
+			return condition ? element : null;
+
+		})
+
+		let totalPages = Math.ceil(result.length / localData.postsPerPage);
+		setLocalData({ ...localData, currentPage: 1, list: result, totalPages: totalPages })
+
+	}, [posts, localData.filters, localData.postsPerPage])
+
+
+	useEffect(() => {
+		window.scrollTo(0, 0)
+	}, [localData.currentPage])
+
+
+	return (
+		<Box sx={{ display: "flex", flexDirection: "column" }}>
+			<Card variant="outlined" sx={{ padding: 1, borderRadius: theme.custom.borderRadius, mb: 2, }} >
+				<CardActions sx={{ justifyContent: "space-between", flexDirection: matchDownSm ? "column" : "row" }}>
+					<Box alignItems={"center"} display={"flex"}>
+						<Tooltip title="Agrega, edita , busca y elimina las noticias publicadas en la plataforma de adopción">
+							<IconButton>
+								<BiHelpCircle />
+							</IconButton>
+
+						</Tooltip>
+						<Typography variant="t2" sx={{ fontWeight: "600", color: grey[600] }} >
+							Listado de publicaciones
+						</Typography>
+
+						{matchDownSm ? <Button
+							color="primary"
+							onClick={() => { history.push("/posts/new"); }}
+							variant="contained"
+							startIcon={<AiOutlinePlus />}
+							sx={{ borderRadius: "8px", fontSize: 12, ml: 2 }}
+						>
+							Agregar
+						</Button> : null}
+
+					</Box>
+					<Box alignItems={"center"} display={"flex"} flexDirection={"row"} sx={{ marginTop: matchDownSm ? 2 : 0 }}>
+
+
+						{!matchDownSm ? <Button
+							color="primary"
+							onClick={() => { history.push("/posts/new"); }}
+							variant="contained"
+							startIcon={<AiOutlinePlus />}
+							sx={{ borderRadius: "8px", fontSize: 12, ml: 2 }}
+						>
+							Agregar
+						</Button> : null}
+
+
+						<TextField
+							sx={{
+								ml: 3, "& .MuiOutlinedInput-root": {
+
+									borderRadius: "10px!important"
+
+								}
+							}}
+							id="input-with-icon-textfield"
+							onChange={(event) => {
+								setLocalData({
+									...localData,
+									filters: {
+										...localData.filters,
+										search: event.target.value,
+									}
+
+								})
+
+							}}
+							size='small'
+							placeholder='Busca'
+							InputProps={{
+								startAdornment: (
+									<InputAdornment position="start">
+										<AiOutlineSearch />
+									</InputAdornment>
+								),
+							}}
+							variant="outlined"
+						/>
+					</Box>
+				</CardActions>
+			</Card>
+			<Card variant="outlined" sx={{ padding: 3, borderRadius: theme.custom.borderRadius }} >
+				<CardContent sx={{ display: "flex", flexDirection: "row", flexWrap: "wrap", padding: 0, justifyContent: "center", alignItems: "center" }}>
+					{localData.list.map((element, index) => {
+
+						let start = (localData.currentPage * localData.postsPerPage) - localData.postsPerPage;
+						let end = (localData.currentPage * localData.postsPerPage);
+						if ((index + 1) > start && (index + 1) <= end) {
+							return (
+
+								<Card key={index} variant="outlined" sx={{
+									width: matchDownSm ? 200 : 300,
+									height: 430,
+									margin: 2, borderRadius: 2,
+									padding: "0px important",
+									transition: "all .2s ease-in-out",
+									':hover': {
+										transform: "scale(1.1)",
+
+									},
+
+								}}
+									onClick={() => {
+
+										history.push(`${url}/${element.id_publicacion}`);
+
+									}}
+								>
+
+									<PostImage images={element.postImage} />
+
+
+									<CardContent sx={{ flexDirection: "column", justifyContent: "space-between", display: "flex" }}>
+
+										<div className="post-title">
+											<p>{element.titulo}</p>
+										</div>
+
+										<div className="post-body">
+											<p>{element.cuerpo}</p>
+										</div>
+
+										<Typography  color={theme.custom.primary.dark} variant='subtitle2'>{new Date(element.fecha_creacion).toLocaleDateString()}</Typography>
+
+										{/* <Typography color={theme.custom.primary.dark} variant='subtitle2'>Hace {moment(element.fecha_creacion, "YYYYMMDDHHmmss").fromNow()}</Typography> */}
+									</CardContent>
+
+
+								</Card>
+
+							)
+						} else {
+							return null;
+						}
+					}
+					)}
+
+					{loading && posts.length === 0 ?
+						<Stack direction="row" mt={8} alignItems="center"><CircularProgress />
+							<Typography sx={{ fontWeight: "500", ml: 2 }}>Cargando...</Typography>
+						</Stack> : null}
+					{posts.length === 0 && !loading ?
+						<Typography sx={{ fontWeight: "600", mt: 8 }}>No hay publicaciones registradas</Typography> : null}
+
+					{localData.list.length === 0 && !loading && posts.length !== 0 ?
+						<Typography sx={{ fontWeight: "600", mt: 8 }}>No hay coincidencias</Typography> : null}
+				</CardContent>
+
+				<CardActions sx={{ justifyContent: "space-between", flexDirection: matchDownSm ? "column" : "row", mt: 4 }}>
+
+
+					<Pagination color="primary" count={localData.totalPages}
+						page={localData.currentPage}
+						onChange={(event, value) => { setLocalData({ ...localData, currentPage: value }) }} />
+
+					<RowsManager numRows={localData.postsPerPage} handleRows={(val) => {
+
+						setLocalData({ ...localData, postsPerPage: val })
+					}} />
+
+
+				</CardActions>
+			</Card>
+		</Box>
+
+	)
 }
 
-const PostItem = ({ item, removePost, selectPost }) => {
-  const classes = useStyles()
-  return (
-    <Card className={classes.root}>
-      <CardMedia
-        className={classes.media}
-        // image="https://via.placeholder.com/300x100"
-        image="/images/cat_3.jpg"
-      />
-      <CardContent>
-        <Typography sx={{ fontSize: 'h6.fontSize' }} gutterBottom>
-          {item.titulo}
-        </Typography>
-        <Box component="div" classes={{ root: classes.customBox }}>
-          {item.cuerpo}
-        </Box>
-      </CardContent>
+const RowsManager = ({ numRows, handleRows }) => {
 
-      <CardActions disableSpacing>
-        <div className={classes.leftAlignItem}>
-          <IconButton
-            aria-label="Editar publicación"
-            onClick={() => {
-              selectPost(item)
-            }}
-          >
-            <FaUserEdit size={25} cursor="pointer" />
-          </IconButton>
-          <IconButton
-            aria-label="Eliminar publicación"
-            onClick={() => {
-              removePost(item.id_publicacion)
-            }}
-          >
-            <FaTrashAlt size={25} cursor="pointer" />
-          </IconButton>
-        </div>
+	const theme = useTheme();
+	const matchDownSm = useMediaQuery(theme.breakpoints.down('sm'));
+	const [anchorEl, setAnchorEl] = React.useState(null);
 
-        <Typography
-          className={classes.bottomAlignItem}
-          sx={{ fontSize: 14 }}
-          color="text.secondary"
-          gutterBottom
-        >
-          Publicado en: {item.fecha_creacion}
-        </Typography>
-      </CardActions>
-    </Card>
-  )
+	const handleClick = (event) => {
+		setAnchorEl(event.currentTarget);
+	};
+
+	const handleClose = (value) => {
+		if (value) {
+			handleRows(value);
+		}
+		setAnchorEl(null);
+	};
+
+	const open = Boolean(anchorEl);
+
+
+	return (<>
+
+		<Button
+			aria-describedby={"menu-rows"}
+			color="primary"
+			onClick={(ev) => handleClick(ev)}
+			variant="text"
+			endIcon={<FaChevronDown />}
+			sx={{ mt: matchDownSm ? 3 : 0 }}
+		>{numRows} por página</Button>
+
+
+		<Menu
+			id={"menu-rows"}
+			anchorEl={anchorEl}
+			open={open}
+			onClose={() => handleClose(null)}
+			MenuListProps={{
+				'aria-labelledby': 'basic-button',
+			}}
+			anchorOrigin={{
+				vertical: 'top',
+				horizontal: 'center',
+			}}
+			transformOrigin={{
+				vertical: 'bottom',
+				horizontal: 'center',
+			}}
+			PaperProps={{
+				style: { borderRadius: 12 }
+			}}
+		>
+			<MenuItem onClick={() => handleClose(10)}>10 publicaciones</MenuItem>
+			<MenuItem onClick={() => handleClose(30)}>30 publicaciones</MenuItem>
+			<MenuItem onClick={() => handleClose(50)}>50 publicaciones</MenuItem>
+		</Menu>
+	</>)
 }
+
+
+const PostImage = ({ images }) => {
+
+	const [isLoaded, setIsLoaded] = useState(false)
+
+	return images.length > 0 ? <>
+
+		{!isLoaded ? <Skeleton variant="rectangular" height={230} sx={{ borderRadius: "8px" }} /> : null}
+		<CardMedia
+			onLoad={() => { setIsLoaded(true) }}
+			component="img"
+			height={isLoaded ? "230" : "0"}
+			sx={{ objectFit: "cover" }}
+			image={`${process.env.REACT_APP_API_URL}/${images[0].ruta}`}
+			alt="imagen de la publicación"
+		/>
+
+	</> : <CardMedia
+		onLoad={() => { setIsLoaded(true) }}
+		component="img"
+		height="230"
+		sx={{ objectFit: "cover" }}
+		image={`/images/no-pictures.png`}
+		alt="imagen de la publicación"
+	/>
+
+}
+
+
+
+export default List
