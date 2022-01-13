@@ -3,7 +3,7 @@ import PostContext from './postContext';
 import PostReducer from './postReducer';
 import { POSTS, SELECT_POST, TOGGLE_POSTS_LOADING, POST_MESSAGE } from '../../types';
 import axiosClient from '../../config/axios';
-
+import {handleResponseError} from "../../Shared/utils"
 
 const PostState = props => {
 
@@ -30,6 +30,7 @@ const PostState = props => {
             });
             const res = await axiosClient.get("/api/post");
 
+            console.log(res.data)
             if (res.data.state) {
                 dispatch({
                     type: POSTS,
@@ -43,15 +44,8 @@ const PostState = props => {
             }
 
         } catch (error) {
-            let errorsDecriptions = error.response?.data.errors;
-
-            let text = "";
-            if (errorsDecriptions) {
-                text = errorsDecriptions[0];
-            } else {
-                text = error.response.data.message;
-            }
-
+         
+            let text = handleResponseError(error)
             dispatch({
                 type: POST_MESSAGE, payload: {
                     category: "error",
@@ -64,15 +58,49 @@ const PostState = props => {
 
     }
 
+    const getPost = async (postId) => {
+
+        try {
+            dispatch({
+                type: TOGGLE_POSTS_LOADING,
+                payload: true
+            });
+            const res = await axiosClient.get("/api/post/"+postId);
+
+            console.log(res.data)
+            if (res.data.state) {
+                dispatch({
+                    type: SELECT_POST,
+                    payload: res.data.data
+                });
+            } else {
+                dispatch({
+                    type: POSTS,
+                    payload: null
+                });
+            }
+
+        } catch (error) {
+
+            let text = handleResponseError(error)
+            dispatch({
+                type: POST_MESSAGE, payload: {
+                    category: "error",
+                    text: text,
+                    showIn: "detail"
+                }
+            });
+
+        }
+
+    }
 
     /**Funcion para crear posts
      * 
      * @param {*} data 
      */
-    const createPost = async (data) => {
-        
-
-
+    const createPost = async (data,images) => {
+    
 
         dispatch({
             type: TOGGLE_POSTS_LOADING,
@@ -85,33 +113,100 @@ const PostState = props => {
         try {
             const res = await axiosClient.post("/api/post", formattedData);
             console.log(res)
-            dispatch({
-                type: POST_MESSAGE, payload: {
-                    category: res.data.state ? "success" : "error",
-                    text: res.data.message,
-                    showIn: "form"
+            if (res.data.state) {
+                if (images.length !== 0) {
+                    let resultImagesInsert = await insertImages(images, res.data.data);
+                    dispatch({
+                        type: POST_MESSAGE, payload: {
+                            category: resultImagesInsert.data.state ? "success" : "error",
+                            text: resultImagesInsert.data.state ? res.data.message : "La publicación se ha registrado exitosamente exitosamente, pero ha ocurrido un error al subir las imágenes",
+                            showIn: "form"
+
+                        }
+                    });
+                } else {
+                    dispatch({
+                        type: POST_MESSAGE, payload: {
+                            category: "success",
+                            text: res.data.message,
+                            showIn: "form"
+
+                        }
+                    });
                 }
-            })
-            getPosts();
+                getPosts();
+            } else {
+                dispatch({
+                    type: POST_MESSAGE, payload: {
+                        category: "error",
+                        text: res.data.message,
+                        showIn: "form"
+
+                    }
+                });
+            }
+
 
         } catch (error) {
 
-            let errorDescriptions = error.response?.data.errors;
-
-            let text = "";
-            if (errorDescriptions) {
-                text = errorDescriptions[0];
-            } else {
-                text = error.response.data.message;
-            }
-
+            let text = handleResponseError(error)
             dispatch({
                 type: POST_MESSAGE, payload: {
                     category: "error",
                     text: text,
                     showIn: "form"
                 }
-            })
+            });
+
+        }
+    }
+
+
+    const insertImages = async (images, postId) => {
+
+        let formattedData = new FormData();
+        images.forEach((element) => {
+            formattedData.append("postImages", element.file);
+        });
+        formattedData.append('id_publicacion', postId);
+        try {
+            const res = await axiosClient.post("/api/postImages/uploadImages", formattedData,
+                {
+                    headers: {
+                        Accept: "*/*",
+                        "Content-Type": "multipart/form-data;",
+                    },
+                }
+            );
+
+            return res;
+        } catch (error) {
+
+            return error.response.data;
+        }
+    }
+
+    const removeImages = async (images) => {
+
+        let formattedData = [];
+        images.forEach(element => {
+            formattedData.push(element.id_imagen_animal)
+        })
+
+        try {
+            const res = await axiosClient.delete("/api/postImages", { data: { id_imagenes: formattedData } },
+                {
+                    headers: {
+                        Accept: "*/*",
+                        "Content-Type": "multipart/form-data;",
+                    },
+                }
+            );
+            return res;
+
+        } catch (error) {
+            console.log(error);
+            return error.response.data;
         }
     }
 
@@ -214,6 +309,7 @@ const PostState = props => {
             selectedPost: state.selectedPost,
             message: state.message,
             getPosts,
+            getPost,
             createPost,
             selectPost,
             removePost,

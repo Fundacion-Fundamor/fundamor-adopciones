@@ -1,34 +1,40 @@
-import React, { useEffect, useContext, useState } from 'react'
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useContext} from 'react'
 import { useParams, useHistory } from 'react-router';
 import PostContext from '../../context/post/postContext';
-import Form from '../tracking/Form';
-import { Button, Modal, Box } from '@mui/material';
-import ModalUpdate from './ModalUpdate';
 
+import { Button, Box, Card, CardActions, Tooltip, IconButton, Typography, useMediaQuery, useTheme, Stack, CardMedia } from '@mui/material';
+import { AiOutlineInfoCircle, AiOutlinePlus, } from 'react-icons/ai';
+import { BiHelpCircle } from 'react-icons/bi';
+import { FiTrash2 } from 'react-icons/fi';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import { grey } from '@mui/material/colors';
+
+import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+import { Carousel } from 'react-responsive-carousel';
+import { FaRegCalendar } from 'react-icons/fa';
 
 
 export default function Detail() {
 
 
-    const { message, loading, selectedPost, handlePostMessage, getPost,removePost } = useContext(PostContext);// contexto de adopcion
-    const [showFormTracking, setshowFormTracking] = useState(false)
-    const [showFormEdit, setShowFormEdit] = useState(false)
+    const { message, loading, selectedPost, handlePostMessage, getPost, removePost } = useContext(PostContext);// contexto de adopcion
     let { postId } = useParams();
     const MySwal = withReactContent(Swal);
 
+
+    //layout y theming
+    const theme = useTheme();
+    const matchDownSm = useMediaQuery(theme.breakpoints.down('sm'));
+
     let history = useHistory();
+
     useEffect(() => {
         getPost(postId);
     }, [])
 
-    const toggleModalTracking = () => {
-        setshowFormTracking(!showFormTracking);
-    }
-    const toggleModalEdit = () => {
-        setShowFormEdit(!showFormEdit);
-    }
+
     const onRemovePost = async () => {
 
 
@@ -49,6 +55,13 @@ export default function Detail() {
             allowOutsideClick: () => !MySwal.isLoading()
         })
     }
+
+
+    useEffect(() => {
+        if (selectedPost) {
+            window.scrollTo(0, 0);
+        }
+    }, [selectedPost])
 
     useEffect(() => {
 
@@ -76,38 +89,112 @@ export default function Detail() {
 
     }, [message, loading]);
 
-    return <div>
-        {selectedPost ? <p>{JSON.stringify(selectedPost)}</p> : null}
-        {loading ? <p>Cargando...</p> : null}
-        <Button size="medium" variant="contained"  color="primary" sx={{ marginTop: 5 }} onClick={() => toggleModalTracking()}>Nuevo segumiento</Button>
+    return (
+        <Box sx={{ display: "flex", flexDirection: "column" }}>
+            <Card variant="outlined" sx={{ padding: 1, borderRadius: theme.custom.borderRadius, mb: 2, }} >
+                <CardActions sx={{ justifyContent: "space-between", flexDirection: matchDownSm ? "column" : "row" }}>
+                    <Box alignItems={"center"} display={"flex"}>
+                        <Tooltip title="Esta vista respresenta la publicación que verá el publicco que viste la página">
+                            <IconButton>
+                                <BiHelpCircle />
+                            </IconButton>
 
-        <Button size="medium" variant="contained" color="primary" sx={{ marginTop: 5 }} onClick={() => toggleModalEdit()}>Editar</Button>
-        <Button size="medium" variant="contained" color="error" sx={{ marginTop: 5 }} onClick={() => onRemovePost()}>Eliminar adopción</Button>
-
-        <Modal
-            open={showFormTracking}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-            style={{ overflowY: 'scroll' }}
-        >
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                {showFormTracking && <Form handleModal={toggleModalTracking} postID={postId} />}
-            </Box>
+                        </Tooltip>
+                        <Typography variant="t2" sx={{ fontWeight: "600", color: grey[600] }} >
+                            Detalles de la publicación
+                        </Typography>
 
 
-        </Modal>
+                    </Box>
+                    <Stack direction={"row"} mt={matchDownSm ? 2 : "0"}>
+                        <Button
+                            color="primary"
+                            onClick={() => { history.push("/posts/edit/" + postId); }}
+                            variant="outlined"
+                            startIcon={<AiOutlinePlus />}
+                            sx={{ borderRadius: "8px", fontSize: 12, ml: 2 }}
+                        >
+                            Editar
+                        </Button>
+                        <Button
+                            color="error"
+                            onClick={() => onRemovePost()}
+                            variant="outlined"
+                            startIcon={<FiTrash2 />}
+                            sx={{ borderRadius: "8px", fontSize: 12, ml: 2 }}
+                        >
+                            Eliminar
+                        </Button>
+                    </Stack>
+                </CardActions>
+            </Card>
 
-        <Modal
-            open={showFormEdit}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-            style={{ overflowY: 'scroll' }}
-        >
 
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                {showFormEdit && <ModalUpdate handleModal={toggleModalEdit} postId={selectedPost.id_adopcion} postState={selectedPost.estado} observations={selectedPost.observaciones} finalDate={selectedPost.fecha_entrega} />}
-            </Box>
+            {selectedPost ? <Card variant="outlined" sx={{
+                padding: 3, borderRadius: theme.custom.borderRadius,
+                // flexWrap: "wrap",
+                display: "flex",
+            
+                flexDirection: "column"
+            }} >
 
-        </Modal>
-    </div>
+
+                {selectedPost.postImage.length > 0 ? <Box alignItems={"center"}
+                    justifyContent={"center"} display={"flex"} flexDirection={"column"} >
+
+
+                    <Carousel showThumbs={false} >
+                        {selectedPost.postImage.map((element, index) => (
+                            <div key={index}>
+                                <img
+                                    style={{ objectFit: "cover", borderRadius: 8 }}
+                                    width={"100%"}
+                                    height={!matchDownSm ? "414px" : "auto"}
+                                    src={`${process.env.REACT_APP_API_URL}/${element.ruta}`} alt="card" />
+
+                            </div>))}
+                    </Carousel>
+              
+                </Box> :
+
+                    <Stack direction={"column"} alignItems={"center"}>
+                        <CardMedia
+
+                            component="img"
+                            height="230"
+                            sx={{ borderRadius: "8px", objectFit: "contain" }}
+                            image={`/images/no_image.png`}
+                            alt="imagen de la mascota"
+                        />
+
+                        <Stack flexDirection={"row"} alignItems={"flex-start"} display={"flex"}>
+                            <AiOutlineInfoCircle color='#1976d2' size={24} />
+                            <Typography sx={{ fontSize: 12, ml: 1, color: "#1976d2" }} variant="subtitle2">Esta publicación no cuenta con imágenes, puede subirlas editando la publicación</Typography>
+
+                        </Stack>
+                    </Stack>
+                }
+                <Box  mt={5} flexDirection={"column"} display="flex">
+
+                    <Typography variant="t1" sx={{ fontWeight: "600", color: grey[600] }} >
+                        {selectedPost.titulo}
+                    </Typography>
+                    <Stack direction="row" alignItems="center" mt={2} sx={{ background: theme.custom.primary.light, width:"100px", justifyContent:"center", p:1, borderRadius:"8px"}}>
+                        <FaRegCalendar color={theme.custom.primary.dark}/>
+                        <Typography variant="subtitle2" ml={1} sx={{ fontWeight: "500", color: grey[600] }} >
+                            {new Date(selectedPost.fecha_creacion).toLocaleDateString()}
+                        </Typography>
+                    </Stack>
+                  
+
+                    <Typography variant="body1" sx={{ fontWeight: "100", color: grey[500], mt: 4 }} >
+                        {selectedPost.cuerpo}
+                    </Typography>
+                </Box>
+
+
+            </Card> : null}
+        </Box>
+
+    )
 }
