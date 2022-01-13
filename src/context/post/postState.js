@@ -58,6 +58,42 @@ const PostState = props => {
 
     }
 
+    const getPost = async (postId) => {
+
+        try {
+            dispatch({
+                type: TOGGLE_POSTS_LOADING,
+                payload: true
+            });
+            const res = await axiosClient.get("/api/post/"+postId);
+
+            console.log(res.data)
+            if (res.data.state) {
+                dispatch({
+                    type: SELECT_POST,
+                    payload: res.data.data
+                });
+            } else {
+                dispatch({
+                    type: POSTS,
+                    payload: null
+                });
+            }
+
+        } catch (error) {
+
+            let text = handleResponseError(error)
+            dispatch({
+                type: POST_MESSAGE, payload: {
+                    category: "error",
+                    text: text,
+                    showIn: "detail"
+                }
+            });
+
+        }
+
+    }
 
     /**Funcion para crear posts
      * 
@@ -113,22 +149,15 @@ const PostState = props => {
 
         } catch (error) {
 
-            let errorDescriptions = error.response?.data.errors;
-
-            let text = "";
-            if (errorDescriptions) {
-                text = errorDescriptions[0];
-            } else {
-                text = error.response.data.message;
-            }
-
+            let text = handleResponseError(error)
             dispatch({
                 type: POST_MESSAGE, payload: {
                     category: "error",
                     text: text,
                     showIn: "form"
                 }
-            })
+            });
+
         }
     }
 
@@ -280,6 +309,7 @@ const PostState = props => {
             selectedPost: state.selectedPost,
             message: state.message,
             getPosts,
+            getPost,
             createPost,
             selectPost,
             removePost,

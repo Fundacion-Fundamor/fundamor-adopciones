@@ -1,7 +1,7 @@
 //eslint-disable-next-line react-hooks/exhaustive-deps
 import React, { useState, useEffect, useContext } from 'react'
 import './form.scss';
-import { Alert, Button, CircularProgress, TextField, } from '@mui/material';
+import { Alert, Button, CircularProgress, Divider, Grid, Stack, TextField, useMediaQuery, useTheme, } from '@mui/material';
 import { GrClose } from 'react-icons/gr';
 import AdopterContext from '../../context/adopter/adopterContext';
 
@@ -32,6 +32,10 @@ export default function AdopterForm({ handleToggle }) {
         address: null,
         phone: null
     });
+    //layout y theming
+    const theme = useTheme();
+    const matchDownSm = useMediaQuery(theme.breakpoints.down('sm'));
+
 
     const onSubmit = async () => {
         // eslint-disable-next-line no-useless-escape
@@ -79,135 +83,201 @@ export default function AdopterForm({ handleToggle }) {
 
             });
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [message]);
 
 
     return (
-        <div style={{ minWidth: 340, width: 400, backgroundColor: "#fff", padding: 15, borderRadius: 4, margin: 30, marginBottom: 30 }}>
+        <div style={{ width: matchDownSm ? 650 : 659, backgroundColor: "#fff", padding: 15, borderRadius: 4, margin: 30, marginBottom: 30 }}>
 
 
-            <div className="form-container">
-                <div style={{ display: "flex", justifyContent: "space-between" }}>
-                    {selectedAdopter ?
-                        <h3>Edita los datos del adoptante </h3>
-                        :
-                        <h3>Registra algún adoptante para vincularlo a un proceso de adopción</h3>}
-                    <GrClose size={selectedAdopter ? 25 : 35} color="#000" onClick={handleToggle} cursor="pointer" />
-                </div>
-                <div className="form-group">
+
+            <div style={{ display: "flex", justifyContent: "space-between", padding: "15px" }}>
+                {selectedAdopter ?
+                    <h3>Edita los datos del adoptante </h3>
+                    :
+                    <h3>Registra algún adoptante para vincularlo a un proceso de adopción</h3>}
+                <GrClose size={selectedAdopter ? 25 : 35} color="#000" onClick={handleToggle} cursor="pointer" />
+            </div>
+
+            <Grid container sx={{ padding: 3 }} spacing={3} >
+                <Grid item md={6}
+                    xs={12}
+                    justifyContent="center"
+                    display="flex"
+                    flexDirection="column"
+                    padding={1}
+                >
 
                     <TextField
                         fullWidth
                         error={errors.name != null}
                         label="Nombre y apellidos"
                         helperText={errors.name}
-                        variant="standard"
+                        variant="outlined"
+                        InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px" } }}
                         value={values.name}
                         onChange={(event) => {
                             setValues({ ...values, name: event.target.value });
                             setErrors({ ...errors, name: null })
                         }}
                     />
-                </div>
+                </Grid>
 
-                <div className="form-group">
+                <Grid item md={6}
+                    xs={12}
+                    justifyContent="center"
+                    display="flex"
+                    flexDirection="column"
+                    padding={1}
+                >
+
                     <TextField
                         fullWidth
                         error={errors.ID !== null}
                         label="Identificación"
                         disabled={selectedAdopter !== null}
                         helperText={errors.ID}
-                        variant="standard"
+                        variant="outlined"
+                        InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px" } }}
                         value={values.ID}
                         onChange={(event) => {
                             setValues({ ...values, ID: event.target.value });
                             setErrors({ ...errors, ID: null })
                         }}
                     />
-                </div>
-                <div className="form-group">
+                </Grid>
+
+                <Grid item md={6}
+                    xs={12}
+                    justifyContent="center"
+                    display="flex"
+                    flexDirection="column"
+                    padding={1}
+                >
+
                     <TextField
                         fullWidth
                         error={errors.email != null}
                         label="Correo electrónico"
                         helperText={errors.email}
-                        variant="standard"
+                        variant="outlined"
+                        InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px" } }}
                         value={values.email}
                         onChange={(event) => {
                             setValues({ ...values, email: event.target.value });
                             setErrors({ ...errors, email: null })
                         }}
                     />
-                </div>
-                <div className="form-group">
+                </Grid>
+                <Grid item md={6}
+                    xs={12}
+                    justifyContent="center"
+                    display="flex"
+                    flexDirection="column"
+                    padding={1}
+                >
+
                     <TextField
                         fullWidth
                         error={errors.profession != null}
                         label="Profesión"
                         helperText={errors.profession}
-                        variant="standard"
+                        variant="outlined"
+                        InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px" } }}
                         value={values.profession}
                         onChange={(event) => {
                             setValues({ ...values, profession: event.target.value });
                             setErrors({ ...errors, profession: null })
                         }}
                     />
-                </div>
-                <div className="form-group">
+                </Grid>
+                <Grid item md={6}
+                    xs={12}
+                    justifyContent="center"
+                    display="flex"
+                    flexDirection="column"
+                    padding={1}
+                >
+
                     <TextField
                         fullWidth
                         error={errors.address != null}
                         label="Dirección"
                         helperText={errors.address}
-                        variant="standard"
+                        variant="outlined"
+                        InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px" } }}
                         value={values.address}
                         onChange={(event) => {
                             setValues({ ...values, address: event.target.value });
                             setErrors({ ...errors, address: null })
                         }}
                     />
-                </div>
+                </Grid>
+                <Grid item md={6}
+                    xs={12}
+                    justifyContent="center"
+                    display="flex"
+                    flexDirection="column"
+                    padding={1}
+                >
 
-                <div className="form-group">
                     <TextField
                         fullWidth
                         error={errors.phone != null}
                         label="Celular"
                         helperText={errors.phone}
-                        variant="standard"
+                        variant="outlined"
+                        InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px" } }}
                         value={values.phone}
                         onChange={(event) => {
                             setValues({ ...values, phone: event.target.value });
                             setErrors({ ...errors, phone: null })
                         }}
                     />
-                </div>
+                </Grid>
 
-                <div className="form-group">
+                <Grid item md={6}
+                    xs={12}
+                    justifyContent="center"
+                    display="flex"
+                    flexDirection="column"
+                    padding={1}
+                >
+
                     <TextField
                         fullWidth
                         label="Teléfono fijo"
-                        variant="standard"
+                        variant="outlined"
+                        InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px" } }}
                         value={values.housePhone}
                         onChange={(event) => {
                             setValues({ ...values, housePhone: event.target.value });
                             setErrors({ ...errors, housePhone: null })
                         }}
                     />
-                </div>
+                </Grid>
+            </Grid>
 
 
 
-                {loading && <div style={{ marginTop: 15, display: "flex", justifyContent: "center", alignItems: "center" }}>
-                    <CircularProgress color="success" />
-                    <p style={{ marginLeft: 10 }}>Cargando...</p>
-                </div>}
 
-                {message && message.showIn === "form" && <Alert severity={message.category} variant="filled" style={{ marginTop: 20, marginBottom: 5 }} >{message.text}</Alert>}
 
-                <Button variant="contained" style={{ width: "100%", marginTop: 25 }} onClick={() => { if (!loading) { onSubmit() } }}>Guardar</Button>
-            </div>
+
+            {loading && <div style={{ marginTop: 15, display: "flex", justifyContent: "center", alignItems: "center" }}>
+                <CircularProgress color="success" />
+                <p style={{ marginLeft: 10 }}>Cargando...</p>
+            </div>}
+
+            {message && message.showIn === "form" && <Alert severity={message.category} variant="filled" style={{ marginTop: 20, marginBottom: 5 }} >{message.text}</Alert>}
+
+            <Divider sx={{ mt: 2 }} />
+            <Stack flexDirection="row" p={2} justifyContent={"flex-end"}>
+
+                <Button variant="contained" color="inherit" style={{ borderRadius: "8px", marginTop: 25, marginRight: 12 }} onClick={() => handleToggle()}>Cerrar</Button>
+
+                <Button variant="contained" style={{ borderRadius: "8px", marginTop: 25 }} onClick={() => { if (!loading) { onSubmit() } }}>Guardar</Button>
+            </Stack>
         </div>
     )
 }

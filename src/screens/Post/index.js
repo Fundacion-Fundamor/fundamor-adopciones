@@ -7,6 +7,7 @@ import Form from '../../components/Post/Form'
 
 import { Route, Switch, useRouteMatch } from 'react-router-dom'
 import Detail from '../../components/Post/Detail'
+import FormEdit from '../../components/Post/FormEdit';
 
 
 export default function Post() {
@@ -16,15 +17,15 @@ export default function Post() {
       <Route exact path={path}>
         <List />
       </Route>
-      {/* <Route exact path={`${path}/:postId`}>
+      <Route exact path={`${path}/detail/:postId`}>
         <Detail />
-      </Route> */}
+      </Route>
       <Route exact path={`${path}/new`}>
         <Form />
       </Route>
-      {/* <Route exact path={`${path}/edit/:animalId`}>
+      <Route exact path={`${path}/edit/:postId`}>
         <FormEdit />
-      </Route> */}
+      </Route>
     </Switch>
   </div>
 }
