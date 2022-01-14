@@ -30,10 +30,7 @@ export default function Detail() {
 
     let history = useHistory();
 
-    useEffect(() => {
-        getPost(postId);
-    }, [])
-
+  
 
     const onRemovePost = async () => {
 
@@ -62,6 +59,10 @@ export default function Detail() {
             window.scrollTo(0, 0);
         }
     }, [selectedPost])
+
+    useEffect(() => {
+        getPost(postId);
+    }, [])
 
     useEffect(() => {
 
