@@ -1,9 +1,12 @@
 //eslint-disable-next-line react-hooks/exhaustive-deps
 import React, { useState, useEffect, useContext } from 'react'
 import './form.scss';
-import { Alert, Button, CircularProgress, Divider, Grid, Stack, TextField, useMediaQuery, useTheme, } from '@mui/material';
+import { Alert, Button, Divider, Grid, Stack, TextField, useMediaQuery, useTheme, } from '@mui/material';
 import { GrClose } from 'react-icons/gr';
 import AdopterContext from '../../context/adopter/adopterContext';
+import { LoadingButton } from '@mui/lab';
+import { AiOutlineSave } from 'react-icons/ai';
+import { green, red } from '@mui/material/colors';
 
 
 /**Componente encargado del registro y edición de un adoptante
@@ -88,11 +91,11 @@ export default function AdopterForm({ handleToggle }) {
 
 
     return (
-        <div style={{ width: matchDownSm ? 650 : 659, backgroundColor: "#fff", padding: 15, borderRadius: 4, margin: 30, marginBottom: 30 }}>
+        <div style={{ width: matchDownSm ? 650 : 659, backgroundColor: "#fff", padding: 15, borderRadius: "12px", margin: 30, marginBottom: 30 }}>
 
 
 
-            <div style={{ display: "flex", justifyContent: "space-between", padding: "15px" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", padding: "15px",alignItems:"center" }}>
                 {selectedAdopter ?
                     <h3>Edita los datos del adoptante </h3>
                     :
@@ -260,23 +263,30 @@ export default function AdopterForm({ handleToggle }) {
             </Grid>
 
 
-
-
-
-
-            {loading && <div style={{ marginTop: 15, display: "flex", justifyContent: "center", alignItems: "center" }}>
-                <CircularProgress color="success" />
-                <p style={{ marginLeft: 10 }}>Cargando...</p>
-            </div>}
-
-            {message && message.showIn === "form" && <Alert severity={message.category} variant="filled" style={{ marginTop: 20, marginBottom: 5 }} >{message.text}</Alert>}
+            {message && message.showIn === "form" && <Alert severity={message.category} variant="standard" style={{ marginTop: 20, borderRadius: 12, marginBottom: 5, borderWidth: 1, borderStyle: "solid", borderColor: message.category === "success" ? "#66bb6a" : "#e53935", fontWeight: "bold", color: message.category === "success" ? green[600] : red[600] }} >{message.text}</Alert>}
 
             <Divider sx={{ mt: 2 }} />
             <Stack flexDirection="row" p={2} justifyContent={"flex-end"}>
 
-                <Button variant="contained" color="inherit" style={{ borderRadius: "8px", marginTop: 25, marginRight: 12 }} onClick={() => handleToggle()}>Cerrar</Button>
+                <Button variant="contained" color="inherit" style={{ borderRadius: "8px", marginTop: 25, marginRight: 12, }} onClick={() => handleToggle()}>Cerrar</Button>
 
-                <Button variant="contained" style={{ borderRadius: "8px", marginTop: 25 }} onClick={() => { if (!loading) { onSubmit() } }}>Guardar</Button>
+
+
+                <LoadingButton loading={loading}
+                    size="medium" variant="contained" color="primary" style={{ borderRadius: "8px", marginTop: 25, marginRight: 12 }}
+
+                    onClick={() => {
+
+                        if (!loading) {
+                            onSubmit()
+
+                        }
+                    }}
+                    startIcon={<AiOutlineSave size={20} />}
+
+                >
+                    Guardar
+                </LoadingButton>
             </Stack>
         </div>
     )
