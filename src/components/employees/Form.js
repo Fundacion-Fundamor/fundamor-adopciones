@@ -1,11 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-//eslint-disable-next-line react-hooks/exhaustive-deps
+
 import React, { useState, useEffect, useContext } from 'react'
 import './form.scss';
-import { Alert, Button, CircularProgress, FormControl, InputLabel, MenuItem, TextField, Select, FormHelperText, FormControlLabel, Checkbox, Typography } from '@mui/material';
+import { Alert, FormControl, InputLabel, Grid, MenuItem, TextField, Select, FormHelperText, FormControlLabel, Checkbox, Typography, Stack, Button, Divider, useMediaQuery, useTheme } from '@mui/material';
 import EmployeeContext from '../../context/employee/employeeContext';
-import { grey } from '@mui/material/colors';
+import { green, grey, red } from '@mui/material/colors';
 import { IoClose } from 'react-icons/io5';
+import { LoadingButton } from '@mui/lab';
+import { AiOutlineSave } from 'react-icons/ai';
 
 
 /**Componente encargado del registro y edición de un colaborador
@@ -34,6 +36,12 @@ export default function Form({ handleToggle }) {
         passwordConfirm: null,
         role: null
     });
+
+
+    //layout y theming
+    const theme = useTheme();
+    const matchDownSm = useMediaQuery(theme.breakpoints.down('sm'));
+
 
     const onSubmit = async () => {
         // eslint-disable-next-line no-useless-escape
@@ -84,125 +92,203 @@ export default function Form({ handleToggle }) {
         }
     }, [message]);
     return (
-        <div style={{ minWidth: 340, width: 400, backgroundColor: "#fff", padding: 15, borderRadius: "16px", margin: 30, marginBottom: 30 }}>
+        <div style={{ width: matchDownSm ? 650 : 659,  backgroundColor: "#fff", padding: 15, borderRadius: "16px", margin: 30, marginBottom: 30 }}>
 
 
             <div className="form-container">
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: selectedEmployee?"flex-start":"center" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: selectedEmployee ? "flex-start" : "center" }}>
                     {selectedEmployee ?
                         <Typography variant="t2" sx={{ fontWeight: "600", color: grey[600] }} >Edita los datos del colaborador </Typography>
                         :
                         <Typography variant="t2" sx={{ fontWeight: "600", color: grey[600] }} >
                             Nuevo colaborador
-                        </Typography> }
-                    <IoClose size={ 35} color={grey[600]} onClick={handleToggle} cursor="pointer" />
+                        </Typography>}
+                    <IoClose size={35} color={grey[600]} onClick={handleToggle} cursor="pointer" />
                 </div>
-                <div className="form-group">
-
-                    <TextField
-                        fullWidth
-                        error={errors.name != null}
-                        label="Nombre y apellidos"
-                        helperText={errors.name}
-                        variant="standard"
-                        value={values.name}
-                        onChange={(event) => {
-                            setValues({ ...values, name: event.target.value });
-                            setErrors({ ...errors, name: null })
-                        }}
-                    />
-                </div>
-
-                <div className="form-group">
-                    <TextField
-                        fullWidth
-                        error={errors.ID !== null}
-                        label="Identificación"
-                        disabled={selectedEmployee !== null}
-                        helperText={errors.ID}
-                        variant="standard"
-                        value={values.ID}
-                        onChange={(event) => {
-                            setValues({ ...values, ID: event.target.value });
-                            setErrors({ ...errors, ID: null })
-                        }}
-                    />
-                </div>
-                <div className="form-group">
-                    <TextField
-                        fullWidth
-                        error={errors.email != null}
-                        label="Correo electrónico"
-                        helperText={errors.email}
-                        variant="standard"
-                        value={values.email}
-                        onChange={(event) => {
-                            setValues({ ...values, email: event.target.value });
-                            setErrors({ ...errors, email: null })
-                        }}
-                    />
-                </div>
-                <FormControl fullWidth variant="standard">
-                    <InputLabel id="demo-simple-select-label" error={errors.role !== null} >Rol</InputLabel>
-                    <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={values.role}
-                        label="Seleccione el rol"
-                        onChange={(event) => {
-                            setValues({
-                                ...values, role: event.target.value
-                            });
-                            setErrors({ ...errors, role: null });
-                        }}
-                        error={errors.role !== null}
+                <Grid container spacing={3} mt={2} >
+                    <Grid item md={6}
+                        xs={12}
+                        justifyContent="center"
+                        display="flex"
+                        flexDirection="column"
+                        padding={1}
                     >
-                        <MenuItem value={"administrador"}>Administrador</MenuItem>
-                        <MenuItem value={"colaborador"}>Colaborador</MenuItem>
-                    </Select>
-                    {errors.role && <FormHelperText error={true}>{errors.role}</FormHelperText>}
-                </FormControl>
+
+
+                        <TextField
+                            fullWidth
+                            error={errors.name != null}
+                            label="Nombre y apellidos"
+                            helperText={errors.name}
+                            variant="outlined"
+
+                            InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px", borderRadius: "12px" } }}
+                            value={values.name}
+                            onChange={(event) => {
+                                setValues({ ...values, name: event.target.value });
+                                setErrors({ ...errors, name: null })
+                            }}
+                        />
+                    </Grid>
+                    <Grid item md={6}
+                        xs={12}
+                        justifyContent="center"
+                        display="flex"
+                        flexDirection="column"
+                        padding={1}
+                    >
+
+                        <TextField
+                            fullWidth
+                            error={errors.ID !== null}
+                            label="Identificación"
+                            disabled={selectedEmployee !== null}
+                            helperText={errors.ID}
+                            variant="outlined"
+                            InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px", borderRadius: "12px" } }}
+                            value={values.ID}
+                            onChange={(event) => {
+                                setValues({ ...values, ID: event.target.value });
+                                setErrors({ ...errors, ID: null })
+                            }}
+                        />
+                    </Grid>
+
+                    <Grid item md={6}
+                        xs={12}
+                        justifyContent="center"
+                        display="flex"
+                        flexDirection="column"
+                        padding={1}
+                    >
+
+                        <TextField
+                            fullWidth
+                            error={errors.email != null}
+                            label="Correo electrónico"
+                            helperText={errors.email}
+                            variant="outlined"
+                            InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px", borderRadius: "12px" } }}
+                            value={values.email}
+                            onChange={(event) => {
+                                setValues({ ...values, email: event.target.value });
+                                setErrors({ ...errors, email: null })
+                            }}
+                        />
+
+                    </Grid>
+
+
+                    <Grid item md={6}
+                        xs={12}
+                        justifyContent="center"
+                        display="flex"
+                        flexDirection="column"
+                        padding={1}
+                    >
+
+                        <FormControl fullWidth variant="outlined">
+                            <InputLabel id="demo-simple-select-label"
+                                sx={{
+                                    background: "white",
+                                    paddingX: "4px",
+                                }}
+                                error={errors.role !== null} >Rol</InputLabel>
+                            <Select
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                value={values.role}
+                                variant='outlined'
+                                label="Seleccione el rol"
+                                onChange={(event) => {
+                                    setValues({
+                                        ...values, role: event.target.value
+                                    });
+                                    setErrors({ ...errors, role: null });
+                                }}
+                                error={errors.role !== null}
+                            >
+                                <MenuItem value={"administrador"}>Administrador</MenuItem>
+                                <MenuItem value={"colaborador"}>Colaborador</MenuItem>
+                            </Select>
+                            {errors.role && <FormHelperText error={true}>{errors.role}</FormHelperText>}
+                        </FormControl>
+
+                    </Grid>
+
+
+                </Grid>
+
+
+
+
+
+
 
                 {selectedEmployee !== null && <FormControlLabel style={{ marginTop: 15 }} control={<Checkbox checked={values.enablePassword} onChange={() => { setValues({ ...values, enablePassword: !values.enablePassword }) }} />} label="Editar contraseña" />}
-                {(values.enablePassword || selectedEmployee === null) && <>
-                    <div className="form-group">
-                        <TextField
-                            fullWidth
-                            error={errors.password !== null}
-                            label="Contraseña"
-                            helperText={errors.password}
-                            variant="standard"
-                            value={values.password}
-                            onChange={(event) => {
-                                setValues({ ...values, password: event.target.value });
-                                setErrors({ ...errors, password: null })
-                            }}
-                        />
-                    </div>
-                    <div className="form-group">
-                        <TextField
-                            fullWidth
-                            error={errors.passwordConfirm !== null}
-                            label="Confirmación de contraseña"
-                            helperText={errors.passwordConfirm}
-                            variant="standard"
-                            value={values.passwordConfirm}
-                            onChange={(event) => {
-                                setValues({ ...values, passwordConfirm: event.target.value });
-                                setErrors({ ...errors, passwordConfirm: null })
-                            }}
-                        />
-                    </div>
-                </>}
 
-                {loading && <div style={{ marginTop: 15, display: "flex", justifyContent: "center", alignItems: "center" }}>
-                    <CircularProgress color="success" />
-                    <p style={{ marginLeft: 10 }}>Cargando...</p>
-                </div>}
+                {(values.enablePassword || selectedEmployee === null) && <Stack >
 
-                {message && message.showIn === "form" && <Alert severity={message.category} variant="filled" style={{ marginTop: 20, marginBottom: 5 }} >{message.text}</Alert>}
+                    <TextField
+                        fullWidth
+                        error={errors.password !== null}
+                        label="Contraseña"
+                        helperText={errors.password}
+                        variant="outlined"
+                        sx={{my:2}}
+                        InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px", borderRadius: "12px" } }}
+                        value={values.password}
+                        onChange={(event) => {
+                            setValues({ ...values, password: event.target.value });
+                            setErrors({ ...errors, password: null })
+                        }}
+                    />
 
-                <Button variant="contained" style={{ width: "100%", marginTop: 25 }} onClick={() => { if (!loading) { onSubmit() } }}>Guardar</Button>
+
+                    <TextField
+                        fullWidth
+                        error={errors.passwordConfirm !== null}
+                        label="Confirmación de contraseña"
+                        helperText={errors.passwordConfirm}
+                        variant="outlined"
+                        InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px", borderRadius: "12px" } }}
+                        value={values.passwordConfirm}
+                        onChange={(event) => {
+                            setValues({ ...values, passwordConfirm: event.target.value });
+                            setErrors({ ...errors, passwordConfirm: null })
+                        }}
+                    />
+
+                </Stack>}
+
+
+                {message && message.showIn === "form" && <Alert severity={message.category} variant="standard" style={{ marginTop: 20, borderRadius: 12, marginBottom: 5, borderWidth: 1, borderStyle: "solid", borderColor: message.category === "success" ? "#66bb6a" : "#e53935", fontWeight: "bold", color: message.category === "success" ? green[600] : red[600] }} >{message.text}</Alert>}
+
+                <Divider sx={{ mt: 2 }} />
+
+                <Stack flexDirection="row" justifyContent={"flex-end"}>
+
+                    <Button variant="contained" color="inherit" style={{ borderRadius: "8px", marginTop: 25, marginRight: 12, }} onClick={() => handleToggle()}>Cerrar</Button>
+
+
+
+                    <LoadingButton loading={loading}
+                        size="medium" variant="contained" color="primary" style={{ borderRadius: "8px", marginTop: 25, }}
+
+                        onClick={() => {
+
+                            if (!loading) {
+                                onSubmit()
+
+                            }
+                        }}
+                        startIcon={<AiOutlineSave size={20} />}
+
+                    >
+                        Guardar
+                    </LoadingButton>
+                </Stack>
+
             </div>
         </div>
     )

@@ -190,7 +190,7 @@ const PostState = props => {
 
         let formattedData = [];
         images.forEach(element => {
-            formattedData.push(element.id_imagen_animal)
+            formattedData.push(element.id_imagen_publicacion)
         })
 
         try {
@@ -210,46 +210,78 @@ const PostState = props => {
         }
     }
 
-    const editPost = async (data) => {
+    const editPost = async (data, imagesInsert, imagesRemove) => {
 
         dispatch({
             type: TOGGLE_POSTS_LOADING,
             payload: true
         });
-        const formattedData = {
-            id_publicacion: data.id_publicacion,
-            titulo: data.name,
-            cuerpo: data.cuerpo
+
+        let formattedData =
+        {
+            id_publicacion: data.postId,
+            titulo: data.title,
+            cuerpo:data.cuerpo
+      
+
         }
 
-        // console.log(formattedData);
         try {
             let res = await axiosClient.put("/api/post", formattedData);
-            dispatch({
-                type: POST_MESSAGE, payload: {
-                    category: res.data.state ? "success" : "error",
-                    text: res.data.message,
-                    showIn: "form"
+            if (res.data.state) {
+
+                let resImagesInsert = { data: { state: true } };
+                let resImagesRemove = { data: { state: true } };
+
+                if (imagesInsert.length !== 0) {
+                    resImagesInsert = await insertImages(imagesInsert, data.postId);
+                }
+
+                if (imagesRemove.length !== 0) {
+                    resImagesRemove = await removeImages(imagesRemove);
 
                 }
-            })
-            getPosts();
+                if (resImagesInsert.data.state && resImagesRemove.data.state) {
 
-        } catch (error) {
-            let errorsDecriptions = error.response?.data.errors;
+                    dispatch({
+                        type: POST_MESSAGE, payload: {
+                            category: "success",
+                            text: res.data.message,
+                            showIn: "edit"
 
-            let text = "";
-            if (errorsDecriptions) {
-                text = errorsDecriptions[0];
+                        }
+                    });
+                    getPosts();
+                } else {
+                    dispatch({
+                        type: POST_MESSAGE, payload: {
+                            category: "error",
+                            text: "Los datos de la publicación se han actualizado satisfactoriamente, pero en las imágenes se ha presentado un error, intente actualizarlas de nuevo",
+                            showIn: "edit"
+
+                        }
+                    });
+                }
+
             } else {
-                text = error.response.data.message;
+                dispatch({
+                    type: POST_MESSAGE, payload: {
+                        category: "error",
+                        text: res.data.message,
+                        showIn: "edit"
+
+                    }
+                });
             }
 
+        } catch (error) {
+            console.log(error)
+            let text = handleResponseError(error)
             dispatch({
                 type: POST_MESSAGE, payload: {
                     category: "error",
                     text: text,
-                    showIn: "form"
+                    showIn: "edit"
                 }
             })
         }

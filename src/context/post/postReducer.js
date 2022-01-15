@@ -27,7 +27,8 @@ export default (state, action) => {
         case SELECT_POST:
             return {
                 ...state,
-                selectedPost: action.payload
+                selectedPost: action.payload,
+                loading: false
             }
         default:
             return state;

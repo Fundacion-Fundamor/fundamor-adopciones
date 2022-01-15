@@ -41,21 +41,24 @@ const maxNumber = 8; //max number images
  * @returns
  */
 export default function FormEdit() {
-    const { createPost, handlePostMessage, loading, message } = useContext(PostContext)
+    const { handlePostMessage, editPost, loading, message,selectedPost } = useContext(PostContext)
 
     const MySwal = withReactContent(Swal);
     const [values, setValues] = useState({
-        id_publicacion: '',
-        titulo: '',
-        cuerpo: '',
+        postId: '',
+        title: '',
+        body: '',
 
     })
 
     const [images, setImages] = useState([]);
+
+    const [imagesRemove, setImagesRemove] = useState([]);
     const [errors, setErrors] = useState({
-        id_publicacion: null,
-        titulo: null,
-        cuerpo: null,
+        postId: null,
+        title: null,
+        body: null,
+        
     })
 
     /**Captura el cambio al seleccionar una nueva imágen
@@ -78,14 +81,23 @@ export default function FormEdit() {
 
         //se validan los campos del formulario
 
-        if (values.titulo === '') {
-            setErrors({ ...errors, titulo: 'Debe ingresar un titulo' })
-        } else if (values.cuerpo === '') {
-            setErrors({ ...errors, cuerpo: 'Debe ingresar un cuerpo' })
+        if (values.title === '') {
+            setErrors({ ...errors, title: 'Debe ingresar un título' })
+        } else if (values.body === '') {
+            setErrors({ ...errors, body: 'Debe ingresar un cuerpo' })
         } else {
+            let tmp = []; //imágenes nuevas
 
+            images.forEach(element => {
+                if (element.ruta === undefined) {
+                    tmp.push(element);
+                }
+            })
+            console.log(tmp)
+            console.log(imagesRemove)
+            console.log(values)
             //se guardan los datos del colaborador
-            createPost(values, images)
+            editPost(values, tmp, imagesRemove);
 
         }
     }
@@ -109,7 +121,7 @@ export default function FormEdit() {
                 }
             }
         }
-        if (message && message.showIn === "form") {
+        if (message && message.showIn === "edit") {
 
             displayAlert();
         }
@@ -117,6 +129,21 @@ export default function FormEdit() {
     }, [message]);
 
 
+    useEffect(() => {
+
+        if (selectedPost) {
+            setValues(
+                {
+                    postId: selectedPost.id_publicacion,
+                    title: selectedPost.titulo.trim(),
+                    body: selectedPost.cuerpo,
+                    images: selectedPost.postImage
+                }
+            );
+            setImages(selectedPost.postImage);
+        }
+    }, [selectedPost])
+    
     return (
         <Box sx={{ display: "flex", flexDirection: "column" }}>
             <Card variant="outlined" sx={{ padding: 1, borderRadius: theme.custom.borderRadius, mb: 2, }} >
@@ -175,12 +202,21 @@ export default function FormEdit() {
                                 <ImageList sx={{ width: "100%", }} cols={matchDownSm ? 1 : imageList.length > 2 ? 2 : imageList.length} >
                                     {imageList.map((image, index) => (
                                         <ImageListItem key={index} sx={{ borderRadius: 8, }}>
-                                            <img
-                                                style={{ maxWidth: 200, borderRadius: 8, minHeight: 160, objectFit: "cover" }}
+                                            {image['data_url'] !== undefined ? <img
                                                 src={image['data_url']}
-                                                alt={image["file"].name}
+                                                alt="imagen de la publicación"
                                                 loading="lazy"
-                                            />
+                                                style={{ maxWidth: 200, borderRadius: 8, minHeight: 160, objectFit: "cover" }}
+
+                                            /> :
+                                                <img
+                                                    style={{ maxWidth: 200, borderRadius: 8, minHeight: 160, objectFit: "cover" }}
+
+                                                    src={`${process.env.REACT_APP_API_URL}/${image.ruta}`}
+                                                    alt="imagen de la publicación"
+                                                    loading="lazy" />
+
+                                            }
                                             <ImageListItemBar
                                                 subtitle={index === 0 ? "Principal" : "Secundaria"}
                                                 sx={{ backgroundColor: index === 0 ? theme.custom.primary.dark : "rgba(0, 0, 0, 0.5)", borderBottomLeftRadius: 8, borderBottomRightRadius: 8 }}
@@ -188,7 +224,12 @@ export default function FormEdit() {
                                                     <IconButton
                                                         sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
                                                         aria-label={`info about this`}
-                                                        onClick={() => onImageRemove(index)}
+                                                        onClick={() => {
+                                                            if (imageList[index].ruta !== undefined) {
+                                                                setImagesRemove([...imagesRemove, imageList[index]]);
+                                                            }
+                                                            onImageRemove(index)
+                                                        }}
                                                     >
                                                         <BiTrashAlt />
                                                     </IconButton>
@@ -210,15 +251,16 @@ export default function FormEdit() {
                 <CardContent sx={{ maxWidth: 600, justifyContent: "center", p: 5 }}>
                     <TextField
                         fullWidth
-                        error={errors.titulo != null}
+                        error={errors.title != null}
                         label="Titulo"
-                        helperText={errors.titulo}
+                        helperText={errors.title}
                         variant="outlined"
+                        multiline={true}
                         InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px" } }}
-                        value={values.titulo}
+                        value={values.title}
                         onChange={(event) => {
-                            setValues({ ...values, titulo: event.target.value })
-                            setErrors({ ...errors, titulo: null })
+                            setValues({ ...values, title: event.target.value })
+                            setErrors({ ...errors, title: null })
                         }}
                     />
 
@@ -226,19 +268,19 @@ export default function FormEdit() {
 
                     <TextField
                         fullWidth
-                        error={errors.cuerpo !== null}
+                        error={errors.body !== null}
                         label="Cuerpo"
-                        helperText={errors.cuerpo}
+                        helperText={errors.body}
                         multiline
                         minRows={5}
-                        maxRows={20}
+                        // maxRows={20}
                         variant="outlined"
-                        value={values.cuerpo}
+                        value={values.body}
                         sx={{ mt: 4 }}
                         InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px" } }}
                         onChange={(event) => {
-                            setValues({ ...values, cuerpo: event.target.value })
-                            setErrors({ ...errors, cuerpo: null })
+                            setValues({ ...values, body: event.target.value })
+                            setErrors({ ...errors, body: null })
                         }}
                     />
 

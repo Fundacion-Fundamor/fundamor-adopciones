@@ -1,10 +1,10 @@
-import { AppBar, Avatar, Box, Button, ButtonBase, Card, CardContent, Chip, ClickAwayListener, CssBaseline, Divider, FormControl, Grid, IconButton, InputLabel, List, ListItemButton, ListItemIcon, ListItemText, MenuItem, Paper, Popper, Select, Stack, Toolbar, Tooltip, Typography, useMediaQuery } from '@mui/material'
-import React, { useState, useEffect, useRef } from 'react'
-import { styled, useTheme } from '@mui/material/styles';
-import { green, grey, pink, red } from '@mui/material/colors';
+/* eslint-disable react-hooks/exhaustive-deps */
+import { Box, Card, CardContent, CssBaseline, FormControl, IconButton, MenuItem, Select, Stack, Tooltip, Typography, useMediaQuery } from '@mui/material'
+import React, { useState, useEffect, } from 'react'
+import { useTheme } from '@mui/material/styles';
+import { grey, } from '@mui/material/colors';
 import axiosClient from '../../config/axios';
-import { MdPets } from "react-icons/md"
-import { minWidth } from '@mui/system';
+
 import { FaHandsHelping, FaRegClock } from 'react-icons/fa';
 import { IoMedkitOutline } from 'react-icons/io5';
 import Chart from "react-apexcharts";
@@ -24,15 +24,15 @@ export default function Dashboard() {
 
 
                 <Stack direction={matchDownSm ? "column" : "row"} justifyContent={"space-evenly"} display={"flex"} sx={{ width: "100%" }}>
-               
-                        <CardAnimalsAdopted />
-                        <CardAnimalsRescued />
-                        <CardAnimalsWaiting />
-                  
+
+                    <CardAnimalsAdopted />
+                    <CardAnimalsRescued />
+                    <CardAnimalsWaiting />
+
 
                 </Stack>
                 <Stack direction={matchDownSm ? "column" : "row"} justifyContent={"space-evenly"} display={"flex"} width={"100%"}>
-                <SterilizedAnimals />
+                    <SterilizedAnimals />
                     <DewormedAnimals />
                 </Stack>
                 <Stack direction={matchDownSm ? "column" : "row"} justifyContent={"space-evenly"} display={"flex"} width={"100%"}>
@@ -62,9 +62,12 @@ const CardAnimalsWaiting = () => {
             try {
 
                 const res = await axiosClient.get("/api/analytics/countAnimals?adopted=false");
-                if (res.data.state) {
-                    console.log("animales", res.data)
-                    setNumber(res.data.data)
+                if (mounted) {
+                    if (res.data.state) {
+
+                        setNumber(res.data.data)
+
+                    }
                 }
 
 
@@ -130,9 +133,11 @@ const CardAnimalsRescued = () => {
             try {
 
                 const res = await axiosClient.get("/api/analytics/countAnimals");
-                if (res.data.state) {
-                    console.log("animales", res.data)
-                    setNumber(res.data.data)
+                if (mounted) {
+                    if (res.data.state) {
+
+                        setNumber(res.data.data)
+                    }
                 }
 
 
@@ -197,11 +202,13 @@ const CardAnimalsAdopted = () => {
             try {
 
                 const res = await axiosClient.get("/api/analytics/countAnimals?adopted=true");
-                if (res.data.state) {
-                    console.log("animales", res.data)
-                    setNumber(res.data.data)
-                }
+                if (mounted) {
+                    if (res.data.state) {
 
+                        setNumber(res.data.data)
+                    }
+
+                }
 
             } catch (error) {
                 console.log(error)
@@ -310,27 +317,14 @@ const RescuedAnimalsChart = () => {
 
         const getRescuedAnimals = async () => {
             try {
-                let tmpSeries = chartData.series;
+
                 setChartData({ ...chartData, series: [] })
                 const res = await axiosClient.get("/api/analytics/rescuedAnimals?year=" + year);
-                console.log("animales", res.data)
+        
                 if (res.data.state) {
 
                     let rescuedCats = res.data.data.cats;
                     let rescuedDogs = res.data.data.dogs;
-
-
-
-                    // series: [
-                    //     {
-                    //         name: "Perros",
-                    //         data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-                    //     },
-                    //     {
-                    //         name: "Gatos",
-                    //         data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-                    //     }
-                    // ]
                     let tmpSeries = []
 
                     let dogsArray = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -346,7 +340,6 @@ const RescuedAnimalsChart = () => {
                         catsArray[element.rescue_month - 1] = element.rescued_animals
 
                     })
-                    // console.log("newData", dogsArray)
                     tmpSeries[0] = { name: "Perros", data: dogsArray };
                     tmpSeries[1] = { name: "Gatos", data: catsArray };
                     if (mounted) {
@@ -366,6 +359,7 @@ const RescuedAnimalsChart = () => {
 
         getRescuedAnimals()
         return () => {
+            mounted=false;
         }
     }, [year])
 
@@ -470,13 +464,11 @@ const RescuedAnimalsChartPerGender = () => {
     useEffect(() => {
         let mounted = true;
 
-
         const getRescuedAnimals = async () => {
             try {
 
                 setChartData({ ...chartData, series: [] })
                 const res = await axiosClient.get("/api/analytics/rescuedAnimalsPerGender?year=" + year);
-                console.log("Por genero", res.data)
                 if (res.data.state) {
 
                     let male = res.data.data.male;
@@ -518,6 +510,7 @@ const RescuedAnimalsChartPerGender = () => {
 
         getRescuedAnimals()
         return () => {
+            mounted=false
         }
     }, [year])
 
@@ -625,10 +618,10 @@ const AdoptedAnimalsChart = () => {
 
         const getRescuedAnimals = async () => {
             try {
-                let tmpSeries = chartData.series;
+
                 setChartData({ ...chartData, series: [] })
                 const res = await axiosClient.get("/api/analytics/adoptedAnimals?year=" + year);
-                console.log("animalesAdoptados", res.data)
+              
                 if (res.data.state) {
 
                     let adoptedCats = res.data.data.cats;
@@ -672,6 +665,7 @@ const AdoptedAnimalsChart = () => {
 
         getRescuedAnimals()
         return () => {
+            mounted=false
         }
     }, [year])
 
@@ -784,7 +778,7 @@ const AdoptedAnimalsChartPerGender = () => {
             try {
                 setChartData({ ...chartData, series: [] })
                 const res = await axiosClient.get("/api/analytics/adoptedAnimalsPerGender?year=" + year);
-                console.log("animalesAdoptados", res.data)
+               
                 if (res.data.state) {
 
                     let male = res.data.data.male;
@@ -828,6 +822,7 @@ const AdoptedAnimalsChartPerGender = () => {
 
         getRescuedAnimals()
         return () => {
+            mounted=false
         }
     }, [year])
 
@@ -885,9 +880,7 @@ const SterilizedAnimals = () => {
 
 
     const matchDownSm = useMediaQuery('(max-width:1280px)');
-    const theme = useTheme();
-    const matchDownDefaultSm = useMediaQuery(theme.breakpoints.down('sm'));
-    const matchUpSm = useMediaQuery('(max-width:1280px)');
+
     const [chartData, setChartData] = useState({
 
 
@@ -983,9 +976,6 @@ const SterilizedAnimals = () => {
                 console.log("Esterilizados", res.data)
                 if (res.data.state) {
 
-                    let dogs = (res.data.data.dogs * 100) / res.data.data.totalDogs;
-                    let cats = (res.data.data.cats * 100) / res.data.data.totalCats;
-
                     if (mounted) {
                         setChartData({ ...chartData, series: [res.data.data.dogs, res.data.data.totalDogs - res.data.data.dogs] })
                         setChartDataCats({ ...chartDataCats, series: [res.data.data.cats, res.data.data.totalCats - res.data.data.cats] })
@@ -1007,7 +997,7 @@ const SterilizedAnimals = () => {
 
 
 
-    return (<Card variant='outlined' sx={{ borderRadius: 4, p: 4,  mt: 1, width: "100%",height:"100%", marginX: matchDownSm ? 0 : 2, marginBottom: matchDownSm ? 2 : 0  }} >
+    return (<Card variant='outlined' sx={{ borderRadius: 4, p: 4, mt: 1, width: "100%", height: "100%", marginX: matchDownSm ? 0 : 2, marginBottom: matchDownSm ? 2 : 0 }} >
 
         <Stack direction={"row"} justifyContent={"space-between"} mb={2}>
             <Stack direction={"row"} alignItems={"center"}>
@@ -1051,8 +1041,6 @@ const SterilizedAnimals = () => {
 const DewormedAnimals = () => {
 
     const matchDownSm = useMediaQuery('(max-width:1280px)');
-    const theme = useTheme();
-    const matchDownDefaultSm = useMediaQuery(theme.breakpoints.down('sm'));
 
     const [chartData, setChartData] = useState({
 
@@ -1150,8 +1138,7 @@ const DewormedAnimals = () => {
                 console.log("Esterilizados", res.data)
                 if (res.data.state) {
 
-                    let dogs = (res.data.data.dogs * 100) / res.data.data.totalDogs;
-                    let cats = (res.data.data.cats * 100) / res.data.data.totalCats;
+
 
                     if (mounted) {
                         setChartData({ ...chartData, series: [res.data.data.dogs, res.data.data.totalDogs - res.data.data.dogs] })
@@ -1174,7 +1161,7 @@ const DewormedAnimals = () => {
 
 
 
-    return (<Card variant='outlined' sx={{ borderRadius: 4, p: 4,pb:8, mt: 1, width: "100%", height:"100%", marginX: matchDownSm ? 0 : 2, marginBottom: matchDownSm ? 2 : 0 }} >
+    return (<Card variant='outlined' sx={{ borderRadius: 4, p: 4, pb: 8, mt: 1, width: "100%", height: "100%", marginX: matchDownSm ? 0 : 2, marginBottom: matchDownSm ? 2 : 0 }} >
 
         <Stack direction={"row"} justifyContent={"space-between"} mb={2}>
             <Stack direction={"row"} alignItems={"center"}>
@@ -1191,7 +1178,7 @@ const DewormedAnimals = () => {
             </Stack>
         </Stack>
 
-        <Stack direction={"column" } justifyContent={"space-around"} alignItems={"center"}>
+        <Stack direction={"column"} justifyContent={"space-around"} alignItems={"center"}>
 
             <Chart
                 options={chartData.options}

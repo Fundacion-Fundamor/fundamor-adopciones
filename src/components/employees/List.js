@@ -1,9 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useContext } from 'react'
 import {
-
-    Backdrop,
-    CircularProgress,
     Card,
     CardContent,
     Typography,
@@ -47,7 +44,7 @@ export default function List() {
             confirmButtonText: 'Aceptar',
             showCancelButton: true,
             showLoaderOnConfirm: true,
-            cancelButtonText:"Cancelar",
+            cancelButtonText: "Cancelar",
             backdrop: true,
             preConfirm: async (response) => {
 
@@ -88,38 +85,24 @@ export default function List() {
     }, [message, loading])
 
     return (
-        <>
-            <Backdrop
-                sx={{
-                    color: '#fff',
-                    flex: 1,
-                    justifyContent: 'center',
-                    flexDirection: 'column',
-                    zIndex: (theme) => theme.zIndex.drawer + 1,
-                }}
-                open={loading}
-            >
-                <CircularProgress color="inherit" />
-                <p style={{ marginLeft: 5 }}>Cargando ...</p>
-            </Backdrop>
-            <div
-                style={{
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    justifyContent: 'space-evenly',
-                    margin: '0 5%',
-                }}
-            >
-                {employees.map((element, index) => (
-                    <EmployeeItem
-                        item={element}
-                        key={index}
-                        removeEmployee={selectEmployeeRemove}
-                        selectEmployee={selectEmployee}
-                    />
-                ))}
-            </div>
-        </>
+        <div
+            style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                justifyContent: 'space-evenly',
+                margin: '0 5%',
+            }}
+        >
+            {employees.map((element, index) => (
+                <EmployeeItem
+                    item={element}
+                    key={index}
+                    removeEmployee={selectEmployeeRemove}
+                    selectEmployee={selectEmployee}
+                />
+            ))}
+        </div>
+
     )
 }
 
@@ -129,6 +112,7 @@ const EmployeeItem = ({ item, removeEmployee, selectEmployee }) => {
     const theme = useTheme();
     return (
         <Card
+            variant="outlined"
             sx={{
                 width: 275, padding: 2, borderRadius: theme.custom.borderRadius, margin: '0.8rem',
                 display: "flex",
@@ -149,7 +133,7 @@ const EmployeeItem = ({ item, removeEmployee, selectEmployee }) => {
                     {item.nombre}
                 </Typography>
                 <div>
-                    <Typography  sx={{ mb: 1.5 }} color="text.secondary">
+                    <Typography sx={{ mb: 1.5 }} color="text.secondary">
                         {item.correo}
                     </Typography>
                 </div>
