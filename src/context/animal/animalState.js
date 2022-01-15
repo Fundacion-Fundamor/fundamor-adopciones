@@ -3,7 +3,7 @@ import AnimalContext from './animalContext';
 import AnimalReducer from './animalReducer';
 import { ANIMALS, SELECT_ANIMAL, TOGGLE_ANIMAL_LOADING, ANIMAL_MESSAGE } from '../../types';
 import axiosClient from '../../config/axios';
-import { handleResponseError } from '../../Shared/utils';
+import { handleResponseError } from '../../shared/utils';
 
 /**gestionar codigos de errores y timeout
  * 
