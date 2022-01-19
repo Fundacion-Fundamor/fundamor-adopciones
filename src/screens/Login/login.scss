@@ -3,15 +3,14 @@
 
 .login-container {
   // 56 px is the height of the navbar
-  min-height: calc(100vh - 56px);
+  height: 100vh;
   display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
   -webkit-box-align: start;
   -ms-flex-align: start;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
-  background-color: #fff;
+  background-color: linear-gradient(0deg, rgba(255,138,75,1) 0%, rgba(255,125,58,1) 100%);
 }
 .login__form {
   background: $realWhite;
@@ -141,13 +140,14 @@ input:focus ~ .login__bar {
   }
 }
 
+
 @media (min-width: 620px) {
   .login-container {
-    background: #f29f05;
+    background:  linear-gradient(0deg, rgba(255,138,75,1) 0%, rgba(255,125,58,1) 100%);;
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
-    height: 100%;
+ 
   }
   .login__form {
     width: 400px;
@@ -173,15 +173,11 @@ input:focus ~ .login__bar {
   .login-container {
     // Do not change this color
     // this one matches exactly the background of the dog picture
-    background: #f29f05 url('/images/pug-no-bg.png') no-repeat;
     background-attachment: fixed;
     background-position: bottom left;
     background-size: contain;
   }
-  .login__form {
-    margin-right: 16vw;
-    // animation: jello-horizontal 1s;
-  }
+  
 }
 @media (min-width: 1600px) {
   .login-container {

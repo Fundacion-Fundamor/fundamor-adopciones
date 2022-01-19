@@ -11,16 +11,12 @@ import NavbarComponent from './components/Navbar'
 import './scss/_global.scss'
 
 // Screens Imports
-import About from './screens/About'
-import Home from './screens/Home'
 import Post from './screens/Post'
 import Gallery from './screens/Gallery'
 import Login from './screens/Login'
 import './scss/_global.scss'
 import PasswordReset from './screens/PasswordReset'
 import Employeee from './screens/Employee'
-
-import AuthState from './context/auth/authState'
 import PostState from './context/post/postState'
 import EmployeeState from './context/employee/employeeState'
 import QuestionState from './context/question/questionState'
@@ -35,14 +31,16 @@ import Adoption from './screens/Adoption'
 import TrackingState from './context/tracking/trackingState'
 import Dashboard from './screens/Dashboard'
 import PublicRoute from './components/PublicRoute'
-import { blue, green, grey, orange, purple, red } from '@mui/material/colors';
+import { blue, grey, orange, purple, red } from '@mui/material/colors';
 import SideBar from './components/Sidebar';
-import { Box, CssBaseline, useMediaQuery } from '@mui/material';
+import { Box, CssBaseline } from '@mui/material';
 import Topbar from './components/Navbar/TopBar.js';
 import AuthContext from './context/auth/authContext';
 import Profile from './screens/Profile';
 import Config from './screens/Site/Config';
 import FoundationState from './context/foundation/foundationState';
+import Nunito from './assets/fonts/Nunito/Nunito-VariableFont_wght.ttf';
+const drawerWidth = 260;
 
 const token = localStorage.getItem("token");
 if (token) {
@@ -83,7 +81,19 @@ function App() {
             // },
           },
         },
-      }
+      },
+      MuiCssBaseline: {
+        styleOverrides: `
+        @font-face {
+          font-family: 'Nunito';
+          font-style: normal;
+          font-display: swap;
+          font-weight: 400;
+          src: local('Nunito'), local('Nunito-Regular'), url(${Nunito}) format('woff2');
+          unicodeRange: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF;
+        }
+      `,
+      },
     },
     custom: { //customiza colores
       bg: "#FFFFFF",
@@ -136,7 +146,7 @@ function App() {
 
 
 
-  const matchDownMd = useMediaQuery(theme.breakpoints.down('lg'));
+  
   // Handle left drawer
   const [leftDrawerOpened, setLeftDrawerOpened] = useState(true)
 
@@ -144,10 +154,6 @@ function App() {
     setLeftDrawerOpened(!leftDrawerOpened)
   }
 
-  // useEffect(() => {
-  //     setLeftDrawerOpened(true)
-  //     // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [matchDownMd]);
 
   useEffect(() => {
     if (authenticated) {
@@ -158,6 +164,7 @@ function App() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authenticated]);
+
   return (
     <ThemeProvider theme={theme}>
       <FoundationState>
@@ -170,7 +177,7 @@ function App() {
                     <TrackingState>
                       <div className="App">
                         <Router>
-                          {authenticated ? <div style={{ marginTop: "58px" }}></div> : <NavbarComponent />}
+                         
 
                           <div className="main-content">
                             <Box sx={{ display: authenticated ? 'flex' : "none" }}>
@@ -206,14 +213,10 @@ function App() {
                           </div>
                           <Switch>
                             {/* Rutas publicas */}
-                            <PublicRoute path="/" exact component={Home} />
-                            <PublicRoute path="/about" component={About} />
-                            <PublicRoute path="/login" component={Login} />
+                            <PublicRoute path="/" component={Login} />
                             <PublicRoute path="/passwordReset" component={PasswordReset} />
                             <PublicRoute path="*" component={() => <div>Esta página no existe 😒😒😒</div>} />
                           </Switch>
-
-
                         </Router>
                       </div>
                     </TrackingState>
@@ -231,7 +234,6 @@ function App() {
 
 
 
-const drawerWidth = 260;
 
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({ theme, open }) => ({
@@ -244,6 +246,8 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({
   marginLeft: "10px",
   marginRight: "10px",
   padding: 20,
+  fontFamily:"Nunito",
+  color:"#1e4b57",
   ...(!open && {
 
 
