@@ -1,109 +1,144 @@
 import React, { useContext, useState, useEffect } from 'react'
 import './login.scss'
-import { Alert, Button, CircularProgress, FormHelperText } from '@mui/material';
+import { Alert, Avatar, Box, Button, Card, CardActions, CardContent, CardHeader, CircularProgress, FormHelperText, Stack, TextField, Typography } from '@mui/material';
 import { Link } from "react-router-dom";
 import AuthContext from '../../context/auth/authContext';
+import { IoPawOutline } from 'react-icons/io5';
+import { LoadingButton } from '@mui/lab';
 
 function Login(props) {
 
-  const { login, authenticated, message, loading } = useContext(AuthContext);
+	const { login, authenticated, message, loading } = useContext(AuthContext);
 
-  const [credentials, setCredentials] = useState({
-    email: "luzmari0987@gmail.com",
-    password: "12345678"
-  });
+	const [credentials, setCredentials] = useState({
+		email: "luzmari0987@gmail.com",
+		password: "12345678"
+	});
 
-  const [errors, setErrors] = useState({
-    password: null,
-    email: null
-  })
+	const [errors, setErrors] = useState({
+		password: null,
+		email: null
+	})
 
-  const onSubmit = async () => {
-    //valida las credenciales
-    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	const onSubmit = async () => {
+		//valida las credenciales
+		const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-    if (credentials.email === "" || re.test(credentials.email) === false) {
-      setErrors({ ...errors, ["email"]: true })
-    } else if (credentials.password === "") {
-      setErrors({ ...errors, ["password"]: true })
-    } else {
-
-
-      login(credentials.email, credentials.password);
-
-    }
-  }
+		if (credentials.email === "" || re.test(credentials.email) === false) {
+			setErrors({ ...errors, ["email"]: true })
+		} else if (credentials.password === "") {
+			setErrors({ ...errors, ["password"]: true })
+		} else {
 
 
-  useEffect(() => {
+			login(credentials.email, credentials.password);
 
-    if (authenticated) {
-      props.history.push("/gallery");
-    }
+		}
+	}
 
-  }, [authenticated, message, props.history])
 
-  return (
-    <div className="login-container">
-      <form className="login__form" name="frm_login">
-        <header className="login__header">
-          <h1 className="login__title">Ingresar</h1>
-        </header>
-        <main className="login__main">
-          <div className="login__group">
-            <input
-              className="login__input"
-              type="text"
-              name="input_email"
-              value={credentials.email}
-              onChange={(event) => {
-                setCredentials({ ...credentials, "email": event.target.value });
-                setErrors({ ...errors, ["email"]: false });
-              }}
-              required
-            />
+	useEffect(() => {
 
-            <label className="login__label">Correo</label>
-            <div className="login__bar"></div>
-            {errors.email && <FormHelperText error={true}>Debe ingresar una ccorreo válido</FormHelperText>}
+		if (authenticated) {
+			props.history.push("/gallery");
+		}
 
-          </div>
-          <div className="login__group">
-            <input
-              className="login__input"
-              type="password"
-              name="input_password"
-              value={credentials.password}
-              onChange={(event) => {
-                setCredentials({ ...credentials, ...{ password: event.target.value } });
-                setErrors({ ...errors, ["password"]: false });
+	}, [authenticated, message, props.history])
 
-              }}
-              required
-            />
-            <label className="login__label">Contraseña</label>
-            <div className="login__bar"></div>
-            {errors.password && <FormHelperText error={true}>Debe ingresar una contraseña</FormHelperText>}
+	return (
 
-          </div>
-          <p className="login__terms">
-            <Link to="/passwordReset" style={{ textDecorationLine: "underline" }} >¿Olvidaste tu contraseña?</Link>
-          </p>
-        </main>
+		<Box sx={{
+			height: "100vh", background: "linear-gradient(0deg, rgba(255,138,75,1) 0%, rgba(255,125,58,1) 100%)",
+			display: "flex",
+			justifyContent: "center",
+			alignItems: "center",
+			fontFamily: "Nunito"
+		}}>
 
-        {loading && <div style={{ marginTop: 15, display: "flex", justifyContent: "center", alignItems: "center" }}>
-          <CircularProgress color="success" />
-          <p style={{ marginLeft: 10 }}>Cargando...</p>
-        </div>}
-        {message && <Alert severity="error" variant="filled" style={{ marginTop: 20, marginBottom: 5, marginLeft: 35, marginRight: 35 }} >{message}</Alert>}
+			<Card sx={{
+				width: {
+					md: "400px",
+					sm: "400px",
+					xs: "95%"
 
-        <footer className="login__footer">
-          <Button variant="contained" style={{ width: "100%" }} onClick={() => { if (!loading) { onSubmit() } }}>Iniciar sesión</Button>
-        </footer>
-      </form>
-      {/* Photo by <a href="https://unsplash.com/@charlesdeluvio?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Charles Deluvio</a> on <a href="https://unsplash.com/?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a> */}
-    </div>
-  )
+				},
+				padding: "24px 15px",
+				borderRadius: "12px",
+
+			}}>
+
+
+				<Typography sx={{ fontFamily: "Nunito", fontSize: "22px", fontWeight: "900", textAlign: "center", mb: 2 }}>Ingresar</Typography>
+
+				<Stack justifyContent={"center"} alignItems={"center"} mb={2}>
+					<Avatar alt="Travis Howard" src="/images/imagotipo.png" sx={{ width: 95, height: 95,borderRadius:0 }} />
+				</Stack>
+				<Typography sx={{ fontFamily: "Nunito", fontSize: "14px", fontWeight: "600", textAlign: "center", mb: 3 }}>Solo personal autorizado de la Fundación Fundamor</Typography>
+
+				<CardContent sx={{ justifyContent: "center", display: "flex", flexDirection: "column", }}>
+					<TextField label="Correo" fullWidth
+						variant="outlined"
+						error={errors.email}
+						sx={{ background: "#fff" }}
+						InputLabelProps={{ style: { background: "#fff", paddingLeft: "5px", paddingRight: "5px", } }}
+						onBlur={(event) => {
+							setCredentials({ ...credentials, "email": event.target.value });
+							setErrors({ ...errors, email: false });
+						}}
+						inputProps={{ maxLength: 100 }}
+					/>
+					{errors.email ? <FormHelperText error={errors.email} >Debe ingresar un correo</FormHelperText> : null}
+
+
+					<TextField label="Contraseña" fullWidth
+						variant="outlined"
+						error={errors.password}
+						sx={{ background: "#fff", mt: 3 }}
+						InputProps={{ type: "password" }}
+						InputLabelProps={{ style: { background: "#fff", paddingLeft: "5px", paddingRight: "5px" } }}
+						onBlur={(event) => {
+							setCredentials({ ...credentials, "password": event.target.value });
+							setErrors({ ...errors, password: false });
+						}}
+						inputProps={{ maxLength: 100 }}
+					/>
+					{errors.password ? <FormHelperText error={errors.password} >Debe ingresar una contraseña</FormHelperText> : null}
+
+					<Link style={{ marginTop: 18, textAlign: "center" }} href="/passwordReset">¿Olvidó su contraseña?</Link>
+
+					{message && <Alert severity={"error"} variant="standard" style={{ marginTop: 20, borderRadius: 12, marginBottom: 5, borderWidth: 1, borderStyle: "solid", borderColor: "#e53935" }} >{message}</Alert>}
+
+				</CardContent>
+				<CardActions sx={{mt:3}}>
+
+
+
+					<LoadingButton loading={loading}
+						variant="contained"
+						endIcon={<IoPawOutline style={{ transform: "rotate(90deg)" }} />}
+						sx={{
+							"& .MuiLoadingButton-loadingIndicator": {
+								color: "white"
+							}
+						}}
+						style={{ width: "100%", fontFamily: "Nunito", fontWeight: "900", borderRadius: 12, backgroundColor: "#de6426" }}
+						onClick={() => {
+
+							if (!loading) {
+								onSubmit()
+
+							}
+						}}
+
+
+					>
+						Iniciar sesión
+					</LoadingButton>
+				</CardActions>
+			</Card>
+		</Box>
+
+	)
 }
 
 export default Login
