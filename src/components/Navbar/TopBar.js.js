@@ -1,12 +1,12 @@
-import { AppBar, Avatar, Box, ButtonBase, Card, Chip, ClickAwayListener, Divider, List, ListItemButton, ListItemIcon, ListItemText, Paper, Popper, Stack, Toolbar, Typography } from '@mui/material'
-import React, { useState,  useRef, useContext } from 'react'
+import { AppBar, Avatar, Box, ButtonBase, Card, Chip, ClickAwayListener, Divider, List, ListItemButton, ListItemIcon, ListItemText, Popper, Stack, Toolbar, Typography } from '@mui/material'
+import React, { useState, useRef, useContext } from 'react'
 import { useTheme } from '@mui/material/styles';
-import { grey, } from '@mui/material/colors';
 import { AiOutlineLogout, AiOutlineMenu, AiOutlineSetting, AiOutlineUser } from 'react-icons/ai';
 import Transitions from './Transitions';
 
 import AuthContext from '../../context/auth/authContext';
 import { useHistory } from 'react-router-dom';
+import BreadCumbContext from '../../context/breadcumb/breadcumbContext';
 
 
 export default function Topbar({ drawerOpen, handleDrawer }) {
@@ -14,7 +14,8 @@ export default function Topbar({ drawerOpen, handleDrawer }) {
     const theme = useTheme();
 
     const { logout, user } = useContext(AuthContext);
-    const [selectedIndex, setSelectedIndex] = useState(-1);
+    const { selectPage, currentPage } = useContext(BreadCumbContext);
+
 
     const history = useHistory()
 
@@ -26,7 +27,7 @@ export default function Topbar({ drawerOpen, handleDrawer }) {
     };
 
     const handleListItemClick = (event, index, route = '') => {
-        setSelectedIndex(index);
+        selectPage(index)
         handleClose(event);
 
         history.push(route)
@@ -44,15 +45,15 @@ export default function Topbar({ drawerOpen, handleDrawer }) {
             position="fixed"
             color="inherit"
             elevation={0}
-            
+
             sx={{
-             
+
                 bgcolor: theme.custom.bg,
                 transition: drawerOpen ? theme.transitions.create('width') : 'none'
             }}
         >
             <Toolbar sx={{ padding: "10px  16px", justifyContent: "space-between" }}>
-                <Box sx={{ flexDirection: "row", minWidth: "230px", display: "flex", alignItems: "center" }}>
+                <Box sx={{ flexDirection: "row", minWidth: "230px", display: "flex", alignItems: "center", fontFamily: "Nunito" }}>
                     <img
                         src={`./images/isotipo.png`}
                         alt={"logo"}
@@ -61,7 +62,7 @@ export default function Topbar({ drawerOpen, handleDrawer }) {
                         loading="lazy"
                     />
                     {/* </IconButton> */}
-                    <Typography variant="t1" ml="8px" fontWeight={"700"} maxWidth={130} color={theme.custom.fc1} component="div" sx={{ flexGrow: 1 }}>
+                    <Typography variant="t1" ml="8px" fontWeight={"900"} color="#de6426" maxWidth={130} component="div" sx={{ flexGrow: 1 }}>
                         Fundamor
                     </Typography>
 
@@ -71,10 +72,10 @@ export default function Topbar({ drawerOpen, handleDrawer }) {
                             sx={{
                                 transition: 'all .2s ease-in-out',
                                 background: theme.custom.primary.light,
-                                color: theme.custom.primary.dark,
+                                color: "white",
                                 '&:hover': {
                                     background: theme.custom.primary.dark,
-                                    color: theme.custom.primary.light
+
                                 }
                             }}
                             onClick={handleDrawer}
@@ -85,24 +86,7 @@ export default function Topbar({ drawerOpen, handleDrawer }) {
                     </ButtonBase>
                 </Box>
                 <Box>
-                    {/* <ButtonBase sx={{ borderRadius: '12px', overflow: 'hidden', width: "35px", height: "35px", marginRight: "10px" }}>
-                        <Avatar
-                            variant="rounded"
-                            sx={{
-                                transition: 'all .2s ease-in-out',
-                                background: theme.custom.primary.light,
-                                color: theme.custom.primary.dark,
-                                '&:hover': {
-                                    background: theme.custom.primary.dark,
-                                    color: theme.custom.primary.light
-                                }
-                            }}
-                            // onClick={handleDrawer}
-                            color="inherit"
-                        >
-                            <AiOutlineBell />
-                        </Avatar>
-                    </ButtonBase> */}
+
                     <Chip
                         sx={{
                             height: '48px',
@@ -113,8 +97,8 @@ export default function Topbar({ drawerOpen, handleDrawer }) {
                             backgroundColor: theme.custom.primary.light,
                             color: "white",
                             '&[aria-controls="menu-list-grow"], &:hover': {
-                                borderColor: theme.custom.primary.dark,
-                                background: `${theme.custom.primary.light}!important`,
+                                borderColor: theme.custom.secondary.dark,
+                                background: `${theme.custom.secondary.dark}!important`,
 
                                 '& svg': {
                                     stroke: theme.custom.primary.light,
@@ -129,8 +113,9 @@ export default function Topbar({ drawerOpen, handleDrawer }) {
                             <Avatar
 
                                 sx={{
-                                    backgroundColor: theme.custom.secondary.dark,
+                                    background: "#E0B47F",
                                     color: "white",
+                                    fontWeight: 800,
                                     margin: '8px 0 8px 8px !important',
                                     textTransform: "uppercase",
                                     width: 36, height: 36
@@ -139,10 +124,10 @@ export default function Topbar({ drawerOpen, handleDrawer }) {
                                 ref={anchorRef}
                                 aria-controls={open ? 'menu-list-grow' : undefined}
                                 aria-haspopup="true"
-                                color="inherit"
+                            // color={theme.custom.secondary.dark}
                             >{user ? user.nombre.charAt(0) : ""}</Avatar>
                         }
-                        label={<AiOutlineSetting color={theme.custom.primary.dark} size="1.5rem" />}
+                        label={<AiOutlineSetting color={"white"} size="1.5rem" />}
                         variant="outlined"
                         ref={anchorRef}
                         aria-controls={open ? 'menu-list-grow' : undefined}
@@ -171,135 +156,153 @@ export default function Topbar({ drawerOpen, handleDrawer }) {
                     >
                         {({ TransitionProps }) => (
                             <Transitions in={open} {...TransitionProps}>
-                                <Paper sx={{ borderRadius: '12px' }}>
-                                    <ClickAwayListener onClickAway={handleClose}>
-                                        <Card sx={{ borderRadius: '12px', width: 260 }}>
-                                            <Box sx={{ p: 2 }}>
-                                                <Stack marginBottom={"10px"}>
-                                                    <Stack direction="row" spacing={0.5} alignItems="center">
-                                                        <Typography fontWeight={"600"} variant="t3">Hola,{" "}
 
-                                                            <Typography component="span" variant="t3" sx={{ fontWeight: 400 }}>
-                                                                {user ? user.nombre : ""}
-                                                            </Typography>
+                                <ClickAwayListener onClickAway={handleClose}>
+                                    <Card sx={{ borderRadius: '12px', width: 260, boxShadow: " 0px 2px 12px -5px rgb(0 0 0 / 60%)" }} variant="outlined">
+                                        <Box sx={{ p: 2 }}>
+                                            <Stack marginBottom={"10px"}>
+                                                <Stack direction="row" spacing={0.5} alignItems="center">
+                                                    <Typography fontWeight={"800"} variant="t3">Hola,{" "}
+
+                                                        <Typography component="span" variant="t3" sx={{ fontWeight: 400 }}>
+                                                            {user ? user.nombre : ""}
                                                         </Typography>
+                                                    </Typography>
 
-                                                    </Stack>
-                                                    <Typography variant="subtitle2" fontWeight={100} sx={{ textTransform: "capitalize" }} >{user.rol}</Typography>
                                                 </Stack>
-                                                <Divider />
-                                            </Box>
-                                            <Box sx={{ paddingX: 2 }}>
+                                                <Typography variant="subtitle2" fontWeight={400} sx={{ textTransform: "capitalize" }} >{user.rol}</Typography>
+                                            </Stack>
+                                            <Divider />
+                                        </Box>
+                                        <Box sx={{ paddingX: 2 }}>
 
-                                                <List
-                                                    component="nav"
+                                            <List
+                                                component="nav"
+                                                sx={{
+                                                    width: '100%',
+                                                    maxWidth: 350,
+                                                    // minWidth: 300,
+                                                    backgroundColor: theme.palette.background.paper,
+                                                    borderRadius: '10px',
+                                                    [theme.breakpoints.down('md')]: {
+                                                        minWidth: '100%'
+                                                    },
+                                                    '& .MuiListItemButton-root': {
+                                                        mt: 0.5
+                                                    },
+                                                    '& .Mui-selected': {
+                                                        background: theme.custom.primary.light,
+                                                        backgroundColor: theme.custom.primary.light,
+                                                        color: "white",
+                                                        '& .MuiListItemIcon-root': {
+                                                            color: "white",
+                                                        },
+                                                    },
+                                                    '& .Mui-selected:hover': {
+                                                        background: theme.custom.primary.light,
+                                                        color: "white",
+                                                        '& .MuiListItemIcon-root': {
+                                                            color: "white",
+                                                        },
+                                                    }
+                                                }}
+                                            >
+                                                <ListItemButton
                                                     sx={{
-                                                        width: '100%',
-                                                        maxWidth: 350,
-                                                        // minWidth: 300,
-                                                        backgroundColor: theme.palette.background.paper,
-                                                        borderRadius: '10px',
-                                                        [theme.breakpoints.down('md')]: {
-                                                            minWidth: '100%'
-                                                        },
-                                                        '& .MuiListItemButton-root': {
-                                                            mt: 0.5
-                                                        },
-                                                        '& .Mui-selected': {
-                                                            backgroundColor: theme.custom.primary.light,
-                                                            color: theme.custom.primary.dark
+                                                        borderRadius: `8px`,
+                                                        fontWeight: 700,
+                                                        color: theme.custom.primary.dark,
+                                                        '&:hover': {
+                                                            '& .MuiListItemIcon-root': {
+                                                                color: "white",
+                                                            },
+                                                            color: "white",
+                                                            background: theme.custom.primary.light,
+
                                                         }
                                                     }}
+                                                    selected={currentPage === 1}
+                                                    onClick={(event) => handleListItemClick(event, 1, '/siteConfig')}
                                                 >
-                                                    <ListItemButton
-                                                        sx={{
-                                                            borderRadius: `8px`,
+                                                    <ListItemIcon sx={{
+                                                        minWidth: "40px",
+                                                        color: theme.custom.primary.light,
+                                                        '&:hover': {
+                                                            color: "white",
 
-                                                            color: grey[600],
-                                                            '&:hover': {
-                                                                background: theme.custom.primary.light,
-
-                                                            }
-                                                        }}
-                                                        selected={selectedIndex === 0}
-                                                        onClick={(event) => handleListItemClick(event, 1, '/siteConfig')}
-                                                    >
-                                                        <ListItemIcon sx={{
-                                                            minWidth: "40px",
-                                                            color: grey[600],
-                                                            '&:hover': {
-                                                                color: theme.custom.primary.dark,
-
-                                                            }
-                                                        }}>
-                                                            <AiOutlineSetting />
-                                                        </ListItemIcon>
-                                                        <ListItemText primary={<Typography variant="body2">Configurar sitio</Typography>} />
-                                                    </ListItemButton>
-                                                    <ListItemButton
-                                                        sx={{
-                                                            borderRadius: `8px`,
-
-                                                            color: grey[600],
-                                                            '&:hover': {
-                                                                background: theme.custom.primary.light,
-
+                                                        }
+                                                    }}>
+                                                        <AiOutlineSetting />
+                                                    </ListItemIcon>
+                                                    <ListItemText primary={<Typography variant="body2">Configurar sitio</Typography>} />
+                                                </ListItemButton>
+                                                <ListItemButton
+                                                    sx={{
+                                                        borderRadius: `8px`,
+                                                        fontWeight: 700,
+                                                        color: theme.custom.primary.dark,
+                                                        '&:hover': {
+                                                            '& .MuiListItemIcon-root': {
+                                                                color: "white",
                                                             },
-                                                            '&:active': {
-                                                                background: theme.custom.primary.light,
+                                                            color: "white",
+                                                            background: theme.custom.primary.light,
 
-                                                            }
-                                                        }}
-                                                        selected={selectedIndex === 1}
-                                                        onClick={(event) => handleListItemClick(event, 1, '/profile')}
-                                                    >
-                                                        <ListItemIcon sx={{
-                                                            minWidth: "40px",
-                                                            color: grey[600],
-                                                            '&:hover': {
-                                                                color: theme.custom.primary.dark,
+                                                        }
+                                                    }}
+                                                    selected={currentPage === 2}
+                                                    onClick={(event) => handleListItemClick(event, 2, '/profile')}
+                                                >
+                                                    <ListItemIcon sx={{
+                                                        minWidth: "40px",
+                                                        color: theme.custom.primary.light,
+                                                        '&:hover': {
+                                                            color: "white",
 
-                                                            }
-                                                        }}>
-                                                            <AiOutlineUser />
-                                                        </ListItemIcon>
-                                                        <ListItemText primary={<Typography variant="body2">Mi perfil</Typography>} />
+                                                        }
+                                                    }}>
+                                                        <AiOutlineUser />
+                                                    </ListItemIcon>
+                                                    <ListItemText primary={<Typography variant="body2">Mi perfil</Typography>} />
 
-                                                    </ListItemButton>
-                                                    <ListItemButton
-                                                        sx={{
-                                                            borderRadius: `8px`,
+                                                </ListItemButton>
+                                                <ListItemButton
+                                                    sx={{
+                                                        borderRadius: `8px`,
+                                                        fontWeight: 700,
+                                                        color: theme.custom.primary.dark,
+                                                        '&:hover': {
+                                                            '& .MuiListItemIcon-root': {
+                                                                color: "white",
+                                                            },
+                                                            color: "white",
+                                                            background: theme.custom.primary.light,
 
-                                                            color: grey[600],
-                                                            '&:hover': {
-                                                                background: theme.custom.primary.light,
+                                                        }
+                                                    }}
 
-                                                            }
-                                                        }}
-                                                        selected={selectedIndex === 4}
-                                                        onClick={() => {logout()
-                                                        
-                                                        
-                                                            // history.replace("/login");
-                                                        }}
-                                                    >
-                                                        <ListItemIcon sx={{
-                                                            minWidth: "40px",
-                                                            color: grey[600],
-                                                            '&:hover': {
-                                                                color: theme.custom.primary.dark,
+                                                    onClick={() => {
+                                                        logout()
+                                                    }}
+                                                >
+                                                    <ListItemIcon sx={{
+                                                        minWidth: "40px",
+                                                        color: theme.custom.primary.light,
 
-                                                            }
-                                                        }}>
-                                                            <AiOutlineLogout />
-                                                        </ListItemIcon>
-                                                        <ListItemText primary={<Typography variant="body2">Salir</Typography>} />
-                                                    </ListItemButton>
-                                                </List>
-                                            </Box>
-                                        </Card>
-                                    </ClickAwayListener>
-                                </Paper>
+                                                        '&:hover': {
+                                                            color: "white",
+
+                                                        }
+                                                    }}>
+                                                        <AiOutlineLogout />
+                                                    </ListItemIcon>
+                                                    <ListItemText primary={<Typography variant="body2">Salir</Typography>} />
+                                                </ListItemButton>
+                                            </List>
+                                        </Box>
+                                    </Card>
+                                </ClickAwayListener>
+
                             </Transitions>
                         )}
                     </Popper>
