@@ -64,3 +64,6 @@ export const SELECT_TRACKING = 'SELECT_TRACKING';
 export const TOGGLE_TRACKING_LOADING = 'TOGGLE_TRACKING_LOADING';
 export const TRACKING_MESSAGE = 'TRACKING_MESSAGE';
 
+//breadcumb types
+
+export const SELECT_PAGE = "SELECT_PAGE";

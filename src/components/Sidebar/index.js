@@ -23,7 +23,7 @@ export default function SideBar(props) {
     return (
         <Box sx={{
             display: 'flex',
-
+            fontFamily: "Nunito",
             transition: theme.transitions.create('width', {
                 easing: theme.transitions.easing.easeOut,
                 duration: theme.transitions.duration.enteringScreen
@@ -43,6 +43,7 @@ export default function SideBar(props) {
                         marginTop: { xs: '0', md: '64px' }
                         // ,backgroundColor: red[50]
                     },
+                    fontFamily: "Nunito"
                 }}
                 ModalProps={{ keepMounted: true }}
                 variant={matchUpMd ? 'persistent' : 'temporary'}
@@ -56,14 +57,39 @@ export default function SideBar(props) {
                     // backgroundColor:"red" 
                 }}>
 
-                    <List >
+                    <List
+                        sx={{
+                            '& .MuiListItemButton-root': {
+                                mt: 0.5
+                            },
+                            '& .Mui-selected': {
+                                background: theme.custom.primary.light,
+                                backgroundColor: theme.custom.primary.light,
+                                color: "white",
+                                '& .MuiListItemIcon-root': {
+                                    color: "white",
+                                },
+                                '& .MuiTypography-body1':{
+                                    color: "white",
+                                }
+                            },
+                            '& .Mui-selected:hover': {
+                                background: theme.custom.primary.light,
+                                color: "white",
+                                '& .MuiListItemIcon-root': {
+                                    color: "white",
+                                },
+                            }
+                        }}
+                    
+                    >
                         {userRouters.map((obj, index) => {
                             if (obj.children !== undefined) {
                                 return (
-                                    <CollapseItem key={index} dataItem={obj} />
+                                    <CollapseItem key={index} dataItem={obj} index={index+3} />
                                 )
                             } else {
-                                return <SingleItem key={index} dataItem={obj} />
+                                return <SingleItem key={index} dataItem={obj} index={index+3} />
                             }
                         }
                         )}
