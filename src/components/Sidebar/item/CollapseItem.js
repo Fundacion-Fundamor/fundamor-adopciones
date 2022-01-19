@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Collapse, List, ListItem, ListItemIcon, ListItemText, useTheme } from "@mui/material";
+import { Collapse, List, ListItem, ListItemText, useTheme } from "@mui/material";
 import { HiOutlineChevronDown, HiOutlineChevronUp } from "react-icons/hi"
 import { useHistory } from "react-router-dom";
 import { grey } from "@mui/material/colors";
@@ -45,7 +45,7 @@ export default function CollapseItem(props) {
 }
 
 const ChildItem = (props) => {
-    const { dataItem, sx } = props;
+    const { dataItem} = props;
     const theme = useTheme();
 
     const history = useHistory();

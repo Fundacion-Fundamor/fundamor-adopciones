@@ -1,9 +1,7 @@
 import {
     Box,
-    Divider,
     Drawer,
     List,
-    styled,
     useMediaQuery,
     useTheme
 } from "@mui/material";
@@ -12,11 +10,8 @@ import {
 import SingleItem from "./item/SingleItem";
 import CollapseItem from "./item/CollapseItem";
 import PerfectScrollbar from 'react-perfect-scrollbar'
-
-
-
 import { userRouters } from "../../routes/userRoutes";
-import { red } from "@mui/material/colors";
+
 
 const drawerWidth = 260;
 export default function SideBar(props) {

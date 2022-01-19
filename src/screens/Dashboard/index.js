@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Box, Card, CardContent, CssBaseline, FormControl, IconButton, MenuItem, Select, Stack, Tooltip, Typography, useMediaQuery } from '@mui/material'
 import React, { useState, useEffect, } from 'react'
-import { useTheme } from '@mui/material/styles';
 import { grey, } from '@mui/material/colors';
 import axiosClient from '../../config/axios';
 
@@ -23,7 +22,7 @@ export default function Dashboard() {
             <Stack direction={"row"} display={"flex"} alignItems={"flex-start"} justifyContent={"center"} gap={2} flexWrap={"wrap"}>
 
 
-                <Stack direction={matchDownSm ? "column" : "row"} justifyContent={"space-evenly"} display={"flex"} sx={{ width: "100%" }}>
+                {/* <Stack direction={matchDownSm ? "column" : "row"} justifyContent={"space-evenly"} display={"flex"} sx={{ width: "100%" }}>
 
                     <CardAnimalsAdopted />
                     <CardAnimalsRescued />
@@ -42,7 +41,7 @@ export default function Dashboard() {
                 <Stack direction={matchDownSm ? "column" : "row"} justifyContent={"space-evenly"} display="flex" width={"100%"}>
                     <AdoptedAnimalsChartPerGender />
                     <RescuedAnimalsChartPerGender />
-                </Stack>
+                </Stack> */}
 
             </Stack>
 

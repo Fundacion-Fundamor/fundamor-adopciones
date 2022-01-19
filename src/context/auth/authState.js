@@ -9,7 +9,7 @@ import {
     ERROR_LOGIN,
     LOADING,
     SUCCESS_PROFILE_UPDATE,
-    MESSAGE
+    MESSAGE,
 } from '../../types';
 import authToken from '../../config/authToken';
 import axiosClient from '../../config/axios';
@@ -22,7 +22,7 @@ const AuthState = props => {
         authenticated: null,
         user: null,
         message: null,
-        loading: true,
+        loading: false,
     }
 
     //crea el dispatch y el state
@@ -44,7 +44,14 @@ const AuthState = props => {
                 authenticatedUser();
             } else {
 
-                dispatch({ type: ERROR_LOGIN, payload: res.data.message });
+                dispatch({
+                    type: ERROR_LOGIN, payload: {
+                        text: res.data.message,
+                        showIn: "loginForm",
+                        category: "error"
+
+                    }
+                });
 
             }
 
@@ -52,7 +59,16 @@ const AuthState = props => {
 
             console.log(error)
             if (error.response) {
-                dispatch({ type: ERROR_LOGIN, payload: error.response?.data.message });
+                dispatch({
+                    type: ERROR_LOGIN, payload:
+                    {
+                        text: error.response?.data.message,
+                        showIn: "loginForm",
+                        category: "error"
+
+                    }
+
+                });
             }
         }
 
@@ -134,6 +150,46 @@ const AuthState = props => {
         dispatch({ type: MESSAGE, payload: data });
 
     }
+    const resetPassword = async (email) => {
+        try {
+            dispatch({ type: LOADING, payload: true });
+            const res = await axiosClient.post("/api/employees/resetPassword", { correo: email });
+            if (res.data.state) {
+                console.log(res.data.message)
+                dispatch({
+                    type: MESSAGE, payload: {
+                        text: res.data.message,
+                        showIn: "recoveryForm",
+                        category: "success"
+
+                    }
+                });
+            } else {
+                //muestra error
+                dispatch({
+                    type: MESSAGE, payload: {
+                        text: res.data.message,
+                        showIn: "recoveryForm",
+                        category: "error"
+
+                    }
+                });
+            }
+            dispatch({ type: LOADING, payload: false });
+        } catch (error) {
+
+            dispatch({
+                type: MESSAGE, payload: {
+                    text: "Ha ocurrido un error al restablecer su contraseña, por favor intente mas tarde",
+                    showIn: "recoveryForm",
+                    category: "error"
+
+                }
+            });
+        }
+
+    }
+
     return (
         <AuthContext.Provider value={{
             token: state.token,
@@ -143,6 +199,7 @@ const AuthState = props => {
             loading: state.loading,
             login,
             logout,
+            resetPassword,
             authenticatedUser,
             updateUserData,
             handleAuthMessage,

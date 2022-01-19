@@ -1,9 +1,9 @@
-import { ListItem, ListItemIcon, ListItemText, useTheme } from "@mui/material";
+import { ListItem, ListItemText, useTheme } from "@mui/material";
 import { useHistory } from "react-router-dom";
 
 
 export default function SingleItem(props) {
-    const { dataItem, sx } = props;
+    const { dataItem} = props;
     const theme = useTheme();
 
     const history = useHistory();

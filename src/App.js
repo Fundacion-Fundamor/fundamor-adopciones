@@ -1,18 +1,14 @@
-import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
+import { BrowserRouter as Router, Switch, Redirect, Route } from 'react-router-dom'
 import React, { useContext, useEffect, useState } from 'react'
 import authToken from './config/authToken'
 import PrivateRoute from './components/PrivateRoute'
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
-
-//Components imports
-import NavbarComponent from './components/Navbar'
 
 //Styles imports
 import './scss/_global.scss'
 
 // Screens Imports
 import Post from './screens/Post'
-import Gallery from './screens/Gallery'
 import Login from './screens/Login'
 import './scss/_global.scss'
 import PasswordReset from './screens/PasswordReset'
@@ -40,11 +36,12 @@ import Profile from './screens/Profile';
 import Config from './screens/Site/Config';
 import FoundationState from './context/foundation/foundationState';
 import Nunito from './assets/fonts/Nunito/Nunito-VariableFont_wght.ttf';
+import NotFoundPage from './screens/NotFoundPage';
 const drawerWidth = 260;
 
 const token = localStorage.getItem("token");
 if (token) {
-  authToken(token);
+	authToken(token);
 }
 
 
@@ -61,29 +58,29 @@ if (token) {
 function App() {
 
 
-  const { authenticated } = useContext(AuthContext);
-  const theme = createTheme({
-    components: {
-      "MuiOutlinedInput": {
-        styleOverrides: {
-          // Name of the slot
-          root: {
-            // Some CSS
-            borderRadius: "10px!important",
-            // '& fieldset': {
-            //   borderColor: 'red',
-            // },
-            // '&:hover fieldset': {
-            //   borderColor: '#F25287 !important',
-            // },
-            // '&.Mui-focused fieldset': {
-            //   borderColor: 'yellow !important',
-            // },
-          },
-        },
-      },
-      MuiCssBaseline: {
-        styleOverrides: `
+	const { authenticated } = useContext(AuthContext);
+	const theme = createTheme({
+		components: {
+			"MuiOutlinedInput": {
+				styleOverrides: {
+					// Name of the slot
+					root: {
+						// Some CSS
+						borderRadius: "10px!important",
+						// '& fieldset': {
+						//   borderColor: 'red',
+						// },
+						// '&:hover fieldset': {
+						//   borderColor: '#F25287 !important',
+						// },
+						// '&.Mui-focused fieldset': {
+						//   borderColor: 'yellow !important',
+						// },
+					},
+				},
+			},
+			MuiCssBaseline: {
+				styleOverrides: `
         @font-face {
           font-family: 'Nunito';
           font-style: normal;
@@ -93,142 +90,124 @@ function App() {
           unicodeRange: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF;
         }
       `,
-      },
-    },
-    custom: { //customiza colores
-      bg: "#FFFFFF",
-      fc1: grey[900],
-      primary: {
-        light: "#ffc9db",
-        dark: "#F25287"
-      },
-      secondary: {
-        light: "#b3d5ff",
-        dark: "#529af2"
-      },
-      white: "white",
-      danger: orange[500],
-      borderRadius: 4
-    },
-    typography: { //customiza fuentes
-      t1: {
-        fontSize: 24,
-        // fontWeight:100
-      },
-      t2: {
-        fontSize: 20,
-        // fontWeight:100
-      },
-      t3: {
-        fontSize: 16,
-        fontWeight: 100
-      },
-      subtitle2: {
-        fontSize: 12,
-        fontWeight: 600,
-        color: 'gray'
-      },
+			},
+		},
+		custom: { //customiza colores
+			bg: "#FFFFFF",
+			fc1: grey[900],
+			primary: {
+				light: "#0a303a",
+				dark: "#fff"
+			},
+			secondary: {
+				light: "#b3d5ff",
+				dark: "#529af2"
+			},
+			white: "white",
+			danger: orange[500],
+			borderRadius: 4
+		},
+		typography: { //customiza fuentes
+			t1: {
+				fontSize: 24,
+				// fontWeight:100
+			},
+			t2: {
+				fontSize: 20,
+				// fontWeight:100
+			},
+			t3: {
+				fontSize: 16,
+				fontWeight: 100
+			},
+			subtitle2: {
+				fontSize: 12,
+				fontWeight: 600,
+				color: 'gray'
+			},
 
-    },
-    palette: { //para customizar colores predeterminados
-      // primary: {
-      //   main: '#000000',
-      // },
-      // secondary: {
-      //   main: '#edf2ff',
-      // },
-    },
+		},
+		palette: { //para customizar colores predeterminados
+			// primary: {
+			//   main: '#000000',
+			// },
+			// secondary: {
+			//   main: '#edf2ff',
+			// },
+		},
 
-    primary: {
-      main: purple[500],
-    },
-  });
-
-
-
-  
-  // Handle left drawer
-  const [leftDrawerOpened, setLeftDrawerOpened] = useState(true)
-
-  const handleLeftDrawerToggle = () => {
-    setLeftDrawerOpened(!leftDrawerOpened)
-  }
+		primary: {
+			main: purple[500],
+		},
+	});
 
 
-  useEffect(() => {
-    if (authenticated) {
 
 
-    } else {
-      return <Redirect to="/" />
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [authenticated]);
+	// Handle left drawer
+	const [leftDrawerOpened, setLeftDrawerOpened] = useState(true)
 
-  return (
-    <ThemeProvider theme={theme}>
-      <FoundationState>
-        <PostState>
-          <AdoptionState>
-            <AnimalState>
-              <EmployeeState>
-                <AdopterState>
-                  <QuestionState>
-                    <TrackingState>
-                      <div className="App">
-                        <Router>
-                         
+	const handleLeftDrawerToggle = () => {
+		setLeftDrawerOpened(!leftDrawerOpened)
+	}
 
-                          <div className="main-content">
-                            <Box sx={{ display: authenticated ? 'flex' : "none" }}>
-                              <CssBaseline />
+	return (
+		<ThemeProvider theme={theme}>
+			<FoundationState>
+				<PostState>
+					<AdoptionState>
+						<AnimalState>
+							<EmployeeState>
+								<AdopterState>
+									<QuestionState>
+										<TrackingState>
+											<div className="App">
+												<Router>
+													<Box sx={{ display: 'flex' }}>
+														<CssBaseline />
 
-                              {/* header */}
-                              {authenticated ? <Topbar drawerOpen={leftDrawerOpened} handleDrawer={handleLeftDrawerToggle} /> : null}
+														{/* header */}
+														{authenticated ? <Topbar drawerOpen={leftDrawerOpened} handleDrawer={handleLeftDrawerToggle} /> : null}
 
-                              {/* drawer */}
-                              {authenticated ? <SideBar open={leftDrawerOpened} handleDrawer={handleLeftDrawerToggle} /> : null}
+														{/* drawer */}
+														{authenticated ? <SideBar open={leftDrawerOpened} handleDrawer={handleLeftDrawerToggle} /> : null}
 
-                              {/* main content */}
-                              <Main theme={theme} open={leftDrawerOpened}>
+														{/* main content */}
+														<Main theme={theme} open={leftDrawerOpened} authenticated={authenticated}>
+															<Switch>
+																{/* Rutas privadas */}
+																<PrivateRoute path="/posts" component={Post} />
+																<PrivateRoute path="/employees" component={Employeee} />
+																<PrivateRoute path="/animals" component={Animal} />
+																<PrivateRoute path="/questions" component={Question} />
+																<PrivateRoute path="/adopters" component={Adopter} />
+																<PrivateRoute path="/adoptions" component={Adoption} />
+																<PrivateRoute path="/dashboard" component={Dashboard} />
+																<PrivateRoute path="/profile" component={Profile} />
+																<PrivateRoute path="/siteConfig" component={Config} />
 
+																{/* Rutas publicas */}
+																<Route path="/login" component={Login} />
+																<Route path="/passwordReset" component={PasswordReset} />
+																<Route path="*" component={NotFoundPage} />
+															</Switch>
 
-                                <Switch>
-                                  {/* Rutas privadas */}
-                                  <PrivateRoute path="/posts" component={Post} />
-                                  <PrivateRoute path="/gallery" component={Gallery} />
-                                  <PrivateRoute path="/employees" component={Employeee} />
-                                  <PrivateRoute path="/animals" component={Animal} />
-                                  <PrivateRoute path="/questions" component={Question} />
-                                  <PrivateRoute path="/adopters" component={Adopter} />
-                                  <PrivateRoute path="/adoptions" component={Adoption} />
-                                  <PrivateRoute path="/dashboard" component={Dashboard} />
-                                  <PrivateRoute path="/profile" component={Profile} />
-                                  <PrivateRoute path="/siteConfig" component={Config} />
-                                </Switch>
+														</Main>
 
-                              </Main>
+													</Box >
 
-                            </Box >
-                          </div>
-                          <Switch>
-                            {/* Rutas publicas */}
-                            <PublicRoute path="/" component={Login} />
-                            <PublicRoute path="/passwordReset" component={PasswordReset} />
-                            <PublicRoute path="*" component={() => <div>Esta página no existe 😒😒😒</div>} />
-                          </Switch>
-                        </Router>
-                      </div>
-                    </TrackingState>
-                  </QuestionState>
-                </AdopterState>
-              </EmployeeState>
-            </AnimalState>
-          </AdoptionState>
-        </PostState>
-      </FoundationState>
-    </ThemeProvider>
-  )
+												</Router>
+											</div>
+										</TrackingState>
+									</QuestionState>
+								</AdopterState>
+							</EmployeeState>
+						</AnimalState>
+					</AdoptionState>
+				</PostState>
+			</FoundationState>
+		</ThemeProvider>
+	)
 }
 
 
@@ -236,67 +215,71 @@ function App() {
 
 
 
-const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({ theme, open }) => ({
-  ...theme.typography.mainContent,
-  backgroundColor: red[50],
-  marginTop: "15px !important",
-  marginBottom: "15px",
-  width: "100%",
-  borderRadius: "12px",
-  marginLeft: "10px",
-  marginRight: "10px",
-  padding: 20,
-  fontFamily:"Nunito",
-  color:"#1e4b57",
-  ...(!open && {
+const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' && prop !== 'authenticated'})(({ theme, open, authenticated }) => {
+	console.log(authenticated)
+	return (
+		{
+			...theme.typography.mainContent,
+			backgroundColor: red[50],
+			marginTop: authenticated? "68px !important":"0px",
+			// marginBottom: "15px",
+			width: "100%",
+			borderRadius: "12px",
+			// marginLeft: "10px",
+			// marginRight: "10px",
+			padding: authenticated ? 20 : 0,
+			fontFamily: "Nunito",
+			color: "#1e4b57",
+			...(!open && {
 
 
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen
-    }),
+				transition: theme.transitions.create('margin', {
+					easing: theme.transitions.easing.sharp,
+					duration: theme.transitions.duration.leavingScreen
+				}),
 
 
-    backgroundColor: blue[50],
+				backgroundColor: blue[50],
 
-    [theme.breakpoints.up('lg')]: {
+				[theme.breakpoints.up('lg')]: {
 
-      // marginLeft: -(drawerWidth - 20),
-      // width: `calc(100% - ${drawerWidth}px)`
-    },
-    [theme.breakpoints.up('md')]: {
+					// marginLeft: -(drawerWidth - 20),
+					// width: `calc(100% - ${drawerWidth}px)`
+				},
+				[theme.breakpoints.up('md')]: {
 
-      // marginLeft: -(drawerWidth - 20),
-      // width: `calc(100% - ${drawerWidth}px)`
-    },
-    [theme.breakpoints.down('md')]: {
-      // marginLeft: '20px',
-      // width: `calc(100% - ${drawerWidth}px)`,
-      // padding: '16px'
-    },
-    [theme.breakpoints.down('sm')]: {
-      // marginLeft: '10px',
-      // width: `calc(100% - ${drawerWidth}px)`,
-      // padding: '16px',
-      // marginRight: '10px'
-    }
-  }),
-  ...(open && {
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen
-    }),
-    // marginLeft: 0,
-    // borderBottomLeftRadius: 0,
-    // borderBottomRightRadius: 0,
+					// marginLeft: -(drawerWidth - 20),
+					// width: `calc(100% - ${drawerWidth}px)`
+				},
+				[theme.breakpoints.down('md')]: {
+					// marginLeft: '20px',
+					// width: `calc(100% - ${drawerWidth}px)`,
+					// padding: '16px'
+				},
+				[theme.breakpoints.down('sm')]: {
+					// marginLeft: '10px',
+					// width: `calc(100% - ${drawerWidth}px)`,
+					// padding: '16px',
+					// marginRight: '10px'
+				}
+			}),
+			...(open && {
+				transition: theme.transitions.create('margin', {
+					easing: theme.transitions.easing.easeOut,
+					duration: theme.transitions.duration.enteringScreen
+				}),
+				// marginLeft: 0,
+				// borderBottomLeftRadius: 0,
+				// borderBottomRightRadius: 0,
 
-    [theme.breakpoints.up('md')]: {
-      width: `calc(100% - ${drawerWidth}px)`,
-    },
-    [theme.breakpoints.down('sm')]: {
-      // marginLeft: '10px'
-    }
-  })
-}));
+				[theme.breakpoints.up('md')]: {
+					width: `calc(100% - ${authenticated ? drawerWidth : 0}px)`,
+				},
+				[theme.breakpoints.down('sm')]: {
+					// marginLeft: '10px'
+				}
+			})
+		})
+});
 
 export default App

@@ -12,13 +12,19 @@ export default function PublicRoute({ component: Component, ...props }) {
 
         authenticatedUser();
 
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
-        <Route {...props} render={props => authenticated && !loading ? (
+        <Route {...props} exact={true} render={props => authenticated && !loading ? (
             <Redirect to="/dashboard" />
 
-        ) : (<Component {...props} />)} />
+        ) : (loading ?
+            <div style={{height:"100vh", background:"white", justifyContent:"center",display:"flex", alignItems:"center"}}>
+                <img  src="/images/preloader.gif" alt='preloader'/>
+              
+            </div>
+            : (<Component {...props} />))} />
 
     );
 }
