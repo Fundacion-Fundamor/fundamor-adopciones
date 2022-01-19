@@ -1,5 +1,5 @@
-import { AppBar, Avatar, Box, Button, ButtonBase, Card, Chip, ClickAwayListener, Divider, List, ListItemButton, ListItemIcon, ListItemText, Paper, Popper, Stack, Toolbar, Typography, useMediaQuery } from '@mui/material'
-import React, { useState, useEffect, useRef, useContext } from 'react'
+import { AppBar, Avatar, Box, ButtonBase, Card, Chip, ClickAwayListener, Divider, List, ListItemButton, ListItemIcon, ListItemText, Paper, Popper, Stack, Toolbar, Typography } from '@mui/material'
+import React, { useState,  useRef, useContext } from 'react'
 import { useTheme } from '@mui/material/styles';
 import { grey, } from '@mui/material/colors';
 import { AiOutlineLogout, AiOutlineMenu, AiOutlineSetting, AiOutlineUser } from 'react-icons/ai';
@@ -44,13 +44,14 @@ export default function Topbar({ drawerOpen, handleDrawer }) {
             position="fixed"
             color="inherit"
             elevation={0}
+            
             sx={{
-
+             
                 bgcolor: theme.custom.bg,
                 transition: drawerOpen ? theme.transitions.create('width') : 'none'
             }}
         >
-            <Toolbar sx={{ pt: "10px", justifyContent: "space-between" }}>
+            <Toolbar sx={{ padding: "10px  16px", justifyContent: "space-between" }}>
                 <Box sx={{ flexDirection: "row", minWidth: "230px", display: "flex", alignItems: "center" }}>
                     <img
                         src={`./images/isotipo.png`}
@@ -276,7 +277,11 @@ export default function Topbar({ drawerOpen, handleDrawer }) {
                                                             }
                                                         }}
                                                         selected={selectedIndex === 4}
-                                                        onClick={() => logout()}
+                                                        onClick={() => {logout()
+                                                        
+                                                        
+                                                            // history.replace("/login");
+                                                        }}
                                                     >
                                                         <ListItemIcon sx={{
                                                             minWidth: "40px",

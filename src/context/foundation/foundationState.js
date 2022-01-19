@@ -29,7 +29,7 @@ const FoundationState = props => {
 
             if (res.data.state) {
 
-                const { id_fundacion,
+                const { 
                     correo,
                     telefono,
                     cuenta_donaciones,

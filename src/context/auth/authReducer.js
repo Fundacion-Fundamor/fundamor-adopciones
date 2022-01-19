@@ -68,7 +68,8 @@ export default (state, action) => {
         case MESSAGE: {
             return {
                 ...state,
-                message:action.payload
+                message:action.payload,
+                loading: false,
 
             }
         }
