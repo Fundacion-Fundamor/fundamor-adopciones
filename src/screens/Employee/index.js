@@ -57,8 +57,8 @@ export default function Employeee() {
                 <BiHelpCircle />
               </IconButton>
             </Tooltip>
-            <Typography variant="t2" sx={{ fontWeight: "600", color: grey[600] }} >
-              Gestiona el acceso a la plataforma
+            <Typography variant="t2">
+              Listado de colaboradores
             </Typography>
           </Box>
           <Button

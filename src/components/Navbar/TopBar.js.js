@@ -192,7 +192,7 @@ export default function Topbar({ drawerOpen, handleDrawer }) {
                                                     },
                                                     '& .Mui-selected': {
                                                         background: theme.custom.primary.light,
-                                                        backgroundColor: theme.custom.primary.light,
+                                                        backgroundColor: `${theme.custom.primary.light}!important`,
                                                         color: "white",
                                                         '& .MuiListItemIcon-root': {
                                                             color: "white",

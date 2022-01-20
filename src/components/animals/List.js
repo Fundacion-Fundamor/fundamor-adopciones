@@ -123,7 +123,7 @@ function List() {
                             </IconButton>
 
                         </Tooltip>
-                        <Typography variant="t2" sx={{ fontWeight: "600", color: grey[600] }} >
+                        <Typography variant="t2">
                             Listado de animales
                         </Typography>
 
@@ -231,7 +231,7 @@ function List() {
                                         style={{
 
                                             paddingBottom: "133px",
-                                            background: "linear-gradient(180deg, rgba(247,158,158,1) 0%, rgba(255,201,219,1) 35%, rgba(255,255,255,1) 100%)"
+                                            background: "linear-gradient(#ffd2bb 0%, #ffdcb9 35%, rgb(255, 255, 255) 100%)"
                                         }}
 
                                     ></div>
@@ -245,8 +245,8 @@ function List() {
                                     </Box>
                                     <CardContent sx={{ flexDirection: "row", justifyContent: "space-between", position: "relative", display: "flex", marginTop: "-91px" }}>
                                         <Stack>
-                                            <Typography sx={{ fontWeight: "600", fontSize: 14, textTransform: "uppercase", color: grey[600] }}>{element.nombre}</Typography>
-                                            <Typography sx={{ fontWeight: "100", fontSize: 13, textTransform: "capitalize", color: grey[500] }}>{element.especie} {element.sexo}</Typography>
+                                            <Typography sx={{ fontWeight: "800", fontSize: 14, textTransform: "uppercase", color: grey[600] }}>{element.nombre}</Typography>
+                                            <Typography sx={{ fontWeight: "600", fontSize: 13, textTransform: "capitalize", color: grey[500] }}>{element.sexo}</Typography>
                                         </Stack>
                                         <Stack>
                                             <Chip color={
@@ -347,8 +347,13 @@ const FilterManager = ({ handleFilters }) => {
                 aria-describedby={id} variant="contained"
                 sx={{
                     backgroundColor: theme.custom.primary.light,
-                    color: theme.custom.primary.dark,
-                    borderRadius: 2
+                    color: "white",
+                    borderRadius: 2,
+                    "&:hover":{
+                        backgroundColor: theme.custom.primary.dark,
+
+                    }
+                    
                 }}
                 onClick={handleClick}
             >

@@ -234,13 +234,20 @@ export default function FormEdit() {
                         </IconButton>
 
                     </Tooltip>
-                    <Typography variant="t2" sx={{ fontWeight: "600", color: grey[600] }} >
+                    <Typography variant="t2"  >
                         Edición de registro
                     </Typography>
                 </CardActions>
             </Card>
 
-            <Card variant="outlined" sx={{ padding: 1, borderRadius: theme.custom.borderRadius, mb: 2, }} >
+            <Card variant="outlined" sx={{
+                padding: 1, borderRadius: theme.custom.borderRadius, mb: 2,
+
+                "& .MuiTypography-root": {
+                    // fontWeight: 00
+                }
+
+            }} >
 
                 <ImageUploading
                     multiple
@@ -337,12 +344,13 @@ export default function FormEdit() {
                             error={errors.name !== null}
                             inputProps={{ maxLength: 45 }}
                             label="Nombre"
-                            value={values.name}
+                            defaultValue={values.name}
                             helperText={errors.name}
                             variant="outlined"
                             InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px" } }}
-                            onChange={(event) => { setValues({ ...values, name: event.target.value }); }}
                             onBlur={(event) => {
+                                setValues({ ...values, name: event.target.value });
+
                                 if (event.target.value !== "") {
                                     setErrors({ ...errors, name: null });
                                 }
@@ -414,18 +422,15 @@ export default function FormEdit() {
                         display="flex"
                         padding={1}
                     >
-                        <TextField label="Color"
+                        <TextField
+                            label="Color"
                             variant="outlined"
                             InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px" } }}
                             helperText={errors.color}
                             value={values.color}
                             onChange={(event) => { setValues({ ...values, color: event.target.value }) }}
-                            onBlur={(event) => {
-                                if (event.target.value !== "") {
-                                    setErrors({ ...errors, color: null });
-                                }
-                            }}
-                            inputProps={{ maxLength: 45 }}
+
+                            inputProps={{ maxLength: 45, }}
                             error={errors.color !== null}
                         />
 
@@ -507,9 +512,12 @@ export default function FormEdit() {
                     </Grid>
                     <Grid item xs={12} md={12} padding={1}>
                         <TextField label="Descripción"
+                            defaultValue={values.characteristics}
 
-                            onChange={(event) => { setValues({ ...values, characteristics: event.target.value }) }}
-                            value={values.characteristics}
+                            onBlur={(event) => {
+                                setValues({ ...values, characteristics: event.target.value });
+                                setErrors({ ...errors, characteristics: null })
+                            }}
                             inputProps={{ maxLength: 300 }}
                             fullWidth multiline={true} minRows={4}
                             sx={{ background: "#fafafa", }}
@@ -529,11 +537,15 @@ export default function FormEdit() {
 
                         <TextField
                             fullWidth
+                            defaultValue={values.rescueSite}
+
                             label="Sitio de rescate"
                             variant="outlined"
                             InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px" } }}
                             value={values.rescueSite}
-                            onChange={(event) => { setValues({ ...values, rescueSite: event.target.value }); }}
+                            onBlur={(event) => {
+                                setValues({ ...values, rescueSite: event.target.value });
+                            }}
                             inputProps={{ maxLength: 190 }}
                         />
 
@@ -627,8 +639,8 @@ export default function FormEdit() {
                             sx={{ backgroundColor: "#fafafa" }}
 
                             InputLabelProps={{ style: { background: "#fafafa", paddingLeft: "5px", paddingRight: "5px" } }}
-                            value={values.vaccine}
-                            onChange={(event) => {
+                            defaultValue={values.vaccine}
+                            onBlur={(event) => {
                                 setValues({ ...values, vaccine: event.target.value });
                             }}
                             inputProps={{ maxLength: 100 }}

@@ -123,7 +123,7 @@ export default function Detail() {
 
 
         MySwal.fire({
-            title: <p style={{ fontSize: 22, fontWeight: "bold" }}>{"Confirmación"}</p>,
+            title: <p style={{ fontSize: 22, fontWeight: "900" }}>{"Confirmación"}</p>,
             text: "¿Está seguro que desea eliminar el animal?, se eliminarán todos los datos asociados a este, imágenes, adopciones, seguimientos y questionarios",
             icon: "question",
             confirmButtonText: 'Aceptar',
@@ -149,7 +149,7 @@ export default function Detail() {
 
         const displayAlert = async () => {
             let res = await MySwal.fire({
-                title: <p style={{ fontSize: 22, fontWeight: "bold" }}>{message.text}</p>,
+                title: <p style={{ fontSize: 22, fontWeight: "900" }}>{message.text}</p>,
                 allowOutsideClick: false,
                 icon: message.category,
                 backdrop: true,
@@ -174,7 +174,14 @@ export default function Detail() {
 
     return (
 
-        <Box sx={{ display: "flex", flexDirection: "column" }}>
+        <Box sx={{
+            display: "flex", flexDirection: "column",
+            // "& .MuiTypography-root": {
+
+            //     fontSize: 18,
+            //     fontWeight:600
+            // }
+        }}>
             <Card variant="outlined" sx={{ padding: 1, borderRadius: theme.custom.borderRadius, mb: 2, }} >
                 <CardActions sx={{ justifyContent: "space-between", flexDirection: matchDownSm ? "column" : "row" }}>
                     <Box alignItems={"center"} display={"flex"}>
@@ -184,7 +191,7 @@ export default function Detail() {
                             </IconButton>
 
                         </Tooltip>
-                        <Typography variant="t2" sx={{ fontWeight: "600", color: grey[600] }} >
+                        <Typography variant="t2" >
                             Detalle del animal
                         </Typography>
 
@@ -196,7 +203,7 @@ export default function Detail() {
                             onClick={() => { history.push("/adoptions/new/" + animalId); }}
                             variant="contained"
                             startIcon={<BiBookAdd />}
-                            sx={{ borderRadius: "8px", fontSize: 12, ml: 2, width: "100%" }}
+                            sx={{ borderRadius: "8px", fontSize: 13, ml: 2, width: "100%" }}
                         >
                             Iniciar proceso
                         </Button> : null}
@@ -206,7 +213,7 @@ export default function Detail() {
                                 onClick={() => { history.push("/animals/edit/" + animalId); }}
                                 variant="outlined"
                                 startIcon={<AiOutlinePlus />}
-                                sx={{ borderRadius: "8px", fontSize: 12, ml: 2 }}
+                                sx={{ borderRadius: "8px", fontSize: 13, ml: 2 }}
                             >
                                 Editar
                             </Button>
@@ -215,7 +222,7 @@ export default function Detail() {
                                 onClick={() => onRemoveAnimal()}
                                 variant="outlined"
                                 startIcon={<FiTrash2 />}
-                                sx={{ borderRadius: "8px", fontSize: 12, ml: 2 }}
+                                sx={{ borderRadius: "8px", fontSize: 13, ml: 2 }}
                             >
                                 Eliminar
                             </Button>
@@ -300,7 +307,7 @@ export default function Detail() {
 
                         <Stack flexDirection={"row"} alignItems={"flex-start"} display={"flex"}>
                             <AiOutlineInfoCircle color='#1976d2' size={24} />
-                            <Typography sx={{ fontSize: 12, ml: 1, color: "#1976d2" }} variant="subtitle2">El animal no cuenta con imágenes, puede subirlas editando los datos del animal</Typography>
+                            <Typography sx={{ fontSize: 13, ml: 1, color: "#1976d2" }} variant="subtitle2">El animal no cuenta con imágenes, puede subirlas editando los datos del animal</Typography>
 
                         </Stack>
                     </Stack>
@@ -311,11 +318,11 @@ export default function Detail() {
 
                         <Stack direction={"column"}>
 
-                            <Typography sx={{ fontSize: 22, fontWeight: 600 }} color="text.secondary">
+                            <Typography sx={{ fontSize: 22, fontWeight: 900 }} color="text.secondary">
                                 {selectedAnimal.nombre}
                             </Typography>
 
-                            <Stack direction={"row"} sx={{ borderRadius: 1, width: 95, justifyContent: "space-between" }}>
+                            <Stack direction={"row"} sx={{ borderRadius: 1, width: 95, mt: 1, justifyContent: "space-between" }}>
 
                                 <Stack direction={"row"} sx={{ background: green[100], borderRadius: 1, paddingX: 1, justifyContent: "space-between" }}>
 
@@ -330,13 +337,13 @@ export default function Detail() {
 
                                 </Stack>
 
-                                <Stack direction={"row"} sx={{ background: theme.custom.primary.light, borderRadius: 1, paddingX: 1, ml: 1, justifyContent: "space-between" }}>
+                                <Stack direction={"row"} sx={{ background: theme.custom.secondary.dark, borderRadius: 1, paddingX: 1, ml: 1, justifyContent: "space-between" }}>
 
                                     <Typography sx={{
                                         fontSize: 14, fontWeight: 100, textTransform: "capitalize", textAlign: "center"
 
 
-                                    }} color={theme.custom.primary.dark}>
+                                    }} color={"white"}>
                                         {selectedAnimal.sexo}
                                     </Typography>
 
@@ -383,19 +390,20 @@ export default function Detail() {
                         />
                     </Stack>
 
-                    <Typography sx={{ fontSize: 14, mt: 2, mb: 2 }} color="text.secondary">
-                        {selectedAnimal.caracteristicas ?? "No registra características"}
-                    </Typography>
-
+                    <Stack sx={{p:2 ,background:grey[100] ,my:1, borderRadius:2}}>
+                        <Typography sx={{ fontSize: 14, mt: 2, mb: 2, fontWeight:600 }} color="text.secondary">
+                            {selectedAnimal.caracteristicas ?? "No registra características"}
+                        </Typography>
+                    </Stack>
                     <Divider />
-                    <Typography sx={{ fontSize: 16, mt: 2, fontWeight: 600 }} color="text.secondary">
+                    <Typography sx={{ fontSize: 16, mt: 2, fontWeight: 900 }} color="text.secondary">
                         Información adicional
                     </Typography>
 
                     <Grid container mt={3} spacing={1}>
                         <Grid item md={2} xs={12} display={"flex"} alignItems={"center"}>
 
-                            <Typography sx={{ fontSize: 12, fontWeight: "bold" }} color="text.secondary">
+                            <Typography sx={{ fontSize: 13, fontWeight: "900" }} color="text.secondary">
                                 Color
                             </Typography>
                         </Grid>
@@ -408,7 +416,7 @@ export default function Detail() {
                         </Grid>
                         <Grid item md={2} mt={2} xs={12} display={"flex"} alignItems={"center"}>
 
-                            <Typography sx={{ fontSize: 12, fontWeight: "bold" }} color="text.secondary">
+                            <Typography sx={{ fontSize: 13, fontWeight: "900" }} color="text.secondary">
                                 Esterilizado
                             </Typography>
                         </Grid>
@@ -422,7 +430,7 @@ export default function Detail() {
 
                         <Grid item md={2} mt={2} xs={12} display={"flex"} alignItems={"center"}>
 
-                            <Typography sx={{ fontSize: 12, fontWeight: "bold" }} color="text.secondary">
+                            <Typography sx={{ fontSize: 13, fontWeight: "900" }} color="text.secondary">
                                 Desparasitado
                             </Typography>
                         </Grid>
@@ -436,7 +444,7 @@ export default function Detail() {
 
                         <Grid item md={2} mt={2} xs={12} display={"flex"} alignItems={"center"}>
 
-                            <Typography sx={{ fontSize: 12, fontWeight: "bold" }} color="text.secondary">
+                            <Typography sx={{ fontSize: 13, fontWeight: "900" }} color="text.secondary">
                                 Edad
                             </Typography>
                         </Grid>
@@ -451,7 +459,7 @@ export default function Detail() {
 
                         <Grid item md={2} mt={2} xs={12} display={"flex"} alignItems={"center"}>
 
-                            <Typography sx={{ fontSize: 12, fontWeight: "bold" }} color="text.secondary">
+                            <Typography sx={{ fontSize: 13, fontWeight: "900" }} color="text.secondary">
                                 Tamaño
                             </Typography>
                         </Grid>
@@ -465,7 +473,7 @@ export default function Detail() {
 
                         <Grid item md={2} mt={2} xs={12} display={"flex"} alignItems={"center"}>
 
-                            <Typography sx={{ fontSize: 12, fontWeight: "bold" }} color="text.secondary">
+                            <Typography sx={{ fontSize: 13, fontWeight: "900" }} color="text.secondary">
                                 Fecha de rescate
                             </Typography>
                         </Grid>
@@ -478,7 +486,7 @@ export default function Detail() {
                         </Grid>
                         <Grid item md={2} mt={2} xs={12} display={"flex"} alignItems={"center"}>
 
-                            <Typography sx={{ fontSize: 12, fontWeight: "bold" }} color="text.secondary">
+                            <Typography sx={{ fontSize: 13, fontWeight: "900" }} color="text.secondary">
                                 Sitio de rescate
                             </Typography>
                         </Grid>
@@ -492,7 +500,7 @@ export default function Detail() {
 
                         <Grid item md={2} mt={2} xs={12} display={"flex"} alignItems={"center"}>
 
-                            <Typography sx={{ fontSize: 12, fontWeight: "bold" }} color="text.secondary">
+                            <Typography sx={{ fontSize: 13, fontWeight: "900" }} color="text.secondary">
                                 Vacunas
                             </Typography>
                         </Grid>
