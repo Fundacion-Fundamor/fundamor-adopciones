@@ -117,7 +117,7 @@ export default function Detail() {
                             </IconButton>
 
                         </Tooltip>
-                        <Typography variant="t2" sx={{ fontWeight: "600", color: grey[600] }} >
+                        <Typography variant="t2" >
                             Detalles del proceso
                         </Typography>
 

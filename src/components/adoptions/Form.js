@@ -335,7 +335,7 @@ export default function Form() {
                             </IconButton>
 
                         </Tooltip>
-                        <Typography variant="t2" sx={{ fontWeight: "600", color: grey[600] }} >
+                        <Typography variant="t2"  >
                             Nueva adopción
                         </Typography>
 
@@ -387,6 +387,8 @@ export default function Form() {
                                     </Box>
                                 )
                             }}
+                            noOptionsText="No hay coincidencias"
+
                             renderInput={(params) => (
                                 <TextField
                                     {...params}

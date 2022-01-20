@@ -62,7 +62,7 @@ export default function Config() {
                         </IconButton>
 
                     </Tooltip>
-                    <Typography variant="t2" sx={{ fontWeight: "600", color: grey[600] }} >
+                    <Typography variant="t2"  >
                         Mi sitio
                     </Typography>
                 </CardActions>

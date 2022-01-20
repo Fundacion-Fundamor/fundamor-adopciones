@@ -183,7 +183,8 @@ function App() {
 			},
 			t2: {
 				fontSize: 20,
-				// fontWeight:100
+				fontWeight:800,
+				color: "#0a303a"
 			},
 			t3: {
 				fontSize: 16,
@@ -204,6 +205,7 @@ function App() {
 				// color: "#0a303a",
 				fontWeight: "700",
 			},
+			p:{color:"red"},
 			color: "#1b4f5c",
 			fontWeight: "900",
 			fontFamily: "Nunito"
