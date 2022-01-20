@@ -241,7 +241,7 @@ export default function FormEdit() {
                             </div>
                             <Stack flexDirection={"row"} alignItems={"center"} display={"flex"}>
                                 <AiOutlineInfoCircle color='#1976d2' size={24} />
-                                <Typography sx={{ fontSize: 12, ml: 1, color: "#1976d2" }} variant="subtitle2">La imagen principal de la publicación corresponderá a la primera que sea seleccionada </Typography>
+                                <Typography sx={{ fontSize: 12, ml: 1, color: "#1976d2",fontWeight:"600" }} variant="subtitle2">La imagen principal de la publicación corresponderá a la primera que sea seleccionada </Typography>
 
                             </Stack>
                         </div>

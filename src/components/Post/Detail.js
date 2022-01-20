@@ -177,18 +177,18 @@ export default function Detail() {
                 }
                 <Box  mt={5} flexDirection={"column"} display="flex">
 
-                    <Typography variant="t1" sx={{ fontWeight: "600", color: grey[600] }} >
+                    <Typography variant="t1" sx={{ fontWeight: "900", color:"#1e4b57" }} >
                         {selectedPost.titulo}
                     </Typography>
-                    <Stack direction="row" alignItems="center" mt={2} sx={{ background: theme.custom.primary.light, width:"100px", justifyContent:"center", p:1, borderRadius:"8px"}}>
-                        <FaRegCalendar color={theme.custom.primary.dark}/>
-                        <Typography variant="subtitle2" ml={1} sx={{ fontWeight: "500", color: grey[600] }} >
+                    <Stack direction="row" alignItems="center" mt={1} sx={{ background: theme.custom.primary.light, width:"100px", justifyContent:"center", p:1, borderRadius:"8px"}}>
+                        <FaRegCalendar color={"white"}/>
+                        <Typography variant="subtitle2" ml={1} sx={{ fontWeight: "700", color: "white" }} >
                             {new Date(selectedPost.fecha_creacion).toLocaleDateString()}
                         </Typography>
                     </Stack>
                   
 
-                    <Typography variant="body1" sx={{ fontWeight: "100", color: grey[500], mt: 4 }} >
+                    <Typography variant="body1" sx={{ fontWeight: "400",  color:"#1e4b57", mt: 3 }} >
                         {selectedPost.cuerpo}
                     </Typography>
                 </Box>

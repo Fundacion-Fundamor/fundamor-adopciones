@@ -102,7 +102,6 @@ function List() {
 
     })
 
-    console.log(result.length)
     let totalPages = Math.ceil(result.length / localData.adoptionsPerPage);
     setLocalData({ ...localData, currentPage: 1, list: result, totalPages: totalPages })
   }, [adoptions, localData.filters, localData.adoptionsPerPage])
@@ -274,8 +273,11 @@ const FilterManager = ({ handleFilters }) => {
         aria-describedby={id} variant="contained"
         sx={{
           backgroundColor: theme.custom.primary.light,
-          color: theme.custom.primary.dark,
-          borderRadius: 2
+          color: "white",
+          borderRadius: 2 , "&:hover": {
+            backgroundColor: theme.custom.primary.dark,
+
+          }
         }}
         onClick={handleClick}
       >
@@ -421,7 +423,7 @@ const RowsManager = ({ numRows, handleRows }) => {
 
 
 const AdoptionCard = ({ adoption }) => {
-  console.log(adoption)
+
   let history = useHistory()
   const theme = useTheme();
 
@@ -454,10 +456,10 @@ const AdoptionCard = ({ adoption }) => {
       <CardContent>
         <Stack direction="row" justifyContent={"space-between"} mb={2}>
           <Stack justifyContent={"space-between"}>
-            <Typography sx={{ mb: 0, textTransform: "capitalize", fontWeight: 600, color: grey[600] }} variant="h5" component="div" >
+            <Typography sx={{ mb: 0, textTransform: "capitalize", fontWeight: 800, color: grey[600] }} variant="h5" component="div" >
               {adoption.animal.nombre}
             </Typography>
-            <Typography variant="overline" color="text.secondary">
+            <Typography variant="overline" sx={{fontWeight:"600"}} color="text.secondary">
               {adoption.animal.especie}
             </Typography>
           </Stack>
