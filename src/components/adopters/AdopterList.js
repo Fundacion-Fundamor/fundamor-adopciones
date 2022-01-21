@@ -90,7 +90,7 @@ export default function AdopterList() {
 
     })
 
-    console.log(result.length)
+
     let totalPages = Math.ceil(result.length / localData.adoptersPerPage);
     setLocalData({ ...localData, currentPage: 1, list: result, totalPages: totalPages })
   }, [adopters, localData.adoptersPerPage, localData.filters])
@@ -270,15 +270,15 @@ const AdopterCard = ({ item, removeAdopter, selectAdopter }) => {
           >
             <FaUserCircle size={30} />
           </Avatar>
-          <Typography sx={{ fontSize: 18, ml: 2, fontWeight: 600 }} color="text.secondary" gutterBottom>
+          <Typography sx={{ fontSize: 18, ml: 2, fontWeight: 800 }} color="text.secondary" gutterBottom>
             {item.nombre}
           </Typography>
         </Stack>
         <Stack mt={2}>
-          <Typography sx={{ fontSize: 13, fontWeight: 600 }} color="text.secondary">
+          <Typography sx={{ fontSize: 13, fontWeight: 800 }} color="text.secondary">
             Correo
           </Typography>
-          <Typography sx={{ fontSize: 13 }} color="text.secondary">
+          <Typography sx={{ fontSize: 13, fontWeight: 600, }} color="text.secondary">
             {item.correo ?? "No registra"}
           </Typography>
         </Stack>
@@ -287,10 +287,10 @@ const AdopterCard = ({ item, removeAdopter, selectAdopter }) => {
         <Grid container spacing={2} mt={0}>
           <Grid item md={6} xs={6} >
 
-            <Typography sx={{ fontSize: 13, fontWeight: 600 }} color="text.secondary">
+            <Typography sx={{ fontSize: 13, fontWeight: 800 }} color="text.secondary">
               Identificación
             </Typography>
-            <Typography sx={{ fontSize: 13 }} color="text.secondary">
+            <Typography sx={{ fontSize: 13 ,fontWeight: 600, }} color="text.secondary">
               {item.id_adoptante ?? "No registra"}
             </Typography>
 
@@ -299,10 +299,10 @@ const AdopterCard = ({ item, removeAdopter, selectAdopter }) => {
           <Grid item md={6} xs={6} >
 
 
-            <Typography sx={{ fontSize: 13, fontWeight: 600 }} color="text.secondary">
+            <Typography sx={{ fontSize: 13, fontWeight: 800 }} color="text.secondary">
               Dirección
             </Typography>
-            <Typography sx={{ fontSize: 13, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }} color="text.secondary">
+            <Typography sx={{ fontSize: 13, fontWeight: 600,whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }} color="text.secondary">
               {item.ciudad ?? "No registra"}
             </Typography>
 
@@ -310,10 +310,10 @@ const AdopterCard = ({ item, removeAdopter, selectAdopter }) => {
           </Grid>
           <Grid item md={6} xs={6} >
 
-            <Typography sx={{ fontSize: 13, fontWeight: 600 }} color="text.secondary">
+            <Typography sx={{ fontSize: 13, fontWeight: 800 }} color="text.secondary">
               Teléfono fijo
             </Typography>
-            <Typography sx={{ mb: 1.5, fontSize: 13 }} color="text.secondary">
+            <Typography sx={{ mb: 1.5, fontSize: 13, fontWeight: 600,  }} color="text.secondary">
               {item.telefono_casa ?? "No registra"}
             </Typography>
 
@@ -321,10 +321,10 @@ const AdopterCard = ({ item, removeAdopter, selectAdopter }) => {
 
           <Grid item md={6} xs={6} >
 
-            <Typography sx={{ fontSize: 13, fontWeight: 600 }} color="text.secondary">
+            <Typography sx={{ fontSize: 13, fontWeight: 800 }} color="text.secondary">
               Teléfono celular
             </Typography>
-            <Typography sx={{ mb: 1.5, fontSize: 13 }} color="text.secondary">
+            <Typography sx={{ mb: 1.5, fontSize: 13, fontWeight: 600,  }} color="text.secondary">
               {item.telefono_celular ?? "No registra"}
             </Typography>
 

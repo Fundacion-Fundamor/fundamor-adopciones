@@ -54,7 +54,7 @@ export default function QuestionList() {
     return (<Box p={3}>
         <Stack flexDirection={"row"} alignItems={"center"} display={"flex"} mb={2}>
             <AiOutlineInfoCircle color='#1976d2' size={24} />
-            <Typography sx={{ fontSize: 12, ml: 1, color: "#1976d2" }} variant="subtitle1">Las preguntas serán mostradas a los usuarios en el orden en que sean registradas</Typography>
+            <Typography sx={{ fontSize: 12, ml: 1, color: "#1976d2",fontWeight:700 }} variant="subtitle1">Las preguntas serán mostradas a los usuarios en el orden en que sean registradas</Typography>
 
         </Stack>
 

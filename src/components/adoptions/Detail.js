@@ -224,12 +224,12 @@ const AdoptionTabs = ({ adoption, toggleModalTracking }) => {
 
                     <Stack direction="row" alignItems={"center"}>
 
-                        <Typography sx={{ fontSize: 14, fontWeight: 600 }} color="text.secondary">
+                        <Typography sx={{ fontSize: 14, fontWeight: 700 }} color="text.secondary">
                             Inició el  {new Date(adoption.fecha_estudio + "T00:00:00").toLocaleDateString()}
                         </Typography>
                     </Stack>
                     <Stack direction="row" alignItems={"center"} mt={matchDownSm ? 2 : 0}>
-                        <Typography sx={{ fontSize: 14, fontWeight: 600, mr: 1 }} color="text.secondary">
+                        <Typography sx={{ fontSize: 14, fontWeight: 700, mr: 1 }} color="text.secondary">
                             Estado adopción
                         </Typography>
                         <Chip color={adoption.estado === "finalizada" ?
@@ -261,32 +261,32 @@ const AdoptionTabs = ({ adoption, toggleModalTracking }) => {
                     <Grid container spacing={2} mt={0}>
                         <Grid item md={4} xs={12} >
                             <Stack p={2}>
-                                <Typography sx={{ fontSize: 15, fontWeight: 600 }} color="text.secondary">
+                                <Typography sx={{ fontSize: 15, fontWeight: 700 }} color="text.secondary">
                                     Empleado encargado
                                 </Typography>
                                 {adoption.empleado ? <>
-                                    <Typography sx={{ fontSize: 14, fontWeight: 600, mt: 2, display: "flex" }} color="text.secondary">
-                                        Nombre: <Typography sx={{ fontSize: 13, fontWeight: 100, ml: 1 }} color="text.secondary">{adoption.empleado.nombre}</Typography></Typography>
-                                    <Typography sx={{ fontSize: 14, fontWeight: 600, display: "flex", mt: 1 }} color="text.secondary">
-                                        C.C <Typography sx={{ fontSize: 13, fontWeight: 100, ml: 1 }} color="text.secondary">{adoption.empleado.id_empleado}
+                                    <Typography sx={{ fontSize: 14, fontWeight: 700, mt: 2, display: "flex" }} color="text.secondary">
+                                        Nombre: <Typography sx={{ fontSize: 13, fontWeight: 500, ml: 1 }} color="text.secondary">{adoption.empleado.nombre}</Typography></Typography>
+                                    <Typography sx={{ fontSize: 14, fontWeight: 700, display: "flex", mt: 1 }} color="text.secondary">
+                                        C.C <Typography sx={{ fontSize: 13, fontWeight: 500, ml: 1 }} color="text.secondary">{adoption.empleado.id_empleado}
                                         </Typography>
 
                                     </Typography>
                                 </> :
 
                                     <Tooltip title="El empleado asignado será el próximo que cambie el estado del proceso de adopción">
-                                        <Typography sx={{ fontSize: 13, fontWeight: 100, textDecorationLine: "underline", textDecorationStyle: "solid", mt: 2, cursor: "pointer" }} color="text.secondary">Sin definir
+                                        <Typography sx={{ fontSize: 13, fontWeight: 500, textDecorationLine: "underline", textDecorationStyle: "solid", mt: 2, cursor: "pointer" }} color="text.secondary">Sin definir
                                         </Typography></Tooltip>}
                             </Stack>
                         </Grid>
                         <Grid item md={8} xs={12} >
                             <Stack p={2}>
-                                <Typography sx={{ fontSize: 15, fontWeight: 600 }} color="text.secondary">
+                                <Typography sx={{ fontSize: 15, fontWeight: 700 }} color="text.secondary">
                                     Observaciones
                                 </Typography>
 
                                 <Box sx={{ background: grey[100], mt: 2, p: 1, borderRadius: 2, display: "flex" }}>
-                                    <Typography sx={{ fontSize: 14, fontWeight: 100, }} color="text.secondary">
+                                    <Typography sx={{ fontSize: 14, fontWeight: 500, }} color="text.secondary">
                                         {adoption.observaciones ?? "No registra"}
                                     </Typography>
                                 </Box>
@@ -299,32 +299,32 @@ const AdoptionTabs = ({ adoption, toggleModalTracking }) => {
                     <Grid container spacing={2} mt={0}>
                         <Grid item md={4} xs={12} >
                             <Stack p={2}>
-                                <Typography sx={{ fontSize: 15, fontWeight: 600 }} color="text.secondary">
+                                <Typography sx={{ fontSize: 15, fontWeight: 700 }} color="text.secondary">
                                     Adoptante involucrado
                                 </Typography>
-                                <Typography sx={{ fontSize: 14, fontWeight: 600, mt: 2, display: "flex" }} color="text.secondary">
-                                    Nombre: <Typography sx={{ fontSize: 13, fontWeight: 100, ml: 1 }} color="text.secondary">{adoption.adoptante.nombre}</Typography></Typography>
+                                <Typography sx={{ fontSize: 14, fontWeight: 700, mt: 2, display: "flex" }} color="text.secondary">
+                                    Nombre: <Typography sx={{ fontSize: 13, fontWeight: 500, ml: 1 }} color="text.secondary">{adoption.adoptante.nombre}</Typography></Typography>
 
-                                <Typography sx={{ fontSize: 14, fontWeight: 600, display: "flex", mt: 1 }} color="text.secondary">
-                                    CC: <Typography sx={{ fontSize: 13, fontWeight: 100, ml: 1 }} color="text.secondary">{adoption.adoptante.id_adoptante ?? "No registra"}</Typography></Typography>
-
-
-                                <Typography sx={{ fontSize: 14, fontWeight: 600, display: "flex", mt: 1 }} color="text.secondary">
-                                    Correo: <Typography sx={{ fontSize: 13, fontWeight: 100, ml: 1 }} color="text.secondary">{adoption.adoptante.correo ?? "No registra"}</Typography></Typography>
-
-                                <Typography sx={{ fontSize: 14, fontWeight: 600, display: "flex", mt: 1 }} color="text.secondary">
-                                    Teléfono celular: <Typography sx={{ fontSize: 13, fontWeight: 100, ml: 1 }} color="text.secondary">{adoption.adoptante.telefono_celular ?? "No registra"}</Typography></Typography>
+                                <Typography sx={{ fontSize: 14, fontWeight: 700, display: "flex", mt: 1 }} color="text.secondary">
+                                    CC: <Typography sx={{ fontSize: 13, fontWeight: 500, ml: 1 }} color="text.secondary">{adoption.adoptante.id_adoptante ?? "No registra"}</Typography></Typography>
 
 
-                                <Typography sx={{ fontSize: 14, fontWeight: 600, display: "flex", mt: 1 }} color="text.secondary">
-                                    Teléfono fijo: <Typography sx={{ fontSize: 13, fontWeight: 100, ml: 1 }} color="text.secondary">{adoption.adoptante.telefono_casa ?? "No registra"}</Typography></Typography>
+                                <Typography sx={{ fontSize: 14, fontWeight: 700, display: "flex", mt: 1 }} color="text.secondary">
+                                    Correo: <Typography sx={{ fontSize: 13, fontWeight: 500, ml: 1 }} color="text.secondary">{adoption.adoptante.correo ?? "No registra"}</Typography></Typography>
 
-                                <Typography sx={{ fontSize: 14, fontWeight: 600, display: "flex", mt: 1 }} color="text.secondary">
-                                    Ocupación: <Typography sx={{ fontSize: 13, fontWeight: 100, ml: 1 }} color="text.secondary">{adoption.adoptante.ocupacion ?? "No registra"}</Typography></Typography>
+                                <Typography sx={{ fontSize: 14, fontWeight: 700, display: "flex", mt: 1 }} color="text.secondary">
+                                    Teléfono celular: <Typography sx={{ fontSize: 13, fontWeight: 500, ml: 1 }} color="text.secondary">{adoption.adoptante.telefono_celular ?? "No registra"}</Typography></Typography>
 
 
-                                <Typography sx={{ fontSize: 14, fontWeight: 600, display: "flex", mt: 1 }} color="text.secondary">
-                                    Dirección: <Typography sx={{ fontSize: 13, fontWeight: 100, ml: 1 }} color="text.secondary">{adoption.adoptante.ciudad ?? "No registra"}</Typography></Typography>
+                                <Typography sx={{ fontSize: 14, fontWeight: 700, display: "flex", mt: 1 }} color="text.secondary">
+                                    Teléfono fijo: <Typography sx={{ fontSize: 13, fontWeight: 500, ml: 1 }} color="text.secondary">{adoption.adoptante.telefono_casa ?? "No registra"}</Typography></Typography>
+
+                                <Typography sx={{ fontSize: 14, fontWeight: 700, display: "flex", mt: 1 }} color="text.secondary">
+                                    Ocupación: <Typography sx={{ fontSize: 13, fontWeight: 500, ml: 1 }} color="text.secondary">{adoption.adoptante.ocupacion ?? "No registra"}</Typography></Typography>
+
+
+                                <Typography sx={{ fontSize: 14, fontWeight: 700, display: "flex", mt: 1 }} color="text.secondary">
+                                    Dirección: <Typography sx={{ fontSize: 13, fontWeight: 500, ml: 1 }} color="text.secondary">{adoption.adoptante.ciudad ?? "No registra"}</Typography></Typography>
 
 
 
@@ -332,7 +332,7 @@ const AdoptionTabs = ({ adoption, toggleModalTracking }) => {
                         </Grid>
                         <Grid item md={8} xs={12} >
                             <Stack p={2}>
-                                <Typography sx={{ fontSize: 15, fontWeight: 600 }} color="text.secondary">
+                                <Typography sx={{ fontSize: 15, fontWeight: 700 }} color="text.secondary">
                                     Animal vinculado
                                 </Typography>
 
@@ -342,23 +342,23 @@ const AdoptionTabs = ({ adoption, toggleModalTracking }) => {
 
                                         {adoption.animal.animalImage.length !== 0 ? <img style={{ objectFit: "cover", borderTopLeftRadius: "12px", borderTopRightRadius: "12px" }} width={150} height={150} src={`${process.env.REACT_APP_API_URL}/${adoption.animal.animalImage[0].ruta}`} alt="card" /> :
                                             <img style={{ objectFit: "cover", borderTopLeftRadius: "12px", borderTopRightRadius: "12px" }} width={150} height={150} src={`${process.env.REACT_APP_URL}/images/no_image.png`} alt="card" />}
-                                        <Typography sx={{ fontSize: 14, fontWeight: 600, display: "flex", mt: 1 }} color="text.secondary">
+                                        <Typography sx={{ fontSize: 14, fontWeight: 700, display: "flex", mt: 1 }} color="text.secondary">
                                             {adoption.animal.nombre}</Typography>
                                     </Stack>
                                     <Stack direction={"column"} ml={2}>
-                                        <Typography sx={{ fontSize: 14, fontWeight: 600, display: "flex", mt: 1 }} color="text.secondary">
-                                            Especie: <Typography sx={{ fontSize: 13, fontWeight: 100, ml: 1 }} color="text.secondary">{adoption.animal.especie ?? "No registra"}</Typography></Typography>
+                                        <Typography sx={{ fontSize: 14, fontWeight: 700, display: "flex", mt: 1 }} color="text.secondary">
+                                            Especie: <Typography sx={{ fontSize: 13, fontWeight: 500, ml: 1 }} color="text.secondary">{adoption.animal.especie ?? "No registra"}</Typography></Typography>
 
-                                        <Typography sx={{ fontSize: 14, fontWeight: 600, display: "flex", mt: 1 }} color="text.secondary">
-                                            Edad : <Typography sx={{ fontSize: 13, fontWeight: 100, ml: 1 }} color="text.secondary">2 meses</Typography></Typography>
+                                        <Typography sx={{ fontSize: 14, fontWeight: 700, display: "flex", mt: 1 }} color="text.secondary">
+                                            Edad : <Typography sx={{ fontSize: 13, fontWeight: 500, ml: 1 }} color="text.secondary">2 meses</Typography></Typography>
 
-                                        <Typography sx={{ fontSize: 14, fontWeight: 600, display: "flex", mt: 1 }} color="text.secondary">
-                                            Esterilizado: <Typography sx={{ fontSize: 13, fontWeight: 100, ml: 1 }} color="text.secondary">{adoption.animal.esterilizado ? "SI" : "NO"}</Typography></Typography>
-                                        <Typography sx={{ fontSize: 14, fontWeight: 600, display: "flex", mt: 1 }} color="text.secondary">
-                                            Desparasitado: <Typography sx={{ fontSize: 13, fontWeight: 100, ml: 1 }} color="text.secondary">{adoption.animal.desparasitado ? "SI" : "NO"}</Typography></Typography>
+                                        <Typography sx={{ fontSize: 14, fontWeight: 700, display: "flex", mt: 1 }} color="text.secondary">
+                                            Esterilizado: <Typography sx={{ fontSize: 13, fontWeight: 500, ml: 1 }} color="text.secondary">{adoption.animal.esterilizado ? "SI" : "NO"}</Typography></Typography>
+                                        <Typography sx={{ fontSize: 14, fontWeight: 700, display: "flex", mt: 1 }} color="text.secondary">
+                                            Desparasitado: <Typography sx={{ fontSize: 13, fontWeight: 500, ml: 1 }} color="text.secondary">{adoption.animal.desparasitado ? "SI" : "NO"}</Typography></Typography>
 
-                                        <Typography sx={{ fontSize: 14, fontWeight: 600, display: "flex", mt: 1 }} color="text.secondary">
-                                            Entregado: <Typography sx={{ fontSize: 13, fontWeight: 100, ml: 1 }} color="text.secondary">{adoption.fecha_entrega ? "El animal fue entregado en " + (new Date(adoption.fecha_entrega + "T00:00:00").toLocaleDateString()) : "El animal no ha sido entregado"}</Typography></Typography>
+                                        <Typography sx={{ fontSize: 14, fontWeight: 700, display: "flex", mt: 1 }} color="text.secondary">
+                                            Entregado: <Typography sx={{ fontSize: 13, fontWeight: 500, ml: 1 }} color="text.secondary">{adoption.fecha_entrega ? "El animal fue entregado en " + (new Date(adoption.fecha_entrega + "T00:00:00").toLocaleDateString()) : "El animal no ha sido entregado"}</Typography></Typography>
 
                                     </Stack>
                                 </Stack>
@@ -376,7 +376,7 @@ const AdoptionTabs = ({ adoption, toggleModalTracking }) => {
                         <Stack p={2} alignItems={"center"} justifyContent={"center"} flexDirection={"row"} marginY={3}>
 
                             <FaWpforms color={grey[600]} size={32} />
-                            <Typography sx={{ fontSize: 15, fontWeight: 600, textAlign: "center", marginLeft: 2 }} color="text.secondary">
+                            <Typography sx={{ fontSize: 15, fontWeight: 700, textAlign: "center", marginLeft: 2 }} color="text.secondary">
                                 Questionario respondido por el adoptante durante la creación de la adpoción
                             </Typography>
 
@@ -388,7 +388,7 @@ const AdoptionTabs = ({ adoption, toggleModalTracking }) => {
 
                             {adoption.preguntas.map((element, index) => (
                                 <Stack key={index} p={1} sx={{ mb: 2 }} >
-                                    <Typography sx={{ fontSize: 14, fontWeight: 600 }} color="text.secondary">
+                                    <Typography sx={{ fontSize: 14, fontWeight: 700 }} color="text.secondary">
                                         {index + 1}. {element.question.titulo}
                                     </Typography>
                                     <Stack mt={2}>
@@ -433,13 +433,13 @@ const AdoptionTabs = ({ adoption, toggleModalTracking }) => {
 
 
                         <Stack p={2} sx={{ background: grey[50] }} >
-                            {/* <Typography sx={{ fontSize: 15, fontWeight: 600, textAlign: "center",mb:4 }} color="text.secondary">
+                            {/* <Typography sx={{ fontSize: 15, fontWeight: 700, textAlign: "center",mb:4 }} color="text.secondary">
                                 {adoption.seguimientos ? "Listado de segumientos" : "Aún no hay seguimientos"}
                             </Typography> */}
 
                             {adoption.seguimientos.map((element, index) => (<>
                                 <Stack key={index} p={1} sx={{ borderBottomWidth: 1, }} >
-                                    <Typography sx={{ fontSize: 14, fontWeight: 600 }} color="text.secondary">
+                                    <Typography sx={{ fontSize: 14, fontWeight: 700 }} color="text.secondary">
                                         Registrado el {(new Date(element.fecha + "T00:00:00").toLocaleDateString())}
                                     </Typography>
                                     <Stack mt={2}>

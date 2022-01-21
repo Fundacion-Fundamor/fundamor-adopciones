@@ -249,7 +249,7 @@ function List() {
 											<p>{element.cuerpo}</p>
 										</div>
 
-										<Typography  color={theme.custom.primary.dark} variant='subtitle2'>{new Date(element.fecha_creacion).toLocaleDateString()}</Typography>
+										<Typography  color={theme.custom.primary.light} sx={{fontWeight:700}} variant='subtitle2'>{new Date(element.fecha_creacion).toLocaleDateString()}</Typography>
 
 										{/* <Typography color={theme.custom.primary.dark} variant='subtitle2'>Hace {moment(element.fecha_creacion, "YYYYMMDDHHmmss").fromNow()}</Typography> */}
 									</CardContent>

@@ -83,7 +83,7 @@ export default function EditModal({ handleToggle }) {
 
 
             <Stack direction="row" alignItems={"flex-start"} justifyContent={"space-between"}>
-                <Typography sx={{ fontSize: 18, ml: 1, color: grey[600] }} variant="subtitle2">Edita la pregunta</Typography>
+                <Typography sx={{ fontSize: 18, ml: 1, color:"#0a303a" }} variant="subtitle2">Edita la pregunta</Typography>
 
 
                 <GrClose size={25} onClick={handleToggle} cursor="pointer" />
@@ -111,7 +111,7 @@ export default function EditModal({ handleToggle }) {
             </CardContent>
             <CardActions sx={{ flexDirection: "column", padding: 3 }}>
 
-                {questionOptions.length !== 0 ? <Typography variant="body2" color="text.secondary" sx={{ marginBottom: 3 }}>
+                {questionOptions.length !== 0 ? <Typography variant="body2" color="text.secondary" sx={{ marginBottom: 3, fontWeight:800 }}>
                     Las opciones de respuesta se mostrarán en el orden en que sean registradas
                 </Typography> : null}
                 {questionOptions.map((element, index) => (
@@ -124,7 +124,7 @@ export default function EditModal({ handleToggle }) {
                 {/* <Button size="medium" sx={{ marginTop: 3 }} variant="contained" disabled={question.length === 0} color="primary" onClick={saveQuestion}>Guardar cambios</Button> */}
 
                 <LoadingButton loading={loading && question.length !== 0}
-                    size="medium" variant="contained" color="primary" sx={{ fontSize: 12, height: 40, px: 2, marginTop: 3, alignItems: "center", borderRadius: "8px", fontWeight: "bold" }}
+                    size="medium" fullWidth={true} variant="contained" color="primary" sx={{ fontSize: 12, height: 40, px: 2, marginTop: 3, alignItems: "center", borderRadius: "8px", fontWeight: "bold" }}
 
                     disabled={question.length === 0}
                     onClick={() => {
