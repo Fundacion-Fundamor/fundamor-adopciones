@@ -537,15 +537,12 @@ export default function FormEdit() {
 
                         <TextField
                             fullWidth
-                            defaultValue={values.rescueSite}
-
                             label="Sitio de rescate"
                             variant="outlined"
                             InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px" } }}
                             value={values.rescueSite}
-                            onBlur={(event) => {
-                                setValues({ ...values, rescueSite: event.target.value });
-                            }}
+                            onChange={(event) => { setValues({ ...values, rescueSite: event.target.value }) }}
+
                             inputProps={{ maxLength: 190 }}
                         />
 

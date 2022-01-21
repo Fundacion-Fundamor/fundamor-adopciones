@@ -24,6 +24,11 @@ const yearsInterval = () => {
 
 }
 
+
+/**Renderiza la vista de graficas estadisticas
+ * 
+ * @returns 
+ */
 export default function Dashboard() {
 
 

@@ -85,7 +85,6 @@ export default function Detail() {
             slidesToShow: 3,
             slidesToScroll: 1,
             centerMode: true,
-            // centerPadding: '60px',
             focusOnSelect: true
         }
 
@@ -176,11 +175,6 @@ export default function Detail() {
 
         <Box sx={{
             display: "flex", flexDirection: "column",
-            // "& .MuiTypography-root": {
-
-            //     fontSize: 18,
-            //     fontWeight:600
-            // }
         }}>
             <Card variant="outlined" sx={{ padding: 1, borderRadius: theme.custom.borderRadius, mb: 2, }} >
                 <CardActions sx={{ justifyContent: "space-between", flexDirection: matchDownSm ? "column" : "row" }}>
