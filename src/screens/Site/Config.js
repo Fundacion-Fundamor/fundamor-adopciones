@@ -23,7 +23,16 @@ export default function Config() {
 
     const { getFoundation, currentFoundation, updateFoundationData, handleFoundationMessage, loading, message } = useContext(FoundationContext);
 
-    const [tmpFoundation, setTmpFoundation] = useState(currentFoundation)
+    const [tmpFoundation, setTmpFoundation] = useState(
+        {
+            correo: "",
+            cuenta_donaciones: "",
+            direccion: "",
+            mision: "",
+            telefono: "",
+            vision: ""
+        }
+    )
 
     const MySwal = withReactContent(Swal)
 
@@ -51,7 +60,16 @@ export default function Config() {
     }, [message, loading])
 
     useEffect(() => {
-        setTmpFoundation(currentFoundation)
+        setTmpFoundation({
+
+            correo: currentFoundation.correo ? currentFoundation.correo : "",
+            cuenta_donaciones: currentFoundation.cuenta_donaciones ? currentFoundation.cuenta_donaciones : "",
+            direccion: currentFoundation.direccion ? currentFoundation.direccion : "",
+            mision: currentFoundation.mision ? currentFoundation.mision : "",
+            telefono: currentFoundation.telefono ? currentFoundation.telefono : "",
+            vision: currentFoundation.vision ? currentFoundation.vision : ""
+
+        })
     }, [currentFoundation]);
 
 

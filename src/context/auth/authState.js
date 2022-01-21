@@ -13,7 +13,7 @@ import {
 } from '../../types';
 import authToken from '../../config/authToken';
 import axiosClient from '../../config/axios';
-
+import { handleResponseError } from "../../Shared/utils"
 
 const AuthState = props => {
 
@@ -97,6 +97,9 @@ const AuthState = props => {
 
     }
     const updateUserData = async (data) => {
+
+        dispatch({ type: LOADING, payload: true });
+
         try {
 
             const res = await axiosClient.put("/api/employees/profile", data);
@@ -112,13 +115,27 @@ const AuthState = props => {
                 });
                 authenticatedUser();
             } else {
-                //muestra error
+                dispatch({
+                    type: MESSAGE, payload: {
+                        text: res.data.message,
+                        showIn: "profile",
+                        category: "error"
+
+                    }
+                });
             }
 
         } catch (error) {
 
-            localStorage.removeItem("token");
-            dispatch({ type: ERROR_LOGIN, });
+            let text = handleResponseError(error);
+            dispatch({
+                type: MESSAGE, payload: {
+                    text: text,
+                    showIn: "profile",
+                    category: "error"
+
+                }
+            });
         }
     }
 
@@ -137,13 +154,26 @@ const AuthState = props => {
                     }
                 });
             } else {
-                //muestra error
+                dispatch({
+                    type: MESSAGE, payload: {
+                        text: res.data.message,
+                        showIn: "profile",
+                        category: "error"
+
+                    }
+                });
             }
 
         } catch (error) {
+            let text = handleResponseError(error);
+            dispatch({
+                type: MESSAGE, payload: {
+                    text: text,
+                    showIn: "profile",
+                    category: "error"
 
-            localStorage.removeItem("token");
-            dispatch({ type: ERROR_LOGIN, });
+                }
+            });
         }
     }
     const handleAuthMessage = async (data) => {

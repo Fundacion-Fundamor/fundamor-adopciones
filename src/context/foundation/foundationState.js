@@ -3,6 +3,7 @@ import FoundationContext from './foundationContext';
 import FoundationReducer from './foundationReducer';
 import { FOUNDATION_MESSAGE, GET_FOUNDATION, TOGGLE_FOUNDATION_LOADING } from '../../types';
 import axiosClient from '../../config/axios';
+import { handleResponseError } from "../../Shared/utils"
 
 const FoundationState = props => {
 
@@ -29,7 +30,7 @@ const FoundationState = props => {
 
             if (res.data.state) {
 
-                const { 
+                const {
                     correo,
                     telefono,
                     cuenta_donaciones,
@@ -52,6 +53,8 @@ const FoundationState = props => {
                     }
                 });
             } else {
+
+
                 dispatch({
                     type: FOUNDATION_MESSAGE,
                     payload: {
@@ -63,11 +66,12 @@ const FoundationState = props => {
             }
 
         } catch (error) {
+            let text = handleResponseError(error);
 
             dispatch({
                 type: FOUNDATION_MESSAGE, payload: {
                     category: "error",
-                    text: error.response.data.message,
+                    text: text,
                     showIn: "form"
                 }
             });
@@ -114,11 +118,11 @@ const FoundationState = props => {
 
         } catch (error) {
 
-            console.log(error)
+            let text = handleResponseError(error);
             dispatch({
                 type: FOUNDATION_MESSAGE, payload: {
                     category: "error",
-                    text: error.response.data.message,
+                    text: text,
                     showIn: "form"
                 }
             });
