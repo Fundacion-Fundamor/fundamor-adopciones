@@ -92,25 +92,10 @@ export default function Question() {
 
                 </CardActions>
             </Card>
-            <Card variant="outlined" sx={{ borderRadius: theme.custom.borderRadius }} >
-
-                {/* <Stack direction={"row"} padding={3}>
-                    <Typography variant="t2" sx={{ fontWeight: "600", color: grey[600], fontSize: 16 }} >
-                        Nueva pregunta
-                    </Typography>
-                </Stack>
-                <Divider /> */}
-
+            <Card tabIndex={""}  variant="outlined" sx={{ borderRadius: theme.custom.borderRadius }} >
 
                 <Form />
-
-                {/* <Stack padding={3}>
-                    <Typography variant="t2" sx={{ fontWeight: "600", fontSize: 16, color: grey[600] }} >
-                        Preguntas registradas
-                    </Typography>
-                </Stack>
-                <Divider style={{ marginTop: 2, marginBottom: 2 }} /> */}
-
+           
                 <Divider />
                 <QuestionList />
             </Card>
@@ -122,7 +107,7 @@ export default function Question() {
                 aria-describedby="modal-modal-description"
                 style={{ overflowY: 'scroll' }}
             >
-                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                <Box tabIndex={""}  sx={{ display: 'flex', justifyContent: 'center' }}>
                     {showForm && <EditModal handleToggle={handleToggle} />}
                 </Box>
             </Modal>

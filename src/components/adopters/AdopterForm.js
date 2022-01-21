@@ -1,7 +1,7 @@
 //eslint-disable-next-line react-hooks/exhaustive-deps
 import React, { useState, useEffect, useContext } from 'react'
 import './form.scss';
-import { Alert, Button, Divider, Grid, Stack, TextField, useMediaQuery, useTheme, } from '@mui/material';
+import { Alert, Button, Divider, Grid, Stack, TextField, Typography, useMediaQuery, useTheme, } from '@mui/material';
 import { GrClose } from 'react-icons/gr';
 import AdopterContext from '../../context/adopter/adopterContext';
 import { LoadingButton } from '@mui/lab';
@@ -97,9 +97,10 @@ export default function AdopterForm({ handleToggle }) {
 
             <div style={{ display: "flex", justifyContent: "space-between", padding: "15px",alignItems:"center" }}>
                 {selectedAdopter ?
-                    <h3>Edita los datos del adoptante </h3>
+                   <Typography variant="t2" >Edita los datos del adoptante </Typography>
                     :
-                    <h3>Registra algún adoptante para vincularlo a un proceso de adopción</h3>}
+                    <Typography variant="t2" >Edita los datos del adoptante </Typography>}
+                
                 <GrClose size={selectedAdopter ? 25 : 35} color="#000" onClick={handleToggle} cursor="pointer" />
             </div>
 

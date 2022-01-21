@@ -46,7 +46,7 @@ export default function Adopter() {
         aria-describedby="modal-modal-description"
         style={{ overflowY: 'scroll' }}
       >
-        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+        <Box tabIndex={""} sx={{ display: 'flex', justifyContent: 'center' }}>
           {showForm && <AdopterForm handleToggle={handleToggle} />}
         </Box>
       </Modal>

@@ -1,13 +1,29 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Box, Card, CardContent, CssBaseline, FormControl, IconButton, MenuItem, Select, Stack, Tooltip, Typography, useMediaQuery } from '@mui/material'
 import React, { useState, useEffect, } from 'react'
-import { grey, } from '@mui/material/colors';
 import axiosClient from '../../config/axios';
 
 import { FaHandsHelping, FaRegClock } from 'react-icons/fa';
 import { IoMedkitOutline } from 'react-icons/io5';
 import Chart from "react-apexcharts";
 import { BiHelpCircle } from 'react-icons/bi';
+
+const yearWorkigStart = 2021;
+
+const yearsInterval = () => {
+
+    let years = parseInt(new Date().getFullYear()) - yearWorkigStart;
+
+    let yearsIntervalTmp = [];
+
+    for (let index = 0; index <= years; index++) {
+        yearsIntervalTmp.push(index + yearWorkigStart);
+
+    }
+    return yearsIntervalTmp;
+
+}
+
 export default function Dashboard() {
 
 
@@ -22,7 +38,7 @@ export default function Dashboard() {
             <Stack direction={"row"} display={"flex"} alignItems={"flex-start"} justifyContent={"center"} gap={2} flexWrap={"wrap"}>
 
 
-                {/* <Stack direction={matchDownSm ? "column" : "row"} justifyContent={"space-evenly"} display={"flex"} sx={{ width: "100%" }}>
+                <Stack direction={matchDownSm ? "column" : "row"} justifyContent={"space-evenly"} display={"flex"} sx={{ width: "100%" }}>
 
                     <CardAnimalsAdopted />
                     <CardAnimalsRescued />
@@ -38,7 +54,7 @@ export default function Dashboard() {
                     <AdoptedAnimalsChart />
                     <RescuedAnimalsChart />
                 </Stack>
-                <Stack direction={matchDownSm ? "column" : "row"} justifyContent={"space-evenly"} display="flex" width={"100%"}>
+                {/* <Stack direction={matchDownSm ? "column" : "row"} justifyContent={"space-evenly"} display="flex" width={"100%"}>
                     <AdoptedAnimalsChartPerGender />
                     <RescuedAnimalsChartPerGender />
                 </Stack> */}
@@ -90,10 +106,10 @@ const CardAnimalsWaiting = () => {
             marginY: 1
         }} variant='outlined'>
             <CardContent sx={{ display: "flex", flexDirection: "column", alignItems: "center", width: "calc(100% + 8px)" }}>
-                <Typography variant="t2" sx={{ fontWeight: "600", color: "white" }} >
+                <Typography variant="t2" sx={{ fontWeight: "900", color: "white" }}  >
                     {number}
                 </Typography>
-                <Typography sx={{ fontWeight: "100", fontSize: 14, color: "white" }} >
+                <Typography sx={{ fontWeight: "400", fontSize: 14, color: "white" }} >
                     Animales a la espera
                 </Typography>
 
@@ -160,10 +176,10 @@ const CardAnimalsRescued = () => {
             marginY: 1
         }} variant='outlined'>
             <CardContent sx={{ display: "flex", flexDirection: "column", alignItems: "center", width: "calc(100% + 8px)" }}>
-                <Typography variant="t2" sx={{ fontWeight: "600", color: "white" }} >
+                <Typography variant="t2" sx={{ fontWeight: "900", color: "white" }} >
                     {number}
                 </Typography>
-                <Typography sx={{ fontWeight: "100", fontSize: 14, color: "white" }} >
+                <Typography sx={{ fontWeight: "400", fontSize: 14, color: "white" }} >
                     Animales rescatados
                 </Typography>
 
@@ -229,10 +245,10 @@ const CardAnimalsAdopted = () => {
             marginY: 1
         }} variant='outlined'>
             <CardContent sx={{ display: "flex", flexDirection: "column", alignItems: "center", width: "calc(100% + 8px)" }}>
-                <Typography variant="t2" sx={{ fontWeight: "600", color: "white" }} >
+                <Typography variant="t2" sx={{ color: "white", fontWeight: "900" }} >
                     {number}
                 </Typography>
-                <Typography sx={{ fontWeight: "100", fontSize: 14, color: "white" }} >
+                <Typography sx={{ fontWeight: "400", fontSize: 14, color: "white" }} >
                     Animales adoptados
                 </Typography>
 
@@ -241,7 +257,7 @@ const CardAnimalsAdopted = () => {
                         position: "absolute",
                         left: "-17px",
                         bottom: "-27px",
-                        // transform: "rotate( 25deg)",
+
                     }}
                 >
 
@@ -266,9 +282,9 @@ const RescuedAnimalsChart = () => {
 
     const matchDownSm = useMediaQuery('(max-width:1280px)');
     const [year, setYear] = useState(new Date().getFullYear());
+
+
     const [chartData, setChartData] = useState({
-
-
         options: {
             chart: {
                 id: "basic-bar",
@@ -319,7 +335,7 @@ const RescuedAnimalsChart = () => {
 
                 setChartData({ ...chartData, series: [] })
                 const res = await axiosClient.get("/api/analytics/rescuedAnimals?year=" + year);
-        
+
                 if (res.data.state) {
 
                     let rescuedCats = res.data.data.cats;
@@ -358,13 +374,9 @@ const RescuedAnimalsChart = () => {
 
         getRescuedAnimals()
         return () => {
-            mounted=false;
+            mounted = false;
         }
     }, [year])
-
-    useEffect(() => {
-        console.log("asadasd", chartData)
-    }, [chartData.series])
 
 
     return (<Card variant='outlined' sx={{ borderRadius: 4, p: 4, width: "100%", marginX: matchDownSm ? 0 : 2 }} >
@@ -378,7 +390,7 @@ const RescuedAnimalsChart = () => {
                     </IconButton>
 
                 </Tooltip>
-                <Typography variant="t2" sx={{ fontWeight: "600", color: grey[600] }} >
+                <Typography variant="t2" >
                     Animales rescatados
                 </Typography>
             </Stack>
@@ -391,8 +403,12 @@ const RescuedAnimalsChart = () => {
                     sx={{ borderRadius: 3, maxHeight: 42 }}
                     onChange={(val) => { setYear(val.target.value) }}
                 >
-                    <MenuItem value={2021}>2021</MenuItem>
-                    <MenuItem value={2022}>2022</MenuItem>
+                    {
+                        yearsInterval().map((element, index) => (
+                            <MenuItem key={index} value={element}>{element}</MenuItem>
+                        ))
+                    }
+
                 </Select>
             </FormControl>
 
@@ -402,7 +418,7 @@ const RescuedAnimalsChart = () => {
             options={chartData.options}
             series={chartData.series}
             type="bar"
-        // width="500"
+
 
         />
     </Card >
@@ -411,153 +427,153 @@ const RescuedAnimalsChart = () => {
     )
 }
 
-const RescuedAnimalsChartPerGender = () => {
+// const RescuedAnimalsChartPerGender = () => {
 
-    const matchDownSm = useMediaQuery('(max-width:1280px)');
-    const [year, setYear] = useState(new Date().getFullYear());
-    const [chartData, setChartData] = useState({
-
-
-        options: {
-            chart: {
-                id: "basic-bar",
-                locales: [{
-                    "name": "en",
-                    "options": {
-                        "months": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-                        "shortMonths": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-                        "days": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-                        "shortDays": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-                        "toolbar": {
-                            "exportToSVG": "Descargar SVG",
-                            "exportToPNG": "Descargar PNG",
-                            "exportToCSV": "Descargar CSV",
-                            "menu": "Menu",
-                            "selection": "Selección",
-                            "selectionZoom": "Selection Zoom",
-                            "zoomIn": "Zoom In",
-                            "zoomOut": "Zoom Out",
-                            "pan": "Panning",
-                            "reset": "Reset Zoom"
-                        }
-                    }
-                }],
-            },
-            xaxis: {
-                categories: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]
-            },
-            colors: ["#242880", "#e38fc4"]
-        },
-        series: [
-            {
-                name: "Machos",
-                data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-            },
-            {
-                name: "Hembras",
-                data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-            }
-        ]
-    })
-
-    useEffect(() => {
-        let mounted = true;
-
-        const getRescuedAnimals = async () => {
-            try {
-
-                setChartData({ ...chartData, series: [] })
-                const res = await axiosClient.get("/api/analytics/rescuedAnimalsPerGender?year=" + year);
-                if (res.data.state) {
-
-                    let male = res.data.data.male;
-                    let female = res.data.data.female;
+//     const matchDownSm = useMediaQuery('(max-width:1280px)');
+//     const [year, setYear] = useState(new Date().getFullYear());
+//     const [chartData, setChartData] = useState({
 
 
-                    let tmpSeries = []
+//         options: {
+//             chart: {
+//                 id: "basic-bar",
+//                 locales: [{
+//                     "name": "en",
+//                     "options": {
+//                         "months": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+//                         "shortMonths": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+//                         "days": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+//                         "shortDays": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+//                         "toolbar": {
+//                             "exportToSVG": "Descargar SVG",
+//                             "exportToPNG": "Descargar PNG",
+//                             "exportToCSV": "Descargar CSV",
+//                             "menu": "Menu",
+//                             "selection": "Selección",
+//                             "selectionZoom": "Selection Zoom",
+//                             "zoomIn": "Zoom In",
+//                             "zoomOut": "Zoom Out",
+//                             "pan": "Panning",
+//                             "reset": "Reset Zoom"
+//                         }
+//                     }
+//                 }],
+//             },
+//             xaxis: {
+//                 categories: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]
+//             },
+//             colors: ["#242880", "#e38fc4"]
+//         },
+//         series: [
+//             {
+//                 name: "Machos",
+//                 data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+//             },
+//             {
+//                 name: "Hembras",
+//                 data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+//             }
+//         ]
+//     })
 
-                    let maleArray = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-                    let femaleArray = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-                    male.forEach((element, index) => {
+//     useEffect(() => {
+//         let mounted = true;
 
-                        maleArray[element.rescue_month - 1] = element.rescued_animals
+//         const getRescuedAnimals = async () => {
+//             try {
 
-                    })
+//                 setChartData({ ...chartData, series: [] })
+//                 const res = await axiosClient.get("/api/analytics/rescuedAnimalsPerGender?year=" + year);
+//                 if (res.data.state) {
 
-                    female.forEach((element, index) => {
-
-                        femaleArray[element.rescue_month - 1] = element.rescued_animals
-
-                    })
-                    // console.log("newData", dogsArray)
-                    tmpSeries[0] = { name: "Machos", data: maleArray };
-                    tmpSeries[1] = { name: "Hembras", data: femaleArray };
-                    if (mounted) {
-                        setChartData({
-                            options: chartData.options,
-                            series: tmpSeries
-
-
-                        })
-                    }
-                }
-
-            } catch (error) {
-                console.log(error)
-            }
-        }
-
-        getRescuedAnimals()
-        return () => {
-            mounted=false
-        }
-    }, [year])
-
-
-    return (<Card variant='outlined' sx={{ borderRadius: 4, p: 4, width: "100%", marginX: matchDownSm ? 0 : 2 }} >
-
-        <Stack direction={"row"} justifyContent={"space-between"} mb={2}>
-            <Stack direction={"row"} alignItems={"center"}>
-
-                <Tooltip title="Visualiza y exporta la lista de animales rescatados por año y clasificados por sexo">
-                    <IconButton>
-                        <BiHelpCircle />
-                    </IconButton>
-
-                </Tooltip>
-                <Typography variant="t2" sx={{ fontWeight: "600", color: grey[600] }} >
-                    Animales rescatados (por sexo)
-                </Typography>
-            </Stack>
-            <FormControl sx={{ minWidth: 90 }} >
-
-                <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={year}
-                    label="Age"
-                    sx={{ borderRadius: 3, maxHeight: 42 }}
-                    onChange={(val) => { setYear(val.target.value) }}
-                >
-                    <MenuItem value={2021}>2021</MenuItem>
-                    <MenuItem value={2022}>2022</MenuItem>
-                </Select>
-            </FormControl>
-
-        </Stack>
-
-        <Chart
-            options={chartData.options}
-            series={chartData.series}
-            type="bar"
-        // width="500"
-
-        />
-    </Card>
+//                     let male = res.data.data.male;
+//                     let female = res.data.data.female;
 
 
-    )
-}
+//                     let tmpSeries = []
+
+//                     let maleArray = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+//                     let femaleArray = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+//                     male.forEach((element, index) => {
+
+//                         maleArray[element.rescue_month - 1] = element.rescued_animals
+
+//                     })
+
+//                     female.forEach((element, index) => {
+
+//                         femaleArray[element.rescue_month - 1] = element.rescued_animals
+
+//                     })
+
+//                     tmpSeries[0] = { name: "Machos", data: maleArray };
+//                     tmpSeries[1] = { name: "Hembras", data: femaleArray };
+//                     if (mounted) {
+//                         setChartData({
+//                             options: chartData.options,
+//                             series: tmpSeries
+
+
+//                         })
+//                     }
+//                 }
+
+//             } catch (error) {
+//                 console.log(error)
+//             }
+//         }
+
+//         getRescuedAnimals()
+//         return () => {
+//             mounted=false
+//         }
+//     }, [year])
+
+
+//     return (<Card variant='outlined' sx={{ borderRadius: 4, p: 4, width: "100%", marginX: matchDownSm ? 0 : 2 }} >
+
+//         <Stack direction={"row"} justifyContent={"space-between"} mb={2}>
+//             <Stack direction={"row"} alignItems={"center"}>
+
+//                 <Tooltip title="Visualiza y exporta la lista de animales rescatados por año y clasificados por sexo">
+//                     <IconButton>
+//                         <BiHelpCircle />
+//                     </IconButton>
+
+//                 </Tooltip>
+//                 <Typography variant="t2"  >
+//                     Animales rescatados (por sexo)
+//                 </Typography>
+//             </Stack>
+//             <FormControl sx={{ minWidth: 90 }} >
+
+//                 <Select
+//                     labelId="demo-simple-select-label"
+//                     id="demo-simple-select"
+//                     value={year}
+//                     label="Age"
+//                     sx={{ borderRadius: 3, maxHeight: 42 }}
+//                     onChange={(val) => { setYear(val.target.value) }}
+//                 >
+//                     <MenuItem value={2021}>2021</MenuItem>
+//                     <MenuItem value={2022}>2022</MenuItem>
+//                 </Select>
+//             </FormControl>
+
+//         </Stack>
+
+//         <Chart
+//             options={chartData.options}
+//             series={chartData.series}
+//             type="bar"
+
+
+//         />
+//     </Card>
+
+
+//     )
+// }
 const AdoptedAnimalsChart = () => {
 
     const [year, setYear] = useState(new Date().getFullYear());
@@ -620,7 +636,7 @@ const AdoptedAnimalsChart = () => {
 
                 setChartData({ ...chartData, series: [] })
                 const res = await axiosClient.get("/api/analytics/adoptedAnimals?year=" + year);
-              
+
                 if (res.data.state) {
 
                     let adoptedCats = res.data.data.cats;
@@ -664,7 +680,7 @@ const AdoptedAnimalsChart = () => {
 
         getRescuedAnimals()
         return () => {
-            mounted=false
+            mounted = false
         }
     }, [year])
 
@@ -682,7 +698,7 @@ const AdoptedAnimalsChart = () => {
                     </IconButton>
 
                 </Tooltip>
-                <Typography variant="t2" sx={{ fontWeight: "600", color: grey[600] }} >
+                <Typography variant="t2"  >
                     Animales adoptados
                 </Typography>
             </Stack>
@@ -695,8 +711,11 @@ const AdoptedAnimalsChart = () => {
                     sx={{ borderRadius: 3, maxHeight: 42 }}
                     onChange={(val) => { setYear(val.target.value) }}
                 >
-                    <MenuItem value={2021}>2021</MenuItem>
-                    <MenuItem value={2022}>2022</MenuItem>
+                      {
+                        yearsInterval().map((element, index) => (
+                            <MenuItem key={index} value={element}>{element}</MenuItem>
+                        ))
+                    }
                 </Select>
             </FormControl>
 
@@ -706,7 +725,7 @@ const AdoptedAnimalsChart = () => {
             options={chartData.options}
             series={chartData.series}
             type="line"
-        // width="500"
+
 
         />
     </Card>
@@ -717,161 +736,161 @@ const AdoptedAnimalsChart = () => {
 
 
 
-const AdoptedAnimalsChartPerGender = () => {
+// const AdoptedAnimalsChartPerGender = () => {
 
-    const [year, setYear] = useState(new Date().getFullYear());
+//     const [year, setYear] = useState(new Date().getFullYear());
 
-    const matchDownSm = useMediaQuery('(max-width:1280px)');
-
-
-    const [chartData, setChartData] = useState({
+//     const matchDownSm = useMediaQuery('(max-width:1280px)');
 
 
-        options: {
-            chart: {
-                id: "basic-bar",
-                locales: [{
-                    "name": "en",
-                    "options": {
-                        "months": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-                        "shortMonths": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-                        "days": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-                        "shortDays": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-                        "toolbar": {
-                            "exportToSVG": "Descargar SVG",
-                            "exportToPNG": "Descargar PNG",
-                            "exportToCSV": "Descargar CSV",
-                            "menu": "Menu",
-                            "selection": "Selección",
-                            "selectionZoom": "Selection Zoom",
-                            "zoomIn": "Zoom In",
-                            "zoomOut": "Zoom Out",
-                            "pan": "Panning",
-                            "reset": "Reset Zoom"
-                        }
-                    }
-                }],
-            },
-            xaxis: {
-                categories: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]
-            },
-            colors: ['#9C27B0', '#E91E63',]
-        },
-        series: [
-            {
-                name: "Machos",
-                data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-            },
-            {
-                name: "Hembras",
-                data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-            }
-        ]
-    })
-
-    useEffect(() => {
-        let mounted = true;
+//     const [chartData, setChartData] = useState({
 
 
-        const getRescuedAnimals = async () => {
-            try {
-                setChartData({ ...chartData, series: [] })
-                const res = await axiosClient.get("/api/analytics/adoptedAnimalsPerGender?year=" + year);
-               
-                if (res.data.state) {
+//         options: {
+//             chart: {
+//                 id: "basic-bar",
+//                 locales: [{
+//                     "name": "en",
+//                     "options": {
+//                         "months": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+//                         "shortMonths": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+//                         "days": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+//                         "shortDays": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+//                         "toolbar": {
+//                             "exportToSVG": "Descargar SVG",
+//                             "exportToPNG": "Descargar PNG",
+//                             "exportToCSV": "Descargar CSV",
+//                             "menu": "Menu",
+//                             "selection": "Selección",
+//                             "selectionZoom": "Selection Zoom",
+//                             "zoomIn": "Zoom In",
+//                             "zoomOut": "Zoom Out",
+//                             "pan": "Panning",
+//                             "reset": "Reset Zoom"
+//                         }
+//                     }
+//                 }],
+//             },
+//             xaxis: {
+//                 categories: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]
+//             },
+//             colors: ['#9C27B0', '#E91E63',]
+//         },
+//         series: [
+//             {
+//                 name: "Machos",
+//                 data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+//             },
+//             {
+//                 name: "Hembras",
+//                 data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+//             }
+//         ]
+//     })
 
-                    let male = res.data.data.male;
-                    let female = res.data.data.female;
-
-                    let tmpSeries = []
-
-                    let maleArray = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-                    let femaleArray = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-
-                    male.forEach((element, index) => {
-
-                        maleArray[element.month - 1] = element.adopted_animals
-
-                    })
-
-
-                    female.forEach((element, index) => {
-
-                        femaleArray[element.month - 1] = element.adopted_animals
-
-                    })
-
-                    tmpSeries[0] = { name: "Machos", data: maleArray };
-                    tmpSeries[1] = { name: "Hembras", data: maleArray };
-                    if (mounted) {
-                        setChartData({
-                            options: chartData.options,
-                            series: tmpSeries
-
-
-                        })
-                    }
-
-                }
-
-            } catch (error) {
-                console.log(error)
-            }
-        }
-
-        getRescuedAnimals()
-        return () => {
-            mounted=false
-        }
-    }, [year])
+//     useEffect(() => {
+//         let mounted = true;
 
 
+//         const getRescuedAnimals = async () => {
+//             try {
+//                 setChartData({ ...chartData, series: [] })
+//                 const res = await axiosClient.get("/api/analytics/adoptedAnimalsPerGender?year=" + year);
+
+//                 if (res.data.state) {
+
+//                     let male = res.data.data.male;
+//                     let female = res.data.data.female;
+
+//                     let tmpSeries = []
+
+//                     let maleArray = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+//                     let femaleArray = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+//                     male.forEach((element, index) => {
+
+//                         maleArray[element.month - 1] = element.adopted_animals
+
+//                     })
 
 
-    return (<Card variant='outlined' sx={{ borderRadius: 4, p: 4, width: "100%", marginX: matchDownSm ? 0 : 2, marginBottom: matchDownSm ? 2 : 0 }} >
+//                     female.forEach((element, index) => {
 
-        <Stack direction={"row"} justifyContent={"space-between"} mb={2}>
-            <Stack direction={"row"} alignItems={"center"}>
+//                         femaleArray[element.month - 1] = element.adopted_animals
 
-                <Tooltip title="Visualiza y exporta la lista de animales adoptados por año y clasificados por sexo">
-                    <IconButton>
-                        <BiHelpCircle />
-                    </IconButton>
+//                     })
 
-                </Tooltip>
-                <Typography variant="t2" sx={{ fontWeight: "600", color: grey[600] }} >
-                    Animales adoptados (por sexo)
-                </Typography>
-            </Stack>
-            <FormControl sx={{ minWidth: 90 }} >
-                <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={year}
-                    label="Age"
-                    sx={{ borderRadius: 3, maxHeight: 42, }}
-                    onChange={(val) => { setYear(val.target.value) }}
-                >
-                    <MenuItem value={2021}>2021</MenuItem>
-                    <MenuItem value={2022}>2022</MenuItem>
-                </Select>
-            </FormControl>
-
-        </Stack>
-
-        <Chart
-            options={chartData.options}
-            series={chartData.series}
-            type="line"
-        // width="500"
+//                     tmpSeries[0] = { name: "Machos", data: maleArray };
+//                     tmpSeries[1] = { name: "Hembras", data: maleArray };
+//                     if (mounted) {
+//                         setChartData({
+//                             options: chartData.options,
+//                             series: tmpSeries
 
 
-        />
-    </Card>
+//                         })
+//                     }
+
+//                 }
+
+//             } catch (error) {
+//                 console.log(error)
+//             }
+//         }
+
+//          getRescuedAnimals()
+//         return () => {
+//             mounted=false
+//         }
+//     }, [year])
 
 
-    )
-}
+
+
+//     return (<Card variant='outlined' sx={{ borderRadius: 4, p: 4, width: "100%", marginX: matchDownSm ? 0 : 2, marginBottom: matchDownSm ? 2 : 0 }} >
+
+//         <Stack direction={"row"} justifyContent={"space-between"} mb={2}>
+//             <Stack direction={"row"} alignItems={"center"}>
+
+//                 <Tooltip title="Visualiza y exporta la lista de animales adoptados por año y clasificados por sexo">
+//                     <IconButton>
+//                         <BiHelpCircle />
+//                     </IconButton>
+
+//                 </Tooltip>
+//                 <Typography variant="t2"  >
+//                     Animales adoptados (por sexo)
+//                 </Typography>
+//             </Stack>
+//             <FormControl sx={{ minWidth: 90 }} >
+//                 <Select
+//                     labelId="demo-simple-select-label"
+//                     id="demo-simple-select"
+//                     value={year}
+//                     label="Age"
+//                     sx={{ borderRadius: 3, maxHeight: 42, }}
+//                     onChange={(val) => { setYear(val.target.value) }}
+//                 >
+//                     <MenuItem value={2021}>2021</MenuItem>
+//                     <MenuItem value={2022}>2022</MenuItem>
+//                 </Select>
+//             </FormControl>
+
+//         </Stack>
+
+//         <Chart
+//             options={chartData.options}
+//             series={chartData.series}
+//             type="line"
+
+
+
+//         />
+//     </Card>
+
+
+//     )
+// }
 
 
 
@@ -972,7 +991,7 @@ const SterilizedAnimals = () => {
         const getSterilizedAnimals = async () => {
             try {
                 const res = await axiosClient.get("/api/analytics/sterilized");
-                console.log("Esterilizados", res.data)
+          
                 if (res.data.state) {
 
                     if (mounted) {
@@ -1007,7 +1026,7 @@ const SterilizedAnimals = () => {
                     </IconButton>
 
                 </Tooltip>
-                <Typography variant="t2" sx={{ fontWeight: "600", color: grey[600] }} >
+                <Typography variant="t2"  >
                     Esterilización de animales
                 </Typography>
             </Stack>
@@ -1018,14 +1037,14 @@ const SterilizedAnimals = () => {
                 options={chartData.options}
                 series={chartData.series}
                 type="donut"
-            // width="300"
+
 
             />
             <Chart
                 options={chartDataCats.options}
                 series={chartDataCats.series}
                 type="donut"
-            // width="300"
+
             />
 
         </Stack>
@@ -1134,7 +1153,7 @@ const DewormedAnimals = () => {
         const getSterilizedAnimals = async () => {
             try {
                 const res = await axiosClient.get("/api/analytics/dewormed");
-                console.log("Esterilizados", res.data)
+             
                 if (res.data.state) {
 
 
@@ -1171,7 +1190,7 @@ const DewormedAnimals = () => {
                     </IconButton>
 
                 </Tooltip>
-                <Typography variant="t2" sx={{ fontWeight: "600", color: grey[600] }} >
+                <Typography variant="t2" >
                     Desparasitación de animales
                 </Typography>
             </Stack>

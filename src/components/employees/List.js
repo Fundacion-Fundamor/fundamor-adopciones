@@ -5,19 +5,20 @@ import {
     CardContent,
     Typography,
     CardActions,
-    IconButton,
     useTheme,
+    Avatar,
+    Stack,
+    Button,
 } from '@mui/material'
 
-import { FaTrashAlt, FaUserEdit } from 'react-icons/fa'
+import { FaTrashAlt, FaUserCircle, FaUserEdit } from 'react-icons/fa'
 import './list.scss'
 import EmployeeContext from '../../context/employee/employeeContext'
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-import { grey } from '@mui/material/colors'
 
 
-/**Configurar el clamp del correo
+/**
  * 
  * @returns 
  */
@@ -114,59 +115,61 @@ const EmployeeItem = ({ item, removeEmployee, selectEmployee }) => {
         <Card
             variant="outlined"
             sx={{
-                width: 275, padding: 2, borderRadius: theme.custom.borderRadius, margin: '0.8rem',
+                maxWidth: 305, padding: 2, borderRadius: theme.custom.borderRadius, margin: '0.8rem',
                 display: "flex",
                 justifyContent: "space-between",
                 flexDirection: "column",
                 borderTopWidth: 8,
                 borderTopStyle: "solid",
-                borderColor: theme.custom.primary.dark
+                borderTopColor: theme.custom.primary.light,
+                boxShadow: "0px 9px 19px -4px rgb(106 59 0 / 15%)"
+
             }}
         >
             <CardContent>
-                <Typography sx={{ fontSize: 14, textTransform: "capitalize" }} color="text.secondary" gutterBottom>
-                    {item.rol !== '' ? item.rol : 'No registra'}
-                </Typography>
+                <Stack direction={"row"}>
+                    <Avatar
+                        src="/images/worker.png"
+
+                        sx={{ width: 66, height: 66 }}
+                    >
+                        <FaUserCircle size={30} />
+                    </Avatar>
+                    <Stack direction={"column"} ml={2}>
+                        <Typography variant="h5" fontWeight={800} color={"#0a303a"} component="div" sx={{ textTransform: "capitalize" }}>
+                            {item.nombre}
+                        </Typography>
+                        <Typography sx={{ fontSize: 14, textTransform: "capitalize" }} color="text.secondary" gutterBottom>
+                            {item.rol !== '' ? item.rol : 'No registra'}
+                        </Typography>
+                    </Stack>
+                </Stack>
 
 
-                <Typography variant="h5" fontWeight={600} color={grey[600]} component="div" sx={{ textTransform: "capitalize" }}>
-                    {item.nombre}
-                </Typography>
-                <div>
+
+
+                {/* <div>
                     <Typography sx={{ mb: 1.5 }} color="text.secondary">
                         {item.correo}
                     </Typography>
-                </div>
+                </div> */}
             </CardContent>
-            <CardActions disableSpacing>
-                <IconButton aria-label="Editar colaborador"
+            <CardActions disableSpacing sx={{ justifyContent: "space-around", mt: 2 }}>
 
-                    sx={{
-                        color: theme.palette.primary.light
-                    }}
+
+                <Button size="medium" variant="outlined" color="primary" sx={{ fontSize: 11, borderRadius: "8px" }}
                     onClick={() => {
                         selectEmployee(item)
-                    }}>
-                    <FaUserEdit
-                        size={30}
-                        cursor="pointer"
-
-                    />
-                </IconButton>
-                <IconButton aria-label="Eliminar colaborador"
-
-                    sx={{
-                        color: theme.palette.primary.light
                     }}
+                    startIcon={<FaUserEdit />}
+                >Editar</Button>
+                <Button size="medium" variant="outlined" color="error" sx={{ fontSize: 11, borderRadius: "8px" }}
+                    startIcon={<FaTrashAlt />}
                     onClick={() => {
                         removeEmployee(item.id_empleado)
-                    }}>
-                    <FaTrashAlt
-                        size={25}
+                    }}
+                >Eliminar</Button>
 
-                        cursor="pointer"
-                    />
-                </IconButton>
             </CardActions>
         </Card>
     )
