@@ -5,7 +5,6 @@ import PostContext from '../../context/post/postContext'
 import { Box, Button, Card, CardActions, CardContent, CardMedia, IconButton, Menu, MenuItem, Pagination, Skeleton, Stack, Tooltip, Typography, useMediaQuery, useTheme, } from '@mui/material'
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
-import { grey } from '@mui/material/colors'
 import { AiOutlinePlus, AiOutlineSearch } from 'react-icons/ai'
 import { BiHelpCircle } from 'react-icons/bi'
 import { useHistory, useRouteMatch } from 'react-router-dom'

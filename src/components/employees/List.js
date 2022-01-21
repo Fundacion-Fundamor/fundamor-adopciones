@@ -9,6 +9,7 @@ import {
     Avatar,
     Stack,
     Button,
+    CircularProgress,
 } from '@mui/material'
 
 import { FaTrashAlt, FaUserCircle, FaUserEdit } from 'react-icons/fa'
@@ -16,6 +17,8 @@ import './list.scss'
 import EmployeeContext from '../../context/employee/employeeContext'
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import AuthContext from '../../context/auth/authContext'
+import { AiOutlineInfoCircle } from 'react-icons/ai'
 
 
 /**
@@ -33,6 +36,8 @@ export default function List() {
         handleEmployeeMessage
 
     } = useContext(EmployeeContext);
+
+
 
     const MySwal = withReactContent(Swal);
 
@@ -94,6 +99,15 @@ export default function List() {
                 margin: '0 5%',
             }}
         >
+
+            {loading && employees.length === 0 ?
+                <Stack direction="row" my={8} alignItems="center"><CircularProgress />
+                    <Typography sx={{ fontWeight: "500", ml: 2 }}>Cargando...</Typography>
+                </Stack> : null}
+            {employees.length === 0 && !loading ?
+                <Typography sx={{ fontWeight: "600", my: 8 }}>No hay colaboradores registrados</Typography> : null}
+
+
             {employees.map((element, index) => (
                 <EmployeeItem
                     item={element}
@@ -111,6 +125,11 @@ const EmployeeItem = ({ item, removeEmployee, selectEmployee }) => {
 
 
     const theme = useTheme();
+
+    const {
+        user,
+
+    } = useContext(AuthContext);
     return (
         <Card
             variant="outlined"
@@ -145,16 +164,8 @@ const EmployeeItem = ({ item, removeEmployee, selectEmployee }) => {
                     </Stack>
                 </Stack>
 
-
-
-
-                {/* <div>
-                    <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                        {item.correo}
-                    </Typography>
-                </div> */}
             </CardContent>
-            <CardActions disableSpacing sx={{ justifyContent: "space-around", mt: 2 }}>
+            {user.rol !== "colaborador" ? <CardActions disableSpacing sx={{ justifyContent: "space-around", mt: 2 }}>
 
 
                 <Button size="medium" variant="outlined" color="primary" sx={{ fontSize: 11, borderRadius: "8px" }}
@@ -170,7 +181,11 @@ const EmployeeItem = ({ item, removeEmployee, selectEmployee }) => {
                     }}
                 >Eliminar</Button>
 
-            </CardActions>
+            </CardActions> : <Stack flexDirection={"row"} alignItems={"center"} display={"flex"}>
+                <AiOutlineInfoCircle color='#1976d2' size={24} />
+                <Typography sx={{ fontSize: 12, ml: 1, color: "#1976d2", fontWeight: "600" }} variant="subtitle2">Solo los administradores pueden gestionar el acceso a la plataforma</Typography>
+
+            </Stack>}
         </Card>
     )
 }

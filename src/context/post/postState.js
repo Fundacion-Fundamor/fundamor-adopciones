@@ -3,7 +3,7 @@ import PostContext from './postContext';
 import PostReducer from './postReducer';
 import { POSTS, SELECT_POST, TOGGLE_POSTS_LOADING, POST_MESSAGE } from '../../types';
 import axiosClient from '../../config/axios';
-import {handleResponseError} from "../../Shared/utils"
+import { handleResponseError } from "../../Shared/utils"
 
 const PostState = props => {
 
@@ -30,7 +30,6 @@ const PostState = props => {
             });
             const res = await axiosClient.get("/api/post");
 
-            console.log(res.data)
             if (res.data.state) {
                 dispatch({
                     type: POSTS,
@@ -44,7 +43,7 @@ const PostState = props => {
             }
 
         } catch (error) {
-         
+
             let text = handleResponseError(error)
             dispatch({
                 type: POST_MESSAGE, payload: {
@@ -65,9 +64,8 @@ const PostState = props => {
                 type: TOGGLE_POSTS_LOADING,
                 payload: true
             });
-            const res = await axiosClient.get("/api/post/"+postId);
-
-            console.log(res.data)
+            const res = await axiosClient.get("/api/post/" + postId);
+console.log(res.data)
             if (res.data.state) {
                 dispatch({
                     type: SELECT_POST,
@@ -99,8 +97,8 @@ const PostState = props => {
      * 
      * @param {*} data 
      */
-    const createPost = async (data,images) => {
-    
+    const createPost = async (data, images) => {
+
 
         dispatch({
             type: TOGGLE_POSTS_LOADING,
@@ -112,14 +110,14 @@ const PostState = props => {
         }
         try {
             const res = await axiosClient.post("/api/post", formattedData);
-            console.log(res)
+
             if (res.data.state) {
                 if (images.length !== 0) {
                     let resultImagesInsert = await insertImages(images, res.data.data);
                     dispatch({
                         type: POST_MESSAGE, payload: {
-                            category: resultImagesInsert.data.state ? "success" : "error",
-                            text: resultImagesInsert.data.state ? res.data.message : "La publicación se ha registrado exitosamente exitosamente, pero ha ocurrido un error al subir las imágenes",
+                            category: resultImagesInsert ? "success" : "error",
+                            text: resultImagesInsert ? res.data.message : "La publicación se ha registrado exitosamente exitosamente, pero ha ocurrido un error al subir las imágenes",
                             showIn: "form"
 
                         }
@@ -179,10 +177,10 @@ const PostState = props => {
                 }
             );
 
-            return res;
+            return res.data.state;
         } catch (error) {
 
-            return error.response.data;
+            return false;
         }
     }
 
@@ -202,11 +200,11 @@ const PostState = props => {
                     },
                 }
             );
-            return res;
+            return res.data.state;
 
         } catch (error) {
-            console.log(error);
-            return error.response.data;
+
+            return false;
         }
     }
 
@@ -221,8 +219,8 @@ const PostState = props => {
         {
             id_publicacion: data.postId,
             titulo: data.title,
-            cuerpo:data.cuerpo
-      
+            cuerpo: data.body
+
 
         }
 
@@ -230,8 +228,8 @@ const PostState = props => {
             let res = await axiosClient.put("/api/post", formattedData);
             if (res.data.state) {
 
-                let resImagesInsert = { data: { state: true } };
-                let resImagesRemove = { data: { state: true } };
+                let resImagesInsert = true;
+                let resImagesRemove = true;
 
                 if (imagesInsert.length !== 0) {
                     resImagesInsert = await insertImages(imagesInsert, data.postId);
@@ -241,7 +239,7 @@ const PostState = props => {
                     resImagesRemove = await removeImages(imagesRemove);
 
                 }
-                if (resImagesInsert.data.state && resImagesRemove.data.state) {
+                if (resImagesInsert && resImagesRemove) {
 
                     dispatch({
                         type: POST_MESSAGE, payload: {
@@ -275,7 +273,7 @@ const PostState = props => {
             }
 
         } catch (error) {
-            console.log(error)
+
             let text = handleResponseError(error)
             dispatch({
                 type: POST_MESSAGE, payload: {

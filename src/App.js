@@ -47,7 +47,7 @@ if (token) {
 
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' && prop !== 'authenticated' })(({ theme, open, authenticated }) => {
-	console.log(authenticated)
+
 	return (
 		{
 			...theme.typography.mainContent,

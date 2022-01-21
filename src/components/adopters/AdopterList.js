@@ -64,11 +64,10 @@ export default function AdopterList() {
 
       displayAlert();
     }
+ 
   }, [message, loading])
 
-  useEffect(() => {
-    getAdopters();
-  }, []);
+
 
   useEffect(() => {
 
@@ -119,30 +118,10 @@ export default function AdopterList() {
     })
   }
 
-  useEffect(() => {
-    getAdopters()
-  }, [])
 
   useEffect(() => {
-    const displayAlert = async () => {
-      let res = await MySwal.fire({
-        title: (
-          <p style={{ fontSize: 22, fontWeight: 'bold' }}>{message.text}</p>
-        ),
-        allowOutsideClick: false,
-        icon: message.category,
-        backdrop: true,
-      })
-
-      if (res.isConfirmed) {
-        await handleAdopterMessage(null)
-      }
-    }
-    if (message && message.showIn === 'list' && !loading) {
-      displayAlert()
-    }
-  }, [message, loading])
-
+    getAdopters();
+  }, []);
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -227,7 +206,7 @@ export default function AdopterList() {
               <Typography sx={{ fontWeight: "500", ml: 2 }}>Cargando...</Typography>
             </Stack> : null}
           {adopters.length === 0 && !loading ?
-            <Typography sx={{ fontWeight: "600", mt: 8 }}>No hay adopteres registrados</Typography> : null}
+            <Typography sx={{ fontWeight: "600", mt: 8 }}>No hay adoptantes registrados</Typography> : null}
 
           {localData.list.length === 0 && !loading && adopters.length !== 0 ?
             <Typography sx={{ fontWeight: "600", mt: 8 }}>No hay coincidencias</Typography> : null}

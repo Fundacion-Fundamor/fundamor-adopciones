@@ -3,6 +3,7 @@ import QuestionContext from './questionContext';
 import QuestionReducer from './questionReducer';
 import { QUESTIONS, SELECT_QUESTION, UNSELECT_QUESTION, TOGGLE_QUESTION_LOADING, QUESTION_MESSAGE, SELECT_QUESTION_EDIT } from '../../types';
 import axiosClient from '../../config/axios';
+import { handleResponseError } from "../../Shared/utils"
 
 /**TODO: hacer el metodo de asociacion de preguntas
  * Realizar el eliminar multiple en el back
@@ -35,7 +36,6 @@ const QuestionState = props => {
             });
             const res = await axiosClient.get("/api/questions");
 
-            console.log("preguntas", res.data);
             if (res.data.state) {
                 dispatch({
                     type: QUESTIONS,
@@ -49,14 +49,8 @@ const QuestionState = props => {
             }
 
         } catch (error) {
-            let errorsDecriptions = error.response?.data.errors;
 
-            let text = "";
-            if (errorsDecriptions) {
-                text = errorsDecriptions[0];
-            } else {
-                text = error.response.data.message;
-            }
+            let text = handleResponseError(error)
 
             dispatch({
                 type: QUESTION_MESSAGE, payload: {
@@ -93,18 +87,11 @@ const QuestionState = props => {
                     showIn: "form"
                 }
             })
-           
+
 
         } catch (error) {
 
-            let errorsDecriptions = error.response?.data.errors;
-
-            let text = "";
-            if (errorsDecriptions) {
-                text = errorsDecriptions[0];
-            } else {
-                text = error.response.data.message;
-            }
+            let text = handleResponseError(error)
 
             dispatch({
                 type: QUESTION_MESSAGE, payload: {
@@ -125,18 +112,6 @@ const QuestionState = props => {
 
 
         questionOptions.forEach(element => {
-            // if (element.id === "") {
-            //     newOptions.push({
-            //         id_pregunta: element.questionID,
-            //         descripcion: element.text
-            //     });
-            // } else {
-            //     updateOptions.push({
-            //         id_pregunta: element.questionID,
-            //         descripcion: element.text,
-            //         id_opcion: element.id
-            //     });
-            // }
 
             if (element.id === "") {
                 newOptions.push({
@@ -213,15 +188,8 @@ const QuestionState = props => {
             getQuestions();
 
         } catch (error) {
-            console.log(error)
-            let errorsDecriptions = error.response?.data.errors;
 
-            let text = "";
-            if (errorsDecriptions) {
-                text = errorsDecriptions[0];
-            } else {
-                text = error.response.data.message;
-            }
+            let text = handleResponseError(error);
 
             dispatch({
                 type: QUESTION_MESSAGE, payload: {
@@ -252,14 +220,7 @@ const QuestionState = props => {
             getQuestions();
 
         } catch (error) {
-
-            let errorsDecriptions = error.response?.data.errors;
-            let text = "";
-            if (errorsDecriptions) {
-                text = errorsDecriptions[0];
-            } else {
-                text = error.response.data.message;
-            }
+            let text = handleResponseError(error);
 
             dispatch({
                 type: QUESTION_MESSAGE, payload: {

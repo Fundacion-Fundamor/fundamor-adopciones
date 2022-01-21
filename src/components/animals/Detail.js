@@ -192,7 +192,7 @@ export default function Detail() {
                     </Box>
                     <Box alignItems={"center"} display={"flex"} flexDirection={matchDownSm ? "column" : "row"} sx={{ marginTop: matchDownSm ? 2 : 0 }}>
 
-                        {selectedAnimal && selectedAnimal.estado !== "Adoptado" ? <Button
+                        {selectedAnimal && selectedAnimal.estado === "Sin adoptar" ? <Button
                             color="secondary"
                             onClick={() => { history.push("/adoptions/new/" + animalId); }}
                             variant="contained"

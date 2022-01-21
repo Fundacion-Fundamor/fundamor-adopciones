@@ -93,9 +93,7 @@ export default function FormEdit() {
                     tmp.push(element);
                 }
             })
-            console.log(tmp)
-            console.log(imagesRemove)
-            console.log(values)
+            
             //se guardan los datos del colaborador
             editPost(values, tmp, imagesRemove);
 

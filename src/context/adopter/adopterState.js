@@ -3,6 +3,7 @@ import AdopterContext from './adopterContext';
 import AdopterReducer from './adopterReducer';
 import { ADOPTERS, SELECT_ADOPTER, TOGGLE_ADOPTER_LOADING, ADOPTER_MESSAGE } from '../../types';
 import axiosClient from '../../config/axios';
+import { handleResponseError } from '../../Shared/utils';
 
 const AdopterState = props => {
 
@@ -29,7 +30,6 @@ const AdopterState = props => {
             });
             const res = await axiosClient.get("/api/adopters");
 
-            console.log(res.data);
             if (res.data.state) {
                 dispatch({
                     type: ADOPTERS,
@@ -43,14 +43,8 @@ const AdopterState = props => {
             }
 
         } catch (error) {
-            let errorsDecriptions = error.response?.data.errors;
 
-            let text = "";
-            if (errorsDecriptions) {
-                text = errorsDecriptions[0];
-            } else {
-                text = error.response.data.message;
-            }
+            let text =handleResponseError(error)
 
             dispatch({
                 type: ADOPTER_MESSAGE, payload: {
@@ -93,14 +87,7 @@ const AdopterState = props => {
 
         } catch (error) {
 
-            let errorsDecriptions = error.response?.data.errors;
-
-            let text = "";
-            if (errorsDecriptions) {
-                text = errorsDecriptions[0];
-            } else {
-                text = error.response.data.message;
-            }
+            let text = handleResponseError(error)
 
             dispatch({
                 type: ADOPTER_MESSAGE, payload: {
@@ -157,14 +144,8 @@ const AdopterState = props => {
             getAdopters();
 
         } catch (error) {
-            let errorsDecriptions = error.response?.data.errors;
 
-            let text = "";
-            if (errorsDecriptions) {
-                text = errorsDecriptions[0];
-            } else {
-                text = error.response.data.message;
-            }
+            let text =handleResponseError(error);
 
             dispatch({
                 type: ADOPTER_MESSAGE, payload: {
@@ -196,14 +177,7 @@ const AdopterState = props => {
 
         } catch (error) {
 
-            let errorsDecriptions = error.response?.data.errors;
-            let text = "";
-            if (errorsDecriptions) {
-                text = errorsDecriptions[0];
-            } else {
-                text = error.response.data.message;
-            }
-
+            let text = handleResponseError(error)
             dispatch({
                 type: ADOPTER_MESSAGE, payload: {
                     category: "error",

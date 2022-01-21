@@ -54,7 +54,6 @@ export default function ModalUpdate({ handleModal, observations, finalDate, adop
 
     const onSubmit = () => {
 
-        console.log(values)
         if (values.adoptionState === "finalizada" && values.adoptionFinalDate === null) {
             setError(true);
         } else {
