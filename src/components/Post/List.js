@@ -99,7 +99,7 @@ function List() {
 			if (localData.filters.search !== "") {
 
 
-				if (!(element.nombre.toLowerCase().includes(localData.filters.search.toLowerCase().trim()))) {
+				if (!(element.titulo.toLowerCase().includes(localData.filters.search.toLowerCase().trim()))) {
 					condition = false;
 				}
 
