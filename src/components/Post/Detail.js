@@ -9,7 +9,7 @@ import { BiHelpCircle } from 'react-icons/bi';
 import { FiTrash2 } from 'react-icons/fi';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-import { grey } from '@mui/material/colors';
+
 
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
@@ -148,7 +148,7 @@ export default function Detail() {
                         {selectedPost.postImage.map((element, index) => (
                             <div key={index}>
                                 <img
-                                    style={{ objectFit: "cover", borderRadius: 8 }}
+                                    style={{ objectFit: "contain", borderRadius: 8 }}
                                     width={"100%"}
                                     height={!matchDownSm ? "414px" : "auto"}
                                     src={`${process.env.REACT_APP_API_URL}/${element.ruta}`} alt="card" />
