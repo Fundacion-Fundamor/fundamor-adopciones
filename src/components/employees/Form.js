@@ -98,9 +98,9 @@ export default function Form({ handleToggle }) {
             <div className="form-container">
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: selectedEmployee ? "flex-start" : "center" }}>
                     {selectedEmployee ?
-                        <Typography variant="t2" sx={{ fontWeight: "600", color: grey[600] }} >Edita los datos del colaborador </Typography>
+                        <Typography variant="t2" >Edita los datos del colaborador </Typography>
                         :
-                        <Typography variant="t2" sx={{ fontWeight: "600", color: grey[600] }} >
+                        <Typography variant="t2">
                             Nuevo colaborador
                         </Typography>}
                     <IoClose size={35} color={grey[600]} onClick={handleToggle} cursor="pointer" />

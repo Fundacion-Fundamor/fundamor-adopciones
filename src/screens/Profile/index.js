@@ -1,5 +1,6 @@
+/* eslint-disable no-useless-escape */
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Avatar, Box, Button, Card, CardActions, CardContent, Divider, FormHelperText, Grid, IconButton, ListItemButton, ListItemIcon, ListItemText, Stack, TextField, Tooltip, Typography, useMediaQuery, useTheme } from '@mui/material'
+import { Avatar, Box, Card, CardActions, CardContent, Divider, FormHelperText, Grid, IconButton, ListItemButton, ListItemIcon, ListItemText, Stack, TextField, Tooltip, Typography, useMediaQuery, useTheme } from '@mui/material'
 import { grey } from '@mui/material/colors';
 import React, { useContext, useEffect, useState } from 'react'
 import { AiOutlineInfoCircle, AiOutlineSave } from 'react-icons/ai';
@@ -9,8 +10,15 @@ import { IoKeypad } from 'react-icons/io5';
 import AuthContext from '../../context/auth/authContext';
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
+import { LoadingButton } from '@mui/lab';
+
 const regexEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
+
+/**Renderiza la vista que le permite al usuario en sesion actualizar sus datos
+ * 
+ * @returns 
+ */
 
 export default function Profile() {
 
@@ -18,7 +26,7 @@ export default function Profile() {
     //layout y theming
     const theme = useTheme();
     const matchDownSm = useMediaQuery(theme.breakpoints.down('sm'));
-    const { user, message, handleAuthMessage, loading, } = useContext(AuthContext);
+    const { user, message, handleAuthMessage, loading } = useContext(AuthContext);
 
     const [indexTab, setIndexTab] = useState(0);
 
@@ -45,7 +53,7 @@ export default function Profile() {
             displayAlert();
         }
     }, [message, loading])
-    
+
     return (
 
         <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -66,7 +74,7 @@ export default function Profile() {
             </Card>
             {user ? <Card variant="outlined" sx={{ borderRadius: theme.custom.borderRadius }} >
                 <Stack p={3}>
-                    <Typography variant="t2" sx={{ fontWeight: "600", fontSize: 18, color: grey[600] }} >
+                    <Typography variant="t2" sx={{ fontWeight: "600", fontSize: 18, }} >
                         Configuración de la cuenta
                     </Typography>
 
@@ -170,7 +178,7 @@ const UserProfileSection = () => {
     //layout y theming
     const theme = useTheme();
     const matchDownSm = useMediaQuery(theme.breakpoints.down('sm'));
-    const { updateUserData, user, loading, } = useContext(AuthContext);
+    const { updateUserData, user, loading } = useContext(AuthContext);
 
     const [userInSession, setUserInSession] = useState(user)
     const [errors, setErrors] = useState({
@@ -333,11 +341,21 @@ const UserProfileSection = () => {
 
             <Grid item md={12} xs={12} >
 
-                <Button size="medium" variant="outlined" color="primary" sx={{ mt: 3, fontSize: 12, height: 40, alignItems: "center", borderRadius: "8px", fontWeight: "bold" }}
-                    onClick={() => onSaveChanges()}
-                    startIcon={<AiOutlineSave />}
-                >Guardar cambios</Button>
 
+                <LoadingButton loading={loading} variant="outlined"
+                    size="medium" color="primary" sx={{ mt: 3, fontSize: 12, height: 40, alignItems: "center", borderRadius: "8px", fontWeight: "bold" }}
+                    onClick={() => {
+
+                        if (!loading) {
+                            onSaveChanges()
+
+                        }
+                    }}
+                    startIcon={<AiOutlineSave />}
+
+                >
+                    Guardar cambios
+                </LoadingButton>
             </Grid>
         </Grid>
 
@@ -391,8 +409,8 @@ const PasswordSection = () => {
             <Grid container spacing={3} mt={0}>
 
                 <Grid item md={12} xs={12} flexDirection={"row"} alignItems={"center"} display={"flex"}>
-                    <AiOutlineInfoCircle  color='#1976d2' size={24}/>
-                    <Typography sx={{ fontSize: 12, ml: 1,color:"#1976d2"}} variant="subtitle2">Si desea actualizar su contraseña, debe ingresar su contraseña actual y posteriormente la nueva contraseña </Typography>
+                    <AiOutlineInfoCircle color='#1976d2' size={24} />
+                    <Typography sx={{ fontSize: 12, ml: 1, color: "#1976d2" }} variant="subtitle2">Si desea actualizar su contraseña, debe ingresar su contraseña actual y posteriormente la nueva contraseña </Typography>
 
                 </Grid>
                 <Grid item md={12} xs={12} >
@@ -513,20 +531,23 @@ const PasswordSection = () => {
 
                 </Grid>
 
-
-
-
                 <Grid item md={12} xs={12} >
+                    <LoadingButton loading={loading} variant="outlined"
+                        size="medium" color="primary" sx={{ mt: 3, fontSize: 12, height: 40, alignItems: "center", borderRadius: "8px", fontWeight: "bold" }}
+                        onClick={() => {
 
-                    <Button size="medium" variant="outlined" color="primary" sx={{ mt: 3, fontSize: 12, height: 40, alignItems: "center", borderRadius: "8px", fontWeight: "bold" }}
-                        onClick={() => onSubmit()}
+                            if (!loading) {
+                                onSubmit()
+
+                            }
+                        }}
                         startIcon={<AiOutlineSave />}
-                    >Establecer nueva contraseña</Button>
 
+                    >
+                        Establecer nueva contraseña
+                    </LoadingButton>
                 </Grid>
             </Grid>
-
-
         </Box>
     )
 }

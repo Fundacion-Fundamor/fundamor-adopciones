@@ -7,7 +7,7 @@ import { SELECT_PAGE } from '../../types';
 const BreadCumbState = props => {
 
     const initialState = {
-        selectedIndex: 1
+        selectedIndex: 3
 
     }
 

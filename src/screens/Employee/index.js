@@ -84,7 +84,7 @@ export default function Employeee() {
         aria-describedby="modal-modal-description"
         style={{ overflowY: 'scroll', }}
       >
-        <Box sx={{ display: 'flex', justifyContent: 'center', borderRadius: theme.custom.borderRadius }}>
+        <Box tabIndex={""}  sx={{ display: 'flex', justifyContent: 'center', borderRadius: theme.custom.borderRadius }}>
           {showForm && <Form handleToggle={handleToggle} />}
         </Box>
       </Modal>

@@ -10,15 +10,29 @@ import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 
 
+
+/**Renderiza la vista que permite actualizar los datos de la fundación
+ * 
+ * @returns 
+ */
 export default function Config() {
 
     const theme = useTheme();
     const matchDownSm = useMediaQuery('(max-width:1280px)');
- 
+
 
     const { getFoundation, currentFoundation, updateFoundationData, handleFoundationMessage, loading, message } = useContext(FoundationContext);
 
-    const [tmpFoundation, setTmpFoundation] = useState(currentFoundation)
+    const [tmpFoundation, setTmpFoundation] = useState(
+        {
+            correo: "",
+            cuenta_donaciones: "",
+            direccion: "",
+            mision: "",
+            telefono: "",
+            vision: ""
+        }
+    )
 
     const MySwal = withReactContent(Swal)
 
@@ -42,13 +56,27 @@ export default function Config() {
 
             displayAlert();
         }
+
     }, [message, loading])
 
+    useEffect(() => {
+        setTmpFoundation({
+
+            correo: currentFoundation.correo ? currentFoundation.correo : "",
+            cuenta_donaciones: currentFoundation.cuenta_donaciones ? currentFoundation.cuenta_donaciones : "",
+            direccion: currentFoundation.direccion ? currentFoundation.direccion : "",
+            mision: currentFoundation.mision ? currentFoundation.mision : "",
+            telefono: currentFoundation.telefono ? currentFoundation.telefono : "",
+            vision: currentFoundation.vision ? currentFoundation.vision : ""
+
+        })
+    }, [currentFoundation]);
 
 
     useEffect(() => {
         getFoundation();
-    }, [])
+    }, []);
+
     return (
 
 
@@ -71,7 +99,7 @@ export default function Config() {
             <Card variant="outlined" sx={{ borderRadius: theme.custom.borderRadius }} >
 
                 <Stack p={3}>
-                    <Typography variant="t2" sx={{ fontWeight: "600", fontSize: 18, color: grey[600] }} >
+                    <Typography variant="t2" sx={{ fontWeight: "600" }} >
                         Configuración del sitio
                     </Typography>
 

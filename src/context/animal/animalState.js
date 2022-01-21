@@ -5,7 +5,7 @@ import { ANIMALS, SELECT_ANIMAL, TOGGLE_ANIMAL_LOADING, ANIMAL_MESSAGE } from '.
 import axiosClient from '../../config/axios';
 import { handleResponseError } from '../../Shared/utils';
 
-/**gestionar codigos de errores y timeout
+/**
  * 
  * @param {*} props 
  * @returns 
@@ -56,15 +56,7 @@ const AnimalState = props => {
             }
 
         } catch (error) {
-            let errorsDecriptions = error.response?.data.errors;
-
-            let text = "";
-            if (errorsDecriptions) {
-                text = errorsDecriptions[0];
-            } else {
-                text = error.response.data.message;
-            }
-
+            let text = handleResponseError(error);
             dispatch({
                 type: ANIMAL_MESSAGE, payload: {
                     category: "error",
@@ -99,14 +91,8 @@ const AnimalState = props => {
             }
 
         } catch (error) {
-            let errorsDecriptions = error.response?.data.errors;
+            let text = handleResponseError(error);
 
-            let text = "";
-            if (errorsDecriptions) {
-                text = errorsDecriptions[0];
-            } else {
-                text = error.response.data.message;
-            }
 
             dispatch({
                 type: ANIMAL_MESSAGE, payload: {
@@ -152,8 +138,8 @@ const AnimalState = props => {
                     let resultImagesInsert = await insertImages(images, res.data.data);
                     dispatch({
                         type: ANIMAL_MESSAGE, payload: {
-                            category: resultImagesInsert.data.state ? "success" : "error",
-                            text: resultImagesInsert.data.state ? res.data.message : "El animal se ha registrado exitosamente, pero ha ocurrido un error al subir las imágenes",
+                            category: resultImagesInsert ? "success" : "error",
+                            text: resultImagesInsert ? res.data.message : "El animal se ha registrado exitosamente, pero ha ocurrido un error al subir las imágenes",
                             showIn: "form"
 
                         }
@@ -213,10 +199,10 @@ const AnimalState = props => {
                 }
             );
 
-            return res;
+            return res.data.state;
         } catch (error) {
 
-            return error.response.data;
+            return false;
         }
     }
 
@@ -236,11 +222,11 @@ const AnimalState = props => {
                     },
                 }
             );
-            return res;
+            return res.data.state;
 
         } catch (error) {
-            console.log(error);
-            return error.response.data;
+
+            return false;
         }
     }
 
@@ -259,11 +245,11 @@ const AnimalState = props => {
             nombre: data.name,
             fecha_nacimiento: data.birthday,
             sexo: data.gender,
-            caracteristicas: data.characteristics,
-            sitio_rescate: data.rescueSite,
-            fecha_rescate: data.rescueDate,
+            caracteristicas:  data.characteristics.trim() !== "" ? data.characteristics : null,
+            sitio_rescate: data.rescueSite.trim() !== "" ? data.rescueSite : null,
+            fecha_rescate:  data.rescueDate !== "" ? data.rescueDate : null,
             color: data.color,
-            vacunas: data.vaccine,
+            vacunas: data.vaccine !== "" ? data.vaccine : null,
             esterilizado: data.sterilized,
             desparasitado: data.dewormed,
             tamanio: data.size,
@@ -275,8 +261,8 @@ const AnimalState = props => {
             let res = await axiosClient.put("/api/animals", formattedData);
             if (res.data.state) {
 
-                let resImagesInsert = { data: { state: true } };
-                let resImagesRemove = { data: { state: true } };
+                let resImagesInsert = true;
+                let resImagesRemove = true;
 
                 if (imagesInsert.length !== 0) {
                     resImagesInsert = await insertImages(imagesInsert, data.animalID);
@@ -286,7 +272,7 @@ const AnimalState = props => {
                     resImagesRemove = await removeImages(imagesRemove);
 
                 }
-                if (resImagesInsert.data.state && resImagesRemove.data.state) {
+                if (resImagesInsert && resImagesRemove) {
 
                     dispatch({
                         type: ANIMAL_MESSAGE, payload: {
@@ -320,15 +306,8 @@ const AnimalState = props => {
             }
 
         } catch (error) {
-            console.log(error)
-            let errorsDecriptions = error.response?.data.errors;
 
-            let text = "";
-            if (errorsDecriptions) {
-                text = errorsDecriptions[0];
-            } else {
-                text = error.response.data.message;
-            }
+            let text = handleResponseError(error);
 
             dispatch({
                 type: ANIMAL_MESSAGE, payload: {

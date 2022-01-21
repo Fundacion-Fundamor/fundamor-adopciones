@@ -164,7 +164,7 @@ export default function Detail() {
                 style={{ overflowY: 'scroll' }}
             >
 
-                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                <Box tabIndex={""}  sx={{ display: 'flex', justifyContent: 'center' }}>
                     {showFormEdit && <ModalUpdate handleModal={toggleModalEdit} adoptionId={selectedAdoption.id_adopcion} adoptionState={selectedAdoption.estado} observations={selectedAdoption.observaciones} finalDate={selectedAdoption.fecha_entrega} />}
                 </Box>
 
