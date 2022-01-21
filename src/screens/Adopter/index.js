@@ -22,9 +22,13 @@ export default function Adopter() {
   const [showForm, setShowForm] = useState(false)
 
   const handleToggle = () => {
+
+    if (showForm) {
+      selectAdopter(null)
+      handleAdopterMessage(null)
+    }
     setShowForm(!showForm)
-    selectAdopter(null)
-    handleAdopterMessage(null)
+
   }
 
 

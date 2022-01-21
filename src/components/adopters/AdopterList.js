@@ -206,7 +206,7 @@ export default function AdopterList() {
               <Typography sx={{ fontWeight: "500", ml: 2 }}>Cargando...</Typography>
             </Stack> : null}
           {adopters.length === 0 && !loading ?
-            <Typography sx={{ fontWeight: "600", mt: 8 }}>No hay adopteres registrados</Typography> : null}
+            <Typography sx={{ fontWeight: "600", mt: 8 }}>No hay adoptantes registrados</Typography> : null}
 
           {localData.list.length === 0 && !loading && adopters.length !== 0 ?
             <Typography sx={{ fontWeight: "600", mt: 8 }}>No hay coincidencias</Typography> : null}

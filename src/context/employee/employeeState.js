@@ -3,6 +3,7 @@ import EmployeeContext from './employeeContext';
 import EmployeeReducer from './employeeReducer';
 import { EMPLOYEES, SELECT_EMPLOYEE, TOGGLE_EMPLOYEES_LOADING, EMPLOYEE_MESSAGE } from '../../types';
 import axiosClient from '../../config/axios';
+import { handleResponseError } from '../../Shared/utils';
 
 const EmployeeState = props => {
 
@@ -41,14 +42,8 @@ const EmployeeState = props => {
             }
 
         } catch (error) {
-            let errorsDecriptions = error.response?.data.errors;
 
-            let text = "";
-            if (errorsDecriptions) {
-                text = errorsDecriptions[0];
-            } else {
-                text = error.response.data.message;
-            }
+            let text = handleResponseError(error)
 
             dispatch({
                 type: EMPLOYEE_MESSAGE, payload: {
@@ -94,15 +89,9 @@ const EmployeeState = props => {
 
         } catch (error) {
 
-            let errorsDecriptions = error.response?.data.errors;
+    
 
-            let text = "";
-            if (errorsDecriptions) {
-                text = errorsDecriptions[0];
-            } else {
-                text = error.response.data.message;
-            }
-
+            let text =handleResponseError(error)
             dispatch({
                 type: EMPLOYEE_MESSAGE, payload: {
                     category: "error",
@@ -138,7 +127,6 @@ const EmployeeState = props => {
             }
         }
 
-        console.log(formattedData);
         try {
             let res = await axiosClient.put("/api/employees", formattedData);
             dispatch({
@@ -152,14 +140,7 @@ const EmployeeState = props => {
             getEmployees();
 
         } catch (error) {
-            let errorsDecriptions = error.response?.data.errors;
-
-            let text = "";
-            if (errorsDecriptions) {
-                text = errorsDecriptions[0];
-            } else {
-                text = error.response.data.message;
-            }
+            let text = handleResponseError(error)
 
             dispatch({
                 type: EMPLOYEE_MESSAGE, payload: {
@@ -191,13 +172,7 @@ const EmployeeState = props => {
 
         } catch (error) {
 
-            let errorsDecriptions = error.response?.data.errors;
-            let text = "";
-            if (errorsDecriptions) {
-                text = errorsDecriptions[0];
-            } else {
-                text = error.response.data.message;
-            }
+            let text = handleResponseError(error);
 
             dispatch({
                 type: EMPLOYEE_MESSAGE, payload: {
