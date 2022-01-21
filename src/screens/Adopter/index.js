@@ -8,7 +8,7 @@ import {
   Box,
 } from '@mui/material'
 import AdopterContext from '../../context/adopter/adopterContext'
-
+import { useRouteMatch, Switch, Route } from "react-router-dom";
 export default function Adopter() {
   const {
     selectedAdopter,
@@ -16,20 +16,17 @@ export default function Adopter() {
     handleAdopterMessage,
   } = useContext(AdopterContext)
 
+  let { path } = useRouteMatch();
 
 
   const [showForm, setShowForm] = useState(false)
 
   const handleToggle = () => {
     setShowForm(!showForm)
+    selectAdopter(null)
+    handleAdopterMessage(null)
   }
 
-  useEffect(() => {
-    if (!showForm) {
-      selectAdopter(null)
-      handleAdopterMessage(null)
-    }
-  }, [showForm])
 
   useEffect(() => {
     if (selectedAdopter) {
@@ -38,18 +35,25 @@ export default function Adopter() {
   }, [selectedAdopter])
 
   return (
-    <>
-      <AdopterList />
-      <Modal
-        open={showForm}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-        style={{ overflowY: 'scroll' }}
-      >
-        <Box tabIndex={""} sx={{ display: 'flex', justifyContent: 'center' }}>
-          {showForm && <AdopterForm handleToggle={handleToggle} />}
-        </Box>
-      </Modal>
-    </>
+
+    <Switch>
+      <Route exact path={path}>
+        <>
+          <AdopterList />
+          <Modal
+            open={showForm}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+            style={{ overflowY: 'scroll' }}
+          >
+            <Box tabIndex={""} sx={{ display: 'flex', justifyContent: 'center' }}>
+              {showForm && <AdopterForm handleToggle={handleToggle} />}
+            </Box>
+          </Modal>
+        </>
+      </Route>
+    </Switch>
+
+
   )
 }

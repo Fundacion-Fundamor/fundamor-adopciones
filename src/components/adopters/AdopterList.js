@@ -64,11 +64,10 @@ export default function AdopterList() {
 
       displayAlert();
     }
+ 
   }, [message, loading])
 
-  useEffect(() => {
-    getAdopters();
-  }, []);
+
 
   useEffect(() => {
 
@@ -119,30 +118,10 @@ export default function AdopterList() {
     })
   }
 
-  useEffect(() => {
-    getAdopters()
-  }, [])
 
   useEffect(() => {
-    const displayAlert = async () => {
-      let res = await MySwal.fire({
-        title: (
-          <p style={{ fontSize: 22, fontWeight: 'bold' }}>{message.text}</p>
-        ),
-        allowOutsideClick: false,
-        icon: message.category,
-        backdrop: true,
-      })
-
-      if (res.isConfirmed) {
-        await handleAdopterMessage(null)
-      }
-    }
-    if (message && message.showIn === 'list' && !loading) {
-      displayAlert()
-    }
-  }, [message, loading])
-
+    getAdopters();
+  }, []);
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>

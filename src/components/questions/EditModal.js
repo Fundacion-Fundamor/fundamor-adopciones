@@ -5,9 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { CardActions, CardContent, Typography, Button, TextField, IconButton, Card, Stack } from '@mui/material';
 import QuestionContext from '../../context/question/questionContext';
 import LoadingButton from '@mui/lab/LoadingButton';
-
 import { GrClose } from 'react-icons/gr';
-import { grey } from '@mui/material/colors';
 import { AiOutlineSave } from 'react-icons/ai';
 
 export default function EditModal({ handleToggle }) {

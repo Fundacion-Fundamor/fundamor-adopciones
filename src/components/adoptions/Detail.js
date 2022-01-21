@@ -65,7 +65,7 @@ export default function Detail() {
             showCancelButton: true,
             showLoaderOnConfirm: true,
             backdrop: true,
-            cancelButtonText:"Cancelar",
+            cancelButtonText: "Cancelar",
             preConfirm: async (response) => {
 
                 await removeAdoption(adoptionId);
@@ -164,7 +164,7 @@ export default function Detail() {
                 style={{ overflowY: 'scroll' }}
             >
 
-                <Box tabIndex={""}  sx={{ display: 'flex', justifyContent: 'center' }}>
+                <Box tabIndex={""} sx={{ display: 'flex', justifyContent: 'center' }}>
                     {showFormEdit && <ModalUpdate handleModal={toggleModalEdit} adoptionId={selectedAdoption.id_adopcion} adoptionState={selectedAdoption.estado} observations={selectedAdoption.observaciones} finalDate={selectedAdoption.fecha_entrega} />}
                 </Box>
 
@@ -196,7 +196,6 @@ function a11yProps(index) {
 
 const AdoptionTabs = ({ adoption, toggleModalTracking }) => {
 
-    console.log(adoption)
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event, newValue) => {
@@ -287,7 +286,7 @@ const AdoptionTabs = ({ adoption, toggleModalTracking }) => {
 
                                 <Box sx={{ background: grey[100], mt: 2, p: 1, borderRadius: 2, display: "flex" }}>
                                     <Typography sx={{ fontSize: 14, fontWeight: 500, }} color="text.secondary">
-                                        {adoption.observaciones ?? "No registra"}
+                                        {adoption.observaciones === "" ? "No registra" : adoption.observaciones}
                                     </Typography>
                                 </Box>
 

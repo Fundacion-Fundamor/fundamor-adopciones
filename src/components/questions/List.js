@@ -1,20 +1,20 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useContext, useEffect } from 'react'
-import { List, Typography, ListSubheader, ListItemButton, ListItemIcon, Collapse, Menu, MenuItem, Box, useTheme, Stack } from '@mui/material';
+import { List, CircularProgress, Typography, ListSubheader, ListItemButton, ListItemIcon, Collapse, Menu, MenuItem, Box, useTheme, Stack } from '@mui/material';
 
 import { BsThreeDotsVertical, BsChevronDown, BsChevronRight } from 'react-icons/bs';
 import { GoPencil } from 'react-icons/go';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import QuestionContext from '../../context/question/questionContext';
-import { grey } from '@mui/material/colors';
+
 import { AiOutlineInfoCircle } from 'react-icons/ai';
 // import { SortableContainer, SortableElement } from 'react-sortable-hoc';
 
 export default function QuestionList() {
 
     const MySwal = withReactContent(Swal);
-    const { questions, getQuestions, removeQuestion, selectQuestionEdit } = useContext(QuestionContext);
+    const { questions, getQuestions, removeQuestion, selectQuestionEdit, loading } = useContext(QuestionContext);
 
     const theme = useTheme();
 
@@ -26,7 +26,7 @@ export default function QuestionList() {
             text: "¿Está seguro que desea eliminar esta pregunta",
             icon: "question",
             confirmButtonText: 'Aceptar',
-            cancelButtonText:"Cancelar",
+            cancelButtonText: "Cancelar",
             showCancelButton: true,
             showLoaderOnConfirm: true,
             backdrop: true,
@@ -54,7 +54,7 @@ export default function QuestionList() {
     return (<Box p={3}>
         <Stack flexDirection={"row"} alignItems={"center"} display={"flex"} mb={2}>
             <AiOutlineInfoCircle color='#1976d2' size={24} />
-            <Typography sx={{ fontSize: 12, ml: 1, color: "#1976d2",fontWeight:700 }} variant="subtitle1">Las preguntas serán mostradas a los usuarios en el orden en que sean registradas</Typography>
+            <Typography sx={{ fontSize: 12, ml: 1, color: "#1976d2", fontWeight: 700 }} variant="subtitle1">Las preguntas serán mostradas a los usuarios en el orden en que sean registradas</Typography>
 
         </Stack>
 
@@ -65,8 +65,9 @@ export default function QuestionList() {
             aria-labelledby="nested-list-subheader"
 
             subheader={
-                <ListSubheader component="div" id="nested-list-subheader" sx={{ background: theme.custom.secondary.light, borderTopRightRadius: "12px", borderTopLeftRadius: "12px", fontWeight: "600", fontSize: 16, color: grey[600] }} >
+                <ListSubheader component="div" id="nested-list-subheader" sx={{ background: theme.custom.secondary.light, borderTopRightRadius: "12px", borderTopLeftRadius: "12px", fontWeight: "800", fontSize: 16, alignItems: "center", display: "flex" }} >
                     {"Preguntas registradas"}
+                    {loading ? <CircularProgress size={20} sx={{ ml: 2 }} /> : null}
                 </ListSubheader>
             }
         >
@@ -76,41 +77,6 @@ export default function QuestionList() {
         </List>
 
     </Box>)
-
-    // const SortableItem = SortableElement(({ value }) => <ListCustomItem question={value} handleSelectQuestionEdit={handleSelectQuestionEdit} removeQuestion={handleRemoveQuestion} />);
-    // const SortableList = SortableContainer(({ children }) => <div className="gifs">{children}</div>);
-
-
-
-    // SortableContainer(() => {
-    //     return (
-    //         <List
-
-    //             sx={{ width: '100%', bgcolor: 'white', borderColor: theme.custom.secondary.light, borderWidth: 1, borderStyle: "solid", borderRadius: "12px", }}
-    //             component="div"
-    //             aria-labelledby="nested-list-subheader"
-
-    //             subheader={
-    //                 <ListSubheader component="div" id="nested-list-subheader" sx={{ background: theme.custom.secondary.light, borderTopRightRadius: "12px", borderTopLeftRadius: "12px", fontWeight: "600", fontSize: 16, color: grey[600] }} >
-    //                     {"Preguntas registradas"}
-    //                 </ListSubheader>
-    //             }
-    //         >
-    //             {questions.map((value, index) => (
-    //                 <SortableItem  key={`item-${value.id_pregunta}`} index={index} value={value} />
-    //             ))}
-    //         </List>
-    //     );
-    // });
-    // return (<Box padding={3}>
-
-    //     <SortableList onSortEnd={(e) => { console.log(e) }} >
-    //         {questions.map((value, index) => (
-    //             <SortableItem key={`item-${value.id_pregunta}`} index={index} value={value} />
-    //         ))}
-    //     </SortableList>
-
-    // </Box>)
 
 }
 
@@ -178,7 +144,7 @@ const ListCustomItem = ({ question, removeQuestion, handleSelectQuestionEdit }) 
                 {question.questionOptions.map((element, index) => (
                     <ListItemButton sx={{ pl: 4 }} key={index}>
 
-                        <Typography sx={{ fontSize: 14, ml: 1, color: "#757575" }} variant="subtitle1">opcion {index + 1}: {element.descripcion}</Typography>
+                        <Typography sx={{ fontSize: 14, ml: 1, color: "#757575" }} variant="subtitle1">Opción {index + 1}: {element.descripcion}</Typography>
 
                     </ListItemButton>
                 ))}

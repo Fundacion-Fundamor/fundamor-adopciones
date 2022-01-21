@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Alert, CircularProgress, Typography, Modal, Box, Card, useTheme, useMediaQuery, CardActions, Tooltip, IconButton, Button, Stack, Divider } from '@mui/material';
+import { Typography, Modal, Box, Card, useTheme, useMediaQuery, CardActions, Tooltip, IconButton, Divider } from '@mui/material';
 
 import React, { useContext, useState, useEffect } from 'react';
 import EditModal from '../../components/questions/EditModal';
@@ -9,7 +9,7 @@ import QuestionContext from '../../context/question/questionContext';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { BiHelpCircle } from 'react-icons/bi';
-import { grey } from '@mui/material/colors';
+
 
 
 /**Gestion de preguntas involucradas al momento de crear una adopción

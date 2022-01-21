@@ -3,6 +3,7 @@ import AdoptionContext from './adoptionContext';
 import AdoptionReducer from './adoptionReducer';
 import { ADOPTIONS, SELECT_ADOPTION, TOGGLE_ADOPTION_LOADING, ADOPTION_MESSAGE } from '../../types';
 import axiosClient from '../../config/axios';
+import { handleResponseError } from '../../Shared/utils';
 
 const AdoptionState = props => {
 
@@ -32,7 +33,7 @@ const AdoptionState = props => {
                 payload: true
             });
             const res = await axiosClient.get("/api/adoptions");
-            console.log(res.data);
+
             if (res.data.state) {
                 dispatch({
                     type: ADOPTIONS,
@@ -46,14 +47,8 @@ const AdoptionState = props => {
             }
 
         } catch (error) {
-            let errorsDecriptions = error.response?.data.errors;
 
-            let text = "";
-            if (errorsDecriptions) {
-                text = errorsDecriptions[0];
-            } else {
-                text = error.response.data.message;
-            }
+            let text = handleResponseError(error)
 
             dispatch({
                 type: ADOPTION_MESSAGE, payload: {
@@ -158,14 +153,8 @@ const AdoptionState = props => {
 
 
         } catch (error) {
-            let errorsDecriptions = error.response?.data.errors;
 
-            let text = "";
-            if (errorsDecriptions) {
-                text = errorsDecriptions[0];
-            } else {
-                text = error.response.data.message;
-            }
+            let text = handleResponseError(error)
 
             dispatch({
                 type: ADOPTION_MESSAGE, payload: {
@@ -186,7 +175,7 @@ const AdoptionState = props => {
         let formattedData = {
             id_adopcion: data.adoptionId,
             estado: data.adoptionState,
-            observaciones: data.observations === "" ? null : data.observations,
+            observaciones: data.observations.trim() === "" ? null : data.observations,
             fecha_entrega: data.adoptionState === "finalizada" ? (data.adoptionFinalDate === "" ? null : data.adoptionFinalDate) : null
         }
 
@@ -200,18 +189,11 @@ const AdoptionState = props => {
 
                 }
             })
-           
+
 
         } catch (error) {
-            let errorsDecriptions = error.response?.data.errors;
 
-            let text = "";
-            if (errorsDecriptions) {
-                text = errorsDecriptions[0];
-            } else {
-                text = error.response.data.message;
-            }
-
+            let text = handleResponseError(error);
             dispatch({
                 type: ADOPTION_MESSAGE, payload: {
                     category: "error",
@@ -243,13 +225,7 @@ const AdoptionState = props => {
 
         } catch (error) {
 
-            let errorsDecriptions = error.response?.data.errors;
-            let text = "";
-            if (errorsDecriptions) {
-                text = errorsDecriptions[0];
-            } else {
-                text = error.response.data.message;
-            }
+            let text = handleResponseError(error);
 
             dispatch({
                 type: ADOPTION_MESSAGE, payload: {
@@ -270,19 +246,25 @@ const AdoptionState = props => {
                 type: TOGGLE_ADOPTION_LOADING,
                 payload: true
             });
-         
+
             const res = await axiosClient.get("/api/adoptions/" + adoptionId);
             const resQuestions = await axiosClient.get("/api/adoptionQuestions/" + adoptionId);
 
             if (res.data.state) {
                 if (resQuestions.data.state) {
-                    res.data.data.questions=resQuestions.data.data
+                    res.data.data.questions = resQuestions.data.data
                     dispatch({
                         type: SELECT_ADOPTION,
                         payload: res.data.data
                     });
                 } else {
-
+                    dispatch({
+                        type: ADOPTION_MESSAGE, payload: {
+                            category: "error",
+                            text: "Ha ocurrio un error al obtener el questionario de adopción, por favor intente mas tarde",
+                            showIn: "detail"
+                        }
+                    });
                 }
             } else {
                 dispatch({
@@ -292,23 +274,15 @@ const AdoptionState = props => {
             }
 
         } catch (error) {
-            console.log(error)
-            // let errorsDecriptions = error.response?.data.errors;
 
-            // let text = "";
-            // if (errorsDecriptions) {
-            //     text = errorsDecriptions[0];
-            // } else {
-            //     text = error.response.data.message;
-            // }
-
-            // dispatch({
-            //     type: ADOPTION_MESSAGE, payload: {
-            //         category: "error",
-            //         text: text,
-            //         showIn: "detail"
-            //     }
-            // });
+            let text = handleResponseError(error);
+            dispatch({
+                type: ADOPTION_MESSAGE, payload: {
+                    category: "error",
+                    text: text,
+                    showIn: "detail"
+                }
+            });
 
         }
     }
