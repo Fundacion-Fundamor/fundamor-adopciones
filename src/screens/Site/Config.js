@@ -10,11 +10,16 @@ import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 
 
+
+/**Renderiza la vista que permite actualizar los datos de la fundación
+ * 
+ * @returns 
+ */
 export default function Config() {
 
     const theme = useTheme();
     const matchDownSm = useMediaQuery('(max-width:1280px)');
- 
+
 
     const { getFoundation, currentFoundation, updateFoundationData, handleFoundationMessage, loading, message } = useContext(FoundationContext);
 
@@ -42,13 +47,18 @@ export default function Config() {
 
             displayAlert();
         }
+
     }, [message, loading])
 
+    useEffect(() => {
+        setTmpFoundation(currentFoundation)
+    }, [currentFoundation]);
 
 
     useEffect(() => {
         getFoundation();
-    }, [])
+    }, []);
+
     return (
 
 
@@ -71,7 +81,7 @@ export default function Config() {
             <Card variant="outlined" sx={{ borderRadius: theme.custom.borderRadius }} >
 
                 <Stack p={3}>
-                    <Typography variant="t2" sx={{ fontWeight: "600", fontSize: 18, color: grey[600] }} >
+                    <Typography variant="t2" sx={{ fontWeight: "600" }} >
                         Configuración del sitio
                     </Typography>
 

@@ -40,6 +40,7 @@ const AuthState = props => {
             const res = await axiosClient.post("/api/auth/token", formattedData);
 
             if (res.data.state) {
+                authToken(res.data.token);
                 dispatch({ type: SUCCESS_LOGIN, payload: res.data.token });
                 authenticatedUser();
             } else {
