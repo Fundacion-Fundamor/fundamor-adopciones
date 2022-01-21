@@ -170,7 +170,7 @@ function List() {
 
               }}
               size='small'
-              placeholder='Busca'
+              placeholder='Buscar'
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">

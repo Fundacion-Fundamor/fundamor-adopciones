@@ -193,7 +193,7 @@ function List() {
 
 							}}
 							size='small'
-							placeholder='Busca'
+							placeholder='Buscar por título'
 							InputProps={{
 								startAdornment: (
 									<InputAdornment position="start">
