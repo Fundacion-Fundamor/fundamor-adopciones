@@ -261,7 +261,7 @@ const AdoptionState = props => {
                     dispatch({
                         type: ADOPTION_MESSAGE, payload: {
                             category: "error",
-                            text: "Ha ocurrio un error al obtener el questionario de adopción, por favor intente mas tarde",
+                            text: "Ha ocurrio un error al obtener el cuestionario de adopción, por favor intente mas tarde",
                             showIn: "detail"
                         }
                     });

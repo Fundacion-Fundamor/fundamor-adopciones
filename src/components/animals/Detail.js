@@ -123,7 +123,7 @@ export default function Detail() {
 
         MySwal.fire({
             title: <p style={{ fontSize: 22, fontWeight: "900" }}>{"Confirmación"}</p>,
-            text: "¿Está seguro que desea eliminar el animal?, se eliminarán todos los datos asociados a este, imágenes, adopciones, seguimientos y questionarios",
+            text: "¿Está seguro que desea eliminar el animal? se eliminarán todos los datos asociados a este: imágenes, adopciones, seguimientos y cuestionarios",
             icon: "question",
             confirmButtonText: 'Aceptar',
             cancelButtonText: "Cancelar",

@@ -126,7 +126,7 @@ function PasswordReset(props) {
 				</CardActions>
 			</Card>
 
-			<Typography sx={{ fontFamily: "Nunito", color:"#dedede", fontSize: "14px", fontWeight: "600", textAlign: "center", mt: 5 }}>Copyright &copy; {new Date().getFullYear()} Fundación Fundamor</Typography>
+			<Typography sx={{ fontFamily: "Nunito", color:"#dedede", fontSize: "14px", fontWeight: "600", textAlign: "center", mt: 5 }}>Copyright &copy; {new Date().getFullYear()} Fundamor Calarcá</Typography>
 
 		</Box>
 
