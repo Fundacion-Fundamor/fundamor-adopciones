@@ -315,7 +315,7 @@ export default function Config() {
 
                                     },
                                 }}
-                                placeholder='Ej Cuenta de ahorros Bancolombia No 00000000'
+                                placeholder='Ej Cuenta de ahorros Bancomío No 00000000'
                                 value={tmpFoundation.cuenta_donaciones}
                                 label="Información de la cuenta"
                                 InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px" } }}
