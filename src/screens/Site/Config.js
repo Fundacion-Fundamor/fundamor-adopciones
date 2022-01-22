@@ -319,7 +319,7 @@ export default function Config() {
                                 value={tmpFoundation.cuenta_donaciones}
                                 label="Información de la cuenta"
                                 InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px" } }}
-                                inputProps={{ maxLength: 300 }}
+                                inputProps={{ maxLength: 600 }}
                                 fullWidth={true}
                                 variant="outlined"
                                 multiline={true}
@@ -329,7 +329,6 @@ export default function Config() {
                                 }}
 
                             />
-                            <FormHelperText >Ingresa el banco, el tipo y número de cuenta</FormHelperText>
 
                         </Grid>
 
