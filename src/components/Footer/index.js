@@ -48,7 +48,7 @@ const Footer = () => (
     </div>
 
     <div className="footer-copyright text-center py-3 p">
-    Copyright © 2022 Fundación Fundamor
+      © 2021 Copyright: Fundamor Calarcá
     </div>
   </footer>
 )
