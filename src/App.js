@@ -26,7 +26,7 @@ import Adopter from './screens/Adopter'
 import Adoption from './screens/Adoption'
 import TrackingState from './context/tracking/trackingState'
 import Dashboard from './screens/Dashboard'
-import { blue, grey, orange, purple, } from '@mui/material/colors';
+import { grey, orange, purple, } from '@mui/material/colors';
 import SideBar from './components/Sidebar';
 import { Box, CssBaseline } from '@mui/material';
 import Topbar from './components/Navbar/TopBar.js';
@@ -68,9 +68,6 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' && pr
 					easing: theme.transitions.easing.sharp,
 					duration: theme.transitions.duration.leavingScreen
 				}),
-
-
-				backgroundColor: blue[50],
 
 				[theme.breakpoints.up('lg')]: {
 
@@ -183,7 +180,7 @@ function App() {
 			},
 			t2: {
 				fontSize: 20,
-				fontWeight:800,
+				fontWeight: 800,
 				color: "#0a303a"
 			},
 			t3: {
@@ -205,7 +202,7 @@ function App() {
 				// color: "#0a303a",
 				fontWeight: "700",
 			},
-			p:{color:"red"},
+			p: { color: "red" },
 			color: "#1b4f5c",
 			fontWeight: "900",
 			fontFamily: "Nunito"
