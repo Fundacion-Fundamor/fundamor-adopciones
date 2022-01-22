@@ -92,7 +92,7 @@ const CardAnimalsWaiting = () => {
 
 
             } catch (error) {
-                console.log(error)
+                // console.log(error)
             }
         }
 
@@ -162,7 +162,7 @@ const CardAnimalsRescued = () => {
 
 
             } catch (error) {
-                console.log(error)
+                // console.log(error)
             }
         }
 
@@ -231,7 +231,7 @@ const CardAnimalsAdopted = () => {
                 }
 
             } catch (error) {
-                console.log(error)
+                // console.log(error)
             }
         }
 
@@ -373,7 +373,7 @@ const RescuedAnimalsChart = () => {
                 }
 
             } catch (error) {
-                console.log(error)
+                // console.log(error)
             }
         }
 
@@ -679,7 +679,7 @@ const AdoptedAnimalsChart = () => {
                 }
 
             } catch (error) {
-                console.log(error)
+                // console.log(error)
             }
         }
 
@@ -1007,7 +1007,7 @@ const SterilizedAnimals = () => {
                 }
 
             } catch (error) {
-                console.log(error)
+                // console.log(error)
             }
         }
 
@@ -1171,7 +1171,7 @@ const DewormedAnimals = () => {
                 }
 
             } catch (error) {
-                console.log(error)
+                // console.log(error)
             }
         }
 

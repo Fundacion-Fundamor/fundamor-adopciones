@@ -58,19 +58,18 @@ const AuthState = props => {
 
         } catch (error) {
 
-            console.log(error)
-            if (error.response) {
-                dispatch({
-                    type: ERROR_LOGIN, payload:
-                    {
-                        text: error.response?.data.message,
-                        showIn: "loginForm",
-                        category: "error"
+            let text = handleResponseError(error)
+            dispatch({
+                type: ERROR_LOGIN, payload:
+                {
+                    text: text,
+                    showIn: "loginForm",
+                    category: "error"
 
-                    }
+                }
 
-                });
-            }
+            });
+
         }
 
     }
@@ -86,7 +85,6 @@ const AuthState = props => {
         try {
 
             const res = await axiosClient.get("/api/auth");
-            console.log(res.data)
             dispatch({ type: USER_IN_SESSION, payload: res.data.data });
 
         } catch (error) {
@@ -104,7 +102,7 @@ const AuthState = props => {
 
             const res = await axiosClient.put("/api/employees/profile", data);
             if (res.data.state) {
-                console.log(res.data.message)
+
                 dispatch({
                     type: SUCCESS_PROFILE_UPDATE, payload: {
                         text: res.data.message,
@@ -144,7 +142,7 @@ const AuthState = props => {
 
             const res = await axiosClient.put("/api/employees/password", { actualPassword, newPassword });
             if (res.data.state) {
-                console.log(res.data.message)
+
                 dispatch({
                     type: SUCCESS_PROFILE_UPDATE, payload: {
                         text: res.data.message,
@@ -186,7 +184,7 @@ const AuthState = props => {
             dispatch({ type: LOADING, payload: true });
             const res = await axiosClient.post("/api/employees/resetPassword", { correo: email });
             if (res.data.state) {
-                console.log(res.data.message)
+
                 dispatch({
                     type: MESSAGE, payload: {
                         text: res.data.message,
