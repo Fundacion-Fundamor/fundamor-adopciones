@@ -65,7 +65,6 @@ const PostState = props => {
                 payload: true
             });
             const res = await axiosClient.get("/api/post/" + postId);
-console.log(res.data)
             if (res.data.state) {
                 dispatch({
                     type: SELECT_POST,

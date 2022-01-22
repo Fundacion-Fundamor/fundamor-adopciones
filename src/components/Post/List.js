@@ -229,7 +229,6 @@ function List() {
 								}}
 									onClick={() => {
 
-										console.log(element.id_publicacion)
 										history.push(`${url}/detail/${element.id_publicacion}`);
 
 									}}

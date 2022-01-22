@@ -257,7 +257,6 @@ const UserProfileSection = () => {
                         }}
                         onBlur={() => {
 
-                            console.log(userInSession.correo)
                             if (userInSession.nombre.trim() === "") {
 
                                 setErrors({ ...errors, nombre: "Debe ingresar un nombre" })
