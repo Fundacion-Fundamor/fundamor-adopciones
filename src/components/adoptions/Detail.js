@@ -212,7 +212,7 @@ const AdoptionTabs = ({ adoption, toggleModalTracking }) => {
                 // indicatorColor={theme.custom.primary.dark}
                 >
                     <Tab icon={<IoNewspaperOutline size={24} />} sx={{ fontSize: 14, fontWeight: "bold", textTransform: "capitalize" }} label="Adopción" {...a11yProps(0)} />
-                    <Tab icon={<IoDocumentTextOutline size={24} />} sx={{ fontSize: 14, fontWeight: "bold", textTransform: "capitalize" }} label="Questionario" {...a11yProps(1)} />
+                    <Tab icon={<IoDocumentTextOutline size={24} />} sx={{ fontSize: 14, fontWeight: "bold", textTransform: "capitalize" }} label="Cuestionario" {...a11yProps(1)} />
                     <Tab icon={<IoTimerOutline size={24} />} sx={{ fontSize: 14, fontWeight: "bold", textTransform: "capitalize" }} label="Seguimientos" {...a11yProps(2)} />
                 </Tabs>
             </Box>
@@ -376,7 +376,7 @@ const AdoptionTabs = ({ adoption, toggleModalTracking }) => {
 
                             <FaWpforms color={grey[600]} size={32} />
                             <Typography sx={{ fontSize: 15, fontWeight: 700, textAlign: "center", marginLeft: 2 }} color="text.secondary">
-                                Questionario respondido por el adoptante durante la creación de la adpoción
+                                Cuestionario respondido por el adoptante durante la creación de la adpoción
                             </Typography>
 
 

@@ -4,7 +4,6 @@ import { EMPLOYEES, SELECT_EMPLOYEE, TOGGLE_EMPLOYEES_LOADING, EMPLOYEE_MESSAGE 
 
 export default (state, action) => {
 
-    console.log(action)
     switch (action.type) {
         case EMPLOYEES:
             return {

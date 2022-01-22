@@ -8,7 +8,7 @@ import { handleResponseError } from "../../Shared/utils"
 const FoundationState = props => {
 
     const initialState = {
-        currentFoundation: [],
+        currentFoundation: null,
         message: null,
         loading: false,
     }
@@ -37,7 +37,9 @@ const FoundationState = props => {
                     nombre,
                     direccion,
                     mision,
-                    vision
+                    vision,
+                    url_mapa,
+                    url_video
                 } = res.data.data;
                 dispatch({
                     type: GET_FOUNDATION,
@@ -48,8 +50,9 @@ const FoundationState = props => {
                         nombre: nombre ?? "",
                         direccion: direccion ?? "",
                         mision: mision ?? "",
-                        vision: vision ?? ""
-
+                        vision: vision ?? "",
+                        url_mapa: url_mapa ?? "",
+                        url_video: url_video ?? "",
                     }
                 });
             } else {
@@ -87,13 +90,17 @@ const FoundationState = props => {
                 type: TOGGLE_FOUNDATION_LOADING,
                 payload: true
             });
+           
             const res = await axiosClient.put("/api/foundations", {
                 correo: data.correo === "" ? null : data.correo,
                 telefono: data.telefono === "" ? null : data.telefono,
                 cuenta_donaciones: data.cuenta_donaciones === "" ? null : data.cuenta_donaciones,
                 direccion: data.direccion === "" ? null : data.direccion,
                 mision: data.mision === "" ? null : data.mision,
-                vision: data.vision === "" ? null : data.vision
+                vision: data.vision === "" ? null : data.vision,
+                url_mapa: data.url_mapa === "" ? null : data.url_mapa,
+                url_video: data.url_video === "" ? null : data.url_video
+
             });
 
             if (res.data.state) {
