@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Box, Card, CardActions, CardContent, Divider, FormHelperText, Grid, IconButton, Stack, TextField, Tooltip, Typography, useMediaQuery, useTheme } from '@mui/material'
-import { grey } from '@mui/material/colors';
+import { Box, Card, CardActions, CardContent, Divider, FormHelperText, Grid, IconButton, Stack, TextField, Tooltip, Typography, useTheme } from '@mui/material'
+
 import React, { useContext, useEffect, useState } from 'react'
 import { AiOutlineSave } from 'react-icons/ai';
 import { BiHelpCircle } from 'react-icons/bi'
@@ -18,8 +18,6 @@ import withReactContent from 'sweetalert2-react-content'
 export default function Config() {
 
     const theme = useTheme();
-    const matchDownSm = useMediaQuery('(max-width:1280px)');
-
 
     const { getFoundation, currentFoundation, updateFoundationData, handleFoundationMessage, loading, message } = useContext(FoundationContext);
 
@@ -30,7 +28,9 @@ export default function Config() {
             direccion: "",
             mision: "",
             telefono: "",
-            vision: ""
+            vision: "",
+            url_video: "",
+            url_mapa: ""
         }
     )
 
@@ -60,16 +60,20 @@ export default function Config() {
     }, [message, loading])
 
     useEffect(() => {
-        setTmpFoundation({
+        if (currentFoundation) {
+            setTmpFoundation({
 
-            correo: currentFoundation.correo ? currentFoundation.correo : "",
-            cuenta_donaciones: currentFoundation.cuenta_donaciones ? currentFoundation.cuenta_donaciones : "",
-            direccion: currentFoundation.direccion ? currentFoundation.direccion : "",
-            mision: currentFoundation.mision ? currentFoundation.mision : "",
-            telefono: currentFoundation.telefono ? currentFoundation.telefono : "",
-            vision: currentFoundation.vision ? currentFoundation.vision : ""
+                correo: currentFoundation.correo ? currentFoundation.correo : "",
+                cuenta_donaciones: currentFoundation.cuenta_donaciones ? currentFoundation.cuenta_donaciones : "",
+                direccion: currentFoundation.direccion ? currentFoundation.direccion : "",
+                mision: currentFoundation.mision ? currentFoundation.mision : "",
+                telefono: currentFoundation.telefono ? currentFoundation.telefono : "",
+                vision: currentFoundation.vision ? currentFoundation.vision : "",
+                url_video: currentFoundation.url_video ? currentFoundation.url_video : "",
+                url_mapa: currentFoundation.url_mapa ? currentFoundation.url_mapa : "",
 
-        })
+            })
+        }
     }, [currentFoundation]);
 
 
@@ -99,218 +103,251 @@ export default function Config() {
             <Card variant="outlined" sx={{ borderRadius: theme.custom.borderRadius }} >
 
                 <Stack p={3}>
-                    <Typography variant="t2" sx={{ fontWeight: "600" }} >
+                    <Typography variant="t2" sx={{ fontWeight: "800" }} >
                         Configuración del sitio
                     </Typography>
 
                 </Stack>
                 <Divider />
-                <CardContent sx={{ flexDirection: matchDownSm ? "column" : "row", alignItems: matchDownSm ? "center" : "flex-start", display: "flex", padding: 3, }}>
+                <CardContent sx={{ flexDirection: "column", alignItems: "flex-start", display: "flex", padding: 3, }}>
 
-                    <Box p={5} marginRight={matchDownSm ? 0 : 3} maxWidth={380} maxHeight={380} sx={{
-                        backgroundColor: "white", borderRadius: 8,
-                        boxShadow: "5px 5px 16px 2px rgba(0,0,0,0.12)",
-                        mb: matchDownSm ? 3 : 0,
-
-                    }}>
-                        <img style={{ objectFit: "cover", borderTopLeftRadius: "12px", borderTopRightRadius: "12px", width: "100%", height: "auto" }} src={`${process.env.REACT_APP_URL}/images/imagotipo.png`} alt="card" />
-                    </Box>
-                    <Card variant="outlined" sx={{ borderRadius: theme.custom.borderRadius, display: "flex", flexDirection: "column", width: "100%", }} >
-
-                        <Stack p={2}>
-                            <Typography variant="t2" sx={{ fontWeight: "600", fontSize: 14, color: grey[600] }} >
-                                Acerca de
-                            </Typography>
-
-                        </Stack>
-                        <Divider />
-
-                        <Grid container spacing={3} mt={0} padding={2} >
-                            <Grid item md={6} xs={12} >
-                                <TextField
-                                    sx={{
-                                        "& .MuiOutlinedInput-root": {
-
-                                            borderRadius: "10px!important"
-
-                                        },
-                                    }}
-                                    value={tmpFoundation.mision}
-                                    label="Misión"
-                                    InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px" } }}
-                                    inputProps={{ maxLength: 255 }}
-                                    fullWidth={true}
-                                    multiline={true}
-                                    rows={3}
-                                    variant="outlined"
-                                    onChange={(event) => {
-                                        setTmpFoundation({ ...tmpFoundation, mision: event.target.value })
-                                    }}
-
-                                />
-                                <FormHelperText >Máximo 255 caracteres</FormHelperText>
-
-                            </Grid>
-
-                            <Grid item md={6} xs={12} >
-
-                                <TextField
-                                    sx={{
-                                        "& .MuiOutlinedInput-root": {
-
-                                            borderRadius: "10px!important"
-
-                                        },
-                                    }}
-                                    value={tmpFoundation.vision}
-                                    label="Visión"
-                                    InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px" } }}
-                                    inputProps={{ height: "20px", padding: "15px", maxLength: 255 }}
-                                    fullWidth={true}
-                                    multiline={true}
-                                    rows={3}
-                                    variant="outlined"
-                                    onChange={(event) => {
-                                        setTmpFoundation({ ...tmpFoundation, vision: event.target.value })
-                                    }}
-                                />
-                                <FormHelperText >Máximo 255 caracteres</FormHelperText>
-                            </Grid>
-
-                            <Grid item md={12} xs={12} >
-
-                                <Typography variant="t2" sx={{ fontWeight: "600", fontSize: 14, color: grey[600] }} >
-                                    Información de contacto
-                                </Typography>
-                                <Divider style={{ marginTop: 2, marginBottom: 2 }} />
-
-                            </Grid>
-
-                            <Grid item md={6} xs={12} >
-
-                                <TextField
-                                    sx={{
-                                        "& .MuiOutlinedInput-root": {
-
-                                            borderRadius: "10px!important"
-
-                                        },
-                                    }}
-                                    value={tmpFoundation.telefono}
-                                    label="Teléfono"
-                                    InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px" } }}
-                                    inputProps={{ height: "20px", padding: "15px" }}
-                                    fullWidth={true}
-
-                                    variant="outlined"
-                                    onChange={(event) => {
-                                        setTmpFoundation({ ...tmpFoundation, telefono: event.target.value })
-                                    }}
-                                />
+                    <Grid container spacing={3} mt={0} padding={2} >
+                        <Grid item md={6} xs={12} justifyContent={"center"} alignItems={"center"} display={"flex"}>
+                            <Box p={5} maxWidth={380} maxHeight={380} sx={{
+                                backgroundColor: "white", borderRadius: 8,
+                                boxShadow: "5px 5px 16px 2px rgba(0,0,0,0.12)",
 
 
-                            </Grid>
+                            }}>
+                                <img style={{ objectFit: "cover", borderTopLeftRadius: "12px", borderTopRightRadius: "12px", width: "100%", height: "auto" }} src={`${process.env.REACT_APP_URL}/images/imagotipo.png`} alt="card" />
+                            </Box>
 
-                            <Grid item md={6} xs={12} >
-
-                                <TextField
-                                    sx={{
-                                        "& .MuiOutlinedInput-root": {
-
-                                            borderRadius: "10px!important"
-
-                                        },
-                                    }}
-                                    value={tmpFoundation.correo}
-                                    label="Correo"
-                                    InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px" } }}
-                                    inputProps={{ height: "20px", padding: "15px" }}
-                                    fullWidth={true}
-                                    variant="outlined"
-                                    onChange={(event) => {
-                                        setTmpFoundation({ ...tmpFoundation, correo: event.target.value })
-                                    }}
-
-                                />
-
-                            </Grid>
-
-
-                            <Grid item md={12} xs={12} >
-
-                                <TextField
-                                    sx={{
-                                        "& .MuiOutlinedInput-root": {
-
-                                            borderRadius: "10px!important"
-
-                                        },
-                                    }}
-                                    value={tmpFoundation.direccion}
-                                    label="Dirección"
-                                    InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px" } }}
-                                    inputProps={{ height: "20px", padding: "15px" }}
-                                    fullWidth={true}
-                                    variant="outlined"
-                                    onChange={(event) => {
-                                        setTmpFoundation({ ...tmpFoundation, direccion: event.target.value })
-                                    }}
-
-                                />
-                            </Grid>
-
-                            <Grid item md={12} xs={12} >
-
-                                <Typography variant="t2" sx={{ fontWeight: "600", fontSize: 14, color: grey[600] }} >
-                                    Donaciones
-                                </Typography>
-                                <Divider style={{ marginTop: 2, marginBottom: 2 }} />
-
-                            </Grid>
-
-                            <Grid item md={12} xs={12} >
-
-                                <TextField
-                                    sx={{
-                                        "& .MuiOutlinedInput-root": {
-
-                                            borderRadius: "10px!important"
-
-                                        },
-                                    }}
-                                    value={tmpFoundation.cuenta_donaciones}
-                                    label="Cuenta de ahorros"
-                                    InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px" } }}
-                                    inputProps={{ maxLength: 45 }}
-                                    fullWidth={true}
-                                    variant="outlined"
-                                    onChange={(event) => {
-                                        setTmpFoundation({ ...tmpFoundation, cuenta_donaciones: event.target.value })
-                                    }}
-
-                                />
-                            </Grid>
-
-                            <Grid item md={12} xs={12} >
-                                <LoadingButton loading={loading} variant="outlined"
-                                    size="medium" color="primary" sx={{ mt: 3, fontSize: 12, height: 40, alignItems: "center", borderRadius: "8px", fontWeight: "bold" }}
-                                    onClick={() => {
-
-                                        if (!loading) {
-                                            updateFoundationData(tmpFoundation)
-
-                                        }
-                                    }}
-                                    startIcon={<AiOutlineSave />}
-
-                                >
-                                    Guardar cambios
-                                </LoadingButton>
-
-
-                            </Grid>
                         </Grid>
-                    </Card>
+
+                        <Grid item md={6} xs={12} flexDirection={"column"} justifyContent={"center"} alignItems={"flex-start"} display={"flex"} >
+
+                            <Typography variant="t2" sx={{ fontWeight: "600", fontSize: 16 }} >
+                                Información de contacto
+                            </Typography>
+                            <Divider style={{ marginTop: 2, marginBottom: 2 ,width:"100%" }} />
+                            <TextField
+                                sx={{
+                                    "& .MuiOutlinedInput-root": {
+
+                                        borderRadius: "10px!important"
+
+                                    },
+                                    mt: 3
+                                }}
+                                value={tmpFoundation.telefono}
+                                label="Teléfono"
+                                InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px" } }}
+                                inputProps={{ height: "20px", padding: "15px" }}
+                                fullWidth={true}
+
+                                variant="outlined"
+                                onChange={(event) => {
+                                    setTmpFoundation({ ...tmpFoundation, telefono: event.target.value })
+                                }}
+                            />
+                            <TextField
+                                sx={{
+                                    "& .MuiOutlinedInput-root": {
+
+                                        borderRadius: "10px!important"
+
+                                    },
+                                    mt: 3
+                                }}
+                                value={tmpFoundation.correo}
+                                label="Correo"
+                                InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px" } }}
+                                inputProps={{ height: "20px", padding: "15px" }}
+                                fullWidth={true}
+                                variant="outlined"
+                                onChange={(event) => {
+                                    setTmpFoundation({ ...tmpFoundation, correo: event.target.value })
+                                }}
+
+                            />
+
+                            <TextField
+                                sx={{
+                                    "& .MuiOutlinedInput-root": {
+
+                                        borderRadius: "10px!important"
+
+                                    },
+                                    mt: 3
+                                }}
+                                value={tmpFoundation.direccion}
+                                label="Dirección"
+                                InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px" } }}
+                                inputProps={{ height: "20px", padding: "15px" }}
+                                fullWidth={true}
+                                variant="outlined"
+                                onChange={(event) => {
+                                    setTmpFoundation({ ...tmpFoundation, direccion: event.target.value })
+                                }}
+
+                            />
+                            <TextField
+                                sx={{
+                                    "& .MuiOutlinedInput-root": {
+
+                                        borderRadius: "10px!important"
+
+                                    },
+                                    mt: 3
+                                }}
+                                value={tmpFoundation.url_mapa}
+                                label="Url del mapa"
+                                InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px" } }}
+                                fullWidth={true}
+
+                                variant="outlined"
+                                onChange={(event) => {
+                                    setTmpFoundation({ ...tmpFoundation, url_mapa: event.target.value })
+                                }}
+
+                            />
+                        </Grid>
+
+                    </Grid>
+                    <Grid container spacing={3} mt={0} padding={2} >
+
+
+                        <Grid item md={12} xs={12} >
+                            <TextField
+                                sx={{
+                                    "& .MuiOutlinedInput-root": {
+
+                                        borderRadius: "10px!important"
+
+                                    },
+                                }}
+                                value={tmpFoundation.mision}
+                                label="Misión"
+                                InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px" } }}
+                                inputProps={{ maxLength: 255 }}
+                                fullWidth={true}
+                                multiline={true}
+
+                                minRows={3}
+                                maxRows={8}
+                                variant="outlined"
+                                onChange={(event) => {
+                                    setTmpFoundation({ ...tmpFoundation, mision: event.target.value })
+                                }}
+
+                            />
+                            <FormHelperText >Máximo 255 caracteres</FormHelperText>
+
+                        </Grid>
+
+                        <Grid item md={12} xs={12} >
+
+                            <TextField
+                                sx={{
+                                    "& .MuiOutlinedInput-root": {
+
+                                        borderRadius: "10px!important"
+
+                                    },
+                                }}
+                                value={tmpFoundation.vision}
+                                label="Visión"
+                                InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px" } }}
+                                inputProps={{ height: "20px", padding: "15px", maxLength: 255 }}
+                                fullWidth={true}
+                                multiline={true}
+
+                                minRows={3}
+                                maxRows={8}
+                                variant="outlined"
+                                onChange={(event) => {
+                                    setTmpFoundation({ ...tmpFoundation, vision: event.target.value })
+                                }}
+                            />
+                            <FormHelperText >Máximo 255 caracteres</FormHelperText>
+                        </Grid>
+                        <Grid item md={12} xs={12} >
+                            <TextField
+                                sx={{
+                                    "& .MuiOutlinedInput-root": {
+
+                                        borderRadius: "10px!important"
+
+                                    },
+                                }}
+                                value={tmpFoundation.url_video}
+                                label="Url del video"
+                                InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px" } }}
+                                inputProps={{ maxLength: 300 }}
+                                fullWidth={true}
+
+                                variant="outlined"
+                                onChange={(event) => {
+                                    setTmpFoundation({ ...tmpFoundation, url_video: event.target.value })
+                                }}
+
+                            />
+                            <FormHelperText >Máximo 300 caracteres</FormHelperText>
+
+                        </Grid>
+
+                        <Grid item md={12} xs={12} >
+
+                            <Typography variant="t2" sx={{ fontWeight: "600", fontSize: 16 }} >
+                                Donaciones
+                            </Typography>
+                            <Divider style={{ marginTop: 2, marginBottom: 2 }} />
+
+                        </Grid>
+
+                        <Grid item md={12} xs={12} >
+
+                            <TextField
+                                sx={{
+                                    "& .MuiOutlinedInput-root": {
+
+                                        borderRadius: "10px!important"
+
+                                    },
+                                }}
+                                value={tmpFoundation.cuenta_donaciones}
+                                label="Cuenta de ahorros"
+                                InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px" } }}
+                                inputProps={{ maxLength: 45 }}
+                                fullWidth={true}
+                                variant="outlined"
+                                onChange={(event) => {
+                                    setTmpFoundation({ ...tmpFoundation, cuenta_donaciones: event.target.value })
+                                }}
+
+                            />
+                        </Grid>
+
+                        <Grid item md={12} xs={12} >
+                            <LoadingButton loading={loading} variant="outlined"
+                                size="medium" color="primary" sx={{ mt: 3, fontSize: 12, height: 40, alignItems: "center", borderRadius: "8px", fontWeight: "bold" }}
+                                onClick={() => {
+
+                                    if (!loading) {
+                                        updateFoundationData(tmpFoundation)
+
+                                    }
+                                }}
+                                startIcon={<AiOutlineSave />}
+
+                            >
+                                Guardar cambios
+                            </LoadingButton>
+
+
+                        </Grid>
+                    </Grid>
+
                 </CardContent>
 
             </Card >
