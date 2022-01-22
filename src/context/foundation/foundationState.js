@@ -99,7 +99,7 @@ const FoundationState = props => {
                 mision: data.mision === "" ? null : data.mision,
                 vision: data.vision === "" ? null : data.vision,
                 url_mapa: data.url_mapa === "" ? null : data.url_mapa,
-                url_video: data.url_video === "" ? null : data.url_video
+                url_video: data.url_video === "" ? null : normalizeYoutubeLink(data.url_video)
 
             });
 
@@ -134,6 +134,17 @@ const FoundationState = props => {
                 }
             });
 
+        }
+    }
+
+    const normalizeYoutubeLink = function (url){
+        var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+        var match = url.match(regExp);
+    
+        if (match && match[2].length == 11) {
+            return "http://www.youtube.com/watch?v="+match[2];
+        } else {
+            return url
         }
     }
 
