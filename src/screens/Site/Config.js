@@ -129,7 +129,7 @@ export default function Config() {
                             <Typography variant="t2" sx={{ fontWeight: "600", fontSize: 16 }} >
                                 Información de contacto
                             </Typography>
-                            <Divider style={{ marginTop: 2, marginBottom: 2 ,width:"100%" }} />
+                            <Divider style={{ marginTop: 2, marginBottom: 2, width: "100%" }} />
                             <TextField
                                 sx={{
                                     "& .MuiOutlinedInput-root": {
@@ -315,17 +315,22 @@ export default function Config() {
 
                                     },
                                 }}
+                                placeholder='Ej Cuenta de ahorros Bancolombia No 00000000'
                                 value={tmpFoundation.cuenta_donaciones}
-                                label="Cuenta de ahorros"
+                                label="Información de la cuenta"
                                 InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px" } }}
-                                inputProps={{ maxLength: 45 }}
+                                inputProps={{ maxLength: 300 }}
                                 fullWidth={true}
                                 variant="outlined"
+                                multiline={true}
+                                rows={3}
                                 onChange={(event) => {
                                     setTmpFoundation({ ...tmpFoundation, cuenta_donaciones: event.target.value })
                                 }}
 
                             />
+                            <FormHelperText >Ingresa el banco, el tipo y número de cuenta</FormHelperText>
+
                         </Grid>
 
                         <Grid item md={12} xs={12} >
