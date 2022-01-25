@@ -1,5 +1,6 @@
 {
   "name": "fundamor-adopciones",
+  "homepage": "https://admin.nsandboxsoft.xyz",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
