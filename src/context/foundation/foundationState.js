@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 import React, { useReducer } from 'react';
 import FoundationContext from './foundationContext';
 import FoundationReducer from './foundationReducer';
@@ -141,7 +142,7 @@ const FoundationState = props => {
         var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
         var match = url.match(regExp);
     
-        if (match && match[2].length == 11) {
+        if (match && match[2].length === 11) {
             return "http://www.youtube.com/watch?v="+match[2];
         } else {
             return url

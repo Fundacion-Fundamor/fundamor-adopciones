@@ -296,7 +296,7 @@ const PostState = props => {
                 type: POST_MESSAGE, payload: {
                     category: res.data.state ? "success" : "error",
                     text: res.data.message,
-                    showIn: "list"
+                    showIn: "detail"
                 }
             })
             getPosts();

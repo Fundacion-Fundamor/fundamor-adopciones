@@ -170,7 +170,7 @@ export default function Topbar({ drawerOpen, handleDrawer }) {
                                                     </Typography>
 
                                                 </Stack>
-                                                <Typography variant="subtitle2" fontWeight={400} sx={{ textTransform: "capitalize" }} >{user.rol}</Typography>
+                                                <Typography variant="subtitle2" fontWeight={400} sx={{ textTransform: "capitalize" }} >{user ? user.rol : "cargando..."}</Typography>
                                             </Stack>
                                             <Divider />
                                         </Box>
@@ -284,11 +284,11 @@ export default function Topbar({ drawerOpen, handleDrawer }) {
                                                     onClick={() => {
                                                         localStorage.removeItem("token");
                                                         logout()
-                                                
-                                                        history.replace("http://localhost:4000".replace,"landing")
+
+                                                        history.replace("http://localhost:4000".replace, "landing")
                                                         window.location.replace("http://localhost:4000");
 
-                                                       
+
                                                     }}
                                                 >
                                                     <ListItemIcon sx={{
