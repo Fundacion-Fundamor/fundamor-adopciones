@@ -165,7 +165,7 @@ const EmployeeItem = ({ item, removeEmployee, selectEmployee }) => {
                 </Stack>
 
             </CardContent>
-            {user.rol !== "colaborador" ? <CardActions disableSpacing sx={{ justifyContent: "space-around", mt: 2 }}>
+            {user && user.rol !== "colaborador" ? <CardActions disableSpacing sx={{ justifyContent: "space-around", mt: 2 }}>
 
 
                 <Button size="medium" variant="outlined" color="primary" sx={{ fontSize: 11, borderRadius: "8px" }}

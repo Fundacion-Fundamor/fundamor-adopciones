@@ -285,8 +285,8 @@ export default function Topbar({ drawerOpen, handleDrawer }) {
                                                         localStorage.removeItem("token");
                                                         logout()
 
-                                                        history.replace("http://localhost:4000".replace, "landing")
-                                                        window.location.replace("http://localhost:4000");
+                                                        history.replace(`${process.env.REACT_APP_URL}`, "landing")
+                                                        window.location.replace(process.env.REACT_APP_API_URL);
 
 
                                                     }}

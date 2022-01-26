@@ -58,8 +58,8 @@ function Login(props) {
 			justifyContent: "center",
 			alignItems: "center",
 			fontFamily: "Nunito",
-			flexDirection:"column"
-			
+			flexDirection: "column"
+
 		}}>
 
 			<Card
@@ -71,7 +71,7 @@ function Login(props) {
 						xs: "95%"
 
 					},
-					marginTop:"10px",
+					marginTop: "10px",
 					padding: "24px 15px",
 					borderRadius: "12px",
 
@@ -95,7 +95,7 @@ function Login(props) {
 							setCredentials({ ...credentials, "email": event.target.value });
 							setErrors({ ...errors, email: false });
 						}}
-						inputProps={{ maxLength: 100 }}
+						inputProps={{ maxLength: 100, type: "email" }}
 					/>
 					{errors.email ? <FormHelperText error={errors.email} >Debe ingresar un correo válido</FormHelperText> : null}
 
