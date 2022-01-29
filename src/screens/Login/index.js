@@ -91,8 +91,12 @@ function Login(props) {
 						error={errors.email}
 						sx={{ background: "#fff" }}
 						InputLabelProps={{ style: { background: "#fff", paddingLeft: "5px", paddingRight: "5px", } }}
-						onBlur={(event) => {
+						onChange={(event) => {
 							setCredentials({ ...credentials, "email": event.target.value });
+
+						}}
+						onBlur={(event) => {
+							
 							setErrors({ ...errors, email: false });
 						}}
 						inputProps={{ maxLength: 100, type: "email" }}
@@ -105,9 +109,12 @@ function Login(props) {
 						error={errors.password}
 						sx={{ background: "#fff", mt: 3 }}
 						InputProps={{ type: "password" }}
+						onChange={(event) => {
+							setCredentials({ ...credentials, "password": event.target.value });
+						}}
 						InputLabelProps={{ style: { background: "#fff", paddingLeft: "5px", paddingRight: "5px" } }}
 						onBlur={(event) => {
-							setCredentials({ ...credentials, "password": event.target.value });
+					
 							setErrors({ ...errors, password: false });
 						}}
 						inputProps={{ maxLength: 100 }}
