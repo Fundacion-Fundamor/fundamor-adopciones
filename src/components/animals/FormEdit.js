@@ -90,7 +90,7 @@ export default function FormEdit() {
     const [imagesRemove, setImagesRemove] = useState([]);
     const [values, setValues] = useState({
         animalID: "",
-        name: "sadsad",
+        name: "",
         specie: "",
         birthday: null,
         characteristics: "",
