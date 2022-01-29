@@ -30,11 +30,11 @@ jobs:
 
     # Runs a set of commands using the runners shell
     - name: FTP-Deploy-Action
-      uses: SamKirkland/FTP-Deploy-Action@3.1.1
+      uses: SamKirkland/FTP-Deploy-Action@4.2.0
       with:
-        ftp-server: ftp://ftp.nsandboxsoft.xyz
-        ftp-username: deployments@nsandboxsoft.xyz
-        ftp-password: ${{ secrets.FTP_PASSWORD }}
+        server: ftps://ftp.nsandboxsoft.xyz
+        username: deployments@nsandboxsoft.xyz
+        password: ${{ secrets.FTP_PASSWORD }}
         protocol: ftps
         server-dir: admin.nsandboxsoft.xyz
         local-dir: build/
