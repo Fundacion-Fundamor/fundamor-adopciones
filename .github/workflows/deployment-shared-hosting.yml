@@ -32,7 +32,7 @@ jobs:
     - name: FTP-Deploy-Action
       uses: SamKirkland/FTP-Deploy-Action@4.2.0
       with:
-        server: ftps://ftp.nsandboxsoft.xyz
+        server: ftp://ftp.nsandboxsoft.xyz
         username: deployments@nsandboxsoft.xyz
         password: ${{ secrets.FTP_PASSWORD }}
         protocol: ftps
