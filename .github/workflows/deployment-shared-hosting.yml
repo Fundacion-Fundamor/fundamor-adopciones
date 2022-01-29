@@ -7,6 +7,9 @@ name: Build and Deploy React App via FTP
 on:
   push:
     branches: [ main ]
+env:
+  REACT_APP_URL: ${{ secrets.REACT_APP_URL }}
+  REACT_APP_API_URL: ${{ secrets.REACT_APP_API_URL }}
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
