@@ -35,4 +35,6 @@ jobs:
         ftp-server: ftp://ftp.nsandboxsoft.xyz
         ftp-username: deployments@nsandboxsoft.xyz
         ftp-password: ${{ secrets.FTP_PASSWORD }}
+        protocol: ftps
+        server-dir: admin.nsandboxsoft.xyz
         local-dir: build/
