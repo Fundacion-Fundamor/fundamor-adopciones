@@ -342,12 +342,12 @@ export default function FormEdit() {
                         <TextField
                             fullWidth
                             error={errors.name !== null}
-                            inputProps={{ maxLength: 45 }}
-                            label="Nombre"
-                            defaultValue={values.name}
+                            inputProps={{ maxLength: 45}}
+                            label={"Nombre"}
+                            defaultValue={selectedAnimal.nombre}
                             helperText={errors.name}
                             variant="outlined"
-                            InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px" } }}
+                            InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px", } }}
                             onBlur={(event) => {
                                 setValues({ ...values, name: event.target.value });
 
