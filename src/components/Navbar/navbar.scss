@@ -1,4 +1,23 @@
+@import '/src/scss/variables';
+
 .nav-link.active {
-    color: green !important;
-    background: blue!important;
+  border-left-color: #fdae75;
+  background-color: $primaryColor;
+  color: white !important;
   }
+.nav-link{
+  font-weight: bold;
+  color: $textColor !important;
+  border-left-style: solid;
+  border-left-width: 8px;
+  border-left-color: white;
+  border-radius: 10px 15px 10px 15px;
+  margin:  2px 4px;
+  padding: 6px 8px;
+  transition: all 0.2s;
+  &:hover {
+    border-left-color: #fdae75;
+    background-color: $primaryColor;
+    color: white !important;
+  }
+}

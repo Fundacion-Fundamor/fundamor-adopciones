@@ -1,0 +1,32 @@
+@import '/src/scss/variables';
+
+
+.footer{
+    a{
+        color: $secondaryColor;
+        text-decoration-line: none; 
+        font-weight: 800; 
+
+        &:hover{
+            color: $primaryColor; 
+        }
+    }
+    svg{
+        &:hover{
+            color: $primaryColor;
+        }
+    }
+}
+
+.social{
+    margin-bottom: 15px;
+    display: flex;
+    align-items: flex-end;
+    svg{
+        color: $secondaryColor;
+        margin: 0 7px;
+        &:hover{
+            color: $primaryColor;
+        }
+    }
+}

@@ -1,51 +1,42 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { Navbar, Container, Nav } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
-import AuthContext from '../../context/auth/authContext'
+
 import './navbar.scss'
 
 const NavbarComponent = () => {
-  const { authenticated, logout } = useContext(AuthContext);
   return (
     <>
-      <Navbar bg="light" expand="lg">
-        <Container>
-          <Navbar.Brand href="/">Fundamor</Navbar.Brand>
+      <Navbar bg="white" fixed="top" expand="lg">
+        <Container className='px-0'>
+          <Navbar.Brand href="/">     <img
+            src="/images/logotipo.png"
+            width={150}
+            alt="Logo fundamor"
+          /></Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="ms-auto">
-              <Nav.Link as={Link} to="/about">
-                Acerca de
-              </Nav.Link>
-
-              {authenticated ? <Nav.Link as={Link} to="/posts">
-                Posts
-              </Nav.Link> : null}
-              {authenticated ? <Nav.Link as={Link} to="/gallery">
-                Galeria
-              </Nav.Link> : null}
-              {authenticated ? <Nav.Link as={Link} to="/employees">
-                Colaboradores
-              </Nav.Link> : null}
-              {authenticated ? <Nav.Link as={Link} to="/adoptions">
-                Adopciones
-              </Nav.Link> : null}
-              {authenticated ? <Nav.Link as={Link} to="/animals">
-                Animales
-              </Nav.Link> : null}
-              {authenticated ? <Nav.Link as={Link} to="/adopters">
-                Adoptantes
-              </Nav.Link> : null}
-              {authenticated ? <Nav.Link as={Link} to="/questions">
-                Preguntas
-              </Nav.Link> : null}
-              {!authenticated ? <Nav.Link as={Link} to="/login" >
-                Login
-              </Nav.Link> :
-                <Nav.Link as={Link} to="#" onClick={() => { logout() }} >
-                  Cerrar sesión
+            <Nav className="w-100 ms-5 py-2 justify-content-between">
+              <div className='d-flex flex-row' >
+                <Nav.Link as={Link} to="/">
+                  Inicio
                 </Nav.Link>
-              }
+                <Nav.Link as={Link} to="/animals">
+                  Animales
+                </Nav.Link>
+                <Nav.Link as={Link} to="/posts">
+                  Publicaciones
+                </Nav.Link>
+                <Nav.Link as={Link} to="/about">
+                  Contacto
+                </Nav.Link>
+                <Nav.Link as={Link} to="/about">
+                  Nosotros
+                </Nav.Link>
+              </div>
+              <Nav.Link as={Link} className="d-none d-md-block" to="/login" >
+                Ingresar
+              </Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Container>

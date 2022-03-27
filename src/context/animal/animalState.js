@@ -68,7 +68,42 @@ const AnimalState = props => {
         }
 
     }
+    const getAnimalsFromPublic = async (filters = null) => {
 
+
+
+       
+        try {
+            dispatch({
+                type: TOGGLE_ANIMAL_LOADING,
+                payload: true
+            });
+            const res = await axiosClient.get("/api/foundations/2/animals");
+            if (res.data.state) {
+                dispatch({
+                    type: ANIMALS,
+                    payload: res.data.data
+                });
+            } else {
+                dispatch({
+                    type: ANIMALS,
+                    payload: []
+                });
+            }
+
+        } catch (error) {
+            let text = handleResponseError(error);
+            dispatch({
+                type: ANIMAL_MESSAGE, payload: {
+                    category: "error",
+                    text: text,
+                    showIn: "list"
+                }
+            });
+
+        }
+
+    }
 
     const getAnimal = async (animalId) => {
 
@@ -365,6 +400,7 @@ const AnimalState = props => {
             selectedAnimal: state.selectedAnimal,
             message: state.message,
             getAnimals,
+            getAnimalsFromPublic,
             getAnimal,
             createAnimal,
             selectAnimal,

@@ -37,6 +37,9 @@ import FoundationState from './context/foundation/foundationState';
 import Nunito from './assets/fonts/Nunito/Nunito-VariableFont_wght.ttf';
 import NotFoundPage from './screens/NotFoundPage';
 import BreadCumbState from './context/breadcumb/breacumbState';
+import { Link } from 'react-router-dom';
+import HomePage from './screens/public/HomePage';
+import AnimalList from './screens/public/AnimalList';
 const drawerWidth = 260;
 
 const token = localStorage.getItem("token");
@@ -111,16 +114,6 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' && pr
 });
 
 
-/**TODO: 
- * Mover todo el enrutamiento hacia otro archivo
- * Ajustar todo el border radius para que consuma del theme provider
- * 
- * realizar el breadcumb que indica donde está parado el usuario
- * ajustar todos los reponsives de los cruds para que se adapten a la nueva navegacion
- * problema al abrir el modal de agregar posts
- * 
- * @returns 
- */
 function App() {
 
 
@@ -244,8 +237,10 @@ function App() {
 										<TrackingState>
 											<BreadCumbState>
 												<div className="App">
+
 													<Router>
 														<Box sx={{ display: 'flex' }}>
+												
 															<CssBaseline />
 
 															{/* header */}
@@ -253,6 +248,8 @@ function App() {
 
 															{/* drawer */}
 															{authenticated ? <SideBar open={leftDrawerOpened} handleDrawer={handleLeftDrawerToggle} /> : null}
+
+															{/* <Link style={{color:"#000"}} to="/employees">Home</Link> */}
 
 															{/* main content */}
 															<Main theme={theme} open={leftDrawerOpened} authenticated={authenticated}>
@@ -271,6 +268,9 @@ function App() {
 																	{/* Rutas publicas */}
 																	<Route path="/login" component={Login} />
 																	<Route path="/passwordReset" component={PasswordReset} />
+																	{/* <Route path="/animal"component={AnimalList} /> */}
+																	<Route path="/" component={HomePage} />
+																	
 																	<Route path="*" component={NotFoundPage} />
 																</Switch>
 
@@ -292,10 +292,6 @@ function App() {
 		</ThemeProvider>
 	)
 }
-
-
-
-
 
 
 export default App
