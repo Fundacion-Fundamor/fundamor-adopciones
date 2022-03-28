@@ -1,0 +1,240 @@
+@import '/src/scss/variables';
+@import '/src/scss/mixins';
+
+.animals-section{
+    padding: 0px 15px;
+    padding-bottom: 80px;
+    .sidebar-options{
+        h3{
+            font-weight: 700;
+            margin: 20px 0px;
+            margin-top: 40px;
+        }
+        .custom-form-check{
+
+            display: flex;
+            justify-content: space-between;
+            padding: 8px;
+            transition: 0.5s;
+            border-style: solid;
+            border-width: 1px;
+            border-radius: 3px;
+            border-color: #e1e1e1;
+            gap: 2;
+            &:hover{
+                background: #f5f2eb;
+            }
+            label{
+                font-size: 13px;
+            }
+            input{
+                &:focus{
+                    box-shadow:  none
+                }
+                &:checked{
+                    background-color: $primaryColor;
+                    border-color: $primaryColor;
+                }
+            }
+        }
+    }
+}
+
+.animals-wrapper{
+    // display: flex;
+  
+    .toolbar{
+        display: flex;
+        justify-content: center;
+        background: #f5f2eb;
+        border-radius: 6px;
+        border: 1px solid #ebebeb;
+        padding: 14px 12px;
+        flex-wrap: wrap;
+        @include mdMinBreakPoint{
+            justify-content: space-between;
+        }
+        .left-options{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+        
+        }
+        .right-options{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            margin-top:15px;
+            select{
+                border-width: 1px;
+                border-radius: 5px;
+                border-color: #e3e3e3;
+                &:focus{
+                    outline: none;
+                }
+               
+            }
+            @include mdMinBreakPoint{
+                margin-top:0px;
+            }
+         
+        }
+        label{
+            margin: 0;
+            margin-left:8px;
+            color: #0a303a;
+            font-size: 13px !important
+        }
+    }
+}
+
+.search-wrapper{
+  
+    input{
+        background: #f5f2eb;
+        width: 100%;
+        border: none;
+        border-radius: 5px;
+        padding: 18px 70px 18px 25px;
+        font-size: 14px;
+        height: 60px;
+        &:focus{
+            outline: none;
+        }
+    }
+    button{
+        position: absolute;
+        right: 0;
+        border: none;
+        padding: 0;
+        width: 56px;
+        height: 60px;
+        background: $primaryColor;
+        color: #fff;
+        border-radius: 0px 5px 5px 0px;
+        font-size: 14px;
+
+        &:hover{
+            background-color: #c0683c;
+        }
+    }
+}
+
+.adoption-item{
+   
+
+    .adoption-shop-item:hover .adoption-shop-thumb::before {
+        opacity: 0.57;
+      }
+
+    .adoption-shop-item:hover .adoption-shop-thumb .btn {
+        top: 50%;
+        opacity: 1;
+    }
+    
+    .animal-thumb{
+        border-radius: 8px;
+        position: relative;
+        img{
+            object-fit: cover;
+            width: 100%;
+            border-radius: 8px;
+            transition: 0.35s ease-in-out;
+            height: 200px;
+        
+        }
+        a{
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+            opacity: 0;
+            transition: 0.35s ease-in-out;
+            text-decoration: none;
+            display: flex;
+            &:hover{
+                color: white;
+            }
+
+        }  
+        svg{
+            transform: rotateZ(90deg);
+            margin-left:3px; 
+        } 
+    }
+
+    &:hover{
+        .animal-thumb{
+            img{
+                opacity: 0.57;
+            }
+            a{
+                top: 50%;
+                opacity: 1;
+            }
+        }
+    }
+    .animal-description{
+        border-radius: 10px;
+        box-shadow: 0px 9px 34.3px 0.7px rgb(0 0 0 / 5%);
+        background: #fff;
+        margin: -48px 24px 0;
+        padding: 25px 25px 30px;
+        position: relative;
+        z-index: 1;
+
+        h3{
+            letter-spacing: 1.2px;
+            font-weight:900;
+            transition: all 0.2s;
+            text-align: center;
+            color: $primaryColor;
+            &:hover{
+                color: $secondaryColor;
+            }
+        }
+        .info{
+            display: flex;
+            padding-Top: 15px;
+            border-bottom: 1px solid #e1e1e1;
+            margin-bottom: 15px;
+            justify-content: space-between;
+            p{
+                font-size: small;
+                text-transform: capitalize;
+            }
+        }
+        .footer{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            text-align: center;
+            flex-direction: column;
+           
+            p{
+                font-size: small;
+                margin: 0;
+                margin-top: 5px;
+               
+            }
+        }
+    }
+}
+
+.btn-adopt{
+    background: none;
+    border: 0px solid;
+    line-height: 1;
+    margin: 0.5em 0px;
+    padding: 0.7em 1em;
+    transition: 0.75s;
+    border-radius: 12px;
+    color: #fff;
+    background-color: #de6426;
+    font-weight: 900;
+    font-size: 22px;
+}

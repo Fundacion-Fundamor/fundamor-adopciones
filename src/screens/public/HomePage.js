@@ -14,6 +14,7 @@ import { IconButton, useMediaQuery, useTheme } from '@mui/material';
 import AnimalContext from '../../context/animal/animalContext';
 import Accordion from 'react-bootstrap/Accordion'
 import Footer from '../../components/partials/Footer';
+import SectionTitle from '../../components/partials/SectionTitle';
 export default function HomePage() {
 
 
@@ -301,21 +302,3 @@ function HistoryFoundationSection(params) {
         </div>)
 }
 
-function SectionTitle({ title, subtitle, text }) {
-
-
-    return (<section className='animals-section py-5'>
-        <div className='container'>
-            <div className='row justify-content-center d-flex '>
-                <div className='col-xl-7 col-lg-9'>
-                    <div className='section-title'>
-                        <FaPaw className='section-icon mb-2' color='#de6426' size={27} />
-                        <h3 className='mb-3'>{subtitle}</h3>
-                        <h2>{title}</h2>
-                        <p>{text}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>)
-}

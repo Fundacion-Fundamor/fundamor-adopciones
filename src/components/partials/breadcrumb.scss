@@ -1,0 +1,39 @@
+@import '/src/scss/variables';
+@import '/src/scss/mixins';
+
+.breadcrumb-area{
+    background-image: url('./images/bread2.png');
+    background-size: cover;
+    background-position: center center;
+    padding: 115px 0px;
+    margin-top: 70px;
+    .title{
+        background-color: $primaryColor;
+        display: inline-flex;
+        font-size: 35px;
+        color: #fff;
+        margin-bottom: 18px;
+        line-height: 1.1;
+        padding: 13px 20px 13px 20px;
+        border-radius: 15px 15px 15px 15px;
+        font-weight: 900;
+    }
+    .breadcrumb{
+        display: flex;
+        flex-wrap: wrap;
+        padding: 0 0;
+        margin-bottom: 1rem;
+        list-style: none;
+        li{
+            color: #fff;
+            font-weight: 700;
+            font-size: 16px;
+            a{
+                color: $primaryColor;
+                text-decoration-line: none;
+               
+            }
+        }
+      
+    }
+}

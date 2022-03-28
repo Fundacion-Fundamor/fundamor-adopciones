@@ -222,12 +222,7 @@
     }
 }
 
-.section-icon {
 
-    -webkit-animation:spin 4s linear infinite;
-    -moz-animation:spin 4s linear infinite;
-    animation:spin 4s linear infinite;
-}
 
 .slick-animal-card{
     width: 308px;
@@ -273,7 +268,7 @@
 
 .historical-area{
     background-color: #d5e6eb;
-    padding: 80px 0px;
+    padding-bottom: 80px;
     .history-wrapper{
         position: relative;
         height: 523px;
@@ -316,29 +311,3 @@
 }
 
 
-
-@-moz-keyframes spin {    0% {
-    -webkit-transform: rotate(15deg);
-    transform: rotate(15deg);
-  }
-  50% {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(15deg);
-    transform: rotate(15deg);
-  }}
-
-@keyframes spin {   0% {
-    -webkit-transform: rotate(15deg);
-    transform: rotate(15deg);
-  }
-  50% {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(15deg);
-    transform: rotate(15deg);
-  } }

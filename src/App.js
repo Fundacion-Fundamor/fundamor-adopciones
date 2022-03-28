@@ -40,6 +40,7 @@ import BreadCumbState from './context/breadcumb/breacumbState';
 import { Link } from 'react-router-dom';
 import HomePage from './screens/public/HomePage';
 import AnimalList from './screens/public/AnimalList';
+import AnimalDetail from './screens/public/AnimalDetail';
 const drawerWidth = 260;
 
 const token = localStorage.getItem("token");
@@ -240,7 +241,7 @@ function App() {
 
 													<Router>
 														<Box sx={{ display: 'flex' }}>
-												
+
 															<CssBaseline />
 
 															{/* header */}
@@ -254,6 +255,14 @@ function App() {
 															{/* main content */}
 															<Main theme={theme} open={leftDrawerOpened} authenticated={authenticated}>
 																<Switch>
+
+																	{/* Rutas publicas */}
+																	<Route path="/login" component={Login} />
+																	<Route path="/passwordReset" component={PasswordReset} />
+																	<Route path="/foundation/animals" exact component={AnimalList} />
+																	<Route path="/foundation/animals/:animal_id" exact component={AnimalDetail} />
+																	<Route path="/" component={HomePage} />
+
 																	{/* Rutas privadas */}
 																	<PrivateRoute path="/posts" component={Post} />
 																	<PrivateRoute path="/employees" component={Employeee} />
@@ -265,12 +274,8 @@ function App() {
 																	<PrivateRoute path="/profile" component={Profile} />
 																	<PrivateRoute path="/siteConfig" component={Config} />
 
-																	{/* Rutas publicas */}
-																	<Route path="/login" component={Login} />
-																	<Route path="/passwordReset" component={PasswordReset} />
-																	{/* <Route path="/animal"component={AnimalList} /> */}
-																	<Route path="/" component={HomePage} />
-																	
+
+
 																	<Route path="*" component={NotFoundPage} />
 																</Switch>
 

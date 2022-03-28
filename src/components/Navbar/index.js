@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 import './navbar.scss'
 
-const NavbarComponent = () => {
+const NavbarComponent = ({ active = "home" }) => {
   return (
     <>
       <Navbar bg="white" fixed="top" expand="lg">
@@ -18,10 +18,10 @@ const NavbarComponent = () => {
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="w-100 ms-5 py-2 justify-content-between">
               <div className='d-flex flex-row' >
-                <Nav.Link as={Link} to="/">
+                <Nav.Link className={active === "home" ? "active" : ""} as={Link} to="/">
                   Inicio
                 </Nav.Link>
-                <Nav.Link as={Link} to="/animals">
+                <Nav.Link className={active === "animals" ? "active" : ""} as={Link} to="/foundation/animals">
                   Animales
                 </Nav.Link>
                 <Nav.Link as={Link} to="/posts">
