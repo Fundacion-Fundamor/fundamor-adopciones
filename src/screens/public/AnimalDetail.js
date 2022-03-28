@@ -9,6 +9,9 @@ import withReactContent from 'sweetalert2-react-content';
 import { handleResponseError } from '../../Shared/utils'
 import axiosClient from '../../config/axios'
 import { useParams } from 'react-router-dom'
+import './css/animalDetail.scss'
+import SectionTitle from '../../components/partials/SectionTitle'
+import AnimalList from '../../components/partials/AnimalList'
 
 export default function AnimalDetail() {
 
@@ -19,6 +22,10 @@ export default function AnimalDetail() {
         <NavbarComponent active='animals' />
         <Breadcrumb data={[{ name: "Inicio", "route": "/" }, { name: "Lista de animales", "route": "/foundation/animals" }, { name: "Detalle del animal" }]} />
         <AnimalDetailSection />
+        <SectionTitle subtitle={"Conoce más peludos"} title="Aún tenemos varios animales esperando"
+            text="Recuerda que todos los perros y gatos que son dados en adopción, tienen su esquema de vacunación al día, están desparasitados y algunos son esterilizados."
+        />
+        <AnimalList />
         <Footer />
     </div>)
 }
@@ -33,13 +40,14 @@ const AnimalDetailSection = () => {
     })
 
     const [settingsSlick, setSettingsSlick] = useState({
-        dots: false,
+        dots: true,
         infinite: false,
         speed: 500,
         autoPlay: true,
-        slidesToShow: 3,//ajustar segun el numero de animales
-        slidesToScroll: 3,// ajustar segun el numero de animales
-        arrows: true,
+        arrows: false,
+        slidesToShow: 1,//ajustar segun el numero de animales
+        slidesToScroll: 1,// ajustar segun el numero de animales
+
     })
 
     let { animal_id } = useParams();
@@ -49,13 +57,7 @@ const AnimalDetailSection = () => {
 
 
 
-    useEffect(() => {
 
-        if (matchDownSm) {
-            setSettingsSlick({ ...settingsSlick, slidesToScroll: 1, slidesToShow: 1, arrows: false, dots: true })
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [matchDownSm])
 
 
     useEffect(() => {
@@ -96,32 +98,37 @@ const AnimalDetailSection = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    return <section className='animal-detail'>
+    return <section className='animal-detail-section'>
         <div className='container'>
             <div className='row'>
                 <div className='col-lg-8'>
                     <div className='animal-card'>
                         <div>
-                            {/* <Slider {...settingsSlick}>
-                                {animal.animalImages.map((element, index) => (
-                                    <div key={index} className='col-xl-3 d-flex justify-content-center'>
+                            {animal.data ? <Slider {...settingsSlick}>
+                                {animal.data.animalImage.map((element, index) => (
+                                    <div key={index} className='col-12'>
 
-                                        <div className='slick-animal-card'>
-                                            {element.animalImage.length > 0 ? <img src={`${process.env.REACT_APP_API_URL}/${element.animalImage[0].ruta}`} alt="img" /> :
-                                                <img src="/images/no_image.png" alt="img" />
-                                            }
+                                        <div className='slick-animal-detail-card'>
+                                            <img src={`${process.env.REACT_APP_API_URL}/${element.ruta}`} alt="img" />
+                                            {/* <img src="/images/no_image.png" alt="img" /> */}
+
 
                                         </div>
                                     </div>
                                 ))}
 
-                            </Slider> */}
+                            </Slider> : null}
+                        </div>
+
+                        <div className='header'>
+                            <h4 className="name">Nerón</h4>
+                            <p className="description">Descripcións</p>
                         </div>
                         <div className="animal-info">
                             <h5 className="title">Información del animal</h5>
                             {animal.data ? <div className="row">
                                 <div className="col-md-3 col-sm-4 col-6">
-                                    <div className="breeder-info-item">
+                                    <div className="info-item">
                                         <h6>Genero:</h6>
                                         <span>
                                             {animal.data.sexo}
@@ -129,14 +136,14 @@ const AnimalDetailSection = () => {
                                     </div>
                                 </div>
                                 <div className="col-md-3 col-sm-4 col-6">
-                                    <div className="breeder-info-item">
+                                    <div className="info-item">
                                         <h6>Edad:</h6>
-                                       
+
                                         <span id="age">Meses (aprox)</span>
                                     </div>
                                 </div>
                                 <div className="col-md-3 col-sm-4 col-6">
-                                    <div className="breeder-info-item">
+                                    <div className="info-item">
                                         <h6>Color:</h6>
                                         <span>
                                             {animal.data.color}
@@ -145,7 +152,7 @@ const AnimalDetailSection = () => {
                                 </div>
 
                                 <div className="col-md-3 col-sm-4 col-6">
-                                    <div className="breeder-info-item">
+                                    <div className="info-item">
                                         <h6>Tamaño:</h6>
                                         <span>
                                             {animal.data.tamanio}
@@ -153,7 +160,7 @@ const AnimalDetailSection = () => {
                                     </div>
                                 </div>
                                 <div className="col-md-3 col-sm-4 col-6">
-                                    <div className="breeder-info-item">
+                                    <div className="info-item">
                                         <h6>Esterilizado:</h6>
                                         <span>
                                             {animal.data.esterilizado ? "Si" : "No"}
@@ -161,7 +168,7 @@ const AnimalDetailSection = () => {
                                     </div>
                                 </div>
                                 <div className="col-md-3 col-sm-4 col-6">
-                                    <div className="breeder-info-item">
+                                    <div className="info-item">
                                         <h6>Desparasitado:</h6>
                                         <span>
                                             {animal.data.desparasitado ? "Si" : "No"}
@@ -169,7 +176,7 @@ const AnimalDetailSection = () => {
                                     </div>
                                 </div>
                                 <div className="col-md-6 col-sm-4 col-6">
-                                    <div className="breeder-info-item">
+                                    <div className="info-item">
                                         <h6>Fecha de rescate:</h6>
 
                                         <span>
@@ -178,7 +185,7 @@ const AnimalDetailSection = () => {
                                     </div>
                                 </div>
                                 <div className="col-md-6 col-sm-4 col-6">
-                                    <div className="breeder-info-item">
+                                    <div className="info-item">
                                         <h6>Sitio de rescate:</h6>
                                         <span>
                                             {animal.data.sitio_rescate !== null ? animal.data.sitio_rescate : "No registra"}
@@ -186,7 +193,7 @@ const AnimalDetailSection = () => {
                                     </div>
                                 </div>
                                 <div className="col-md-6 col-sm-4 col-6">
-                                    <div className="breeder-info-item">
+                                    <div className="info-item">
                                         <h6>Vacunas:</h6>
                                         <span>
                                             {animal.data.vacunas !== null ? animal.data.vacunas : "No registra"}
@@ -205,9 +212,11 @@ const AnimalDetailSection = () => {
                 </div>
                 <div className='col-lg-4'>
                     <div className='banner'>
-
-                        <h3>¿Tienes alguna duda?</h3>
-                        <p>Comunicate con nosotros al +57 313 6309884</p>
+                        <img src="/images/banner-pasos-adopcion.webp" alt='pasos adopción' />
+                        <div className='info-banner'>
+                            <h3>¿Tienes alguna duda?</h3>
+                            <p>Comunicate con nosotros al +57 313 6309884</p>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -15,6 +15,7 @@ import AnimalContext from '../../context/animal/animalContext';
 import Accordion from 'react-bootstrap/Accordion'
 import Footer from '../../components/partials/Footer';
 import SectionTitle from '../../components/partials/SectionTitle';
+import AnimalList from '../../components/partials/AnimalList';
 export default function HomePage() {
 
 
@@ -100,75 +101,7 @@ export default function HomePage() {
 }
 
 
-function AnimalList() {
 
-    const [settingsSlick, setSettingsSlick] = useState({
-        dots: false,
-        infinite: false,
-        speed: 500,
-        autoPlay: true,
-        slidesToShow: 3,//ajustar segun el numero de animales
-        slidesToScroll: 3,// ajustar segun el numero de animales
-        arrows: true,
-    })
-    const theme = useTheme();
-    const matchDownSm = useMediaQuery(theme.breakpoints.down('sm'));
-
-    const { getAnimalsFromPublic, animals, loading } = useContext(AnimalContext);
-
-    useEffect(() => {
-
-        if (matchDownSm) {
-            setSettingsSlick({ ...settingsSlick, slidesToScroll: 1, slidesToShow: 1, arrows: false, dots: true })
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [matchDownSm])
-
-
-    useEffect(() => {
-
-        getAnimalsFromPublic()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
-
-    useEffect(() => {
-        console.log(animals)
-    }, [animals])
-
-
-    return (<div className="animal-area">
-        <div className="container">
-            <div className="row justify-content-center">
-
-                {loading ? <p className='text-center'>Cargando...</p> : (animals.length > 0 ?
-                    <Slider {...settingsSlick}>
-                        {animals.map((element, index) => index < 10 ? (
-                            <div key={index} className='col-xl-3 d-flex justify-content-center'>
-
-                                <div className='slick-animal-card'>
-                                    <Link to="/employees">
-                                        {element.animalImage.length > 0 ? <img src={`${process.env.REACT_APP_API_URL}/${element.animalImage[0].ruta}`} alt="img" /> :
-                                            <img src="/images/no_image.png" alt="img" />
-                                        }
-                                    </Link>
-                                    <div className='animal-description'>
-                                        <p className='d-flex align-items-center text-capitalize'><AiFillSetting style={{ marginRight: 2 }} color="#de6426" />{element.sexo}</p>
-                                        <h3>{element.nombre}</h3>
-                                        <Link to="/employees"> Leer Más <IoPawOutline style={{ transform: "rotateZ(90deg);" }} color="#de6426" size="24" /> </Link>
-                                    </div>
-                                </div>
-                            </div>
-                        ) : null)}
-
-                    </Slider>
-
-                    : <p className='text-center'>Aún no hay animales registrados</p>)}
-
-            </div>
-        </div>
-    </div>
-    )
-}
 
 
 function BrandSection(params) {

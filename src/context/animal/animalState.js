@@ -82,7 +82,7 @@ const AnimalState = props => {
             if (res.data.state) {
                 dispatch({
                     type: ANIMALS,
-                    payload: res.data.data
+                    payload: res.data.data.rows
                 });
             } else {
                 dispatch({
