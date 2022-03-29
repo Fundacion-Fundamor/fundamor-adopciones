@@ -1,10 +1,32 @@
+@import '/src/scss/variables';
+@import '/src/scss/mixins';
+
 .section-icon {
 
     -webkit-animation:spin 4s linear infinite;
     -moz-animation:spin 4s linear infinite;
     animation:spin 4s linear infinite;
 }
-
+.section-title{
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  padding: 15px;
+  h3{
+      color: $primaryColor;
+      font-weight: 800;
+  }
+  h2{
+      font-weight: 900;
+  }
+  p{
+      color: $textLight1Color;
+      line-height: 1.5;
+  }
+}
 
 @-moz-keyframes spin {    0% {
     -webkit-transform: rotate(15deg);

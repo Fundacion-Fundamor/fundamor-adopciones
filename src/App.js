@@ -41,6 +41,9 @@ import { Link } from 'react-router-dom';
 import HomePage from './screens/public/HomePage';
 import AnimalList from './screens/public/AnimalList';
 import AnimalDetail from './screens/public/AnimalDetail';
+import About from './screens/public/About';
+import AdoptionRequest from './screens/public/AdoptionRequest';
+import Contact from './screens/public/Contact';
 const drawerWidth = 260;
 
 const token = localStorage.getItem("token");
@@ -258,9 +261,14 @@ function App() {
 
 																	{/* Rutas publicas */}
 																	<Route path="/login" component={Login} />
+																	<Route path="/about" exact component={About} />
+																	<Route path="/contact" exact component={Contact} />
 																	<Route path="/passwordReset" component={PasswordReset} />
 																	<Route path="/foundation/animals" exact component={AnimalList} />
 																	<Route path="/foundation/animals/:animal_id" exact component={AnimalDetail} />
+																	<Route path="/foundation/animals/adopt/:animal_id" exact component={AdoptionRequest} />
+																	
+
 																	<Route path="/" component={HomePage} />
 
 																	{/* Rutas privadas */}

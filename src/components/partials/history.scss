@@ -1,0 +1,32 @@
+@import '/src/scss/variables';
+@import '/src/scss/mixins';
+@import 'node_modules/react-modal-video/scss/modal-video.scss';
+
+.historical-area{
+    background-color: #d5e6eb;
+    padding-bottom: 80px;
+    .history-wrapper{
+        position: relative;
+        height: 523px;
+        max-width: 504px;
+    }
+}
+
+.foundation-info{
+
+    h3{
+        color: $primaryColor;
+        font-weight: 800;
+    }
+    h2{
+        font-weight: 900;
+    }
+    button{
+        color: $secondaryColor;
+        font-weight: 800;
+        &:not(.collapsed){
+            
+            background-color: white;
+        }
+    }
+}

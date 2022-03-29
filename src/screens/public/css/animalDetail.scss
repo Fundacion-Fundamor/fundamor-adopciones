@@ -34,6 +34,24 @@
         font-weight: 900;
         font-size: 20px;
     }
+    .btn-request{
+        background: none;
+        border: 0px solid;
+        line-height: 1;
+        padding: 0.7em 1em;
+        transition: 0.75s;
+        border-radius: 12px;
+        color: #fff;
+        
+        background-color: $primaryColor;
+        font-weight: 900;
+        font-size: 18px;
+        text-decoration: none !important;
+        &:hover{
+            background-color: #cd642f;
+        }
+    
+    }
 }
 
 
@@ -56,6 +74,7 @@
         font-size: 16px;
         color: $primaryColor;
         font-weight: 700;
+        text-transform: capitalize;
     }
 }
 
@@ -67,8 +86,14 @@
     padding: 0px 0px 3px;
     text-align: center;
     box-shadow: 10px 0px 104px -82px rgb(255 89 0);
+    margin-top: 15px;
+    @include mdMinBreakPoint{
+        margin-top: 0px;
+    }
+   
     img{
         border-radius: 15px;
+        width:100%;
     }
     .info-banner{
         padding: 15px;

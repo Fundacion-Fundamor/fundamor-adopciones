@@ -17,7 +17,7 @@ import Footer from '../../components/partials/Footer';
 import SectionTitle from '../../components/partials/SectionTitle';
 import Breadcrumb from '../../components/partials/Breadcrumb';
 import { LoadingButton } from '@mui/lab';
-import { handleResponseError } from '../../Shared/utils';
+import { calculateAnimalAge, handleResponseError } from '../../Shared/utils';
 import axiosClient from '../../config/axios';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
@@ -211,7 +211,7 @@ function AnimalsSection() {
                                                     <p><MdCompareArrows /> {element.tamanio}</p>
                                                 </div>
                                                 <div className='footer'>
-                                                    <FaRegCalendarAlt /> <p>{calculateAge(element.fecha_nacimiento)} Aproximadamente</p>
+                                                    <FaRegCalendarAlt /> <p>{calculateAnimalAge(element.fecha_nacimiento)} Aproximadamente</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -256,34 +256,5 @@ const SearchBox = ({ handleSearch }) => {
     </div>)
 }
 
-const calculateAge = dateOfBirth => {
-
-    if (!dateOfBirth || isNaN(new Date(dateOfBirth))) return;
-    const today = new Date();
-    const dateNac = new Date(dateOfBirth);
-    if (today - dateNac < 0) return;
-    let days = today.getUTCDate() - dateNac.getUTCDate();
-    let months = today.getUTCMonth() - dateNac.getUTCMonth();
-    let years = today.getUTCFullYear() - dateNac.getUTCFullYear();
-    if (days < 0) {
-        months--;
-        days = 30 + days;
-    }
-    if (months < 0) {
-        years--;
-        months = 12 + months;
-    }
-
-    let inMonths = months + (years * 12);
-
-
-
-    if (inMonths === 0 || inMonths === 1) {
-        return "1 Mes";
-    }
-
-    return inMonths + " Meses";
-
-};
 
 

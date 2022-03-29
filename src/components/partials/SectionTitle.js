@@ -8,7 +8,7 @@ import './sectionTitle.scss'
 export default function SectionTitle({ title, subtitle, text }) {
 
 
-    return (<section className='animals-section py-5'>
+    return (<section className='section-title py-5'>
         <div className='container'>
             <div className='row justify-content-center d-flex '>
                 <div className='col-xl-7 col-lg-9'>

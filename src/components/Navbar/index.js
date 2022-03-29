@@ -24,13 +24,13 @@ const NavbarComponent = ({ active = "home" }) => {
                 <Nav.Link className={active === "animals" ? "active" : ""} as={Link} to="/foundation/animals">
                   Animales
                 </Nav.Link>
-                <Nav.Link as={Link} to="/posts">
+                <Nav.Link className={active === "posts" ? "active" : ""} as={Link} to="/posts">
                   Publicaciones
                 </Nav.Link>
-                <Nav.Link as={Link} to="/about">
+                <Nav.Link className={active === "contact" ? "active" : ""}  as={Link}  to="/contact">
                   Contacto
                 </Nav.Link>
-                <Nav.Link as={Link} to="/about">
+                <Nav.Link className={active === "about" ? "active" : ""}  as={Link} to="/about">
                   Nosotros
                 </Nav.Link>
               </div>

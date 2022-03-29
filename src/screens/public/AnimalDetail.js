@@ -6,12 +6,14 @@ import Breadcrumb from '../../components/partials/Breadcrumb'
 import Footer from '../../components/partials/Footer'
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-import { handleResponseError } from '../../Shared/utils'
+import { calculateAnimalAge, handleResponseError } from '../../Shared/utils'
 import axiosClient from '../../config/axios'
 import { useParams } from 'react-router-dom'
 import './css/animalDetail.scss'
 import SectionTitle from '../../components/partials/SectionTitle'
 import AnimalList from '../../components/partials/AnimalList'
+import { IoPawOutline, } from 'react-icons/io5';
+import { Link } from 'react-router-dom';
 
 export default function AnimalDetail() {
 
@@ -102,9 +104,9 @@ const AnimalDetailSection = () => {
         <div className='container'>
             <div className='row'>
                 <div className='col-lg-8'>
-                    <div className='animal-card'>
+                    {animal.data ? <div className='animal-card'>
                         <div>
-                            {animal.data ? <Slider {...settingsSlick}>
+                            <Slider {...settingsSlick}>
                                 {animal.data.animalImage.map((element, index) => (
                                     <div key={index} className='col-12'>
 
@@ -117,7 +119,7 @@ const AnimalDetailSection = () => {
                                     </div>
                                 ))}
 
-                            </Slider> : null}
+                            </Slider>
                         </div>
 
                         <div className='header'>
@@ -126,7 +128,7 @@ const AnimalDetailSection = () => {
                         </div>
                         <div className="animal-info">
                             <h5 className="title">Información del animal</h5>
-                            {animal.data ? <div className="row">
+                            <div className="row">
                                 <div className="col-md-3 col-sm-4 col-6">
                                     <div className="info-item">
                                         <h6>Genero:</h6>
@@ -139,7 +141,7 @@ const AnimalDetailSection = () => {
                                     <div className="info-item">
                                         <h6>Edad:</h6>
 
-                                        <span id="age">Meses (aprox)</span>
+                                        <span>{calculateAnimalAge(animal.data.fecha_nacimiento)} (aprox)</span>
                                     </div>
                                 </div>
                                 <div className="col-md-3 col-sm-4 col-6">
@@ -200,15 +202,20 @@ const AnimalDetailSection = () => {
                                         </span>
                                     </div>
                                 </div>
-                            </div> : animal.loading ?
-                                <div className="row">
-                                    <p>Cargando...</p>
-                                </div> : null
-                            }
+
+                                <div className='col-12 mt-5'>
+                                    <Link className='btn-request' to={"/foundation/animals/adopt/" + animal_id}>Realizar solicitud <IoPawOutline color="white" size="24" /></Link>
+
+                                </div>
+                            </div>
                             {/* <a href="/animals/form/{animal.id_animal}" className="btn">Adoptar <img
                                 src="img/icon/w_pawprint.png" alt=""/></a> */}
                         </div>
-                    </div>
+                    </div> : animal.loading ?
+                        <div className="row">
+                            <p>Cargando...</p>
+                        </div> : null
+                    }
                 </div>
                 <div className='col-lg-4'>
                     <div className='banner'>

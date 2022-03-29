@@ -101,7 +101,7 @@ function PasswordReset(props) {
 
 					<LoadingButton loading={loading}
 						variant="contained"
-						endIcon={<IoPawOutline style={{ transform: "rotate(90deg)" }} />}
+						endIcon={<IoPawOutline />}
 						sx={{
 							"& .MuiLoadingButton-loadingIndicator": {
 								color: "white"

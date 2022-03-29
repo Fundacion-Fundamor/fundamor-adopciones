@@ -62,7 +62,7 @@ export default function AnimalList() {
                                     <div className='animal-description'>
                                         <p className='d-flex align-items-center text-capitalize'><AiFillSetting style={{ marginRight: 2 }} color="#de6426" />{element.sexo}</p>
                                         <h3>{element.nombre}</h3>
-                                        <Link to="/employees"> Leer Más <IoPawOutline style={{ transform: "rotateZ(90deg);" }} color="#de6426" size="24" /> </Link>
+                                        <Link to="/employees"> Leer Más <IoPawOutline  color="#de6426" size="24" /> </Link>
                                     </div>
                                 </div>
                             </div>
