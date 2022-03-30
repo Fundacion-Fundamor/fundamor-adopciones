@@ -4,15 +4,10 @@ import './css/animalList.scss'
 import { FaRegCalendarAlt } from 'react-icons/fa';
 
 import { } from 'react-icons/bi';
-import { AiOutlineSearch, AiFillInfoCircle } from 'react-icons/ai';
+import { AiFillInfoCircle } from 'react-icons/ai';
 import { IoPawOutline, } from 'react-icons/io5';
 import { MdCompareArrows, } from 'react-icons/md';
-
-
 import { Link } from 'react-router-dom';
-
-import { IconButton, useMediaQuery, useTheme } from '@mui/material';
-import Accordion from 'react-bootstrap/Accordion'
 import Footer from '../../components/partials/Footer';
 import SectionTitle from '../../components/partials/SectionTitle';
 import Breadcrumb from '../../components/partials/Breadcrumb';
@@ -21,6 +16,7 @@ import { calculateAnimalAge, handleResponseError } from '../../Shared/utils';
 import axiosClient from '../../config/axios';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import SearchBox from '../../components/partials/SearchBox';
 
 const animalsPerPage = 2;
 export default function AnimalList() {
@@ -69,16 +65,23 @@ function AnimalsSection() {
                 const res = await axiosClient.get(`/api/foundations/2/animals?min=${(values.currentPage * animalsPerPage) - animalsPerPage}&max=${animalsPerPage}&order=${values.filters.order}&search=${values.filters.search}&specie=${values.filters.specie}&size=${values.filters.size}`);
                 if (res.data.state) {
                     if (mounted) {
-                        console.log(res.data.data)
+
 
                         let animals = res.data.data.rows;
                         let tmpData = values.data;
                         if (!values.initial) {
                             tmpData = [...tmpData, ...animals]
                         }
-                        //  console.log()
+
                         setValues({ ...values, data: (values.initial ? animals : tmpData), loading: false, totalData: res.data.data.count, initial: false });
                     }
+                } else {
+                    MySwal.fire({
+                        title: <p style={{ fontSize: 22, fontWeight: "bold" }}>{res.data.message}</p>,
+                        allowOutsideClick: false,
+                        icon: "error",
+
+                    });
                 }
             } catch (error) {
                 let text = handleResponseError(error);
@@ -86,7 +89,7 @@ function AnimalsSection() {
                     title: <p style={{ fontSize: 22, fontWeight: "bold" }}>{text}</p>,
                     allowOutsideClick: false,
                     icon: "error",
-                    
+
                 });
             }
 
@@ -112,7 +115,7 @@ function AnimalsSection() {
                 <div className='row justify-content-center'>
                     <div className='col-lg-3 col-md-8 order-sm-0 mb-5'>
                         <div className='sidebar-options px-3'>
-                            <SearchBox handleSearch={handleFilters} />
+                            <SearchBox handleSearch={handleFilters} placeholder="Busca por nombre" />
                             <h3 >Especie</h3>
 
                             <div className="custom-form-check ">
@@ -244,17 +247,5 @@ function AnimalsSection() {
         </section >
     )
 }
-
-const SearchBox = ({ handleSearch }) => {
-
-    const [value, setValue] = useState("")
-    return (<div className="search-wrapper" style={{ position: "relative" }}>
-        <form onSubmit={(e) => { e.preventDefault(); handleSearch("search", value) }}>
-            <input type="text" value={value} onChange={(e) => { setValue(e.target.value) }} id="search-field" placeholder="Buscar por nombre" />
-            <button type="button" onClick={() => handleSearch("search", value)}><AiOutlineSearch size={20} /></button>
-        </form>
-    </div>)
-}
-
 
 

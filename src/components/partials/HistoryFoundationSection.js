@@ -1,4 +1,4 @@
-import React, {  useState } from 'react'
+import React, { useState } from 'react'
 
 import './history.scss'
 
@@ -10,12 +10,12 @@ import Accordion from 'react-bootstrap/Accordion'
 export function HistoryFoundationSection(params) {
     const [isOpen, setOpen] = useState(false)
     let youtube_video_id = "https://www.youtube.com/watch?v=HkJThi019OY".match(/youtube\.com.*(\?v=|\/embed\/)(.{11})/).pop();
-    console.log(youtube_video_id)
     return (
         <div className='historical-area'>
             <div className='container'>
-                <ModalVideo channel='youtube' autoplay isOpen={isOpen} videoId="L61p2uyiMSo" allowFullScreen={false} onClose={() => setOpen(false)} />
-
+                <React.Fragment>
+                    <ModalVideo channel='youtube' autoplay isOpen={isOpen} videoId="L61p2uyiMSo" allowFullScreen={false} onClose={() => setOpen(false)} />
+                </React.Fragment>
                 <div className='row align-items-center'>
                     <div className='col-sm-12 col-lg-6 col-md-6'>
 
@@ -33,7 +33,7 @@ export function HistoryFoundationSection(params) {
                             <h3>Acerca de la fundación</h3>
                             <h2 className='mb-3'>Historia y futuro</h2>
 
-                            <Accordion  defaultActiveKey="0">
+                            <Accordion defaultActiveKey="0">
                                 <Accordion.Item className='my-2 rounded-3' eventKey="0">
                                     <Accordion.Header >Misión</Accordion.Header>
                                     <Accordion.Body>
@@ -64,6 +64,6 @@ export function HistoryFoundationSection(params) {
 
                 </div>
             </div>
-           
+
         </div>)
 }

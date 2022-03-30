@@ -1,0 +1,7 @@
+{
+    "ignorePatterns": ["temp.js", "**/vendor/*.js"],
+    "rules": {
+        
+    },
+     "eslintIgnore": ["postList.scss", "world.js"]
+}

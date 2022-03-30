@@ -1,0 +1,26 @@
+@import '/src/scss/variables';
+@import '/src/scss/mixins';
+.limit-recent-post{
+  
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;  
+    overflow: hidden;
+}
+
+.recent-post-footer{
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    a{
+        color: $primaryColor;
+    }
+    .date{
+        display: flex;
+        align-items: center;
+        p{
+            margin-bottom: 0px;
+            font-size: 14px;
+        }
+    }
+}

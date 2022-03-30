@@ -37,13 +37,14 @@ import FoundationState from './context/foundation/foundationState';
 import Nunito from './assets/fonts/Nunito/Nunito-VariableFont_wght.ttf';
 import NotFoundPage from './screens/NotFoundPage';
 import BreadCumbState from './context/breadcumb/breacumbState';
-import { Link } from 'react-router-dom';
 import HomePage from './screens/public/HomePage';
 import AnimalList from './screens/public/AnimalList';
 import AnimalDetail from './screens/public/AnimalDetail';
 import About from './screens/public/About';
 import AdoptionRequest from './screens/public/AdoptionRequest';
 import Contact from './screens/public/Contact';
+import PostList from './screens/public/PostList';
+import PostDetail from './screens/public/PostDetail';
 const drawerWidth = 260;
 
 const token = localStorage.getItem("token");
@@ -58,7 +59,7 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' && pr
 	return (
 		{
 			...theme.typography.mainContent,
-			backgroundColor: "#FFD5A6",
+			backgroundColor: authenticated ? "#FFD5A6" : "white",
 			marginTop: authenticated ? "68px !important" : "0px",
 			// marginBottom: "15px",
 			width: "100%",
@@ -263,13 +264,15 @@ function App() {
 																	<Route path="/login" component={Login} />
 																	<Route path="/about" exact component={About} />
 																	<Route path="/contact" exact component={Contact} />
+																	<Route path="/foundation/posts" exact component={PostList} />
+																	<Route path="/foundation/posts/:post_id" exact component={PostDetail} />
 																	<Route path="/passwordReset" component={PasswordReset} />
 																	<Route path="/foundation/animals" exact component={AnimalList} />
 																	<Route path="/foundation/animals/:animal_id" exact component={AnimalDetail} />
 																	<Route path="/foundation/animals/adopt/:animal_id" exact component={AdoptionRequest} />
-																	
 
-																	<Route path="/" component={HomePage} />
+
+																	<Route path="/" exact component={HomePage} />
 
 																	{/* Rutas privadas */}
 																	<PrivateRoute path="/posts" component={Post} />

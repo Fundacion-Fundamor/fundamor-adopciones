@@ -122,8 +122,8 @@
         object-fit: contain;
         width: 100%;
         border-radius: 2%;
-       @include mdMinBreakPoint{
-        height: 400px;
-       }
+        @include mdMinBreakPoint{
+            height: 400px;
+        }
     }
 }

@@ -1,18 +1,14 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React from 'react'
 import NavbarComponent from '../../components/Navbar';
 import './css/home.scss'
 import { FaPaw, FaUserAlt, FaDog } from 'react-icons/fa';
 import { GiCat, } from 'react-icons/gi';
 import { BiDonateHeart, } from 'react-icons/bi';
-import { AiFillSetting, AiFillPlayCircle } from 'react-icons/ai';
-import { IoPawOutline, } from 'react-icons/io5';
 
-import ModalVideo from 'react-modal-video'
+
+
 import { Link } from 'react-router-dom';
-import Slider from "react-slick";
-import { IconButton, useMediaQuery, useTheme } from '@mui/material';
-import AnimalContext from '../../context/animal/animalContext';
-import Accordion from 'react-bootstrap/Accordion'
+
 import Footer from '../../components/partials/Footer';
 import SectionTitle from '../../components/partials/SectionTitle';
 import AnimalList from '../../components/partials/AnimalList';
@@ -33,7 +29,7 @@ export default function HomePage() {
             </div>
 
         </div>
-        {/* <div className="">
+        <div className="">
             <div className="col-12">
                 <div className="help-wrap">
                     <div className="left-message">
@@ -56,7 +52,7 @@ export default function HomePage() {
                     </div>
                 </div>
             </div>
-        </div> */}
+        </div>
 
         <section className='analytics-section'>
             <div className='row justify-content-center d-flex'>

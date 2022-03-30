@@ -1,4 +1,3 @@
-import { useMediaQuery, useTheme } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import Slider from 'react-slick/lib/slider'
 import NavbarComponent from '../../components/Navbar'
@@ -41,25 +40,20 @@ const AnimalDetailSection = () => {
         loading: false,
     })
 
+    // eslint-disable-next-line no-unused-vars
     const [settingsSlick, setSettingsSlick] = useState({
         dots: true,
         infinite: false,
         speed: 500,
         autoPlay: true,
         arrows: false,
-        slidesToShow: 1,//ajustar segun el numero de animales
-        slidesToScroll: 1,// ajustar segun el numero de animales
+        slidesToShow: 1,
+        slidesToScroll: 1,
 
     })
 
     let { animal_id } = useParams();
     const MySwal = withReactContent(Swal);
-    const theme = useTheme();
-    const matchDownSm = useMediaQuery(theme.breakpoints.down('sm'));
-
-
-
-
 
 
     useEffect(() => {
@@ -71,13 +65,16 @@ const AnimalDetailSection = () => {
             try {
                 const res = await axiosClient.get(`/api/foundations/2/animal/${animal_id}`);
                 if (res.data.state) {
-                    console.log(res.data)
                     if (mounted) {
-                        console.log(res.data.data)
-
-                        //  console.log()
                         setAnimal({ data: res.data.data, loading: false, });
                     }
+                } else {
+                    MySwal.fire({
+                        title: <p style={{ fontSize: 22, fontWeight: "bold" }}>{res.data.message}</p>,
+                        allowOutsideClick: false,
+                        icon: "error",
+
+                    });
                 }
             } catch (error) {
                 let text = handleResponseError(error);

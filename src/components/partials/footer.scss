@@ -2,18 +2,14 @@
 
 
 .footer{
+    
     a{
-        color: $secondaryColor;
+        color: $textColor;
         text-decoration-line: none; 
         font-weight: 800; 
-
+        transition: all 0.25s ease;
         &:hover{
             color: $primaryColor; 
-        }
-    }
-    svg{
-        &:hover{
-            color: $primaryColor;
         }
     }
 }
@@ -22,9 +18,11 @@
     margin-bottom: 15px;
     display: flex;
     align-items: flex-end;
+    
     svg{
-        color: $secondaryColor;
+        color: $textColor;
         margin: 0 7px;
+        transition: all 0.25s ease;
         &:hover{
             color: $primaryColor;
         }

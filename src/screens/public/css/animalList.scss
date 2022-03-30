@@ -91,37 +91,6 @@
     }
 }
 
-.search-wrapper{
-  
-    input{
-        background: #f5f2eb;
-        width: 100%;
-        border: none;
-        border-radius: 5px;
-        padding: 18px 70px 18px 25px;
-        font-size: 14px;
-        height: 60px;
-        &:focus{
-            outline: none;
-        }
-    }
-    button{
-        position: absolute;
-        right: 0;
-        border: none;
-        padding: 0;
-        width: 56px;
-        height: 60px;
-        background: $primaryColor;
-        color: #fff;
-        border-radius: 0px 5px 5px 0px;
-        font-size: 14px;
-
-        &:hover{
-            background-color: #c0683c;
-        }
-    }
-}
 
 .adoption-item{
    
