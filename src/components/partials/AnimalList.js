@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react'
 import './animalListArea.scss'
-import { AiFillSetting,} from 'react-icons/ai';
+import { AiFillSetting, } from 'react-icons/ai';
 import { IoPawOutline, } from 'react-icons/io5';
 import { Link } from 'react-router-dom';
 import Slider from "react-slick";
-import {useMediaQuery, useTheme } from '@mui/material';
+import { useMediaQuery, useTheme } from '@mui/material';
 import AnimalContext from '../../context/animal/animalContext';
 
 
@@ -54,7 +54,7 @@ export default function AnimalList() {
                             <div key={index} className='col-xl-3 d-flex justify-content-center'>
 
                                 <div className='slick-animal-card'>
-                                    <Link to="/employees">
+                                    <Link to={"/foundation/animals/" + element.id_animal}>
                                         {element.animalImage.length > 0 ? <img src={`${process.env.REACT_APP_API_URL}/${element.animalImage[0].ruta}`} alt="img" /> :
                                             <img src="/images/no_image.png" alt="img" />
                                         }
@@ -62,7 +62,7 @@ export default function AnimalList() {
                                     <div className='animal-description'>
                                         <p className='d-flex align-items-center text-capitalize'><AiFillSetting style={{ marginRight: 2 }} color="#de6426" />{element.sexo}</p>
                                         <h3>{element.nombre}</h3>
-                                        <Link to="/employees"> Leer Más <IoPawOutline  color="#de6426" size="24" /> </Link>
+                                        <Link to={"/foundation/animals/" + element.id_animal}> Leer Más <IoPawOutline color="#de6426" size="24" /> </Link>
                                     </div>
                                 </div>
                             </div>
