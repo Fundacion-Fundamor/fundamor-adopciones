@@ -2,20 +2,54 @@
 @import '/src/scss/mixins';
 
 
-.adopter-form-section{
+.adopter-form-section {
     background-color: white;
 }
-.adopter-form{
 
-    .sub-title{
+.adopter-form {
+    margin: 0rem 1rem;
+
+    @include mdMinBreakPoint{
+        margin: 0rem 0rem;
+    }
+
+
+
+    .sub-title {
         font-weight: 900;
         color: $primaryColor;
     }
-    input{
+
+    input {
+
         border-radius: 8px;
     }
-    label{
-        font-size: 14px;
+
+    .form-control {
+        margin-top: 12px;
+    }
+
+    .question-title {
+        font-size: 16px;
         font-weight: 700;
+        margin-bottom: 0px;
+    }
+
+    .form-check-label {
+        font-size: 14px;
+    }
+ 
+}
+
+.adopter-form-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 40px 10px;
+
+    button {
+        margin-top: 30px;
     }
 }
+

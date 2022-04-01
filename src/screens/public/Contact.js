@@ -161,7 +161,7 @@ const ContactSection = () => {
 
                             <LoadingButton loading={loading}
                                 size="medium" variant="contained"
-                                sx={{ fontSize: 12, mt: 5, height: 40, px: 5, alignItems: "center", borderRadius: "8px", fontWeight: "bold", background: "#de6426", "&:hover": { background: "#cd642f" } }}
+                                sx={{ fontSize: 16, mt: 5, textTransform: "none", height: 40, px: 5, alignItems: "center", borderRadius: "8px", fontWeight: "bold", background: "#de6426", "&:hover": { background: "#cd642f" } }}
                                 type="submit">
                                 Enviar
                             </LoadingButton>

@@ -46,32 +46,33 @@ export default function AnimalList() {
 
     return (<div className="animal-area">
         <div className="container">
-            <div className="row justify-content-center">
+            <div className="row ">
 
-                {loading ? <p className='text-center'>Cargando...</p> : (animals.length > 0 ?
-                    <Slider {...settingsSlick}>
-                        {animals.map((element, index) => index < 10 ? (
-                            <div key={index} className='col-xl-3 d-flex justify-content-center'>
+                <div className='col-12'>
+                    {loading ? <p className='text-center'>Cargando...</p> : (animals.length > 0 ?
+                        <Slider {...settingsSlick}>
+                            {animals.map((element, index) => index < 10 ? (
+                                <div key={index} className='col-xl-3 d-flex justify-content-center'>
 
-                                <div className='slick-animal-card'>
-                                    <Link to={"/foundation/animals/" + element.id_animal}>
-                                        {element.animalImage.length > 0 ? <img src={`${process.env.REACT_APP_API_URL}/${element.animalImage[0].ruta}`} alt="img" /> :
-                                            <img src="/images/no_image.png" alt="img" />
-                                        }
-                                    </Link>
-                                    <div className='animal-description'>
+                                    <div className='slick-animal-card'>
+                                        <Link to={"/foundation/animals/" + element.id_animal}>
+                                            {element.animalImage.length > 0 ? <img src={`${process.env.REACT_APP_API_URL}/${element.animalImage[0].ruta}`} alt="img" /> :
+                                                <img src="/images/no_image.png" alt="img" />
+                                            }
+                                        </Link>
+                                        <div className='animal-description'>
                                         <p className='d-flex align-items-center text-capitalize'><AiFillSetting style={{ marginRight: 2 }} color="#de6426" />{element.sexo}</p>
-                                        <h3>{element.nombre}</h3>
-                                        <Link to={"/foundation/animals/" + element.id_animal}> Leer Más <IoPawOutline color="#de6426" size="24" /> </Link>
+                                        <Link to={"/foundation/animals/" + element.id_animal}><h3>{element.nombre}</h3></Link>
+                                            <Link to={"/foundation/animals/" + element.id_animal}> Leer Más <IoPawOutline color="#de6426" size="24" /> </Link>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        ) : null)}
+                            ) : null)}
 
-                    </Slider>
+                        </Slider>
 
-                    : <p className='text-center'>Aún no hay animales registrados</p>)}
-
+                        : <p className='text-center'>Aún no hay animales registrados</p>)}
+                </div>
             </div>
         </div>
     </div>

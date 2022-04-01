@@ -65,25 +65,36 @@ const AnimalDetailSection = () => {
             try {
                 const res = await axiosClient.get(`/api/foundations/2/animal/${animal_id}`);
                 if (res.data.state) {
+                    console.log(mounted)
                     if (mounted) {
                         setAnimal({ data: res.data.data, loading: false, });
                     }
                 } else {
-                    MySwal.fire({
-                        title: <p style={{ fontSize: 22, fontWeight: "bold" }}>{res.data.message}</p>,
+                    let resAction = await MySwal.fire({
+                        title: <p style={{ fontSize: 22, fontWeight: "bold", lineHeight: 1.2 }}>{res.data.message}</p>,
                         allowOutsideClick: false,
                         icon: "error",
 
                     });
+
+                    if (resAction.isConfirmed) {
+
+                        window.location.replace(process.env.REACT_APP_URL + "/foundation/animals")
+                    }
                 }
             } catch (error) {
                 let text = handleResponseError(error);
-                MySwal.fire({
-                    title: <p style={{ fontSize: 22, fontWeight: "bold" }}>{text}</p>,
+                let resAction = await MySwal.fire({
+                    title: <p style={{ fontSize: 22, fontWeight: "bold", lineHeight: 1.2 }}>{text}</p>,
                     allowOutsideClick: false,
                     icon: "error",
 
                 });
+
+                if (resAction.isConfirmed) {
+
+                    window.location.replace(process.env.REACT_APP_URL + "/foundation/animals")
+                }
             }
 
 
@@ -95,7 +106,7 @@ const AnimalDetailSection = () => {
             mounted = false;
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [animal_id])
 
     return <section className='animal-detail-section'>
         <div className='container'>
@@ -119,9 +130,9 @@ const AnimalDetailSection = () => {
                             </Slider>
                         </div>
 
-                        <div className='header'>
-                            <h4 className="name">Nerón</h4>
-                            <p className="description">Descripcións</p>
+                        <div className={`header ${animal.data.animalImage.length === 0 ? "mt-0" : ""}`}>
+                            <h4 className="name">{animal.data.nombre}</h4>
+                            <p className="description">{animal.data.caracteristicas}</p>
                         </div>
                         <div className="animal-info">
                             <h5 className="title">Información del animal</h5>
@@ -205,12 +216,14 @@ const AnimalDetailSection = () => {
 
                                 </div>
                             </div>
-                            {/* <a href="/animals/form/{animal.id_animal}" className="btn">Adoptar <img
-                                src="img/icon/w_pawprint.png" alt=""/></a> */}
+                        
                         </div>
                     </div> : animal.loading ?
-                        <div className="row">
-                            <p>Cargando...</p>
+                        <div className='container h-100 py-5 justify-content-center d-flex flex-row align-items-center'>
+                            <div className="spinner-border" role="status">
+                                <span className="visually-hidden">Cargando...</span>
+                            </div>
+                            <p className='ms-3 m-0'>Cargando...</p>
                         </div> : null
                     }
                 </div>

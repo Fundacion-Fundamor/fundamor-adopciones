@@ -1,13 +1,14 @@
 @import '/src/scss/variables';
 @import '/src/scss/mixins';
 
-.breadcrumb-area{
+.breadcrumb-area {
     background-image: url('./images/bread2.png');
     background-size: cover;
     background-position: center center;
     padding: 115px 0px;
     margin-top: 70px;
-    .title{
+
+    .title {
         background-color: $primaryColor;
         display: inline-flex;
         font-size: 35px;
@@ -18,22 +19,39 @@
         border-radius: 15px 15px 15px 15px;
         font-weight: 900;
     }
-    .breadcrumb{
+
+    .breadcrumb {
         display: flex;
         flex-wrap: wrap;
         padding: 0 0;
         margin-bottom: 1rem;
         list-style: none;
-        li{
+
+        li {
             color: #fff;
             font-weight: 700;
             font-size: 16px;
-            a{
+
+            a {
                 color: $primaryColor;
                 text-decoration-line: none;
-               
+
             }
         }
-      
+
     }
+}
+
+.breadcrumb-content {
+
+    margin-left: 1rem;
+    margin-right: 1rem;
+
+    @include mdMinBreakPoint {
+        margin-left: 0rem;
+        margin-right: 0rem;
+    }
+
+
+
 }
