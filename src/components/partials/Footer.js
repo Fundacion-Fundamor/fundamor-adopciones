@@ -4,6 +4,7 @@ import './footer.scss'
 import { FiExternalLink } from 'react-icons/fi';
 import { FaFacebook, FaInstagram, FaYoutube } from 'react-icons/fa';
 import { FaChevronUp } from 'react-icons/fa'
+
 /**Footer reutilizado en la página pública
  * 
  * @returns 
@@ -22,9 +23,9 @@ export default function Footer() {
 
                     <Link to="/contact"> Contáctanos <FiExternalLink size="24" /></Link>
                     <div className='social' style={{ marginTop: "15px" }}>
-                        <FaFacebook size="24" />
-                        <FaInstagram size="24" />
-                        <FaYoutube size="24" />
+                        <a rel='noreferrer' href={"https://web.facebook.com/fundamorcalarca/?_rdc=1&_rdr"} target={"_blank"}> <FaFacebook size="24" /></a>
+                        <a rel='noreferrer' href={"https://www.instagram.com/fundamorcalarca/?hl=es"} target={"_blank"}><FaInstagram size="24" /></a>
+                        <a rel='noreferrer' href={"https://www.youtube.com/channel/UCNkfxop_V7eirZh_qmgdWfA"} target={"_blank"}><FaYoutube size="24" /></a>
 
                     </div>
                 </div>
@@ -33,7 +34,7 @@ export default function Footer() {
                 <p style={{ padding: 0, margin: 0, marginLeft: "10px", color: "#d5d5d5" }}>| Copyright &copy; : Fundamor Calarcá</p>
             </div>
             <ScrollButton />
-        </div>
+        </div >
     );
 }
 

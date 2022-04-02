@@ -30,6 +30,8 @@
     @include mdMinBreakPoint{
         margin: 0px 0px 50px 0px;
     }
+
+   
     .post-thumb{
 
         img{
@@ -62,11 +64,21 @@
                 color: $primaryColor;
             }
         }
-        .limit{
+        .limit-5{
             margin-top: 15px;
      
             display: -webkit-box;
             -webkit-line-clamp: 5;
+            -webkit-box-orient: vertical;  
+            overflow: hidden;
+            line-height: 1.5;
+            line-height: 33px;
+        }
+        .limit-3{
+            margin-top: 15px;
+     
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;  
             overflow: hidden;
             line-height: 1.5;
@@ -89,3 +101,6 @@
     }
 }
 
+.backgroud-orange{
+        background-color: rgb(248, 245, 240);
+}

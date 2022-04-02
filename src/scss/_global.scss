@@ -1,6 +1,6 @@
 @import '../scss/variables';
 @import "~bootstrap/scss/bootstrap";
-
+@import '../scss/animations';
 * {
   box-sizing: border-box;
 }
@@ -28,4 +28,17 @@ body {
 .css-1d3z3hw-MuiOutlinedInput-notchedOutline{
 
   top:-1px !important
+}
+
+.preloader{
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: white;
+
+  img{
+    width: 200px;
+  
+  }
 }

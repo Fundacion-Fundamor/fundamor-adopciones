@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import authToken from './config/authToken'
 import PrivateRoute from './components/PrivateRoute'
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
@@ -45,6 +45,7 @@ import AdoptionRequest from './screens/public/AdoptionRequest';
 import Contact from './screens/public/Contact';
 import PostList from './screens/public/PostList';
 import PostDetail from './screens/public/PostDetail';
+import FoundationContext from './context/foundation/foundationContext';
 const drawerWidth = 260;
 
 const token = localStorage.getItem("token");
@@ -229,82 +230,90 @@ function App() {
 	const handleLeftDrawerToggle = () => {
 		setLeftDrawerOpened(!leftDrawerOpened)
 	}
+	const { getFoundation, loading } = useContext(FoundationContext)
+
+	useEffect(() => {
+		getFoundation();
+	}, [])
 
 	return (
 		<ThemeProvider theme={theme}>
-			<FoundationState>
-				<PostState>
-					<AdoptionState>
-						<AnimalState>
-							<EmployeeState>
-								<AdopterState>
-									<QuestionState>
-										<TrackingState>
-											<BreadCumbState>
-												<div className="App">
 
-													<Router>
-														<Box sx={{ display: 'flex' }}>
+			<PostState>
+				<AdoptionState>
+					<AnimalState>
+						<EmployeeState>
+							<AdopterState>
+								<QuestionState>
+									<TrackingState>
+										<BreadCumbState>
+										<div className="App">
 
-															<CssBaseline />
+												<Router>
+													<Box sx={{ display: 'flex' }}>
 
-															{/* header */}
-															{authenticated ? <Topbar drawerOpen={leftDrawerOpened} handleDrawer={handleLeftDrawerToggle} /> : null}
+														<CssBaseline />
 
-															{/* drawer */}
-															{authenticated ? <SideBar open={leftDrawerOpened} handleDrawer={handleLeftDrawerToggle} /> : null}
+														{/* header */}
+														{authenticated ? <Topbar drawerOpen={leftDrawerOpened} handleDrawer={handleLeftDrawerToggle} /> : null}
 
-															{/* <Link style={{color:"#000"}} to="/employees">Home</Link> */}
+														{/* drawer */}
+														{authenticated ? <SideBar open={leftDrawerOpened} handleDrawer={handleLeftDrawerToggle} /> : null}
 
-															{/* main content */}
-															<Main theme={theme} open={leftDrawerOpened} authenticated={authenticated}>
-																<Switch>
+														{/* <Link style={{color:"#000"}} to="/employees">Home</Link> */}
 
-																	{/* Rutas publicas */}
-																	<Route path="/login" component={Login} />
-																	<Route path="/about" exact component={About} />
-																	<Route path="/contact" exact component={Contact} />
-																	<Route path="/foundation/posts" exact component={PostList} />
-																	<Route path="/foundation/posts/:post_id" exact component={PostDetail} />
-																	<Route path="/passwordReset" component={PasswordReset} />
-																	<Route path="/foundation/animals" exact component={AnimalList} />
-																	<Route path="/foundation/animals/:animal_id" exact component={AnimalDetail} />
-																	<Route path="/foundation/animals/adopt/:animal_id" exact component={AdoptionRequest} />
+														{/* main content */}
+														<Main theme={theme} open={leftDrawerOpened} authenticated={authenticated}>
+															<Switch>
 
-
-																	<Route path="/" exact component={HomePage} />
-
-																	{/* Rutas privadas */}
-																	<PrivateRoute path="/posts" component={Post} />
-																	<PrivateRoute path="/employees" component={Employeee} />
-																	<PrivateRoute path="/animals" component={Animal} />
-																	<PrivateRoute path="/questions" component={Question} />
-																	<PrivateRoute path="/adopters" component={Adopter} />
-																	<PrivateRoute path="/adoptions" component={Adoption} />
-																	<PrivateRoute path="/dashboard" component={Dashboard} />
-																	<PrivateRoute path="/profile" component={Profile} />
-																	<PrivateRoute path="/siteConfig" component={Config} />
+																{/* Rutas publicas */}
+																<Route path="/login" component={Login} />
+																<Route path="/about" exact component={About} />
+																<Route path="/contact" exact component={Contact} />
+																<Route path="/foundation/posts" exact component={PostList} />
+																<Route path="/foundation/posts/:post_id" exact component={PostDetail} />
+																<Route path="/passwordReset" component={PasswordReset} />
+																<Route path="/foundation/animals" exact component={AnimalList} />
+																<Route path="/foundation/animals/:animal_id" exact component={AnimalDetail} />
+																<Route path="/foundation/animals/adopt/:animal_id" exact component={AdoptionRequest} />
 
 
+																<Route path="/" exact component={HomePage} />
 
-																	<Route path="*" component={NotFoundPage} />
-																</Switch>
+																{/* Rutas privadas */}
+																<PrivateRoute path="/posts" component={Post} />
+																<PrivateRoute path="/employees" component={Employeee} />
+																<PrivateRoute path="/animals" component={Animal} />
+																<PrivateRoute path="/questions" component={Question} />
+																<PrivateRoute path="/adopters" component={Adopter} />
+																<PrivateRoute path="/adoptions" component={Adoption} />
+																<PrivateRoute path="/dashboard" component={Dashboard} />
+																<PrivateRoute path="/profile" component={Profile} />
+																<PrivateRoute path="/siteConfig" component={Config} />
 
-															</Main>
 
-														</Box >
 
-													</Router>
-												</div>
-											</BreadCumbState>
-										</TrackingState>
-									</QuestionState>
-								</AdopterState>
-							</EmployeeState>
-						</AnimalState>
-					</AdoptionState>
-				</PostState>
-			</FoundationState>
+																<Route path="*" component={NotFoundPage} />
+															</Switch>
+
+														</Main>
+
+													</Box >
+
+												</Router>
+											</div>
+											 {/* : <div className='preloader'>
+												<img src="/images/preloader.gif" alt="preloader" />
+											</div>} */}
+										</BreadCumbState>
+									</TrackingState>
+								</QuestionState>
+							</AdopterState>
+						</EmployeeState>
+					</AnimalState>
+				</AdoptionState>
+			</PostState>
+
 		</ThemeProvider>
 	)
 }

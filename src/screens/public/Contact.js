@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 
 import NavbarComponent from '../../components/Navbar'
 import Breadcrumb from '../../components/partials/Breadcrumb'
@@ -13,6 +13,7 @@ import { Link } from 'react-router-dom'
 import axiosClient from '../../config/axios'
 import { handleResponseError } from '../../Shared/utils'
 import { LoadingButton } from '@mui/lab'
+import FoundationContext from '../../context/foundation/foundationContext'
 
 
 
@@ -26,7 +27,7 @@ export default function Contact() {
 
         });
     }, [])
-    
+
 
     return (<div>
 
@@ -34,11 +35,7 @@ export default function Contact() {
         <Breadcrumb data={[{ name: "Inicio", "route": "/" }, { name: "Contacto" }]} />
 
         <ContactSection />
-        <SectionTitle title="Haz tu donación" subtitle={"Ubicanos en el mapa"} text={"Puedes hacer donaciones de alimento, medicamentos, implementos de aseo para el refugio y los peludos, cobijas, toallas, etc."}
-        />
-        <div className="google-map-code">
-            <iframe title='mapa' src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15282225.79979123!2d73.7250245393691!3d20.750301298393563!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30635ff06b92b791%3A0xd78c4fa1854213a6!2sIndia!5e0!3m2!1sen!2sin!4v1587818542745!5m2!1sen!2sin" width="600" height="450" frameBorder="0" style={{ border: 0 }} allowFullScreen="" aria-hidden="false" tabIndex="0" />
-        </div>
+      
         <Footer />
     </div>)
 }
@@ -51,6 +48,9 @@ const ContactSection = () => {
         phone: "",
         message: ""
     });
+
+    const { currentFoundation } = useContext(FoundationContext);
+
     const MySwal = withReactContent(Swal);
     const [loading, setLoading] = useState(false)
 
@@ -81,10 +81,11 @@ const ContactSection = () => {
 
                 });
 
+
             }
             setLoading(false)
         } catch (error) {
-
+            setLoading(false)
             let text = handleResponseError(error);
             MySwal.fire({
                 title: <p style={{ fontSize: 22, fontWeight: "bold" }}>{text}</p>,
@@ -95,7 +96,7 @@ const ContactSection = () => {
         }
     }
 
-    return (<section className='contact-section'>
+    return (<><section className='contact-section'>
         <div className='container'>
             <div className='row justify-content-between px-5'>
                 <div className='form-section col-lg-6 col-md-8 order-2 order-lg-0'>
@@ -182,36 +183,36 @@ const ContactSection = () => {
                             <img src='/images/imagotipo.png' alt='logo fundación' />
                         </div>
                         <div className='contact-info-data'>
-                            <ul style={{padding:0}}>
+                            <ul style={{ padding: 0 }}>
                                 <li>
                                     <div className="icon"><BiMapPin color='white' /></div>
                                     <div className="content">
-                                        <p>Av bolivar</p>
+                                        <p>{currentFoundation && currentFoundation.direccion ? currentFoundation.direccion : "No registra"}</p>
                                     </div>
                                 </li>
                                 <li>
                                     <div className="icon"><BiPhone color='white' /></div>
                                     <div className="content">
-                                        <p>3128239293</p>
+                                        <p>{currentFoundation && currentFoundation.telefono ? currentFoundation.telefono : "No registra"}</p>
                                     </div>
                                 </li>
                                 <li>
                                     <div className="icon"><BiEnvelope color='white' /> </div>
                                     <div className="content">
-                                        <p>adopciones fundamor.com</p>
+                                        <p>{currentFoundation && currentFoundation.correo ? currentFoundation.correo : "No registra"}</p>
                                     </div>
                                 </li>
                             </ul>
                         </div>
                         <div className='social-info'>
                             <div className='social-icon'>
-                                <Link to="/"><FaFacebookF /></Link>
+                                <a rel='noreferrer' href={"https://web.facebook.com/fundamorcalarca/?_rdc=1&_rdr"} target={"_blank"}> <FaFacebookF /></a>
                             </div>
                             <div className='social-icon'>
-                                <Link to="/"><FaInstagram /></Link>
+                                <a rel='noreferrer' href={"https://www.instagram.com/fundamorcalarca/?hl=es"} target={"_blank"}><FaInstagram /></a>
                             </div>
                             <div className='social-icon'>
-                                <Link to="/"><FaYoutube /></Link>
+                                <a rel='noreferrer' href={"https://www.youtube.com/channel/UCNkfxop_V7eirZh_qmgdWfA"} target={"_blank"}><FaYoutube /></a>
                             </div>
                         </div>
                     </div>
@@ -220,7 +221,17 @@ const ContactSection = () => {
             </div>
 
         </div>
-    </section>)
+    </section>
+
+    <SectionTitle title="Haz tu donación" subtitle={"Ubicanos en el mapa"} text={"Puedes hacer donaciones de alimento, medicamentos, implementos de aseo para el refugio y los peludos, cobijas, toallas, etc."}
+        />
+        <div className="google-map-code" dangerouslySetInnerHTML={{__html:  `${currentFoundation && currentFoundation.url_mapa ? currentFoundation.url_mapa : ""}`}}>
+
+            
+            
+        </div>
+    </>
+    )
 
 
 

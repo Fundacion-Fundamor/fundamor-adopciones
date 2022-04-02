@@ -68,11 +68,7 @@ const AnimalState = props => {
         }
 
     }
-    const getAnimalsFromPublic = async (filters = null) => {
-
-
-
-       
+    const getAnimalsFromPublic = async (filters = null) => {       
         try {
             dispatch({
                 type: TOGGLE_ANIMAL_LOADING,

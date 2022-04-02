@@ -29,6 +29,7 @@ const FoundationState = props => {
             });
             const res = await axiosClient.get("/api/foundations/myFoundation");
 
+            console.log(res.data)
             if (res.data.state) {
 
                 const {
