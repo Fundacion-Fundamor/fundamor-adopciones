@@ -1,5 +1,5 @@
 @import '/src/scss/variables';
-
+@import '/src/scss/animations';
 
 .footer{
     
@@ -27,4 +27,18 @@
             color: $primaryColor;
         }
     }
+}
+
+.btn-scroll{
+    position: fixed;
+    bottom: 24px;
+    right: 15px;
+    background: $primaryColor;
+    border: 0px solid;
+    line-height: 1;
+    padding: 1em 1em;
+    border-radius: 12px;
+    color: #fff !important;
+    animation: 1s ease 1 fade-in-top;
+    z-index: 2000;
 }

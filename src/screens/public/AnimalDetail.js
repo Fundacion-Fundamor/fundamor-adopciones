@@ -99,7 +99,11 @@ const AnimalDetailSection = () => {
 
 
         }
-
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+       
+        });
         request();
 
         return () => {
@@ -216,7 +220,7 @@ const AnimalDetailSection = () => {
 
                                 </div>
                             </div>
-                        
+
                         </div>
                     </div> : animal.loading ?
                         <div className='container h-100 py-5 justify-content-center d-flex flex-row align-items-center'>

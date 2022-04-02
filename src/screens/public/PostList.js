@@ -12,7 +12,7 @@ import { handleResponseError } from '../../Shared/utils'
 import axiosClient from '../../config/axios'
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content'
-const postPerPage = 2;
+const postPerPage = 1;
 export default function PostList() {
 
     return (<div>
@@ -47,10 +47,14 @@ const PostListSection = () => {
             try {
                 const res = await axiosClient.get(`/api/foundations/2/post?min=${(values.currentPage * postPerPage) - postPerPage}&max=${postPerPage}&search=${values.filters.search}`);
                 if (res.data.state) {
+
+
                     if (mounted) {
                         setValues({ ...values, data: res.data.data.rows, loading: false, totalData: res.data.data.count, toatlPages: Math.ceil(res.data.data.count / postPerPage) });
                     }
-                }else{
+                } else {
+
+                    setValues({ ...values, loading: false })
                     MySwal.fire({
                         title: <p style={{ fontSize: 22, fontWeight: "bold" }}>{res.data.message}</p>,
                         allowOutsideClick: false,
@@ -59,6 +63,7 @@ const PostListSection = () => {
                     });
                 }
             } catch (error) {
+                setValues({ ...values, loading: false })
                 let text = handleResponseError(error);
                 MySwal.fire({
                     title: <p style={{ fontSize: 22, fontWeight: "bold" }}>{text}</p>,
@@ -70,7 +75,11 @@ const PostListSection = () => {
 
 
         }
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
 
+        });
         request();
 
         return () => {
@@ -95,7 +104,13 @@ const PostListSection = () => {
                     </div>
                 </div>
                 <div className='col-md-8'>
-
+                    {values.loading ?
+                        <div className='mb-5 justify-content-center d-flex flex-row align-items-center'>
+                            <div className="spinner-border" role="status">
+                                <span className="visually-hidden">Cargando...</span>
+                            </div>
+                            <p className='ms-3 m-0'>Cargando...</p>
+                        </div> : null}
                     {values.data.map((element, index) => (<div key={index} className='post-item'>
                         <div className='post-thumb'>
                             <Link to={"/foundation/posts/" + element.id_publicacion}>
@@ -109,7 +124,7 @@ const PostListSection = () => {
                                 <FaRegCalendarAlt size={22} />
                                 <p className='ms-2'>{new Date(element.fecha_creacion.split(".")[0]).toLocaleDateString()}</p>
                             </div>
-                            <h2><Link  to={"/foundation/posts/" + element.id_publicacion}>{element.titulo} </Link> </h2>
+                            <h2><Link to={"/foundation/posts/" + element.id_publicacion}>{element.titulo} </Link> </h2>
                             <p className='limit'> {element.cuerpo}</p>
                         </div>
 

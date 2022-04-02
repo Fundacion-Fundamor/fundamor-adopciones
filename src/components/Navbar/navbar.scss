@@ -1,5 +1,5 @@
 @import '/src/scss/variables';
-
+@import '/src/scss/animations';
 .nav-link.active {
   border-left-color: #fdae75;
   background-color: $primaryColor;
@@ -27,6 +27,7 @@
   border: 0px solid;
   line-height: 1;
   padding: 1em 1em;
+  
   transition: 0.75s;
   border-radius: 12px;
   color: #fff !important;

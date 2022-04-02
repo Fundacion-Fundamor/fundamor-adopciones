@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
 import './footer.scss'
 import { FiExternalLink } from 'react-icons/fi';
 import { FaFacebook, FaInstagram, FaYoutube } from 'react-icons/fa';
-
+import { FaChevronUp } from 'react-icons/fa'
 /**Footer reutilizado en la página pública
  * 
  * @returns 
@@ -32,6 +32,40 @@ export default function Footer() {
             <div style={{ width: "100%", height: "60px", background: "#0a303a", display: "flex", alignItems: "center", marginTop: 15 }}>
                 <p style={{ padding: 0, margin: 0, marginLeft: "10px", color: "#d5d5d5" }}>| Copyright &copy; : Fundamor Calarcá</p>
             </div>
+            <ScrollButton />
+        </div>
+    );
+}
+
+
+const ScrollButton = () => {
+
+    const [visible, setVisible] = useState(false)
+
+    const toggleVisible = () => {
+        const scrolled = document.documentElement.scrollTop;
+        if (scrolled > 300) {
+            setVisible(true)
+        }
+        else if (scrolled <= 300) {
+            setVisible(false)
+        }
+    };
+
+    const scrollToTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    };
+
+    window.addEventListener('scroll', toggleVisible);
+
+    return (
+        <div>
+            <button onClick={scrollToTop} className="btn-scroll" style={{ display: visible ? 'inline' : 'none', position: "fixed" }} >
+                <FaChevronUp />
+            </button>
         </div>
     );
 }

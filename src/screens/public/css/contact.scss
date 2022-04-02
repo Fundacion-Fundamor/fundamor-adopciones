@@ -4,6 +4,13 @@
 .contact-section{
     background-color: white;
     padding: 80px 0px;
+    padding-bottom: 40px;
+    .form-section{
+        margin-top: 2rem;
+        @include mdMinBreakPoint{
+            margin-top: 0;
+        }
+    }
 }
 .contact-title{
     h3{

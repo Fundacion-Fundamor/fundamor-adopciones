@@ -2,31 +2,48 @@
 @import '/src/scss/mixins';
 @import 'node_modules/react-modal-video/scss/modal-video.scss';
 
-.historical-area{
+.historical-area {
     background-color: #d5e6eb;
     padding-bottom: 80px;
-    .history-wrapper{
+
+    .history-wrapper {
         position: relative;
-        height: 523px;
+        height: 360px;
         max-width: 504px;
+        overflow-y: hidden;
+        margin: 0px 20px;
+        @include xlMinBreakPoint {
+            height: 523px;
+            margin: 0px 0px;
+        }
+
+        // @media (min-width:400px) {
+        //     height: 528px;
+        // }
     }
 }
 
-.foundation-info{
+.foundation-info {
+    margin-top: 15%;
 
-    h3{
+    h3 {
         color: $primaryColor;
         font-weight: 800;
     }
-    h2{
+
+    h2 {
         font-weight: 900;
     }
-    button{
+
+    button {
         color: $secondaryColor;
         font-weight: 800;
-        &:not(.collapsed){
-            
+
+        &:not(.collapsed) {
+
             background-color: white;
         }
     }
+
+
 }

@@ -16,7 +16,7 @@ export function HistoryFoundationSection(params) {
                 <React.Fragment>
                     <ModalVideo channel='youtube' autoplay isOpen={isOpen} videoId="L61p2uyiMSo" allowFullScreen={false} onClose={() => setOpen(false)} />
                 </React.Fragment>
-                <div className='row align-items-center'>
+                <div className='row align-items-center justify-content-center'>
                     <div className='col-sm-12 col-lg-6 col-md-6'>
 
                         <div onClick={() => setOpen(true)} className='history-wrapper' style={{ position: "relative", cursor: "pointer" }}>

@@ -54,11 +54,15 @@
     align-items: center;
     background: #0a303a;
     border-radius: 15px;
-    margin: 0px 30px;
     margin-top: -45px;
-
+    justify-content: center;
     position: relative;
     z-index: 1;
+    flex-direction: column;
+    padding: 15px 0px;
+    @include mdMinBreakPoint{
+        flex-direction: row;
+    }
     p{
         margin-bottom: 0px;
     }
@@ -66,27 +70,20 @@
         font-size: 16px;
         font-weight: 600;
         color: #fff;
-        padding: 64px 45px 64px 50px;
-        width: 20.7%;
-        flex: 0 0 20.7%;
+        padding: 40px 24px;
         display: flex;
         align-items: center;
         p{
             font-weight: 900;
- 
-        
             font-size: 16px;
-          
         }
-        @include xlMinBreakPoint{
-            padding: 64px 0px 64px 40px;
+        @include xxlMinBreakPoint{
+            padding-right: 85px;
         }
     }
     .right-message {
-        width: 18%;
-        flex: 0 0 18%;
-        padding: 64px 40px 64px 40px;
-        margin-left: auto;
+        display: flex;
+        padding: 40px 24px;
         p{
             font-weight: 900;
             color: white;
@@ -97,50 +94,75 @@
      
     }
     .category {
-        width: 61.3%;
-        flex: 0 0 61.3%;
-        ul{
+        // width: 61.3%;
+        // flex: 0 0 61.3%;
+       
+        padding: 0px 13px;
+        @include mdMinBreakPoint{
+            padding: 0px 30px;
+        }
+        .stack-item{
             display: flex;
             align-items: center;
             flex-wrap: wrap;
             justify-content: center;
             background: $primaryColor;
             position: relative;
-            margin-left: 80px;
             margin-bottom: 0px;
-            li{
-                min-height: 158px;
+            border-bottom: 3px solid #e73a2d;
+          
+            @include mdMinBreakPoint{
+                border-right: 3px solid #e73a2d;
+                border-bottom: none;
+                
+            }
+            @include xlMinBreakPoint{
+                &:nth-child(1) {
+                    &:before {
+                        content: '';
+                        position: absolute;
+                        left: -83px;
+                        top: 0;
+                        width: 85px;
+                        height: 100%;
+                        clip-path: polygon(100% 0, 100% 50%, 100% 100%, 0% 100%, 100% 50%, 0% 0%);
+                        background: $primaryColor;
+                        z-index: 1;
+                    }
+    
+                }
+                
+            }
+       
+       
+            &:nth-child(3) {
+                border-right: 0;
+                border-bottom: none;
+              }
+          
+            a{
+                min-height: 110px;
+               
                 display: flex;
                 align-items: center;
-                border-right: 3px solid #e73a2d;
-                padding: 40px 26px;
-                a {
-                    display: flex;
-                    font-size: 16px;
-                    font-weight: 900;
-                    color: #fff !important;
-                    text-decoration: none;
-                    align-items: center;
+                justify-content: center;
+                padding: 20px 10px;
+                font-size: 16px;
+                font-weight: 900;
+                color: #fff !important;
+                text-decoration: none;
+                flex-direction: column;
+
+                @include mdMinBreakPoint{
+                    padding: 40px 10px;
+                    min-height: 158px;
                 }
-                &:nth-child(3n + 3) {
-                    border-right: 0;
-                  }
-                  @include smMinBreakPoint{
-                 
-                  }
+                @include xlMinBreakPoint{
+                    flex-direction: row;
+                }
             }
          
-            &:before {
-                content: '';
-                position: absolute;
-                left: -83px;
-                top: 0;
-                width: 85px;
-                height: 100%;
-                clip-path: polygon(100% 0, 100% 50%, 100% 100%, 0% 100%, 100% 50%, 0% 0%);
-                background: $primaryColor;
-                z-index: 1;
-            }
+          
             @include smMinBreakPoint{
                 // margin-left: 55px;
             }

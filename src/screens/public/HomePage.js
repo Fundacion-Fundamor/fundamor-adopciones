@@ -29,26 +29,37 @@ export default function HomePage() {
             </div>
 
         </div>
-        <div className="">
-            <div className="col-12">
-                <div className="help-wrap">
-                    <div className="left-message">
-                        <FaUserAlt style={{ marginRight: 10 }} size="44" />
-                        <p>Puedes hacer mucho por los animales</p>
+        <div className="container">
+            <div className='row'>
+                <div className="col-12">
+                    <div className="help-wrap">
+                        <div className="left-message">
+                            {/* <FaUserAlt style={{ marginRight: 10 }} size={44} /> */}
+                            <p className='text-center'>Puedes hacer mucho por los animales</p>
 
-                    </div>
-                    <div className="category">
-                        <ul>
-                            <li>
-                                <Link style={{ color: "#000" }} to="/employees"><FaDog style={{ marginRight: 8 }} size="44" /> Adopta un perro</Link>
-                            </li>
-                            <li><Link style={{ color: "#000" }} to="/employees"><GiCat style={{ marginRight: 8 }} size="44" /> Adopta un gato </Link></li>
-                            <li><Link style={{ color: "#000" }} to="/employees"><BiDonateHeart style={{ marginRight: 8 }} size="44" />  Dona</Link></li>
-                        </ul>
-                    </div>
-                    <div className="right-message">
+                        </div>
+                        <div className="category">
 
-                        <p>¡Ayudanos a ayudar!</p>
+                            <div className='row'>
+                                <div className="col-md-4 stack-item">
+
+                                    <Link to="/foundation/animals"><FaDog style={{ marginRight: 8 }} size="44" /> Adopta un perro</Link>
+                                </div>
+                                <div className="col-md-4 stack-item">
+
+                                    <Link to="/foundation/animals"><GiCat style={{ marginRight: 8 }} size="44" /> Adopta un gato </Link>
+                                </div>
+                                <div className="col-md-4 stack-item">
+
+                                    <Link to="/"><BiDonateHeart style={{ marginRight: 8 }} size="44" />  Dona</Link>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div className="right-message">
+
+                            <p className='text-center'>¡Ayudanos a ayudar!</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -93,7 +104,7 @@ export default function HomePage() {
         <SectionTitle subtitle={"Infórmate"} title="Publicaciones recientes"
             text="Conoce las campañas y noticias mas recientes que hemos publicado"
         />
-         <Footer/>
+        <Footer />
     </div>);
 
 }

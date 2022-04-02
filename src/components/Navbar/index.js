@@ -1,16 +1,16 @@
 import React from 'react'
 import { Navbar, Container, Nav } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
-import { AiOutlineLogin,AiOutlineMenu } from 'react-icons/ai';
+import { AiOutlineLogin, AiOutlineMenu } from 'react-icons/ai';
 import './navbar.scss'
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
-import Button from '@mui/material/Button';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import { IconButton } from '@mui/material';
+import { GrFormClose } from 'react-icons/gr'
 
 const NavbarComponent = ({ active = "home" }) => {
 
@@ -34,23 +34,52 @@ const NavbarComponent = ({ active = "home" }) => {
       onKeyDown={toggleDrawer(anchor, false)}
     >
       <List>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-          <ListItem button key={text}>
 
-            <ListItemText primary={text} />
+        <div className='d-flex p-3 justify-content-between'>
+          <Navbar.Brand href="/">     <img
+            src="/images/logotipo.png"
+            width={120}
+            alt="Logo fundamor"
+          /></Navbar.Brand>
+          <IconButton>
+            <GrFormClose />
+          </IconButton>
+        </div>
+        <Link style={{ textDecoration: "none" }} to="/">
+          <ListItem >
+            <ListItemText primary={"Inicio"} />
           </ListItem>
-        ))}
+        </Link>
+        <Link style={{ textDecoration: "none" }} to="/foundation/animals">
+          <ListItem >
+            <ListItemText primary={"Animales"} />
+          </ListItem>
+        </Link>
+        <Link style={{ textDecoration: "none" }} to="/foundation/posts">
+          <ListItem >
+            <ListItemText primary={"Publicaciones"} />
+          </ListItem>
+        </Link>
+        <Link style={{ textDecoration: "none" }} to="/contact">
+          <ListItem >
+            <ListItemText primary={"Contacto"} />
+          </ListItem>
+        </Link>
+        <Link style={{ textDecoration: "none" }} to="/about">
+          <ListItem >
+            <ListItemText primary={"Nosotros"} />
+          </ListItem>
+        </Link>
       </List>
       <Divider />
       <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
+        <ListItem style={{justifyContent:"center"}}>
+          <Nav.Link as={Link} style={{width: "100%", textAlign:"center"}} className=" btn-login" to="/login" >
+            Ingresar
+            <AiOutlineLogin style={{ marginLeft: 5 }} />
+          </Nav.Link>
+        </ListItem>
 
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
       </List>
     </Box>
   );
@@ -68,7 +97,8 @@ const NavbarComponent = ({ active = "home" }) => {
 
             <React.Fragment key={"left"}>
               <div className='d-md-none'>
-                <Button onClick={toggleDrawer("left", true)}><AiOutlineMenu size={34} color="#de6426"/></Button>
+              <IconButton onClick={toggleDrawer("left", true)}>
+               <AiOutlineMenu size={34} color="#de6426" /></IconButton>
               </div>
               <Drawer
                 anchor={"left"}
@@ -100,7 +130,7 @@ const NavbarComponent = ({ active = "home" }) => {
                 </Nav.Link>
               </div>
               <div className='separator'>
-                <Nav.Link as={Link} className="d-none d-md-block btn-login" to="/login" >
+                <Nav.Link as={Link} className="d-none d-md-block btn-login ps-3" to="/login" >
                   Ingresar
                   <AiOutlineLogin style={{ marginLeft: 5 }} />
                 </Nav.Link>

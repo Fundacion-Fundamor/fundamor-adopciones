@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import NavbarComponent from '../../components/Navbar'
 import Breadcrumb from '../../components/partials/Breadcrumb'
@@ -19,6 +19,14 @@ import { LoadingButton } from '@mui/lab'
 export default function Contact() {
 
 
+    useEffect(() => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+
+        });
+    }, [])
+    
 
     return (<div>
 
@@ -90,7 +98,7 @@ const ContactSection = () => {
     return (<section className='contact-section'>
         <div className='container'>
             <div className='row justify-content-between px-5'>
-                <div className=' col-lg-6 col-md-8 order-2 order-lg-0'>
+                <div className='form-section col-lg-6 col-md-8 order-2 order-lg-0'>
                     <div className="contact-title mb-20">
                         <h3 className="sub-title">Contáctanos</h3>
                         <h2 className="title">¿Tienes alguna duda o quieres donar?</h2>
@@ -174,7 +182,7 @@ const ContactSection = () => {
                             <img src='/images/imagotipo.png' alt='logo fundación' />
                         </div>
                         <div className='contact-info-data'>
-                            <ul>
+                            <ul style={{padding:0}}>
                                 <li>
                                     <div className="icon"><BiMapPin color='white' /></div>
                                     <div className="content">
