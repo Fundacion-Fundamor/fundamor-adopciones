@@ -67,9 +67,9 @@ const AdopterFormSection = () => {
             try {
                 const res = await axiosClient.get(`/api/foundations/2/adopt/${animal_id}`);
                 if (res.data.state) {
-                    console.log(res.data)
+                  
                     if (mounted) {
-                        //  console.log()
+               
                         setValues({ animal: res.data.data.animal, questions: res.data.data.questions, loading: false, answers: [] });
                     }
                 } else {
@@ -107,7 +107,7 @@ const AdopterFormSection = () => {
     }, [])
     const saveAnswer = (value, questionId) => {
 
-        console.log(value, questionId)
+    
         let tmp = values.answers;
 
         let exist = false;
@@ -139,28 +139,26 @@ const AdopterFormSection = () => {
             contactData.occupation === "" || contactData.address === "" ||
             contactData.phoneNumber === "" || contactData.phoneNumber.length !== 10 || !values.acceptTerms) {
             isValid = false
-            console.log("entra1")
+          
         } else if (contactData.email !== "" && re.test(contactData.email) === false) {
-            console.log("entra2")
-
+          
             isValid = false
         }
 
         else if (parseInt(contactData.housePhone) > 9999999) {
-            console.log("entra2")
-
+         
             isValid = false
         }
 
-        console.log(values.answers)
+  
         if (values.answers.length !== values.questions.length) {
             isValid = false
-            console.log("entra3")
+           
         } else {
             let result = values.answers.find(element => element.answer.trim() === "");
 
             if (result) {
-                console.log("entra4")
+              
                 isValid = false
             }
 

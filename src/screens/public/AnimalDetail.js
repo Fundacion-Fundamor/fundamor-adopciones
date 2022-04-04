@@ -65,7 +65,7 @@ const AnimalDetailSection = () => {
             try {
                 const res = await axiosClient.get(`/api/foundations/2/animal/${animal_id}`);
                 if (res.data.state) {
-                    console.log(mounted)
+                   
                     if (mounted) {
                         setAnimal({ data: res.data.data, loading: false, });
                     }

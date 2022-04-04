@@ -39,10 +39,6 @@ export default function AnimalList() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    useEffect(() => {
-        console.log(animals)
-    }, [animals])
-
 
     return (<div className="animal-area">
         <div className="container">
