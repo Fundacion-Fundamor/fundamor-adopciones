@@ -33,7 +33,6 @@ import Topbar from './components/Navbar/TopBar.js';
 import AuthContext from './context/auth/authContext';
 import Profile from './screens/Profile';
 import Config from './screens/Site/Config';
-import FoundationState from './context/foundation/foundationState';
 import Nunito from './assets/fonts/Nunito/Nunito-VariableFont_wght.ttf';
 import NotFoundPage from './screens/NotFoundPage';
 import BreadCumbState from './context/breadcumb/breacumbState';
@@ -230,10 +229,11 @@ function App() {
 	const handleLeftDrawerToggle = () => {
 		setLeftDrawerOpened(!leftDrawerOpened)
 	}
-	const { getFoundation, loading } = useContext(FoundationContext)
+	const { getFoundation } = useContext(FoundationContext)
 
 	useEffect(() => {
 		getFoundation();
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 
 	return (

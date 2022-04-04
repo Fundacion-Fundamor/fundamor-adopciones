@@ -15,7 +15,14 @@ export function HistoryFoundationSection(params) {
 
     if (currentFoundation && currentFoundation.url_video) {
         console.log(currentFoundation.url_video)
-        let tmp = currentFoundation.url_video.split('/')
+        let tmp =[]
+        if(currentFoundation.url_video.includes("watch")){
+            
+            tmp= currentFoundation.url_video.split('?v=')
+        }else{
+            tmp= currentFoundation.url_video.split('/')
+        }
+     
         youtube_video_id = tmp[tmp.length - 1];
     }
 

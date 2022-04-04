@@ -1,20 +1,23 @@
 @import '/src/scss/variables';
 @import '/src/scss/animations';
+
 .nav-link.active {
   border-left-color: #fdae75;
   background-color: $primaryColor;
   color: white !important;
-  }
-.nav-link{
+}
+
+.nav-link {
   font-weight: 800;
   color: $textColor !important;
   border-left-style: solid;
   border-left-width: 8px;
   border-left-color: white;
   border-radius: 10px 15px 10px 15px;
-  margin:  2px 4px;
+  margin: 2px 4px;
   padding: 6px 8px;
   transition: all 0.2s;
+
   &:hover {
     border-left-color: #fdae75;
     background-color: $primaryColor;
@@ -22,21 +25,26 @@
   }
 }
 
-.btn-login{
+.btn-login {
   background: none;
   border: 0px solid;
   line-height: 1;
   padding: 1em 1em;
-  
+
   transition: 0.75s;
   border-radius: 12px;
   color: #fff !important;
   background-color: #de6426;
 }
-.separator{
+
+.separator {
 
   border-left: #e9e9e9;
   border-left-style: solid;
   padding-left: 15px;
 
+}
+
+.shadow{
+  box-shadow: 5px 5px 15px 5px #35353524 !important;
 }

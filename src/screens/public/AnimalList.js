@@ -18,7 +18,7 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import SearchBox from '../../components/partials/SearchBox';
 
-const animalsPerPage = 2;
+const animalsPerPage = 5;
 export default function AnimalList() {
 
 

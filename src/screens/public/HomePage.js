@@ -21,7 +21,7 @@ import { handleResponseError } from '../../Shared/utils';
 import FoundationContext from '../../context/foundation/foundationContext';
 export default function HomePage() {
 
-
+    let actualYear = new Date().getFullYear();
     return (<div>
         <NavbarComponent />
         <div className='hero-section d-flex align-items-center'>
@@ -77,7 +77,7 @@ export default function HomePage() {
 
                     <div className='analytics-card'>
                         <h1>45+</h1>
-                        <h4>Aanimales rescatados</h4>
+                        <h4 className='text-center'>ANIMALES RESCATADOS</h4>
                     </div>
                 </div>
 
@@ -85,14 +85,14 @@ export default function HomePage() {
 
                     <div className='analytics-card'>
                         <h1>45+</h1>
-                        <h4>Aanimales rescatados</h4>
+                        <h4 className='text-center'>ANIMALES DADOS EN ADOPCIÓN</h4>
                     </div>
                 </div>
                 <div className='col-md-4 col-sm-12'>
 
                     <div className='analytics-card'>
-                        <h1>45+</h1>
-                        <h4>Aanimales rescatados</h4>
+                        <h1>{parseInt(actualYear) - 2011}</h1>
+                        <h4 className='text-center'>AÑOS DE HISTORIA</h4>
                     </div>
                 </div>
             </div>

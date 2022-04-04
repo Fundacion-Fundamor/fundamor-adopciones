@@ -46,21 +46,24 @@ const PostListSection = () => {
             setValues({ ...values, loading: true });
             try {
                 const res = await axiosClient.get(`/api/foundations/2/post?min=${(values.currentPage * postPerPage) - postPerPage}&max=${postPerPage}&search=${values.filters.search}`);
-                if (res.data.state) {
+                if (mounted) {
+
+                    if (res.data.state) {
 
 
-                    if (mounted) {
+
                         setValues({ ...values, data: res.data.data.rows, loading: false, totalData: res.data.data.count, toatlPages: Math.ceil(res.data.data.count / postPerPage) });
+
+                    } else {
+
+                        setValues({ ...values, loading: false })
+                        MySwal.fire({
+                            title: <p style={{ fontSize: 22, fontWeight: "bold" }}>{res.data.message}</p>,
+                            allowOutsideClick: false,
+                            icon: "error",
+
+                        });
                     }
-                } else {
-
-                    setValues({ ...values, loading: false })
-                    MySwal.fire({
-                        title: <p style={{ fontSize: 22, fontWeight: "bold" }}>{res.data.message}</p>,
-                        allowOutsideClick: false,
-                        icon: "error",
-
-                    });
                 }
             } catch (error) {
                 setValues({ ...values, loading: false })

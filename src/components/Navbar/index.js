@@ -86,7 +86,7 @@ const NavbarComponent = ({ active = "home" }) => {
 
   return (
     <>
-      <Navbar bg="white" fixed="top" expand="lg">
+      <Navbar bg="white" fixed="top" expand="lg" className='shadow'>
         <Container className='px-2'>
           <Navbar.Brand href="/">     <img
             src="/images/logotipo.png"

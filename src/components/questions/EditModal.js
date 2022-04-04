@@ -109,9 +109,9 @@ export default function EditModal({ handleToggle }) {
             </CardContent>
             <CardActions sx={{ flexDirection: "column", padding: 3 }}>
 
-                {questionOptions.length !== 0 ? <Typography variant="body2" color="text.secondary" sx={{ marginBottom: 3, fontWeight:800 }}>
-                    Las opciones de respuesta se mostrarán en el orden en que sean registradas
-                </Typography> : null}
+             <Typography variant="body2" color="text.secondary" sx={{ marginBottom: 3, fontWeight:800, maxWidth:400 }}>
+                   Si desea agregar opciones de respuesta, estas se mostrarán en el orden en que sean registradas
+                </Typography> 
                 {questionOptions.map((element, index) => (
                     <QuestionOption key={index} index={index} option={element} saveQuestionOption={saveQuestionOption} removeQuestionOption={removeQuestionOption} />
                 ))}
