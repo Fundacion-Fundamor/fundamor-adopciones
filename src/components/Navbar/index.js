@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import { Navbar, Container, Nav } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { AiOutlineLogin, AiOutlineMenu } from 'react-icons/ai';
@@ -19,12 +19,16 @@ const NavbarComponent = ({ active = "home" }) => {
     left: false,
   });
 
+  const mounted = useRef(null);
+
   const toggleDrawer = (anchor, open) => (event) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
     }
 
-    setState({ ...state, [anchor]: open });
+    if (mounted.current) {
+      setState({ ...state, [anchor]: open });
+    }
   };
   const list = (anchor) => (
     <Box
@@ -73,8 +77,8 @@ const NavbarComponent = ({ active = "home" }) => {
       </List>
       <Divider />
       <List>
-        <ListItem style={{justifyContent:"center"}}>
-          <Nav.Link as={Link} style={{width: "100%", textAlign:"center"}} className=" btn-login" to="/login" >
+        <ListItem style={{ justifyContent: "center" }}>
+          <Nav.Link as={Link} style={{ width: "100%", textAlign: "center" }} className=" btn-login" to="/login" >
             Ingresar
             <AiOutlineLogin style={{ marginLeft: 5 }} />
           </Nav.Link>
@@ -83,6 +87,15 @@ const NavbarComponent = ({ active = "home" }) => {
       </List>
     </Box>
   );
+
+  useEffect(() => {
+    mounted.current = true;
+
+    return () => {
+      mounted.current = false;
+    }
+  }, [])
+
 
   return (
     <>
@@ -97,8 +110,8 @@ const NavbarComponent = ({ active = "home" }) => {
 
             <React.Fragment key={"left"}>
               <div className='d-md-none'>
-              <IconButton onClick={toggleDrawer("left", true)}>
-               <AiOutlineMenu size={34} color="#de6426" /></IconButton>
+                <IconButton onClick={toggleDrawer("left", true)}>
+                  <AiOutlineMenu size={34} color="#de6426" /></IconButton>
               </div>
               <Drawer
                 anchor={"left"}

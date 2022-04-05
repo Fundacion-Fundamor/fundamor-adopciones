@@ -12,7 +12,7 @@ import { handleResponseError } from '../../Shared/utils'
 import axiosClient from '../../config/axios'
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content'
-const postPerPage = 1;
+const postPerPage = 5;
 export default function PostList() {
 
     return (<div>
@@ -127,8 +127,8 @@ const PostListSection = () => {
                                 <FaRegCalendarAlt size={22} />
                                 <p className='ms-2'>{new Date(element.fecha_creacion.split(".")[0]).toLocaleDateString()}</p>
                             </div>
-                            <h2><Link to={"/foundation/posts/" + element.id_publicacion}>{element.titulo} </Link> </h2>
-                            <p className='limit'> {element.cuerpo}</p>
+                            <h2 ><Link to={"/foundation/posts/" + element.id_publicacion}>{element.titulo} </Link> </h2>
+                            <p className='limit-5'> {element.cuerpo}</p>
                         </div>
 
                         <div className='post-footer'>
