@@ -227,11 +227,11 @@ const DonationCard = () => {
                             </div>
                             {currentFoundation && currentFoundation.cuenta_donaciones !== "" ? <p className='lh-base ms-3 w-100 text-center fw-bold' >
 
-                                {currentFoundation.cuenta_donaciones.split("\n").map((element, index) => (
-                                    <>
+                                {currentFoundation.cuenta_donaciones.split("\n").map((element, index) => element.trim() !== "" ? (
+                                    <React.Fragment key={index}>
                                         {element}<br></br>
-                                    </>
-                                ))}
+                                    </React.Fragment>
+                                ) : null)}
                             </p> : <p className='w-100 text-center' >Dona en nuestros puntos autorizados</p>}
                             <div className='donate-logo'>
                                 <img src='/images/blood-bag.png' alt='donation logo2' />

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import './footer.scss'
 import { FiExternalLink } from 'react-icons/fi';
@@ -60,7 +60,14 @@ const ScrollButton = () => {
         });
     };
 
-    window.addEventListener('scroll', toggleVisible);
+    useEffect(() => {
+       window.addEventListener('scroll', toggleVisible);
+        return () => {
+            window.removeEventListener('scroll', toggleVisible)
+        }
+    }, [])
+
+
 
     return (
         <div>
