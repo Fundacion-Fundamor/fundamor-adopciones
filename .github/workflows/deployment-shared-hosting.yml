@@ -35,8 +35,8 @@ jobs:
     - name: FTP-Deploy-Action
       uses: SamKirkland/FTP-Deploy-Action@4.2.0
       with:
-        server: ftp.nsandboxsoft.xyz
-        username: client@nsandboxsoft.xyz
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
         protocol: ftps
         local-dir: build/
