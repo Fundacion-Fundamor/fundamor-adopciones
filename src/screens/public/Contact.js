@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
 
 import NavbarComponent from '../../components/Navbar'
 import Breadcrumb from '../../components/partials/Breadcrumb'
@@ -13,7 +13,7 @@ import axiosClient from '../../config/axios'
 import { handleResponseError } from '../../Shared/utils'
 import { LoadingButton } from '@mui/lab'
 import FoundationContext from '../../context/foundation/foundationContext'
-
+import { GoogleReCaptcha, GoogleReCaptchaProvider, useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 
 
 export default function Contact() {
@@ -29,13 +29,22 @@ export default function Contact() {
 
 
     return (<div>
+        <GoogleReCaptchaProvider
+            reCaptchaKey="6Lc0CFsfAAAAAJyhyWQCGfwazgB2UrRIKPA5lSOC"
+            scriptProps={{
+                async: false, // optional, default to false,
+                defer: false, // optional, default to false
+                // appendTo: 'body', // optional, default to "head", can be "head" or "body",
+                nonce: undefined // optional, default undefined
+            }}
+        >
+            <NavbarComponent active='contact' />
+            <Breadcrumb data={[{ name: "Inicio", "route": "/" }, { name: "Contacto" }]} />
 
-        <NavbarComponent active='contact' />
-        <Breadcrumb data={[{ name: "Inicio", "route": "/" }, { name: "Contacto" }]} />
+            <ContactSection />
 
-        <ContactSection />
-      
-        <Footer />
+            <Footer />
+        </GoogleReCaptchaProvider>
     </div>)
 }
 
@@ -54,6 +63,25 @@ const ContactSection = () => {
     const [loading, setLoading] = useState(false)
 
     const form = useRef(null)
+
+
+    // const { executeRecaptcha } = useGoogleReCaptcha();
+
+
+    // const handleReCaptchaVerify = useCallback(async () => {
+    //     if (!executeRecaptcha) {
+    //       console.log('Execute recaptcha not yet available');
+    //       return;
+    //     }
+    
+    //     const token = await executeRecaptcha('yourAction');
+    //     // Do whatever you want with the token
+    //   }, []);
+
+    //   useEffect(() => {
+    //     handleReCaptchaVerify();
+    //   }, [handleReCaptchaVerify]);
+
     const sendMessage = async () => {
         try {
             const res = await axiosClient.post(`/api/foundations/contactmessage/2`, {
@@ -166,13 +194,14 @@ const ContactSection = () => {
                                     Debe ingresar un mensaje
                                 </div>
                             </div>
-
+                            {/* <GoogleReCaptcha onVerify={(e)=>console.log(e)} /> */}
                             <LoadingButton loading={loading}
                                 size="medium" variant="contained"
                                 sx={{ fontSize: 16, mt: 5, textTransform: "none", height: 40, px: 5, alignItems: "center", borderRadius: "8px", fontWeight: "bold", background: "#de6426", "&:hover": { background: "#cd642f" } }}
                                 type="submit">
                                 Enviar
                             </LoadingButton>
+                            <YourReCaptchaComponent/>
                         </form>
                     </div>
                 </div>
@@ -222,12 +251,12 @@ const ContactSection = () => {
         </div>
     </section>
 
-    <SectionTitle title="Haz tu donación" subtitle={"Ubicanos en el mapa"} text={"Puedes hacer donaciones de alimento, medicamentos, implementos de aseo para el refugio y los peludos, cobijas, toallas, etc."}
+        <SectionTitle title="Haz tu donación" subtitle={"Ubicanos en el mapa"} text={"Puedes hacer donaciones de alimento, medicamentos, implementos de aseo para el refugio y los peludos, cobijas, toallas, etc."}
         />
-        <div className="google-map-code" dangerouslySetInnerHTML={{__html:  `${currentFoundation && currentFoundation.url_mapa ? currentFoundation.url_mapa : ""}`}}>
+        <div className="google-map-code" dangerouslySetInnerHTML={{ __html: `${currentFoundation && currentFoundation.url_mapa ? currentFoundation.url_mapa : ""}` }}>
 
-            
-            
+
+
         </div>
     </>
     )
@@ -235,3 +264,27 @@ const ContactSection = () => {
 
 
 }
+
+
+const YourReCaptchaComponent = () => {
+    const { executeRecaptcha } = useGoogleReCaptcha();
+  
+    // Create an event handler so you can call the verification on button click event or form submit
+    const handleReCaptchaVerify = useCallback(async () => {
+      if (!executeRecaptcha) {
+        console.log('Execute recaptcha not yet available');
+        return;
+      }
+  
+      const token = await executeRecaptcha('contact');
+      // Do whatever you want with the token
+      console.log(token);
+    }, []);
+  
+    // You can use useEffect to trigger the verification as soon as the component being loaded
+    useEffect(() => {
+      handleReCaptchaVerify();
+    }, [handleReCaptchaVerify]);
+  
+    return <button onClick={handleReCaptchaVerify}>Verify recaptcha</button>;
+  };
