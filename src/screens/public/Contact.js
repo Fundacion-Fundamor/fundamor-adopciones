@@ -13,7 +13,7 @@ import axiosClient from '../../config/axios'
 import { handleResponseError } from '../../Shared/utils'
 import { LoadingButton } from '@mui/lab'
 import FoundationContext from '../../context/foundation/foundationContext'
-import { GoogleReCaptchaProvider, useGoogleReCaptcha } from 'react-google-recaptcha-v3';
+
 
 
 export default function Contact() {
@@ -29,17 +29,13 @@ export default function Contact() {
 
 
     return (<div>
-        <GoogleReCaptchaProvider
-            reCaptchaKey="6Lc0CFsfAAAAAJyhyWQCGfwazgB2UrRIKPA5lSOC"
-          
-        >
-            <NavbarComponent active='contact' />
-            <Breadcrumb data={[{ name: "Inicio", "route": "/" }, { name: "Contacto" }]} />
 
-            <ContactSection />
+        <NavbarComponent active='contact' />
+        <Breadcrumb data={[{ name: "Inicio", "route": "/" }, { name: "Contacto" }]} />
 
-            <Footer />
-        </GoogleReCaptchaProvider>
+        <ContactSection />
+      
+        <Footer />
     </div>)
 }
 
@@ -49,8 +45,7 @@ const ContactSection = () => {
         name: "",
         email: "",
         phone: "",
-        message: "",
-        reca: ""
+        message: ""
     });
 
     const { currentFoundation } = useContext(FoundationContext);
@@ -59,42 +54,13 @@ const ContactSection = () => {
     const [loading, setLoading] = useState(false)
 
     const form = useRef(null)
-
-
-    const { executeRecaptcha } = useGoogleReCaptcha();
-
-    const [localLoading, setLocalLoading] = useState(false);
-    // Create an event handler so you can call the verification on button click event or form submit
-    const handleReCaptchaVerify = async () => {
-        setLocalLoading(true);
-        if (!executeRecaptcha) {
-            // console.log('Execute recaptcha not yet available');
-            setLocalLoading(false);
-            return false;
-        }
-
-        const token = await executeRecaptcha();
-        setLocalLoading(false);;
-        return token;
-
-
-    };
-
-    // You can use useEffect to trigger the verification as soon as the component being loaded
-    useEffect(() => {
-        handleReCaptchaVerify();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-
-    const sendMessage = async (reca) => {
+    const sendMessage = async () => {
         try {
             const res = await axiosClient.post(`/api/foundations/contactmessage/2`, {
                 name: values.name,
                 phone: values.phone,
                 email: values.email,
-                message: values.message,
-                reca: reca,
+                message: values.message
             });
             if (res.data.state) {
 
@@ -142,16 +108,12 @@ const ContactSection = () => {
                             los animales o los servicios que ofrecemos. También nos puedes escribir si necesitas ayuda con
                             algún peludo que la esté pasando mal. No lo olvides, estamos para ayudar. Nos
                             podremos en contacto contigo lo antes posible.</p>
-                        <form ref={form} onSubmit={async (e) => {
+                        <form ref={form} onSubmit={(e) => {
 
                             e.preventDefault()
 
                             if (e.target.checkValidity()) {
-                                let token = await handleReCaptchaVerify();
-                                // console.log(token)
-                                if (token) {
-                                    sendMessage(token)
-                                }
+                                sendMessage()
                             }
 
 
@@ -204,9 +166,8 @@ const ContactSection = () => {
                                     Debe ingresar un mensaje
                                 </div>
                             </div>
-                      
 
-                            <LoadingButton loading={loading || localLoading}
+                            <LoadingButton loading={loading}
                                 size="medium" variant="contained"
                                 sx={{ fontSize: 16, mt: 5, textTransform: "none", height: 40, px: 5, alignItems: "center", borderRadius: "8px", fontWeight: "bold", background: "#de6426", "&:hover": { background: "#cd642f" } }}
                                 type="submit">
@@ -261,12 +222,12 @@ const ContactSection = () => {
         </div>
     </section>
 
-        <SectionTitle title="Haz tu donación" subtitle={"Ubicanos en el mapa"} text={"Puedes hacer donaciones de alimento, medicamentos, implementos de aseo para el refugio y los peludos, cobijas, toallas, etc."}
+    <SectionTitle title="Haz tu donación" subtitle={"Ubicanos en el mapa"} text={"Puedes hacer donaciones de alimento, medicamentos, implementos de aseo para el refugio y los peludos, cobijas, toallas, etc."}
         />
-        <div className="google-map-code" dangerouslySetInnerHTML={{ __html: `${currentFoundation && currentFoundation.url_mapa ? currentFoundation.url_mapa : ""}` }}>
+        <div className="google-map-code" dangerouslySetInnerHTML={{__html:  `${currentFoundation && currentFoundation.url_mapa ? currentFoundation.url_mapa : ""}`}}>
 
-
-
+            
+            
         </div>
     </>
     )
@@ -274,5 +235,3 @@ const ContactSection = () => {
 
 
 }
-
-
