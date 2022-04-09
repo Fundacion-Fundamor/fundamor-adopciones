@@ -63,7 +63,7 @@ const AnimalDetailSection = () => {
         const request = async () => {
             setAnimal({ ...animal, loading: true });
             try {
-                const res = await axiosClient.get(`/api/foundations/2/animal/${animal_id}`);
+                const res = await axiosClient.get(`/api/foundations/animal/${animal_id}`);
                 if (res.data.state) {
                    
                     if (mounted) {

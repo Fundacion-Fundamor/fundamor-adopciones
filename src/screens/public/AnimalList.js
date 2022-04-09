@@ -62,7 +62,7 @@ function AnimalsSection() {
         const request = async () => {
             setValues({ ...values, loading: true });
             try {
-                const res = await axiosClient.get(`/api/foundations/2/animals?min=${(values.currentPage * animalsPerPage) - animalsPerPage}&max=${animalsPerPage}&order=${values.filters.order}&search=${values.filters.search}&specie=${values.filters.specie}&size=${values.filters.size}`);
+                const res = await axiosClient.get(`/api/foundations/animals?min=${(values.currentPage * animalsPerPage) - animalsPerPage}&max=${animalsPerPage}&order=${values.filters.order}&search=${values.filters.search}&specie=${values.filters.specie}&size=${values.filters.size}`);
                 if (res.data.state) {
                     if (mounted) {
 

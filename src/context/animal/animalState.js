@@ -74,7 +74,7 @@ const AnimalState = props => {
                 type: TOGGLE_ANIMAL_LOADING,
                 payload: true
             });
-            const res = await axiosClient.get("/api/foundations/2/animals");
+            const res = await axiosClient.get("/api/foundations/animals");
             if (res.data.state) {
                 dispatch({
                     type: ANIMALS,

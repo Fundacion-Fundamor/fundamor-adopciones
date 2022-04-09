@@ -55,7 +55,7 @@ const PostDetailSection = () => {
         const request = async () => {
             setValues({ ...values, loading: true });
             try {
-                const res = await axiosClient.get(`/api/foundations/2/post/` + post_id);
+                const res = await axiosClient.get(`/api/foundations/post/` + post_id);
                 if (res.data.state) {
                     if (mounted) {
                         setValues({ ...values, data: res.data.data.post, loading: false, recentPost: res.data.data.recentPost });

@@ -55,8 +55,9 @@ const ContactSection = () => {
 
     const form = useRef(null)
     const sendMessage = async () => {
+        setLoading(true);
         try {
-            const res = await axiosClient.post(`/api/foundations/contactmessage/2`, {
+            const res = await axiosClient.post(`/api/foundations/contactmessage`, {
                 name: values.name,
                 phone: values.phone,
                 email: values.email,

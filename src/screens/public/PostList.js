@@ -45,7 +45,7 @@ const PostListSection = () => {
         const request = async () => {
             setValues({ ...values, loading: true });
             try {
-                const res = await axiosClient.get(`/api/foundations/2/post?min=${(values.currentPage * postPerPage) - postPerPage}&max=${postPerPage}&search=${values.filters.search}`);
+                const res = await axiosClient.get(`/api/foundations/post?min=${(values.currentPage * postPerPage) - postPerPage}&max=${postPerPage}&search=${values.filters.search}`);
                 if (mounted) {
 
                     if (res.data.state) {

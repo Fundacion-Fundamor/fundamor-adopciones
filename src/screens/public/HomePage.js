@@ -134,7 +134,7 @@ const LastPostList = () => {
         const request = async () => {
             setValues({ ...values, loading: true });
             try {
-                const res = await axiosClient.get(`/api/foundations/2/post?min=${0}&max=${3}&search=${""}`);
+                const res = await axiosClient.get(`/api/foundations/post?min=${0}&max=${3}&search=${""}`);
                 if (res.data.state) {
 
 

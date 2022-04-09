@@ -65,7 +65,7 @@ const AdopterFormSection = () => {
         const request = async () => {
             setValues({ ...values, loading: true });
             try {
-                const res = await axiosClient.get(`/api/foundations/2/adopt/${animal_id}`);
+                const res = await axiosClient.get(`/api/foundations/adopt/${animal_id}`);
                 if (res.data.state) {
                   
                     if (mounted) {
@@ -178,7 +178,7 @@ const AdopterFormSection = () => {
 
         try {
             setLoading(true);
-            const res = await axiosClient.post(`/api/foundations/2/adoptionForm`, {
+            const res = await axiosClient.post(`/api/foundations/adoptionForm`, {
                 idAnimal: animal_id,
                 nombre: contactData.name,
                 identificacion: contactData.identification,
@@ -317,7 +317,8 @@ const AdopterFormSection = () => {
                                 onChange={(e) => setContactData({ ...contactData, housePhone: e.target.value })}
                             />
                             <div className="invalid-feedback">
-                                Debe ingresar un número de celular válido
+                                Debe ingresar un teléfono de contacto válido
+
                             </div>
                         </div>
                         <div className="col-md-3 mb-3">
@@ -327,7 +328,7 @@ const AdopterFormSection = () => {
                                 onChange={(e) => setContactData({ ...contactData, phoneNumber: e.target.value })}
                             />
                             <div className="invalid-feedback">
-                                Debe ingresar un teléfono de contacto válido
+                                Debe ingresar un número de celular válido
                             </div>
                         </div>
                     </div>
