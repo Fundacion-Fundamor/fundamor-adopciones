@@ -278,6 +278,7 @@ const YourReCaptchaComponent = () => {
       const token = await executeRecaptcha('contact');
       // Do whatever you want with the token
       console.log(token);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
   
     // You can use useEffect to trigger the verification as soon as the component being loaded
