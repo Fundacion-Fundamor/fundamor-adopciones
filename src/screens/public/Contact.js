@@ -275,7 +275,6 @@ const YourReCaptchaComponent = () => {
         console.log('Execute recaptcha not yet available');
         return;
       }
-  
       const token = await executeRecaptcha('contact');
       // Do whatever you want with the token
       console.log(token);
