@@ -58,7 +58,6 @@ function AnimalsSection() {
     useEffect(() => {
         let mounted = true;
 
-
         const request = async () => {
             setValues({ ...values, loading: true });
             try {
