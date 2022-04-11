@@ -62,7 +62,7 @@ const PostDetailSection = () => {
                     } else {
                         setValues({ ...values, loading: false });
                         MySwal.fire({
-                            title: <p style={{ fontSize: 22, fontWeight: "bold" }}>{res.data.message}</p>,
+                            title: <p style={{ fontSize: 22, fontWeight: "bold", lineHeight:1.2  }}>{res.data.message}</p>,
                             allowOutsideClick: false,
                             icon: "error",
 
@@ -73,7 +73,7 @@ const PostDetailSection = () => {
                 setValues({ ...values, loading: false });
                 let text = handleResponseError(error);
                 MySwal.fire({
-                    title: <p style={{ fontSize: 22, fontWeight: "bold" }}>{text}</p>,
+                    title: <p style={{ fontSize: 22, fontWeight: "bold", lineHeight:1.2  }}>{text}</p>,
                     allowOutsideClick: false,
                     icon: "error",
 

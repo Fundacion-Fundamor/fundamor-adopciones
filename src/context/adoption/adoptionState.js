@@ -237,8 +237,6 @@ const AdoptionState = props => {
         }
     }
 
-
-    //TODO: falta que el backend devuelva las preguntas, el adoptante,seguimientos y el empleado y validar la estructura
     const getAdoption = async (adoptionId) => {
 
         try {

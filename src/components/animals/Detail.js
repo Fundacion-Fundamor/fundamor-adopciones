@@ -148,7 +148,7 @@ export default function Detail() {
 
         const displayAlert = async () => {
             let res = await MySwal.fire({
-                title: <p style={{ fontSize: 22, fontWeight: "900" }}>{message.text}</p>,
+                title: <p style={{ fontSize: 22, fontWeight: "900", lineHeight:1.2  }}>{message.text}</p>,
                 allowOutsideClick: false,
                 icon: message.category,
                 backdrop: true,

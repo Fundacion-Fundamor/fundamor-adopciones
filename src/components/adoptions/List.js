@@ -48,7 +48,7 @@ function List() {
 
     const displayAlert = async () => {
       let res = await MySwal.fire({
-        title: <p style={{ fontSize: 22, fontWeight: "bold" }}>{message.text}</p>,
+        title: <p style={{ fontSize: 22, fontWeight: "bold", lineHeight:1.2  }}>{message.text}</p>,
         allowOutsideClick: false,
         icon: message.category,
         backdrop: true

@@ -48,7 +48,7 @@ export default function AdopterList() {
 
     const displayAlert = async () => {
       let res = await MySwal.fire({
-        title: <p style={{ fontSize: 22, fontWeight: "bold" }}>{message.text}</p>,
+        title: <p style={{ fontSize: 22, fontWeight: "bold", lineHeight:1.2  }}>{message.text}</p>,
         allowOutsideClick: false,
         icon: message.category,
         backdrop: true
@@ -99,7 +99,7 @@ export default function AdopterList() {
   const selectAdopterRemove = async (idAdopter) => {
     MySwal.fire({
       title: (
-        <p style={{ fontSize: 22, fontWeight: 'bold' }}>{'Confirmación'}</p>
+        <p style={{ fontSize: 22, fontWeight: 'bold', }}>{'Confirmación'}</p>
       ),
       text:
         '¿Está seguro que desea eliminar este adoptante?, tenga en cuenta que se eliminarán todas las adopciones asociadas a este adoptante',

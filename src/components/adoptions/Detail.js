@@ -82,7 +82,7 @@ export default function Detail() {
 
         const displayAlert = async () => {
             let res = await MySwal.fire({
-                title: <p style={{ fontSize: 22, fontWeight: "bold" }}>{message.text}</p>,
+                title: <p style={{ fontSize: 22, fontWeight: "bold", lineHeight:1.2 }}>{message.text}</p>,
                 allowOutsideClick: false,
                 icon: message.category,
                 backdrop: true,
@@ -92,7 +92,7 @@ export default function Detail() {
             if (res.isConfirmed) {
 
                 await handleAdoptionMessage(null);
-                if (message.category === "success") {
+                if (message.category === "success" || message.category === "error") {
                     history.push("/adoptions");
                 }
             }
@@ -374,8 +374,8 @@ const AdoptionTabs = ({ adoption, toggleModalTracking }) => {
 
                         <Stack p={2} alignItems={"center"} justifyContent={"center"} flexDirection={"row"} marginY={3}>
 
-                            <FaWpforms color={grey[600]} size={32} />
-                            <Typography sx={{ fontSize: 15, fontWeight: 700, textAlign: "center", marginLeft: 2 }} color="text.secondary">
+                            <FaWpforms color={grey[600]} size={22} />
+                            <Typography sx={{ fontSize: 18, fontWeight: 900, textAlign: "center", marginLeft: 2 }} color="text.secondary">
                                 Cuestionario respondido por el adoptante durante la creación de la adpoción
                             </Typography>
 
@@ -398,6 +398,8 @@ const AdoptionTabs = ({ adoption, toggleModalTracking }) => {
                                 </Stack>
 
                             ))}
+
+                            {adoption.preguntas.length === 0 ? <Typography>El cuestionario de preguntas no existe o no fue diligenciado.</Typography> : null}
                         </Stack>
                     </Card>
                     : <Card variant="outlined" sx={{ borderRadius: 3, mb: 2, mt: 2 }} >
