@@ -41,7 +41,13 @@ const FoundationState = props => {
                     vision,
                     url_mapa,
                     url_video
+                } = res.data.data.foundation;
+
+                const {
+                    rescuedAnimals,
+                    adoptedAnimals
                 } = res.data.data;
+
                 dispatch({
                     type: GET_FOUNDATION,
                     payload: {
@@ -54,6 +60,8 @@ const FoundationState = props => {
                         vision: vision ?? "",
                         url_mapa: url_mapa ?? "",
                         url_video: url_video ?? "",
+                        rescuedAnimals: rescuedAnimals ?? 0,
+                        adoptedAnimals: adoptedAnimals ?? 0
                     }
                 });
             } else {
@@ -91,7 +99,7 @@ const FoundationState = props => {
                 type: TOGGLE_FOUNDATION_LOADING,
                 payload: true
             });
-           
+
             const res = await axiosClient.put("/api/foundations", {
                 correo: data.correo === "" ? null : data.correo,
                 telefono: data.telefono === "" ? null : data.telefono,
@@ -138,12 +146,12 @@ const FoundationState = props => {
         }
     }
 
-    const normalizeYoutubeLink = function (url){
+    const normalizeYoutubeLink = function (url) {
         var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
         var match = url.match(regExp);
-    
+
         if (match && match[2].length === 11) {
-            return "http://www.youtube.com/watch?v="+match[2];
+            return "http://www.youtube.com/watch?v=" + match[2];
         } else {
             return url
         }

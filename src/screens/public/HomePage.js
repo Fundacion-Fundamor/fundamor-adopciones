@@ -73,21 +73,9 @@ export default function HomePage() {
         <section className='analytics-section'>
             <div className='row justify-content-center d-flex'>
 
-                <div className='col-md-4 col-sm-12'>
+                <AnimalsInfo />
 
-                    <div className='analytics-card'>
-                        <h1>45+</h1>
-                        <h4 className='text-center'>ANIMALES RESCATADOS</h4>
-                    </div>
-                </div>
 
-                <div className='col-md-4 col-sm-12'>
-
-                    <div className='analytics-card'>
-                        <h1>45+</h1>
-                        <h4 className='text-center'>ANIMALES DADOS EN ADOPCIÓN</h4>
-                    </div>
-                </div>
                 <div className='col-md-4 col-sm-12'>
 
                     <div className='analytics-card'>
@@ -244,5 +232,25 @@ const DonationCard = () => {
     </div>)
 }
 
+const AnimalsInfo = () => {
+    const { currentFoundation } = useContext(FoundationContext);
 
+    return (<>
+
+        <div className='col-md-4 col-sm-12'>
+
+            <div className='analytics-card'>
+                <h1>{1000 + (currentFoundation ? currentFoundation.rescuedAnimals : 0)}+</h1>
+                <h4 className='text-center'>ANIMALES RESCATADOS</h4>
+            </div>
+        </div>
+        <div className='col-md-4 col-sm-12'>
+
+            <div className='analytics-card'>
+                <h1>{600 + (currentFoundation ? currentFoundation.adoptedAnimals : 0)}+</h1>
+                <h4 className='text-center'>ANIMALES DADOS EN ADOPCIÓN</h4>
+            </div>
+        </div></>
+    )
+}
 
