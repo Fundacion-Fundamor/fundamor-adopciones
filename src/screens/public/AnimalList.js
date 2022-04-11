@@ -76,7 +76,7 @@ function AnimalsSection() {
                     }
                 } else {
                     MySwal.fire({
-                        title: <p style={{ fontSize: 22, fontWeight: "bold", lineHeight:1.2  }}>{res.data.message}</p>,
+                        title: <p style={{ fontSize: 22, fontWeight: "bold", lineHeight: 1.2 }}>{res.data.message}</p>,
                         allowOutsideClick: false,
                         icon: "error",
 
@@ -85,7 +85,7 @@ function AnimalsSection() {
             } catch (error) {
                 let text = handleResponseError(error);
                 MySwal.fire({
-                    title: <p style={{ fontSize: 22, fontWeight: "bold", lineHeight:1.2  }}>{text}</p>,
+                    title: <p style={{ fontSize: 22, fontWeight: "bold", lineHeight: 1.2 }}>{text}</p>,
                     allowOutsideClick: false,
                     icon: "error",
 
@@ -196,28 +196,40 @@ function AnimalsSection() {
                             </div>
                             <div className='row'>
 
-                                {values.data.map((element, index) => (
-                                    <div key={index} className='col-lg-4 col-md-6'>
-                                        <div className='adoption-item mb-5'>
-                                            <div className='animal-thumb'>
-                                                {element.animalImage && element.animalImage.length > 0 ? <img src={`${process.env.REACT_APP_API_URL}/${element.animalImage[0].ruta}`} alt="img" /> :
-                                                    <img src="/images/no_image.png" alt="img" />
-                                                }
-                                                <Link className='btn-adopt' to={"/foundation/animals/" + element.id_animal}>Adoptar <IoPawOutline color="white" size="24" /></Link>
-                                            </div>
-                                            <div className='animal-description'>
-                                                <h3>{element.nombre}</h3>
-                                                <div className='info'>
-                                                    <p><AiFillInfoCircle /> {element.sexo}</p>
+                                {values.data.map((element, index) => {
 
-                                                    <p><MdCompareArrows /> {element.tamanio}</p>
+                                    let imageRoute = "";
+
+                                    if (element.animalImage && element.animalImage.length) {
+
+                                        let images = element.animalImage.sort(function (a, b) { return a.id_imagen_animal - b.id_imagen_animal });
+
+                                        imageRoute = images[0].ruta;
+
+                                    }
+                                    return (
+                                        <div key={index} className='col-lg-4 col-md-6'>
+                                            <div className='adoption-item mb-5'>
+                                                <div className='animal-thumb'>
+                                                    {element.animalImage && element.animalImage.length > 0 ? <img src={`${process.env.REACT_APP_API_URL}/${imageRoute}`} alt="img" /> :
+                                                        <img src="/images/no_image.png" alt="img" />
+                                                    }
+                                                    <Link className='btn-adopt' to={"/foundation/animals/" + element.id_animal}>Adoptar <IoPawOutline color="white" size="24" /></Link>
                                                 </div>
-                                                <div className='footer'>
-                                                    <FaRegCalendarAlt /> <p>{calculateAnimalAge(element.fecha_nacimiento)} Aproximadamente</p>
+                                                <div className='animal-description'>
+                                                    <h3>{element.nombre}</h3>
+                                                    <div className='info'>
+                                                        <p><AiFillInfoCircle /> {element.sexo}</p>
+
+                                                        <p><MdCompareArrows /> {element.tamanio}</p>
+                                                    </div>
+                                                    <div className='footer'>
+                                                        <FaRegCalendarAlt /> <p>{calculateAnimalAge(element.fecha_nacimiento)} Aproximadamente</p>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>))}
+                                        </div>)
+                                })}
 
                             </div>
                             <div className='justify-content-center align-items-center d-flex'>
