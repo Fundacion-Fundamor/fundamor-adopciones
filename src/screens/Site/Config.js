@@ -47,7 +47,6 @@ export default function Config() {
 
             });
 
-
             if (res.isConfirmed) {
                 await handleFoundationMessage(null);
             }
