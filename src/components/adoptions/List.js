@@ -436,8 +436,11 @@ const AdoptionCard = ({ adoption }) => {
     let imageUri = null;
 
     if (adoption.animal.animalImage.length !== 0) {
+        let imageRoute = "";
+        let result = adoption.animal.animalImage.sort(function (a, b) { return a.id_imagen_animal - b.id_imagen_animal });
+        imageRoute = result[0].ruta;
 
-        imageUri = `${process.env.REACT_APP_API_URL}/${adoption.animal.animalImage[0].ruta}`;
+        imageUri = `${process.env.REACT_APP_API_URL}/${imageRoute}`;
     } else {
 
         if (adoption.animal.especie === "perro") {

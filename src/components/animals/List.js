@@ -50,7 +50,7 @@ function List() {
 
         const displayAlert = async () => {
             let res = await MySwal.fire({
-                title: <p style={{ fontSize: 22, fontWeight: "bold",lineHeight:1.2  }}>{message.text}</p>,
+                title: <p style={{ fontSize: 22, fontWeight: "bold", lineHeight: 1.2 }}>{message.text}</p>,
                 allowOutsideClick: false,
                 icon: message.category,
                 backdrop: true
@@ -256,23 +256,15 @@ function List() {
                                                 element.estado === "Adoptado" ? "success" :
                                                     element.estado === "Sin adoptar" ? "warning" : "primary"
                                             }
-
-
                                                 sx={{
                                                     textTransform: "capitalize",
                                                     borderRadius: "8px",
                                                     display: "flex",
-
-
                                                 }}
-
-
-
                                                 icon={
 
                                                     element.estado === "Adoptado" ? <BiBadgeCheck size={24} /> :
                                                         element.estado === "Sin adoptar" ? <BiErrorAlt size={24} /> : <AiOutlineReload size={24} />
-
 
                                                 }
                                                 label={element.estado === "Adoptado" || element.estado === "Sin adoptar" ? element.estado : "En proceso"}
@@ -352,11 +344,11 @@ const FilterManager = ({ handleFilters }) => {
                     backgroundColor: theme.custom.primary.light,
                     color: "white",
                     borderRadius: 2,
-                    "&:hover":{
+                    "&:hover": {
                         backgroundColor: theme.custom.primary.dark,
 
                     }
-                    
+
                 }}
                 onClick={handleClick}
             >
@@ -505,6 +497,12 @@ const AnimalImage = ({ images }) => {
 
     const [isLoaded, setIsLoaded] = useState(false)
 
+    let imageRoute = "";
+
+    if (images.length> 0) {
+        let result = images.sort(function (a, b) { return a.id_imagen_animal - b.id_imagen_animal });
+        imageRoute = result[0].ruta;
+    }
     return images.length > 0 ? <>
 
         {!isLoaded ? <Skeleton variant="rectangular" height={230} sx={{ borderRadius: "8px" }} /> : null}
@@ -513,7 +511,7 @@ const AnimalImage = ({ images }) => {
             component="img"
             height={isLoaded ? "230" : "0"}
             sx={{ borderRadius: "8px", objectFit: "cover" }}
-            image={`${process.env.REACT_APP_API_URL}/${images[0].ruta}`}
+            image={`${process.env.REACT_APP_API_URL}/${imageRoute}`}
             alt="imagen de la mascota"
         />
 

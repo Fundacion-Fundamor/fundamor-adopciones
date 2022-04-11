@@ -200,7 +200,7 @@ function AnimalsSection() {
 
                                     let imageRoute = "";
 
-                                    if (element.animalImage && element.animalImage.length) {
+                                    if (element.animalImage && element.animalImage.length>0) {
 
                                         let images = element.animalImage.sort(function (a, b) { return a.id_imagen_animal - b.id_imagen_animal });
 

@@ -67,9 +67,9 @@ const AdopterFormSection = () => {
             try {
                 const res = await axiosClient.get(`/api/foundations/adopt/${animal_id}`);
                 if (res.data.state) {
-                  
+
                     if (mounted) {
-               
+
                         setValues({ animal: res.data.data.animal, questions: res.data.data.questions, loading: false, answers: [] });
                     }
                 } else {
@@ -88,7 +88,7 @@ const AdopterFormSection = () => {
             } catch (error) {
                 let text = handleResponseError(error);
                 MySwal.fire({
-                    title: <p style={{ fontSize: 22, fontWeight: "bold", lineHeight:1.2  }}>{text}</p>,
+                    title: <p style={{ fontSize: 22, fontWeight: "bold", lineHeight: 1.2 }}>{text}</p>,
                     allowOutsideClick: false,
                     icon: "error",
 
@@ -107,7 +107,7 @@ const AdopterFormSection = () => {
     }, [])
     const saveAnswer = (value, questionId) => {
 
-    
+
         let tmp = values.answers;
 
         let exist = false;
@@ -139,26 +139,26 @@ const AdopterFormSection = () => {
             contactData.occupation === "" || contactData.address === "" ||
             contactData.phoneNumber === "" || contactData.phoneNumber.length !== 10 || !values.acceptTerms) {
             isValid = false
-          
+
         } else if (contactData.email !== "" && re.test(contactData.email) === false) {
-          
+
             isValid = false
         }
 
         else if (parseInt(contactData.housePhone) > 9999999) {
-         
+
             isValid = false
         }
 
-  
+
         if (values.answers.length !== values.questions.length) {
             isValid = false
-           
+
         } else {
             let result = values.answers.find(element => element.answer.trim() === "");
 
             if (result) {
-              
+
                 isValid = false
             }
 
@@ -205,7 +205,7 @@ const AdopterFormSection = () => {
 
             } else {
                 MySwal.fire({
-                    title: <p style={{ fontSize: 22, fontWeight: "bold", lineHeight:1.2  }}>{res.data.message}</p>,
+                    title: <p style={{ fontSize: 22, fontWeight: "bold", lineHeight: 1.2 }}>{res.data.message}</p>,
                     allowOutsideClick: false,
                     icon: "error",
 
@@ -216,7 +216,7 @@ const AdopterFormSection = () => {
         } catch (error) {
             let text = handleResponseError(error);
             MySwal.fire({
-                title: <p style={{ fontSize: 22, fontWeight: "bold", lineHeight:1.2  }}>{text}</p>,
+                title: <p style={{ fontSize: 22, fontWeight: "bold", lineHeight: 1.2 }}>{text}</p>,
                 allowOutsideClick: false,
                 icon: "error",
 
@@ -335,9 +335,9 @@ const AdopterFormSection = () => {
 
 
                     <div className='request-part'>
-                        <div className="text-center mb-4 mt-5">
+                        {values.questions.length > 0 ? <div className="text-center mb-4 mt-5">
                             <h5 className="sub-title "><span>Datos de la solicitud</span></h5>
-                        </div>
+                        </div> : null}
 
 
                         <div className="row ">

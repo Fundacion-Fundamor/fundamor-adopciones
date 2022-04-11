@@ -36,7 +36,7 @@ import FormLabel from '@mui/material/FormLabel';
 import DateAdapter from '@mui/lab/AdapterMoment';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
-import { BiHelpCircle} from 'react-icons/bi';
+import { BiHelpCircle } from 'react-icons/bi';
 import moment from 'moment';
 import 'moment/locale/es';
 import AnimalContext from '../../context/animal/animalContext';
@@ -273,7 +273,7 @@ export default function Form() {
     useEffect(() => {
         const displayAlert = async () => {
             let res = await MySwal.fire({
-                title: <p style={{ fontSize: 22, fontWeight: "bold", lineHeight:1.2  }}>{message.text}</p>,
+                title: <p style={{ fontSize: 22, fontWeight: "bold", lineHeight: 1.2 }}>{message.text}</p>,
                 allowOutsideClick: false,
                 icon: message.category,
 
@@ -347,7 +347,7 @@ export default function Form() {
             </Card>
             <Card variant="outlined" sx={{ padding: 3, borderRadius: theme.custom.borderRadius }} >
 
-                <Stepper activeStep={currentStep} alternativeLabel sx={{ marginTop: 5,justifyContent:"center" }}>
+                <Stepper activeStep={currentStep} alternativeLabel sx={{ marginTop: 5, justifyContent: "center" }}>
                     {steps.map((label) => (
                         <Step key={label} >
                             <StepLabel >{label}</StepLabel>
@@ -624,7 +624,7 @@ export default function Form() {
                         : null}
                     {currentStep === 2 ?
                         <div style={{ width: "90%", flexDirection: "column" }}>
-
+                            {localQuestions.length === 0 ? <Typography style={{ marginTop: 15, textAlign: "center" }}>Aún no existe un formulario de adopción.</Typography> : null}
 
                             {localQuestions.map((element, index) => element.tipo_pregunta === "abierta" ? (
 
@@ -814,7 +814,7 @@ export default function Form() {
                     {currentStep === 4 ? <Box alignItems={"center"} display={"flex"} flexDirection={"column"} my={2}>
 
                         <img src='/images/success.png' style={{ width: 90, height: 90 }} alt="Porceso terminado exitosamente" />
-                        <Typography sx={{ fontSize: 18, textAlign:"center", color: green[800], mt: 2 }} variant="subtitle2">Se ha registrado el proceso con éxito</Typography>
+                        <Typography sx={{ fontSize: 18, textAlign: "center", color: green[800], mt: 2 }} variant="subtitle2">Se ha registrado el proceso con éxito</Typography>
 
 
                         <Button size="medium" variant="contained" sx={{ marginTop: 5, borderRadius: "8px" }} color="primary" onClick={() => { resetForm(); }} >Ir al inicio</Button>
@@ -863,13 +863,13 @@ const OPTextField = ({ onBlur, data, index }) => {
         <Stack sx={{ my: 3 }}>
 
             <InputLabel
-                sx={{ mb: 2 }}
+                sx={{ mb: 2,fontWeight:"bold" }}
             >{index}. {data.titulo}</InputLabel>
             <TextField
                 fullWidth
                 // label={data.titulo}
                 variant="outlined"
-
+                placeholder='Ingrese aquí la respuesta'
                 inputProps={{ maxLength: 300 }}
                 InputLabelProps={{ style: { background: "white", paddingLeft: "5px", paddingRight: "5px", borderRadius: "12px" } }}
                 value={value}
