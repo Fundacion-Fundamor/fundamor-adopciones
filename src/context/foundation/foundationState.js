@@ -6,6 +6,13 @@ import { FOUNDATION_MESSAGE, GET_FOUNDATION, TOGGLE_FOUNDATION_LOADING } from '.
 import axiosClient from '../../config/axios';
 import { handleResponseError } from "../../Shared/utils"
 
+
+/**maneja las peticiones asociadas a la información de la fundación,
+ * ademas de que almacena y globaliza dicha indormación.
+ * 
+ * @param {*} props 
+ * @returns 
+ */
 const FoundationState = props => {
 
     const initialState = {

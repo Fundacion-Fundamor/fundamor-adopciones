@@ -2,20 +2,21 @@
 import React, { useEffect, useContext} from 'react'
 import { useParams, useHistory } from 'react-router';
 import PostContext from '../../context/post/postContext';
-
 import { Button, Box, Card, CardActions, Tooltip, IconButton, Typography, useMediaQuery, useTheme, Stack, CardMedia } from '@mui/material';
 import { AiOutlineInfoCircle, AiOutlinePlus, } from 'react-icons/ai';
 import { BiHelpCircle } from 'react-icons/bi';
 import { FiTrash2 } from 'react-icons/fi';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-
-
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
 import { FaRegCalendar } from 'react-icons/fa';
 
 
+/**Renderiza el detalle de una publicación
+ * 
+ * @returns 
+ */
 export default function Detail() {
 
 

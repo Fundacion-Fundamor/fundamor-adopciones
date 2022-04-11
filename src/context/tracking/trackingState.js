@@ -4,6 +4,14 @@ import TrackingReducer from './trackingReducer';
 import { TRACKINGS, SELECT_TRACKING, TOGGLE_TRACKING_LOADING, TRACKING_MESSAGE } from '../../types';
 import axiosClient from '../../config/axios';
 
+
+
+/**maneja las peticiones crud asociadas a los seguimientos,
+ * ademas de que almacena y globaliza el listado.
+ * 
+ * @param {*} props 
+ * @returns 
+ */
 const TrackingState = props => {
 
     const initialState = {

@@ -5,6 +5,13 @@ import { POSTS, SELECT_POST, TOGGLE_POSTS_LOADING, POST_MESSAGE } from '../../ty
 import axiosClient from '../../config/axios';
 import { handleResponseError } from "../../Shared/utils"
 
+
+/**maneja las peticiones crud asociadas a las publicaciones,
+ * ademas de que almacena y globaliza el listado.
+ * 
+ * @param {*} props 
+ * @returns 
+ */
 const PostState = props => {
 
 

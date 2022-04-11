@@ -15,6 +15,12 @@ import authToken from '../../config/authToken';
 import axiosClient from '../../config/axios';
 import { handleResponseError } from "../../Shared/utils"
 
+/**maneja las peticiones asociadas a la autenticacion,
+ * ademas de que almacena y globaliza el usuario en sesion
+ * 
+ * @param {*} props 
+ * @returns 
+ */
 const AuthState = props => {
 
     const initialState = {

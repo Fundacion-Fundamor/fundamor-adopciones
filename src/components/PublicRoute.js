@@ -3,11 +3,16 @@ import { Route, Redirect } from 'react-router'
 
 import AuthContext from '../context/auth/authContext';
 
+
+/**No se está usando
+ * 
+ * @param {*} param0 
+ * @returns 
+ */
 export default function PublicRoute({ component: Component, ...props }) {
 
     const { authenticated, authenticatedUser, loading } = useContext(AuthContext);
 
-    // console.log(authenticated,loading)
     useEffect(() => {
 
         authenticatedUser();

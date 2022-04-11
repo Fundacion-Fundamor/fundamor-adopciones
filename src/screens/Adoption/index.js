@@ -4,6 +4,10 @@ import List from '../../components/adoptions/List';
 import Form from '../../components/adoptions/Form';
 import Detail from '../../components/adoptions/Detail';
 
+/**Componente padre asociado al CRUD de adopciones, encargado de manejar
+ * la navegación anidada
+ * 
+ */
 export default function Adoption() {
 
     let { path } = useRouteMatch();
@@ -11,11 +15,7 @@ export default function Adoption() {
     return <div style={{ display: "flex", justifyContent: "center", flexDirection: "column" }}>
         <Switch>
             <Route exact path={path}>
-                    {/* <Button size="medium" variant="contained"  color="primary" sx={{ marginTop: 5 }} onClick={() => {
-                        history.push(`/adoptions/new/-1`);
-
-                    }}>Nuevo proceso</Button> */}
-                    <List />
+                <List />
             </Route>
             <Route path={`${path}/new/:animalId`}>
                 <Form />

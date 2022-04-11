@@ -16,7 +16,10 @@ import { AiOutlineCheckCircle, AiOutlinePauseCircle, AiOutlinePlus, AiOutlineRel
 import { FaRegEdit, FaWpforms } from 'react-icons/fa';
 import { FiTrash2 } from 'react-icons/fi';
 
-
+/**Renderiza el detalle de una adopción,
+ * este detalle incluye los componentes para registrar un seguimiento
+ * 
+ */
 export default function Detail() {
 
 
@@ -82,7 +85,7 @@ export default function Detail() {
 
         const displayAlert = async () => {
             let res = await MySwal.fire({
-                title: <p style={{ fontSize: 22, fontWeight: "bold", lineHeight:1.2 }}>{message.text}</p>,
+                title: <p style={{ fontSize: 22, fontWeight: "bold", lineHeight: 1.2 }}>{message.text}</p>,
                 allowOutsideClick: false,
                 icon: message.category,
                 backdrop: true,

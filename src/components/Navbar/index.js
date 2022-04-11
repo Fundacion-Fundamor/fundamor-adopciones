@@ -12,6 +12,11 @@ import ListItemText from '@mui/material/ListItemText';
 import { IconButton } from '@mui/material';
 import { GrFormClose } from 'react-icons/gr'
 
+/**Renderiza una barra de navegación para la sección publica de la plataformma
+ * 
+ * @param {*} param0 
+ * @returns 
+ */
 const NavbarComponent = ({ active = "home" }) => {
 
   const [state, setState] = React.useState({

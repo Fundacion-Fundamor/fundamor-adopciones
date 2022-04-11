@@ -53,72 +53,15 @@ if (token) {
 }
 
 
-
-const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' && prop !== 'authenticated' })(({ theme, open, authenticated }) => {
-
-	return (
-		{
-			...theme.typography.mainContent,
-			backgroundColor: authenticated ? "#FFD5A6" : "white",
-			marginTop: authenticated ? "68px !important" : "0px",
-			// marginBottom: "15px",
-			width: "100%",
-			borderRadius: "12px",
-			// marginLeft: "10px",
-			// marginRight: "10px",
-			padding: authenticated ? 20 : 0,
-			fontFamily: "Nunito",
-			color: "#1e4b57",
-			...(!open && {
-
-
-				transition: theme.transitions.create('margin', {
-					easing: theme.transitions.easing.sharp,
-					duration: theme.transitions.duration.leavingScreen
-				}),
-
-				[theme.breakpoints.up('lg')]: {
-
-					// marginLeft: -(drawerWidth - 20),
-					// width: `calc(100% - ${drawerWidth}px)`
-				},
-				[theme.breakpoints.up('md')]: {
-
-					// marginLeft: -(drawerWidth - 20),
-					// width: `calc(100% - ${drawerWidth}px)`
-				},
-				[theme.breakpoints.down('md')]: {
-					// marginLeft: '20px',
-					// width: `calc(100% - ${drawerWidth}px)`,
-					// padding: '16px'
-				},
-				[theme.breakpoints.down('sm')]: {
-					// marginLeft: '10px',
-					// width: `calc(100% - ${drawerWidth}px)`,
-					// padding: '16px',
-					// marginRight: '10px'
-				}
-			}),
-			...(open && {
-				transition: theme.transitions.create('margin', {
-					easing: theme.transitions.easing.easeOut,
-					duration: theme.transitions.duration.enteringScreen
-				}),
-				// marginLeft: 0,
-				// borderBottomLeftRadius: 0,
-				// borderBottomRightRadius: 0,
-
-				[theme.breakpoints.up('md')]: {
-					width: `calc(100% - ${authenticated ? drawerWidth : 0}px)`,
-				},
-				[theme.breakpoints.down('sm')]: {
-					// marginLeft: '10px'
-				}
-			})
-		})
-});
-
-
+/**Componente inicial encargado de la navegación de la plataforma de adopción
+ * Teniendo en cuenta que se usó context para la creación de la plataforma,
+ * en este componente se inicializan todos los providers que soportan la logica de las 
+ * peticiones. Tambien se incluye el provider para theming
+ * 
+ * @author Neyder Figueroa Sánchez
+ * @author Andrés Felipe Llinás Rodriguez
+ * 
+ */
 function App() {
 
 
@@ -127,19 +70,8 @@ function App() {
 		components: {
 			"MuiOutlinedInput": {
 				styleOverrides: {
-					// Name of the slot
 					root: {
-						// Some CSS
 						borderRadius: "10px!important",
-						// '& fieldset': {
-						//   borderColor: 'red',
-						// },
-						// '&:hover fieldset': {
-						//   borderColor: '#F25287 !important',
-						// },
-						// '&.Mui-focused fieldset': {
-						//   borderColor: 'yellow !important',
-						// },
 					},
 				},
 			},
@@ -191,13 +123,9 @@ function App() {
 				color: 'gray'
 			},
 			body1: {
-				// color: "#1b4f5c",
 				color: "#0a303a"
-				// fontWeight: "900",
 			},
 			body2: {
-				// color: "#1b4f5c",
-				// color: "#0a303a",
 				fontWeight: "700",
 			},
 			p: { color: "red" },
@@ -221,10 +149,8 @@ function App() {
 	});
 
 
-
-
-	// Handle left drawer
-	const [leftDrawerOpened, setLeftDrawerOpened] = useState(true)
+	// Estado para el control del sidebar
+	const [leftDrawerOpened, setLeftDrawerOpened] = useState(false)
 
 	const handleLeftDrawerToggle = () => {
 		setLeftDrawerOpened(!leftDrawerOpened)
@@ -233,12 +159,11 @@ function App() {
 
 	useEffect(() => {
 		getFoundation();
-	// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 
 	return (
 		<ThemeProvider theme={theme}>
-
 			<PostState>
 				<AdoptionState>
 					<AnimalState>
@@ -247,8 +172,7 @@ function App() {
 								<QuestionState>
 									<TrackingState>
 										<BreadCumbState>
-										<div className="App">
-
+											<div className="App">
 												<Router>
 													<Box sx={{ display: 'flex' }}>
 
@@ -260,7 +184,6 @@ function App() {
 														{/* drawer */}
 														{authenticated ? <SideBar open={leftDrawerOpened} handleDrawer={handleLeftDrawerToggle} /> : null}
 
-														{/* <Link style={{color:"#000"}} to="/employees">Home</Link> */}
 
 														{/* main content */}
 														<Main theme={theme} open={leftDrawerOpened} authenticated={authenticated}>
@@ -276,8 +199,6 @@ function App() {
 																<Route path="/foundation/animals" exact component={AnimalList} />
 																<Route path="/foundation/animals/:animal_id" exact component={AnimalDetail} />
 																<Route path="/foundation/animals/adopt/:animal_id" exact component={AdoptionRequest} />
-
-
 																<Route path="/" exact component={HomePage} />
 
 																{/* Rutas privadas */}
@@ -291,20 +212,12 @@ function App() {
 																<PrivateRoute path="/profile" component={Profile} />
 																<PrivateRoute path="/siteConfig" component={Config} />
 
-
-
 																<Route path="*" component={NotFoundPage} />
 															</Switch>
-
 														</Main>
-
 													</Box >
-
 												</Router>
 											</div>
-											 {/* : <div className='preloader'>
-												<img src="/images/preloader.gif" alt="preloader" />
-											</div>} */}
 										</BreadCumbState>
 									</TrackingState>
 								</QuestionState>
@@ -313,10 +226,39 @@ function App() {
 					</AnimalState>
 				</AdoptionState>
 			</PostState>
-
 		</ThemeProvider>
 	)
 }
 
+const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' && prop !== 'authenticated' })(({ theme, open, authenticated }) => {
+
+	return (
+		{
+			...theme.typography.mainContent,
+			backgroundColor: authenticated ? "#FFD5A6" : "white",
+			marginTop: authenticated ? "68px !important" : "0px",
+			width: "100%",
+			borderRadius: "12px",
+			padding: authenticated ? 20 : 0,
+			fontFamily: "Nunito",
+			color: "#1e4b57",
+			...(!open && {
+				transition: theme.transitions.create('margin', {
+					easing: theme.transitions.easing.sharp,
+					duration: theme.transitions.duration.leavingScreen
+				}),
+			}),
+			...(open && {
+				transition: theme.transitions.create('margin', {
+					easing: theme.transitions.easing.easeOut,
+					duration: theme.transitions.duration.enteringScreen
+				}),
+
+				[theme.breakpoints.up('md')]: {
+					width: `calc(100% - ${authenticated ? drawerWidth : 0}px)`,
+				},
+			})
+		})
+});
 
 export default App

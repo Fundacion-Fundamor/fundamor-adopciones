@@ -6,6 +6,11 @@ import { grey } from "@mui/material/colors";
 import { useContext } from "react";
 import BreadCumbContext from "../../../context/breadcumb/breadcumbContext";
 
+/**Item que contiene mas items en el sidebar
+ * 
+ * @param {*} props 
+ * @returns 
+ */
 export default function CollapseItem(props) {
     const { dataItem } = props;
     const theme = useTheme();

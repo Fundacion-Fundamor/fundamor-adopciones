@@ -3,6 +3,12 @@ import { Route, Redirect } from 'react-router'
 
 import AuthContext from '../context/auth/authContext';
 
+
+/**Componente encargado de validar el estado de la sesion del usuario
+ * 
+ * @param {*} param0 
+ * @returns 
+ */
 export default function PrivateRoute({ component: Component, ...props }) {
 
     const { authenticated, authenticatedUser,loading } = useContext(AuthContext);

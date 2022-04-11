@@ -2,25 +2,26 @@
 /* eslint-disable no-useless-escape */
 import React, { useContext, useState, useEffect } from 'react'
 import './login.scss'
-import { Alert, Avatar, Card, CardActions, CardContent, FormHelperText, Stack, TextField, Typography } from '@mui/material';
+import { Alert, Avatar, Card, CardActions, CardContent, FormHelperText, IconButton, InputAdornment, Stack, TextField, Typography } from '@mui/material';
 import { Link } from "react-router-dom";
 import AuthContext from '../../context/auth/authContext';
 import { IoPawOutline } from 'react-icons/io5';
 import { LoadingButton } from '@mui/lab';
 import NavbarComponent from '../../components/Navbar';
+import { AiOutlineEye,AiOutlineEyeInvisible } from 'react-icons/ai'
 
 
+/**Formulario de inicio de sesion
+ * 
+ * @param {*} props 
+ * @returns 
+ */
 function Login(props) {
 
-
 	return (
-
 		<div>
-
 			<NavbarComponent active='ingresar' />
-
 			<LoginForm  {...props} />
-			{/* <Footer /> */}
 		</div>
 
 	)
@@ -124,21 +125,7 @@ const LoginForm = (props) => {
 								{errors.email ? <FormHelperText error={errors.email} >Debe ingresar un correo válido</FormHelperText> : null}
 
 
-								<TextField label="Contraseña" fullWidth
-									variant="outlined"
-									error={errors.password}
-									sx={{ background: "#fff", mt: 3 }}
-									InputProps={{ type: "password" }}
-									onChange={(event) => {
-										setCredentials({ ...credentials, "password": event.target.value });
-									}}
-									InputLabelProps={{ style: { background: "#fff", paddingLeft: "5px", paddingRight: "5px" } }}
-									onBlur={(event) => {
-
-										setErrors({ ...errors, password: false });
-									}}
-									inputProps={{ maxLength: 100 }}
-								/>
+								<PasswordInput passwordError={errors.password} setError={(val) => setErrors({ ...errors, password: val })} setPassword={(val) => setCredentials({ ...credentials, "password": val })} />
 								{errors.password ? <FormHelperText error={errors.password} >Debe ingresar una contraseña</FormHelperText> : null}
 
 								<Link style={{ marginTop: 18, textAlign: "center" }} to="/passwordReset">¿Olvidó su contraseña?</Link>
@@ -182,6 +169,39 @@ const LoginForm = (props) => {
 			</div>
 		</section>
 	)
+}
+
+
+const PasswordInput = ({ passwordError, setPassword, setError }) => {
+
+
+	const [showPassword, setShowPassword] = useState(false);
+	return (
+		<TextField label="Contraseña" fullWidth
+			variant="outlined"
+			error={passwordError}
+			sx={{ background: "#fff", mt: 3 }}
+			onChange={(event) => {
+				setPassword(event.target.value)
+			}}
+			InputLabelProps={{ style: { background: "#fff", paddingLeft: "5px", paddingRight: "5px" } }}
+			onBlur={(event) => {
+
+				setError(false);
+			}}
+			InputProps={{
+				type: showPassword ? "text" : "password",
+
+				endAdornment: (
+					<InputAdornment position="end">
+						<IconButton onClick={()=>setShowPassword(!showPassword)}>
+							{showPassword?<AiOutlineEyeInvisible></AiOutlineEyeInvisible>:<AiOutlineEye />}
+						</IconButton>
+					</InputAdornment>
+				),
+			}}
+
+		/>)
 }
 
 export default Login

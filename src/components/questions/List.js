@@ -9,8 +9,12 @@ import withReactContent from 'sweetalert2-react-content';
 import QuestionContext from '../../context/question/questionContext';
 
 import { AiOutlineInfoCircle } from 'react-icons/ai';
-// import { SortableContainer, SortableElement } from 'react-sortable-hoc';
 
+
+/**Listado de preguntas de adopción
+ * 
+ * @returns 
+ */
 export default function QuestionList() {
 
     const MySwal = withReactContent(Swal);

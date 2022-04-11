@@ -8,6 +8,11 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { GrClose } from 'react-icons/gr';
 import { AiOutlineSave } from 'react-icons/ai';
 
+/**Contenido del modal de edición de preguntas para adopción
+ * 
+ * @param {*} param0 
+ * @returns 
+ */
 export default function EditModal({ handleToggle }) {
     const { editQuestion, message, loading, selectedEditQuestion } = useContext(QuestionContext);
     const [questionOptions, setQuestionOptions] = useState([]);

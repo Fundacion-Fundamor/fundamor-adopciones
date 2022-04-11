@@ -3,7 +3,11 @@ import { ListItem, ListItemText, useTheme } from "@mui/material";
 import { useHistory } from "react-router-dom";
 import BreadCumbContext from "../../../context/breadcumb/breadcumbContext";
 
-
+/**Item del sidebar
+ * 
+ * @param {*} props 
+ * @returns 
+ */
 export default function SingleItem(props) {
     const { dataItem } = props;
     const theme = useTheme();

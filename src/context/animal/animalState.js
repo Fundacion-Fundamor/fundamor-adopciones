@@ -5,12 +5,13 @@ import { ANIMALS, SELECT_ANIMAL, TOGGLE_ANIMAL_LOADING, ANIMAL_MESSAGE } from '.
 import axiosClient from '../../config/axios';
 import { handleResponseError } from '../../Shared/utils';
 
-/**
+
+/**maneja las peticiones crud asociadas a los animales,
+ * ademas de que almacena y globaliza el listado.
  * 
  * @param {*} props 
  * @returns 
  */
-
 const AnimalState = props => {
 
     const initialState = {

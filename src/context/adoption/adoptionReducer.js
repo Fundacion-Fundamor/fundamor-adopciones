@@ -25,7 +25,6 @@ export default (state, action) => {
                 loading: false
             }
         case SELECT_ADOPTION:
-            //TODO: falta que el backend devuelva las preguntas, el adoptante,seguimientos y el empleado y validar la estructura
 
             let tmpData = {
                 estado: action.payload.estado,

@@ -9,6 +9,12 @@ import { Link } from 'react-router-dom';
 import NavbarComponent from '../../components/Navbar';
 
 
+
+/**Formulario de recuperación de contraseña
+ * 
+ * @param {*} props 
+ * @returns 
+ */
 function PasswordReset(props) {
 
 

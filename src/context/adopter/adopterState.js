@@ -5,9 +5,14 @@ import { ADOPTERS, SELECT_ADOPTER, TOGGLE_ADOPTER_LOADING, ADOPTER_MESSAGE } fro
 import axiosClient from '../../config/axios';
 import { handleResponseError } from '../../Shared/utils';
 
+
+/**maneja las peticiones crud asociadas a los adoptantes,
+ * ademas de que almacena y globaliza el listado.
+ * 
+ * @param {*} props 
+ * @returns 
+ */
 const AdopterState = props => {
-
-
 
     const initialState = {
         adopters: [],
@@ -44,7 +49,7 @@ const AdopterState = props => {
 
         } catch (error) {
 
-            let text =handleResponseError(error)
+            let text = handleResponseError(error)
 
             dispatch({
                 type: ADOPTER_MESSAGE, payload: {
@@ -145,7 +150,7 @@ const AdopterState = props => {
 
         } catch (error) {
 
-            let text =handleResponseError(error);
+            let text = handleResponseError(error);
 
             dispatch({
                 type: ADOPTER_MESSAGE, payload: {

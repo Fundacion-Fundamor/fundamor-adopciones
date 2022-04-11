@@ -35,7 +35,8 @@ import { LoadingButton } from '@mui/lab'
 
 
 const maxNumber = 8; //max number images
-/**Componente encargado del registro y edición de un colaborador
+
+/**Componente encargado del registro de una publicación
  *
  * @param {*} param0
  * @returns
@@ -93,7 +94,7 @@ export default function Form() {
 	useEffect(() => {
 		const displayAlert = async () => {
 			let res = await MySwal.fire({
-				title: <p style={{ fontSize: 22, fontWeight: "bold", lineHeight:1.2  }}>{message.text}</p>,
+				title: <p style={{ fontSize: 22, fontWeight: "bold", lineHeight: 1.2 }}>{message.text}</p>,
 				allowOutsideClick: false,
 				icon: message.category,
 

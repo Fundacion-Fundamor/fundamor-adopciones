@@ -35,13 +35,13 @@ import { LoadingButton } from '@mui/lab'
 
 
 const maxNumber = 8; //max number images
-/**Componente encargado del registro y edición de un colaborador
+/**Componente encargado de la edición de una publicación
  *
  * @param {*} param0
  * @returns
  */
 export default function FormEdit() {
-    const { handlePostMessage, editPost, loading, message,selectedPost } = useContext(PostContext)
+    const { handlePostMessage, editPost, loading, message, selectedPost } = useContext(PostContext)
 
     const MySwal = withReactContent(Swal);
     const [values, setValues] = useState({
@@ -58,7 +58,7 @@ export default function FormEdit() {
         postId: null,
         title: null,
         body: null,
-        
+
     })
 
     /**Captura el cambio al seleccionar una nueva imágen
@@ -93,7 +93,7 @@ export default function FormEdit() {
                     tmp.push(element);
                 }
             })
-            
+
             //se guardan los datos del colaborador
             editPost(values, tmp, imagesRemove);
 
@@ -103,7 +103,7 @@ export default function FormEdit() {
     useEffect(() => {
         const displayAlert = async () => {
             let res = await MySwal.fire({
-                title: <p style={{ fontSize: 22, fontWeight: "bold", lineHeight:1.2  }}>{message.text}</p>,
+                title: <p style={{ fontSize: 22, fontWeight: "bold", lineHeight: 1.2 }}>{message.text}</p>,
                 allowOutsideClick: false,
                 icon: message.category,
 
@@ -141,7 +141,7 @@ export default function FormEdit() {
             setImages(selectedPost.postImage);
         }
     }, [selectedPost])
-    
+
     return (
         <Box sx={{ display: "flex", flexDirection: "column" }}>
             <Card variant="outlined" sx={{ padding: 1, borderRadius: theme.custom.borderRadius, mb: 2, }} >
@@ -239,7 +239,7 @@ export default function FormEdit() {
                             </div>
                             <Stack flexDirection={"row"} alignItems={"center"} display={"flex"}>
                                 <AiOutlineInfoCircle color='#1976d2' size={24} />
-                                <Typography sx={{ fontSize: 12, ml: 1, color: "#1976d2",fontWeight:"600" }} variant="subtitle2">La imagen principal de la publicación corresponderá a la primera que sea seleccionada </Typography>
+                                <Typography sx={{ fontSize: 12, ml: 1, color: "#1976d2", fontWeight: "600" }} variant="subtitle2">La imagen principal de la publicación corresponderá a la primera que sea seleccionada </Typography>
 
                             </Stack>
                         </div>

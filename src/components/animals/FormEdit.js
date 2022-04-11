@@ -47,7 +47,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 
 
 
-/**Formulario de edición de  registro para animales
+/**Formulario de edición de registro para animales
  * 
  * Solo los campos requeridos en la bd son validados
  * @returns 

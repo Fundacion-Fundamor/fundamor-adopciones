@@ -5,8 +5,9 @@ import { QUESTIONS, SELECT_QUESTION, UNSELECT_QUESTION, TOGGLE_QUESTION_LOADING,
 import axiosClient from '../../config/axios';
 import { handleResponseError } from "../../Shared/utils"
 
-/**TODO: hacer el metodo de asociacion de preguntas
- * Realizar el eliminar multiple en el back
+
+/**maneja las peticiones crud asociadas a las preguntas de adopción,
+ * ademas de que almacena y globaliza el listado.
  * 
  * @param {*} props 
  * @returns 

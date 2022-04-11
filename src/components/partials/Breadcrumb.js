@@ -1,6 +1,12 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import './breadcrumb.scss'
+
+
+/**Miga de pan de la sección pública
+ * 
+ * @returns 
+ */
 export default function Breadcrumb({ data }) {
 
     return (<section className='breadcrumb-area'>

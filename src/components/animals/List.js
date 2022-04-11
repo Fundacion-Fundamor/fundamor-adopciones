@@ -14,8 +14,11 @@ import { FaChevronDown } from 'react-icons/fa'
 import CircularProgress from '@mui/material/CircularProgress';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-
 import { BiBadgeCheck } from "react-icons/bi"
+
+/**Renderiza el listado de animales paginado(por javascript)
+ * 
+ */
 function List() {
 
 

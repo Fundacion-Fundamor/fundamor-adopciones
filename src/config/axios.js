@@ -6,12 +6,17 @@ const axiosClient = axios.create({
 });
 
 
+/**Interceptador de axios,
+ * permite cerrar la sesion y eliminar el token de localstorage si alguna respuesta cotiene el codigo 
+ * 401 (no autorizado)
+ * 
+ */
 axiosClient.interceptors.response.use(function (response) {
-    // Any status code that lie within the range of 2xx cause this function to trigger
-    // Do something with response data
+
     return response;
+
 }, function (error) {
-    // console.log(error)
+
     const { data, status } = error.response;
 
     if (status === 401) {

@@ -5,6 +5,11 @@ import { ADOPTIONS, SELECT_ADOPTION, TOGGLE_ADOPTION_LOADING, ADOPTION_MESSAGE }
 import axiosClient from '../../config/axios';
 import { handleResponseError } from '../../Shared/utils';
 
+/**maneja las peticiones crud asociadas a las adopciones,
+ * ademas de que almacena y globaliza el listado de adopciones, preguntas y seguimientos.
+ * 
+ */
+
 const AdoptionState = props => {
 
     const initialState = {

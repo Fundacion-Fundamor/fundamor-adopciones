@@ -2,6 +2,11 @@ import React, { useState } from 'react';
 import { AiOutlineSearch } from 'react-icons/ai';
 import './searchBox.scss'
 
+/**Text input utilizado para la busqueda
+ * 
+ * @param {*} param0 
+ * @returns 
+ */
 export default function SearchBox({ handleSearch,placeholder="" }) {
 
     const [value, setValue] = useState("")

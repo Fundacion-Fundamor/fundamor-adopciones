@@ -4,6 +4,11 @@ import './brand.scss'
 import Slider from "react-slick";
 import { useMediaQuery, useTheme } from '@mui/material';
 
+
+/**Slider con listado de figuras (pública)
+ * 
+ * @returns 
+ */
 export default function BrandSection(params) {
     const [settingsSlick, setSettingsSlick] = useState({
         dots: false,

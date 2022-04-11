@@ -347,7 +347,7 @@ export default function Form() {
             </Card>
             <Card variant="outlined" sx={{ padding: 3, borderRadius: theme.custom.borderRadius }} >
 
-                <Stepper activeStep={currentStep} alternativeLabel sx={{ marginTop: 5 }}>
+                <Stepper activeStep={currentStep} alternativeLabel sx={{ marginTop: 5,justifyContent:"center" }}>
                     {steps.map((label) => (
                         <Step key={label} >
                             <StepLabel >{label}</StepLabel>

@@ -7,7 +7,10 @@ import Slider from "react-slick";
 import { useMediaQuery, useTheme } from '@mui/material';
 import AnimalContext from '../../context/animal/animalContext';
 
-
+/**Slider con listado de animales (pública)
+ * 
+ * @returns 
+ */
 export default function AnimalList() {
 
     const [settingsSlick, setSettingsSlick] = useState({

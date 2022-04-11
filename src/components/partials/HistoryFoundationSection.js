@@ -8,6 +8,11 @@ import ModalVideo from 'react-modal-video'
 import Accordion from 'react-bootstrap/Accordion'
 import FoundationContext from '../../context/foundation/foundationContext'
 
+
+/**Renderiza la visión, misión y video de la fundación
+ * 
+ * @returns 
+ */
 export function HistoryFoundationSection(params) {
     const [isOpen, setOpen] = useState(false)
     const { currentFoundation } = useContext(FoundationContext)

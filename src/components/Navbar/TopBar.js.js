@@ -8,7 +8,12 @@ import AuthContext from '../../context/auth/authContext';
 import { useHistory } from 'react-router-dom';
 import BreadCumbContext from '../../context/breadcumb/breadcumbContext';
 
-
+/**Renderiza una barra de navegación en la parte de arriba para la 
+ * sección privada de la plataforma
+ * 
+ * @param {*} param0 
+ * @returns 
+ */
 export default function Topbar({ drawerOpen, handleDrawer }) {
 
     const theme = useTheme();

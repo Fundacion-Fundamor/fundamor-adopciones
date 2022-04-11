@@ -16,6 +16,11 @@ import withReactContent from 'sweetalert2-react-content';
 import moment from 'moment';
 import 'moment/locale/es';
 
+
+/**Renderiza el listado de publicaciones paginado(por javascript)
+ * 
+ * @returns 
+ */
 function List() {
 
 	moment.locale('es');
@@ -67,7 +72,7 @@ function List() {
 
 		const displayAlert = async () => {
 			let res = await MySwal.fire({
-				title: <p style={{ fontSize: 22, fontWeight: "bold", lineHeight:1.2  }}>{message.text}</p>,
+				title: <p style={{ fontSize: 22, fontWeight: "bold", lineHeight: 1.2 }}>{message.text}</p>,
 				allowOutsideClick: false,
 				icon: message.category,
 				backdrop: true
@@ -247,7 +252,7 @@ function List() {
 											<p>{element.cuerpo}</p>
 										</div>
 
-										<Typography  color={theme.custom.primary.light} sx={{fontWeight:700}} variant='subtitle2'>{new Date(element.fecha_creacion).toLocaleDateString()}</Typography>
+										<Typography color={theme.custom.primary.light} sx={{ fontWeight: 700 }} variant='subtitle2'>{new Date(element.fecha_creacion).toLocaleDateString()}</Typography>
 
 										{/* <Typography color={theme.custom.primary.dark} variant='subtitle2'>Hace {moment(element.fecha_creacion, "YYYYMMDDHHmmss").fromNow()}</Typography> */}
 									</CardContent>

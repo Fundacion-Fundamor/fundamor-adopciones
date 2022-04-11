@@ -21,7 +21,7 @@ import AuthContext from '../../context/auth/authContext'
 import { AiOutlineInfoCircle } from 'react-icons/ai'
 
 
-/**
+/**Renderiza el listado de empleados
  * 
  * @returns 
  */

@@ -5,6 +5,13 @@ import { EMPLOYEES, SELECT_EMPLOYEE, TOGGLE_EMPLOYEES_LOADING, EMPLOYEE_MESSAGE 
 import axiosClient from '../../config/axios';
 import { handleResponseError } from '../../Shared/utils';
 
+
+/**maneja las peticiones crud asociadas a los empleados,
+ * ademas de que almacena y globaliza el listado.
+ * 
+ * @param {*} props 
+ * @returns 
+ */
 const EmployeeState = props => {
 
     const initialState = {

@@ -1,6 +1,7 @@
 import {
     Box,
     Drawer,
+    IconButton,
     List,
     useMediaQuery,
     useTheme
@@ -11,14 +12,26 @@ import SingleItem from "./item/SingleItem";
 import CollapseItem from "./item/CollapseItem";
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import { userRouters } from "../../routes/userRoutes";
-
+import { GrFormClose } from 'react-icons/gr'
+import { useEffect } from "react";
 
 const drawerWidth = 260;
+
+
 export default function SideBar(props) {
     const { open = true, handleDrawer } = props;
 
     const theme = useTheme();
     const matchUpMd = useMediaQuery(theme.breakpoints.up('md'));
+
+    useEffect(() => {
+    
+        if(matchUpMd){
+            handleDrawer()
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [matchUpMd])
+    
 
     return (
         <Box sx={{
@@ -69,7 +82,7 @@ export default function SideBar(props) {
                                 '& .MuiListItemIcon-root': {
                                     color: "white",
                                 },
-                                '& .MuiTypography-body1':{
+                                '& .MuiTypography-body1': {
                                     color: "white",
                                 }
                             },
@@ -81,15 +94,25 @@ export default function SideBar(props) {
                                 },
                             }
                         }}
-                    
+
                     >
+                        <div className='d-flex d-md-none p-3 justify-content-between mb-3 '>
+                            <img
+                                src="/images/logotipo.png"
+                                width={120}
+                                alt="Logo fundamor"
+                            />
+                            <IconButton onClick={()=> handleDrawer()}>
+                                <GrFormClose />
+                            </IconButton>
+                        </div>
                         {userRouters.map((obj, index) => {
                             if (obj.children !== undefined) {
                                 return (
-                                    <CollapseItem key={index} dataItem={obj} index={index+3} />
+                                    <CollapseItem key={index} dataItem={obj} index={index + 3} />
                                 )
                             } else {
-                                return <SingleItem key={index} dataItem={obj} index={index+3} />
+                                return <SingleItem key={index} dataItem={obj} index={index + 3} />
                             }
                         }
                         )}

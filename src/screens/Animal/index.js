@@ -4,6 +4,11 @@ import { useRouteMatch, Switch, Route } from "react-router-dom";
 import FormEdit from '../../components/animals/FormEdit';
 import Detail from '../../components/animals/Detail';
 import List from '../../components/animals/List';
+
+/**Componente padre asociado al CRUD de animales, encargado de manejar
+ * la navegación anidada
+ * 
+ */
 export default function Animal() {
     
     let { path } = useRouteMatch();

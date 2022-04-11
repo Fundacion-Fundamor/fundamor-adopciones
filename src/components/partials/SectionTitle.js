@@ -5,6 +5,13 @@ import React from 'react'
 import { FaPaw } from 'react-icons/fa';
 
 import './sectionTitle.scss'
+
+
+/**Sección de título reutilizada en la sección pública de la plataforma
+ * 
+ * @param {*} param0 
+ * @returns 
+ */
 export default function SectionTitle({ title, subtitle, text }) {
 
 
