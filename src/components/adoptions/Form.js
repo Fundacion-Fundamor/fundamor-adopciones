@@ -457,13 +457,13 @@ export default function Form() {
                                 }} color="info" onClick={() => toggleAdopterForm()} >{showAdopterForm ? "Volver a buscar" : "Registrar adoptante"}</Button>
                             </Stack>
                             {showAdopterForm ?
-                                <Grid container sx={{ padding: 3 }} spacing={2} >
+                                <Grid container sx={{ padding: { sx: 0, md: 3 }, mt: { xs: 2, md: 0 } }} spacing={2} >
                                     <Grid item md={6}
                                         xs={12}
                                         justifyContent="center"
                                         display="flex"
                                         flexDirection="column"
-
+                                        pt="0px !important"
                                     >
 
                                         <TextField
@@ -486,7 +486,7 @@ export default function Form() {
                                         justifyContent="center"
                                         display="flex"
                                         flexDirection="column"
-
+                                        pt="0px !important"
                                     >
                                         <TextField
                                             fullWidth
@@ -508,7 +508,7 @@ export default function Form() {
                                         justifyContent="center"
                                         display="flex"
                                         flexDirection="column"
-
+                                        pt="0px !important"
                                     >
                                         <TextField
                                             fullWidth
@@ -530,7 +530,7 @@ export default function Form() {
                                         justifyContent="center"
                                         display="flex"
                                         flexDirection="column"
-
+                                        pt="0px !important"
                                     >
                                         <TextField
                                             fullWidth
@@ -552,7 +552,7 @@ export default function Form() {
                                         justifyContent="center"
                                         display="flex"
                                         flexDirection="column"
-
+                                        pt="0px !important"
                                     >
                                         <TextField
                                             fullWidth
@@ -576,7 +576,7 @@ export default function Form() {
                                         justifyContent="center"
                                         display="flex"
                                         flexDirection="column"
-
+                                        pt="0px !important"
                                     >
                                         <TextField
                                             fullWidth
@@ -599,7 +599,7 @@ export default function Form() {
                                         justifyContent="center"
                                         display="flex"
                                         flexDirection="column"
-
+                                        pt="0px !important"
                                     >
                                         <TextField
                                             fullWidth
@@ -863,7 +863,7 @@ const OPTextField = ({ onBlur, data, index }) => {
         <Stack sx={{ my: 3 }}>
 
             <InputLabel
-                sx={{ mb: 2,fontWeight:"bold" }}
+                sx={{ mb: 2, fontWeight: "bold" }}
             >{index}. {data.titulo}</InputLabel>
             <TextField
                 fullWidth

@@ -68,12 +68,15 @@ export default function Form() {
     }, [message])
 
     return (<Box sx={{ margin: 3 }} >
-        <CardContent sx={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center" }} >
+        <CardContent sx={{ display: "flex", flexDirection: { xs: "column", md: "row" }, justifyContent: "center", alignItems: "center" }} >
             <TextField
                 multiline={true}
                 id="question-field"
                 sx={{
-                    width: "100%", marginRight: 3, "& .MuiOutlinedInput-root": {
+                    width: "100%", marginRight: {
+                        xs:0,
+                        md:3
+                    }, "& .MuiOutlinedInput-root": {
 
                         borderRadius: "10px!important"
 
@@ -88,8 +91,18 @@ export default function Form() {
                 onChange={(e) => { setQuestion(e.target.value) }}
             />
             <LoadingButton loading={loading && question.length !== 0}
-                size="small" variant="contained" color="primary" sx={{ fontSize: 12, height: 40,px:2, alignItems: "center", borderRadius: "8px", fontWeight: "bold" }}
-               
+                size="small" variant="contained" color="primary" sx={{
+                    fontSize: 12, height: 40, px: 2, alignItems: "center", borderRadius: "8px", fontWeight: "bold",
+                    mt: {
+                        xs: 2,
+                        md: 0
+                    },
+                    width:{
+                        xs:"100%",
+                        md:"120px"
+                    }
+                }}
+
                 disabled={question.length === 0}
                 onClick={() => {
 

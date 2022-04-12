@@ -493,7 +493,15 @@ const AdoptionCard = ({ adoption }) => {
                     {adoption.adopter.nombre}
                 </Typography>
             </CardContent>
-            <CardActions sx={{ justifyContent: 'space-around', mb: 2 }}>
+            <CardActions sx={{
+                justifyContent: 'space-around',
+
+                flexDirection: {
+                    xs: "column",
+                    md: "row"
+                },
+                mb: 2,
+            }}>
 
                 <Chip color={adoption.estado === "finalizada" ?
                     "success"
@@ -502,11 +510,12 @@ const AdoptionCard = ({ adoption }) => {
                         :
                         "warning")
                 }
-
-
-                    sx={{ textTransform: "capitalize" }}
-
-
+                    sx={{
+                        textTransform: "capitalize", mb: {
+                            xs: 1,
+                            md: 0
+                        },
+                    }}
 
                     icon={adoption.estado === "finalizada" ?
                         <AiOutlineCheckCircle size={24} />

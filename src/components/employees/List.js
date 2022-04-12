@@ -72,7 +72,7 @@ export default function List() {
 
         const displayAlert = async () => {
             let res = await MySwal.fire({
-                title: <p style={{ fontSize: 22, fontWeight: "bold", lineHeight:1.2  }}>{message.text}</p>,
+                title: <p style={{ fontSize: 22, fontWeight: "bold", lineHeight: 1.2 }}>{message.text}</p>,
                 allowOutsideClick: false,
                 icon: message.category,
                 backdrop: true
@@ -105,7 +105,7 @@ export default function List() {
                     <Typography sx={{ fontWeight: "500", ml: 2 }}>Cargando...</Typography>
                 </Stack> : null}
             {employees.length === 0 && !loading ?
-                <Typography sx={{ fontWeight: "600", my: 8 }}>No hay colaboradores registrados</Typography> : null}
+                <Typography sx={{ fontWeight: "600", my: 8, textAlign: "center" }}>No hay colaboradores registrados</Typography> : null}
 
 
             {employees.map((element, index) => (
@@ -146,7 +146,13 @@ const EmployeeItem = ({ item, removeEmployee, selectEmployee }) => {
             }}
         >
             <CardContent>
-                <Stack direction={"row"}>
+                <Stack sx={{
+                    flexDirection: {
+                        xs: "column",
+                        md: "row"
+                    },
+                    alignItems: "center"
+                }}>
                     <Avatar
                         src="/images/worker.png"
 
@@ -154,7 +160,20 @@ const EmployeeItem = ({ item, removeEmployee, selectEmployee }) => {
                     >
                         <FaUserCircle size={30} />
                     </Avatar>
-                    <Stack direction={"column"} ml={2}>
+                    <Stack direction={"column"} sx={{
+                        ml: {
+                            xs: 0,
+                            md: 2
+                        },
+                        mt: {
+                            xs: 2,
+                            md: 0
+                        },
+                        textAlign: {
+                            xs: "center",
+                            md: "left"
+                        }
+                    }}>
                         <Typography variant="h5" fontWeight={800} color={"#0a303a"} component="div" sx={{ textTransform: "capitalize" }}>
                             {item.nombre}
                         </Typography>
@@ -165,16 +184,27 @@ const EmployeeItem = ({ item, removeEmployee, selectEmployee }) => {
                 </Stack>
 
             </CardContent>
-            {user && user.rol !== "colaborador" ? <CardActions disableSpacing sx={{ justifyContent: "space-around", mt: 2 }}>
+            {user && user.rol !== "colaborador" ? <CardActions disableSpacing sx={{
+                justifyContent: "space-around", mt: 2, flexDirection: {
+                    xs: "column",
+                    md: "row"
+                },
+            }}>
 
 
-                <Button size="medium" variant="outlined" color="primary" sx={{ fontSize: 11, borderRadius: "8px" }}
+                <Button fullWidth={true} size="medium" variant="outlined" color="primary" sx={{ fontSize: 11,    mx:2, borderRadius: "8px" }}
                     onClick={() => {
                         selectEmployee(item)
                     }}
                     startIcon={<FaUserEdit />}
                 >Editar</Button>
-                <Button size="medium" variant="outlined" color="error" sx={{ fontSize: 11, borderRadius: "8px" }}
+                <Button fullWidth={true}  size="medium" variant="outlined" color="error" sx={{
+                    mx:2,
+                    fontSize: 11, borderRadius: "8px", mt: {
+                        xs: 1,
+                        md: 0
+                    },
+                }}
                     startIcon={<FaTrashAlt />}
                     onClick={() => {
                         removeEmployee(item.id_empleado)
